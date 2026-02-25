@@ -28,9 +28,14 @@ public class SecurityConfig {
                             response.setStatus(HttpStatus.OK.value());
                         })
                         .failureHandler((request, response, exception) -> {
-                            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+                            response.sendError(HttpStatus.UNAUTHORIZED.value(), "Credenciales incorrectas");
                         })
                         .permitAll())
+
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            response.sendError(HttpStatus.UNAUTHORIZED.value(), "No autenticado");
+                        }))
 
                 .logout(logout -> logout
                         .logoutUrl("/api/auth/logout")
