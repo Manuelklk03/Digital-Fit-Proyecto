@@ -26,7 +26,6 @@ public class SecurityConfig {
                         .permitAll())
                 .logout(logout -> logout
                         .logoutUrl("/api/auth/logout")
-                        .logoutSuccessUrl("/api/auth/register")
                         .permitAll());
 
         return http.build();
