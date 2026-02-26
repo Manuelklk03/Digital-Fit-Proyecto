@@ -1,4 +1,4 @@
-package com.example.digital_fit.controller;
+package com.example.digital_fit.controller.Auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.digital_fit.dto.UsuarioDTO;
-import com.example.digital_fit.service.AuthService;
+import com.example.digital_fit.dto.Auth.UsuarioDTO;
+import com.example.digital_fit.service.Auth.AuthService;
 
 @RestController
 @RequestMapping("/api/auth")

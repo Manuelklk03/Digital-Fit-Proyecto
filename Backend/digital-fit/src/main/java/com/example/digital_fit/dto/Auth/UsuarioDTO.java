@@ -1,4 +1,4 @@
-package com.example.digital_fit.dto;
+package com.example.digital_fit.dto.Auth;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
