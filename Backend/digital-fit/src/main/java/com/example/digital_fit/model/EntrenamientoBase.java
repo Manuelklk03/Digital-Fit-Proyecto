@@ -23,9 +23,9 @@ public class EntrenamientoBase {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "nombre")
     private String nombre;
 
-    @Column(nullable = false, length = 1000)
+    @Column(nullable = false, length = 1000, name = "descripcion")
     private String descripcion;
 }
