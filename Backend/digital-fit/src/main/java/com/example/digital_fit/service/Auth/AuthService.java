@@ -1,15 +1,15 @@
-package com.example.digital_fit.service;
+package com.example.digital_fit.service.Auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.example.digital_fit.dto.UsuarioDTO;
+import com.example.digital_fit.dto.Auth.UsuarioDTO;
 import com.example.digital_fit.exception.EmailYaExisteException;
 import com.example.digital_fit.exception.UsernameYaExiste;
-import com.example.digital_fit.model.Usuario;
+import com.example.digital_fit.model.Auth.Usuario;
 import com.example.digital_fit.model.Enums.Rol;
-import com.example.digital_fit.repository.UsuarioRepository;
+import com.example.digital_fit.repository.Auth.UsuarioRepository;
 
 @Service
 public class AuthService {

@@ -1,4 +1,4 @@
-package com.example.digital_fit.model;
+package com.example.digital_fit.model.Entrenamientos;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

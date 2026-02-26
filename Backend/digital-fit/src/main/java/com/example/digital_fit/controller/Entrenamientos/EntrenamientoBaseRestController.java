@@ -1,4 +1,4 @@
-package com.example.digital_fit.controller;
+package com.example.digital_fit.controller.Entrenamientos;
 
 import java.util.List;
 
@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.digital_fit.dto.EntrenamientoBaseDTO;
-import com.example.digital_fit.service.EntrenamientoBaseService;
+import com.example.digital_fit.dto.Entrenamientos.EntrenamientoBaseDTO;
+import com.example.digital_fit.service.Entrenamientos.EntrenamientoBaseService;
 
 @RestController
 @RequestMapping("/api/entrenamientos")

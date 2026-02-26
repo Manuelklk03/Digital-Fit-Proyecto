@@ -1,4 +1,4 @@
-package com.example.digital_fit.service;
+package com.example.digital_fit.service.Entrenamientos;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,10 +6,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.digital_fit.dto.EntrenamientoBaseDTO;
+import com.example.digital_fit.dto.Entrenamientos.EntrenamientoBaseDTO;
 import com.example.digital_fit.exception.RecursoNoEncontradoException;
-import com.example.digital_fit.model.EntrenamientoBase;
-import com.example.digital_fit.repository.EntrenamientoBaseRepository;
+import com.example.digital_fit.model.Entrenamientos.EntrenamientoBase;
+import com.example.digital_fit.repository.Entrenamientos.EntrenamientoBaseRepository;
 
 @Service
 public class EntrenamientoBaseService {
@@ -31,7 +31,7 @@ public class EntrenamientoBaseService {
     public EntrenamientoBaseDTO obtenerPorId(Long id) {
         EntrenamientoBase entrenamientoBase = entrenamientoBaseRepository.findById(id)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Entrenamiento base no encontrado con ID: " + id));
-                
+
         return entityToDto(entrenamientoBase);
     }
 

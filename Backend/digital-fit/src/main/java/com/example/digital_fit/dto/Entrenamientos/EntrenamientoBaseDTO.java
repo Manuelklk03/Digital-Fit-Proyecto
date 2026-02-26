@@ -1,4 +1,4 @@
-package com.example.digital_fit.dto;
+package com.example.digital_fit.dto.Entrenamientos;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
