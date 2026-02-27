@@ -41,6 +41,7 @@ public class EntrenamientoUsuarioRestController {
     @PostMapping("desde-base/{idBase}")
     public ResponseEntity<EntrenamientoUsuarioDTO> AñadirEntrenamientoDesdeBase(@PathVariable Long idBase,
             Authentication authentication) {
+                
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(entrenamientoUsuarioService.añadirDesdeBase(idBase, authentication.getName()));
     }
