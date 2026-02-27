@@ -23,7 +23,7 @@ public class EntrenamientoBase {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, name = "nombre")
+    @Column(nullable = false, name = "nombre", unique = true)
     private String nombre;
 
     @Column(nullable = false, length = 1000, name = "descripcion")
