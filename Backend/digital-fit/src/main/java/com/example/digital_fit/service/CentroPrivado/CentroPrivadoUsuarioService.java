@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.digital_fit.dto.CentroPrivado.CentroPrivadoBaseDTO;
 import com.example.digital_fit.dto.CentroPrivado.CentroPrivadoUsuarioDTO;
 import com.example.digital_fit.dto.CentroPrivado.crearCentroPrivado;
 import com.example.digital_fit.exception.OperacionNoPermitida;
@@ -91,8 +90,8 @@ public class CentroPrivadoUsuarioService {
         return entityToDto(centroGuardado);
     }
 
-    //Detalle CentroPrivado:
-    public CentroPrivadoUsuarioDTO verDetalle(Long id,String username) {
+    // Detalle CentroPrivado:
+    public CentroPrivadoUsuarioDTO verDetalle(Long id, String username) {
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
 
@@ -105,7 +104,7 @@ public class CentroPrivadoUsuarioService {
         return entityToDto(centro);
     }
 
-    //Borrar Centro de MisCentrosGuardados:
+    // Borrar Centro de MisCentrosGuardados:
     public void borrarDeMisCentrosGuardados(Long id, String username) {
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
@@ -119,7 +118,7 @@ public class CentroPrivadoUsuarioService {
         centroPrivadoUsuarioRepository.delete(centro);
     }
 
-    //Mappers:
+    // Mappers:
     public CentroPrivadoUsuario dtoToEntity(CentroPrivadoUsuarioDTO dto) {
         CentroPrivadoUsuario centro = new CentroPrivadoUsuario();
         centro.setId(dto.getId());
