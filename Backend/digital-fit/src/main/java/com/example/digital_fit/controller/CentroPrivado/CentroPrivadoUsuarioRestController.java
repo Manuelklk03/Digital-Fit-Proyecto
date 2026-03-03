@@ -19,7 +19,7 @@ import com.example.digital_fit.service.CentroPrivado.CentroPrivadoUsuarioService
 
 @RestController
 @RequestMapping("/api/mis-centros-privados")
-public class CentroPrivadoRestController {
+public class CentroPrivadoUsuarioRestController {
 
     @Autowired
     private CentroPrivadoUsuarioService centroPrivadoUsuarioService;
