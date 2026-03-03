@@ -33,19 +33,18 @@ public class LugarPublicoBase {
     @Column(nullable = false)
     private String direccion;
 
+    @Column(length = 1000)
+    private String descripcion;
+
     private String telefono;
 
     private String horario;
-
-    @Column(length = 1000)
-    private String descripcion;
 
     private Double latitud;
 
     private Double longitud;
 
-    // RELACIONES:
-
+    // ENUM:
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private TipoLugarPublico tipo;
