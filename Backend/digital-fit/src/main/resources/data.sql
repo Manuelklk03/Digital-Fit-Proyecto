@@ -100,7 +100,7 @@ VALUES (
     );
 
 -- Lugares Publicos:
-INSERT IGNORE INTO
+INSERT INTO
     lugares_publicos_base (
         nombre,
         direccion,
@@ -114,7 +114,7 @@ INSERT IGNORE INTO
 VALUES (
         'Jardín del Turia',
         'Antiguo cauce del río Turia, Valencia',
-        'Gran parque urbano ideal para correr.',
+        'Gran parque urbano ideal para correr, entrenar calistenia y ciclismo.',
         NULL,
         'Abierto 24h',
         39.4789,
@@ -124,7 +124,7 @@ VALUES (
     (
         'Playa de la Malvarrosa',
         'Paseo Marítimo, Valencia',
-        'Playa perfecta para entrenar.',
+        'Playa amplia perfecta para running, voley playa y entrenamiento funcional.',
         NULL,
         'Abierto 24h',
         39.4769,
@@ -134,7 +134,7 @@ VALUES (
     (
         'Parque de Cabecera',
         'Av. Pío Baroja, Valencia',
-        'Zona verde amplia.',
+        'Gran zona verde con espacios amplios para correr y entrenar al aire libre.',
         NULL,
         'Abierto 24h',
         39.4935,
@@ -142,19 +142,9 @@ VALUES (
         'PARQUE_PUBLICO'
     ),
     (
-        'Polideportivo Municipal Benimaclet',
-        'Carrer Daniel Balaciart, Valencia',
-        'Instalaciones deportivas.',
-        '963123456',
-        'L-V 8:00-22:00',
-        39.4844,
-        -0.3649,
-        'ZONA_MULTIDEPORTE'
-    ),
-    (
         'Zona Calistenia Río Turia',
         'Tramo 5 del Jardín del Turia',
-        'Zona de barras.',
+        'Zona equipada con barras para dominadas y entrenamiento funcional.',
         NULL,
         'Abierto 24h',
         39.4745,
@@ -164,10 +154,40 @@ VALUES (
     (
         'Carril Bici Valencia Centro',
         'Centro histórico de Valencia',
-        'Carril bici urbano.',
+        'Red de carriles bici ideal para entrenamientos de ciclismo.',
         NULL,
         'Abierto 24h',
         39.4699,
         -0.3763,
         'CARRIL_BICI'
+    ),
+    (
+        'Polideportivo Municipal Benimaclet',
+        'Carrer Daniel Balaciart, Valencia',
+        'Complejo deportivo municipal con pistas y actividades deportivas.',
+        '963123456',
+        'L-V 8:00-22:00',
+        39.4844,
+        -0.3649,
+        'ZONA_MULTIDEPORTE'
+    ),
+    (
+        'Ruta Running Jardín del Turia',
+        'Jardín del Turia tramo central',
+        'Ruta muy utilizada por corredores con varios kilómetros continuos.',
+        NULL,
+        'Abierto 24h',
+        39.4700,
+        -0.3765,
+        'RUTA_RUNNING'
+    ),
+    (
+        'Circuito Ciclismo Turia',
+        'Tramo final Jardín del Turia',
+        'Zona popular para entrenamientos de ciclismo y rodillo urbano.',
+        NULL,
+        'Abierto 24h',
+        39.4805,
+        -0.3872,
+        'CIRCUITO_CICLISMO'
     );

@@ -47,6 +47,7 @@ public class LugarPublicoBaseService {
         lugar.setDescripcion(dto.getDescripcion());
         lugar.setLatitud(dto.getLatitud());
         lugar.setLongitud(dto.getLongitud());
+        lugar.setTipo(dto.getTipo());
         return lugar;
     }
 
@@ -60,6 +61,7 @@ public class LugarPublicoBaseService {
         dto.setDescripcion(lugar.getDescripcion());
         dto.setLatitud(lugar.getLatitud());
         dto.setLongitud(lugar.getLongitud());
+        dto.setTipo(lugar.getTipo());
         return dto;
     }
 }
