@@ -100,7 +100,7 @@ VALUES (
     );
 
 -- Lugares Publicos:
-INSERT INTO
+INSERT IGNORE INTO
     lugares_publicos_base (
         nombre,
         direccion,
