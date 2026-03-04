@@ -35,6 +35,7 @@ public class LugarPublicoUsuario {
 
     private String direccion;
 
+    @Column(length = 1000)
     private String descripcion;
 
     private String telefono;
