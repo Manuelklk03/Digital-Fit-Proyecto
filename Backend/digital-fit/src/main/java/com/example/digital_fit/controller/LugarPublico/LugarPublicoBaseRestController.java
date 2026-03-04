@@ -18,7 +18,7 @@ public class LugarPublicoBaseRestController {
 
     @Autowired
     private LugarPublicoBaseService lugarPublicoBaseService;
-
+  
     @GetMapping
     public ResponseEntity<List<LugarPublicoBaseDTO>> listar() {
         return ResponseEntity.ok(lugarPublicoBaseService.listarTodos());
