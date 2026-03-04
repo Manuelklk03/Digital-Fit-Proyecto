@@ -114,57 +114,57 @@ INSERT IGNORE INTO
 VALUES (
         'Jardín del Turia',
         'Antiguo cauce del río Turia, Valencia',
-        'Gran parque urbano ideal para correr, calistenia y ciclismo.',
+        'Gran parque urbano ideal para correr.',
         NULL,
         'Abierto 24h',
         39.4789,
         -0.3797,
-        'PARQUE'
+        'PARQUE_PUBLICO'
     ),
     (
         'Playa de la Malvarrosa',
         'Paseo Marítimo, Valencia',
-        'Playa amplia perfecta para entrenamientos al aire libre y running.',
+        'Playa perfecta para entrenar.',
         NULL,
         'Abierto 24h',
         39.4769,
         -0.3233,
-        'PLAYA'
+        'PLAYA_DEPORTIVA'
     ),
     (
         'Parque de Cabecera',
         'Av. Pío Baroja, Valencia',
-        'Zona verde con espacios amplios para entrenar al aire libre.',
+        'Zona verde amplia.',
         NULL,
         'Abierto 24h',
         39.4935,
         -0.4090,
-        'PARQUE'
+        'PARQUE_PUBLICO'
     ),
     (
         'Polideportivo Municipal Benimaclet',
         'Carrer Daniel Balaciart, Valencia',
-        'Instalaciones deportivas públicas con pistas y gimnasio municipal.',
+        'Instalaciones deportivas.',
         '963123456',
         'L-V 8:00-22:00',
         39.4844,
         -0.3649,
-        'POLIDEPORTIVO'
+        'ZONA_MULTIDEPORTE'
     ),
     (
         'Zona Calistenia Río Turia',
         'Tramo 5 del Jardín del Turia',
-        'Zona equipada con barras para dominadas y entrenamiento funcional.',
+        'Zona de barras.',
         NULL,
         'Abierto 24h',
         39.4745,
         -0.3771,
-        'ZONA_CALISTENIA'
+        'PARQUE_CALISTENIA'
     ),
     (
         'Carril Bici Valencia Centro',
         'Centro histórico de Valencia',
-        'Red de carriles bici ideal para entrenamientos de ciclismo.',
+        'Carril bici urbano.',
         NULL,
         'Abierto 24h',
         39.4699,
