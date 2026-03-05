@@ -6,8 +6,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import com.example.digital_fit.dto.CentroPrivado.CentroPrivadoUsuarioDTO;
-import com.example.digital_fit.dto.CentroPrivado.crearCentroPrivado;
+import com.example.digital_fit.dto.CentroPrivado.CrearCentroPrivadoDTO;
 import com.example.digital_fit.exception.OperacionNoPermitida;
 import com.example.digital_fit.exception.RecursoNoEncontradoException;
 import com.example.digital_fit.model.Auth.Usuario;
@@ -16,6 +17,8 @@ import com.example.digital_fit.model.CentroPrivado.CentroPrivadoUsuario;
 import com.example.digital_fit.repository.Auth.UsuarioRepository;
 import com.example.digital_fit.repository.CentroPrivado.CentroPrivadoBaseRepository;
 import com.example.digital_fit.repository.CentroPrivado.CentroPrivadoUsuarioRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class CentroPrivadoUsuarioService {
@@ -46,7 +49,8 @@ public class CentroPrivadoUsuarioService {
     }
 
     // Añadir centro privado desde maps:
-    public CentroPrivadoUsuarioDTO AñdirCentroPrivadoMaps(crearCentroPrivado dto, String username) {
+    @Transactional
+    public CentroPrivadoUsuarioDTO AñdirCentroPrivadoMaps(CrearCentroPrivadoDTO dto, String username) {
 
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
@@ -67,6 +71,7 @@ public class CentroPrivadoUsuarioService {
     }
 
     // Añadir centro privado desde lista de la app:
+    @Transactional
     public CentroPrivadoUsuarioDTO AñadirPrivadoAMisCentros(Long idBase, String username) {
 
         Usuario usuario = usuarioRepository.findByUsername(username)
@@ -105,6 +110,7 @@ public class CentroPrivadoUsuarioService {
     }
 
     // Borrar Centro de MisCentrosGuardados:
+    @Transactional
     public void borrarDeMisCentrosGuardados(Long id, String username) {
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
