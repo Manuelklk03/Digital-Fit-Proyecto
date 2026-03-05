@@ -3,6 +3,7 @@ package com.example.digital_fit.controller.CentroPrivado;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.digital_fit.dto.CentroPrivado.CentroPrivadoUsuarioDTO;
-import com.example.digital_fit.dto.CentroPrivado.crearCentroPrivado;
+import com.example.digital_fit.dto.CentroPrivado.CrearCentroPrivadoDTO;
 import com.example.digital_fit.service.CentroPrivado.CentroPrivadoUsuarioService;
 
 @RestController
@@ -24,36 +25,39 @@ public class CentroPrivadoUsuarioRestController {
     @Autowired
     private CentroPrivadoUsuarioService centroPrivadoUsuarioService;
 
-    //Listar:
+    // Listar:
     @GetMapping
     public ResponseEntity<List<CentroPrivadoUsuarioDTO>> listar(Authentication authentication) {
         return ResponseEntity.ok(centroPrivadoUsuarioService.listarMisCentros(authentication.getName()));
     }
 
-    //Detalle:
+    // Detalle:
     @GetMapping("/{id}")
-    public ResponseEntity<CentroPrivadoUsuarioDTO> obtenerPorId(@PathVariable Long id,Authentication authentication) {
-        return ResponseEntity.ok(centroPrivadoUsuarioService.verDetalle(id,authentication.getName()));
+    public ResponseEntity<CentroPrivadoUsuarioDTO> obtenerPorId(@PathVariable Long id, Authentication authentication) {
+        return ResponseEntity.ok(centroPrivadoUsuarioService.verDetalle(id, authentication.getName()));
     }
 
-    //Añadir desde app:
+    // Añadir desde app:
     @PostMapping("/centros-app/{id}")
-    public ResponseEntity<CentroPrivadoUsuarioDTO> AñadirPrivadoAMisCentros(@PathVariable Long id,Authentication authentication) {
-        return ResponseEntity.ok(centroPrivadoUsuarioService.AñadirPrivadoAMisCentros(id,authentication.getName()));
+    public ResponseEntity<CentroPrivadoUsuarioDTO> AñadirPrivadoAMisCentros(@PathVariable Long id,
+            Authentication authentication) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(centroPrivadoUsuarioService.AñadirPrivadoAMisCentros(id, authentication.getName()));
     }
 
-    //Añadir desde maps (Angular) :
+    // Añadir desde maps (Angular) :
     @PostMapping("/centros-maps")
-    public ResponseEntity<CentroPrivadoUsuarioDTO> AñadirCentroPrivadoMaps(@RequestBody crearCentroPrivado dto,Authentication authentication) {
-        return ResponseEntity.ok(centroPrivadoUsuarioService.AñdirCentroPrivadoMaps(dto,authentication.getName()));
+    public ResponseEntity<CentroPrivadoUsuarioDTO> AñadirCentroPrivadoMaps(@RequestBody CrearCentroPrivadoDTO dto,
+            Authentication authentication) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(centroPrivadoUsuarioService.AñdirCentroPrivadoMaps(dto, authentication.getName()));
     }
 
-    //Borrar:
+    // Borrar:
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> borrarDeMisCentrosGuardados(@PathVariable Long id,Authentication authentication) {
-        centroPrivadoUsuarioService.borrarDeMisCentrosGuardados(id,authentication.getName());
+    public ResponseEntity<Void> borrarDeMisCentrosGuardados(@PathVariable Long id, Authentication authentication) {
+        centroPrivadoUsuarioService.borrarDeMisCentrosGuardados(id, authentication.getName());
         return ResponseEntity.noContent().build();
     }
-
 
 }

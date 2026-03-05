@@ -5,14 +5,21 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class crearCentroPrivado {
+public class CrearCentroPrivadoDTO {
 
     private String nombre;
+
     private String direccion;
+
     private String telefono;
+
     private String horario;
+
     private double precioMensual;
+
     private String descripcion;
+    
     private double latitud;
+
     private double longitud;
 }
