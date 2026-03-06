@@ -1,5 +1,7 @@
 package com.example.digital_fit.model.Entrenamientos;
 
+import java.time.LocalDateTime;
+
 import com.example.digital_fit.model.Auth.Usuario;
 import com.example.digital_fit.model.Enums.CategoriaEntrenamientoComunidad;
 import com.example.digital_fit.model.Enums.NivelEntrenamiento;
@@ -19,32 +21,34 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Builder
-@Table(name = "entrenamientos_usuario")
-public class EntrenamientoUsuario {
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+@Table(name = "entrenamientos_comunidad")
+public class EntrenamientoComunidad {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
     private String nombre;
 
-    @Column(nullable = false, length = 1000)
+    @Column(length = 2000)
     private String descripcion;
 
     @Enumerated(EnumType.STRING)
     private CategoriaEntrenamientoComunidad categoria;
 
+    private Integer duracionEnMinutos;
+
     @Enumerated(EnumType.STRING)
     private NivelEntrenamiento nivel;
 
-    private Integer duracionEnMinutos;
+    private LocalDateTime fechaCreacion;
 
+    // Relaciones con Usuario (El que subió el entrenamiento)
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
