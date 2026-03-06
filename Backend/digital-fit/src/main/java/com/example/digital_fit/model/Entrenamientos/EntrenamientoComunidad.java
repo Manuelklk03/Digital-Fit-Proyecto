@@ -41,12 +41,12 @@ public class EntrenamientoComunidad {
     @Enumerated(EnumType.STRING)
     private CategoriaEntrenamientoComunidad categoria;
 
-    private Integer duracionEnMinutos;
-
     @Enumerated(EnumType.STRING)
     private NivelEntrenamiento nivel;
 
-    private LocalDateTime fechaCreacion;
+    private Integer duracionEnMinutos;
+
+    private LocalDateTime fechaPublicacion;
 
     // Relaciones con Usuario (El que subió el entrenamiento)
     @ManyToOne
