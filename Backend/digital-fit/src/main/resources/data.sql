@@ -1,29 +1,81 @@
 -- Insertar datos de entrenamientos base
 INSERT IGNORE INTO
-    entrenamientos_base (nombre, descripcion)
+    entrenamientos_base (
+        nombre,
+        descripcion,
+        categoria,
+        nivel,
+        duracion_en_minutos
+    )
 VALUES (
         'Full Body Principiante',
-        'Rutina completa para principiantes: 3 series de 12 repeticiones de sentadillas, flexiones y abdominales.'
+        'Rutina completa para principiantes: sentadillas, flexiones y abdominales para trabajar todo el cuerpo.',
+        'FUERZA_TOTAL',
+        'PRINCIPIANTE',
+        30
     ),
     (
-        'Cardio Intensivo',
-        'Entrenamiento de resistencia: 20 minutos de cinta o correr en el rio Turia + 10 minutos de salto de cuerda.'
-    ),
-    (
-        'Pierna y Glúteos',
-        'Rutina enfocada en tren inferior: sentadillas, zancadas, peso muerto y elevaciones de cadera.'
-    ),
-    (
-        'Espalda y Bíceps',
-        'Dominadas, remo con barra, curl de bíceps y ejercicios de fuerza para parte superior.'
-    ),
-    (
-        'Entrenamiento en Parque',
-        'Rutina para hacer en zonas públicas: dominadas en barra, fondos, sprint y abdominales en banco.'
+        'Cardio Running Río Turia',
+        'Entrenamiento de running continuo por el río Turia para mejorar la resistencia cardiovascular.',
+        'RUNNING',
+        'INTERMEDIO',
+        40
     ),
     (
         'HIIT 20 minutos',
-        'Entrenamiento de alta intensidad: 30 segundos de ejercicio + 30 segundos descanso (burpees, jumping jacks, mountain climbers).'
+        'Entrenamiento HIIT con intervalos de alta intensidad: burpees, jumping jacks y mountain climbers.',
+        'HIIT',
+        'AVANZADO',
+        20
+    ),
+    (
+        'Piernas y Glúteos',
+        'Rutina centrada en tren inferior con sentadillas, zancadas y peso muerto.',
+        'FUERZA_TREN_INFERIOR',
+        'INTERMEDIO',
+        35
+    ),
+    (
+        'Espalda y Bíceps',
+        'Entrenamiento de fuerza para tren superior: dominadas, remo y curl de bíceps.',
+        'FUERZA_TREN_SUPERIOR',
+        'INTERMEDIO',
+        35
+    ),
+    (
+        'Calistenia en Parque',
+        'Rutina de calistenia usando barras de parque: dominadas, fondos y abdominales.',
+        'CALISTENIA_BASICA',
+        'INTERMEDIO',
+        30
+    ),
+    (
+        'Movilidad y Estiramientos',
+        'Rutina ligera para mejorar movilidad articular y flexibilidad después del entrenamiento.',
+        'MOVILIDAD',
+        'PRINCIPIANTE',
+        15
+    ),
+    (
+        'Ciclismo Resistencia',
+        'Entrenamiento largo de ciclismo para mejorar resistencia cardiovascular.',
+        'CICLISMO',
+        'INTERMEDIO',
+        60
+    ),
+    (
+        'Crossfit Circuito',
+        'Circuito funcional de alta intensidad combinando fuerza y cardio.',
+        'CROSSFIT',
+        'AVANZADO',
+        30
+    ),
+    (
+        'Recuperación Activa',
+        'Ejercicios suaves de recuperación y estiramientos para después de entrenamientos intensos.',
+        'RECUPERACION',
+        'PRINCIPIANTE',
+        20
     );
 
 --Centros privados
