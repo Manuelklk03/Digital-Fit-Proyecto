@@ -52,6 +52,9 @@ public class EntrenamientoUsuarioService {
         EntrenamientoUsuario entrenamientoUsuario = new EntrenamientoUsuario();
         entrenamientoUsuario.setNombre(dto.getNombre());
         entrenamientoUsuario.setDescripcion(dto.getDescripcion());
+        entrenamientoUsuario.setCategoria(dto.getCategoria());
+        entrenamientoUsuario.setNivel(dto.getNivel());
+        entrenamientoUsuario.setDuracionEnMinutos(dto.getDuracionEnMinutos());
         entrenamientoUsuario.setUsuario(usuario);
 
         EntrenamientoUsuario entrenamientoUsuarioGuardado = entrenamientoUsuarioRepository.save(entrenamientoUsuario);
@@ -70,6 +73,9 @@ public class EntrenamientoUsuarioService {
         EntrenamientoUsuario entrenamientoUsuario = new EntrenamientoUsuario();
         entrenamientoUsuario.setNombre(entrenamientoBase.getNombre());
         entrenamientoUsuario.setDescripcion(entrenamientoBase.getDescripcion());
+        entrenamientoUsuario.setCategoria(entrenamientoBase.getCategoria());
+        entrenamientoUsuario.setNivel(entrenamientoBase.getNivel());
+        entrenamientoUsuario.setDuracionEnMinutos(entrenamientoBase.getDuracionEnMinutos());
         entrenamientoUsuario.setUsuario(usuario);
 
         EntrenamientoUsuario entrenamientoUsuarioGuardado = entrenamientoUsuarioRepository.save(entrenamientoUsuario);
@@ -96,6 +102,9 @@ public class EntrenamientoUsuarioService {
         entrenamientoUsuarioDTO.setId(entrenamientoUsuario.getId());
         entrenamientoUsuarioDTO.setNombre(entrenamientoUsuario.getNombre());
         entrenamientoUsuarioDTO.setDescripcion(entrenamientoUsuario.getDescripcion());
+        entrenamientoUsuarioDTO.setCategoria(entrenamientoUsuario.getCategoria());
+        entrenamientoUsuarioDTO.setNivel(entrenamientoUsuario.getNivel());
+        entrenamientoUsuarioDTO.setDuracionEnMinutos(entrenamientoUsuario.getDuracionEnMinutos());
 
         return entrenamientoUsuarioDTO;
     }
@@ -105,6 +114,9 @@ public class EntrenamientoUsuarioService {
         entrenamientoUsuario.setId(dto.getId());
         entrenamientoUsuario.setNombre(dto.getNombre());
         entrenamientoUsuario.setDescripcion(dto.getDescripcion());
+        entrenamientoUsuario.setCategoria(dto.getCategoria());
+        entrenamientoUsuario.setNivel(dto.getNivel());
+        entrenamientoUsuario.setDuracionEnMinutos(dto.getDuracionEnMinutos());
 
         return entrenamientoUsuario;
     }

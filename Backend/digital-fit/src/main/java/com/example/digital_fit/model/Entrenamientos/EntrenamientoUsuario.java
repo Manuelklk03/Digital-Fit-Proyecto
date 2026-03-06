@@ -1,9 +1,13 @@
 package com.example.digital_fit.model.Entrenamientos;
 
 import com.example.digital_fit.model.Auth.Usuario;
+import com.example.digital_fit.model.Enums.CategoriaEntrenamientoComunidad;
+import com.example.digital_fit.model.Enums.NivelEntrenamiento;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -32,6 +36,14 @@ public class EntrenamientoUsuario {
 
     @Column(nullable = false, length = 1000)
     private String descripcion;
+
+    @Enumerated(EnumType.STRING)
+    private CategoriaEntrenamientoComunidad categoria;
+
+    @Enumerated(EnumType.STRING)
+    private NivelEntrenamiento nivel;
+
+    private Integer duracionEnMinutos;
 
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
