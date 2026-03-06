@@ -8,6 +8,7 @@ import com.example.digital_fit.exception.UsernameYaExiste;
 import com.example.digital_fit.exception.EmailYaExisteException;
 import com.example.digital_fit.exception.RecursoNoEncontradoException;
 import com.example.digital_fit.exception.OperacionNoPermitida;
+import com.example.digital_fit.exception.ErrorArgumentoException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -30,6 +31,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(OperacionNoPermitida.class)
     public ResponseEntity<String> handleOperacionNoPermitida(OperacionNoPermitida ex) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(ErrorArgumentoException.class)
+    public ResponseEntity<String> handleErrorArgumentoException(ErrorArgumentoException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
 }
