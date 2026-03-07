@@ -12,9 +12,11 @@ import com.example.digital_fit.exception.OperacionNoPermitida;
 import com.example.digital_fit.exception.RecursoNoEncontradoException;
 import com.example.digital_fit.model.Auth.Usuario;
 import com.example.digital_fit.model.Entrenamientos.EntrenamientoBase;
+import com.example.digital_fit.model.Entrenamientos.EntrenamientoComunidad;
 import com.example.digital_fit.model.Entrenamientos.EntrenamientoUsuario;
 import com.example.digital_fit.repository.Auth.UsuarioRepository;
 import com.example.digital_fit.repository.Entrenamientos.EntrenamientoBaseRepository;
+import com.example.digital_fit.repository.Entrenamientos.EntrenamientoComunidadRepository;
 import com.example.digital_fit.repository.Entrenamientos.EntrenamientoUsuarioRepository;
 
 import jakarta.transaction.Transactional;
@@ -27,6 +29,9 @@ public class EntrenamientoUsuarioService {
 
     @Autowired
     private EntrenamientoBaseRepository entrenamientoBaseRepository;
+
+    @Autowired
+    private EntrenamientoComunidadRepository entrenamientoComunidadRepository;
 
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -82,6 +87,35 @@ public class EntrenamientoUsuarioService {
         return entityToDto(entrenamientoUsuarioGuardado);
     }
 
+    // Para añadir entrenamientos de la comunidad a el apartado mis entrenamientos:
+    @Transactional
+    public EntrenamientoUsuarioDTO añadirDesdeComunidad(Long idComunidad, String username) {
+        Usuario usuario = usuarioRepository.findByUsername(username)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
+
+        EntrenamientoComunidad entrenamientoComunidad = entrenamientoComunidadRepository.findById(idComunidad)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Entrenamiento comunidad no encontrado"));
+
+        EntrenamientoUsuario entrenamientoUsuario = new EntrenamientoUsuario();
+
+        entrenamientoUsuario.setNombre(entrenamientoComunidad.getNombre());
+
+        entrenamientoUsuario.setDescripcion(entrenamientoComunidad.getDescripcion());
+
+        entrenamientoUsuario.setCategoria(entrenamientoComunidad.getCategoria());
+
+        entrenamientoUsuario.setNivel(entrenamientoComunidad.getNivel());
+
+        entrenamientoUsuario.setDuracionEnMinutos(entrenamientoComunidad.getDuracionEnMinutos());
+
+        entrenamientoUsuario.setUsuario(usuario);
+
+        EntrenamientoUsuario entrenamientoUsuarioGuardado = entrenamientoUsuarioRepository.save(entrenamientoUsuario);
+
+        return entityToDto(entrenamientoUsuarioGuardado);
+    }
+
+    // Para borrar entrenamientos de mis entrenamientos:
     @Transactional
     public void borrarDeMisEntrenamientos(Long id, String username) {
         Usuario usuario = usuarioRepository.findByUsername(username)
