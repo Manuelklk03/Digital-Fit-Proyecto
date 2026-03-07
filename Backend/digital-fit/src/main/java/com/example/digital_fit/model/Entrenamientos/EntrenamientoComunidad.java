@@ -33,9 +33,10 @@ public class EntrenamientoComunidad {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, name = "nombre")
     private String nombre;
 
-    @Column(length = 2000)
+    @Column(nullable = false, length = 2000)
     private String descripcion;
 
     @Enumerated(EnumType.STRING)

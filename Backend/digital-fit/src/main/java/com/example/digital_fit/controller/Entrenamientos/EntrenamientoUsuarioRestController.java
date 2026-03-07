@@ -46,6 +46,14 @@ public class EntrenamientoUsuarioRestController {
                 .body(entrenamientoUsuarioService.añadirDesdeBase(idBase, authentication.getName()));
     }
 
+    @PostMapping("desde-comunidad/{idComunidad}")
+    public ResponseEntity<EntrenamientoUsuarioDTO> AñadirEntrenamientoDesdeComunidad(@PathVariable Long idComunidad,
+            Authentication authentication) {
+                
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(entrenamientoUsuarioService.añadirDesdeComunidad(idComunidad, authentication.getName()));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<EntrenamientoUsuarioDTO> borrarEntrenamientoUsuario(@PathVariable Long id,
             Authentication authentication) {
