@@ -3,6 +3,7 @@ package com.example.digital_fit.controller.CentroPrivado;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,11 +22,11 @@ public class CentroPrivadoBaseRestController {
 
     @GetMapping
     public ResponseEntity<List<CentroPrivadoBaseDTO>> listar() {
-        return ResponseEntity.ok(centroPrivadoBaseService.listarTodos());
+        return ResponseEntity.status(HttpStatus.OK).body(centroPrivadoBaseService.listarTodos());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<CentroPrivadoBaseDTO> obtenerPorId(@PathVariable Long id) {
-        return ResponseEntity.ok(centroPrivadoBaseService.obtenerPorId(id));
+        return ResponseEntity.status(HttpStatus.OK).body(centroPrivadoBaseService.obtenerPorId(id));
     }
 }

@@ -1,5 +1,6 @@
 package com.example.digital_fit.service.Entrenamientos;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +40,14 @@ public class EntrenamientoComunidadService {
         return dtos;
     }
 
+    // VER DETALLES:
+    public EntrenamientoComunidadDTO verDetalles(Long id) {
+        EntrenamientoComunidad entrenamiento = entrenamientoComunidadRepository.findById(id)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Entrenamiento no encontrado"));
+
+        return entityToDto(entrenamiento);
+    }
+
     // Crear entrenamiento de la comunidad
     @Transactional
     public EntrenamientoComunidadDTO crearEntrenamiento(EntrenamientoComunidadDTO dto, String username) {
@@ -47,13 +56,14 @@ public class EntrenamientoComunidadService {
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
 
         EntrenamientoComunidad entrenamiento = new EntrenamientoComunidad();
+
         entrenamiento.setNombre(dto.getNombre());
         entrenamiento.setDescripcion(dto.getDescripcion());
         entrenamiento.setCategoria(dto.getCategoria());
         entrenamiento.setNivel(dto.getNivel());
         entrenamiento.setDuracionEnMinutos(dto.getDuracionEnMinutos());
         entrenamiento.setUsuario(usuario);
-        entrenamiento.setFechaPublicacion(dto.getFechaPublicacion());
+        entrenamiento.setFechaPublicacion(LocalDateTime.now());
 
         EntrenamientoComunidad entrenamientoGuardado = entrenamientoComunidadRepository.save(entrenamiento);
 

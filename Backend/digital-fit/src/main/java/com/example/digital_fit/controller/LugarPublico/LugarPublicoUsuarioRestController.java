@@ -29,14 +29,16 @@ public class LugarPublicoUsuarioRestController {
     @GetMapping
     public ResponseEntity<List<LugarPublicoUsuarioDTO>> listar(Authentication authentication) {
 
-        return ResponseEntity.ok(lugarPublicoUsuarioService.listarLugares(authentication.getName()));
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(lugarPublicoUsuarioService.listarLugares(authentication.getName()));
     }
 
     // Ver detalles:
     @GetMapping("/{id}")
     public ResponseEntity<LugarPublicoUsuarioDTO> obtenerPorId(@PathVariable Long id, Authentication authentication) {
 
-        return ResponseEntity.ok(lugarPublicoUsuarioService.verDetalle(id, authentication.getName()));
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(lugarPublicoUsuarioService.verDetalle(id, authentication.getName()));
     }
 
     @DeleteMapping("/{id}")
@@ -44,7 +46,7 @@ public class LugarPublicoUsuarioRestController {
 
         lugarPublicoUsuarioService.borrarLugar(id);
 
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     // Guardar desde G-MAPS:

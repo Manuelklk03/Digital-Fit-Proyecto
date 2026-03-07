@@ -29,6 +29,6 @@ public class AuthController {
 
     @GetMapping("/yo")
     public ResponseEntity<String> yo(Authentication authentication) {
-        return ResponseEntity.ok(authentication.getName());
+        return ResponseEntity.status(HttpStatus.OK).body(authentication.getName());
     }
 }
