@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.digital_fit.dto.Entrenamientos.HistorialEntrenamientoDTO;
+import com.example.digital_fit.dto.Entrenamientos.HistorialEntrenamientosDTO;
 import com.example.digital_fit.exception.OperacionNoPermitida;
 import com.example.digital_fit.exception.RecursoNoEncontradoException;
 import com.example.digital_fit.model.Auth.Usuario;
@@ -40,14 +40,14 @@ public class HistorialEntrenamientosService {
     private CentroPrivadoUsuarioRepository centroPrivadoUsuarioRepository;
 
     // Listar historial del usuario;
-    public List<HistorialEntrenamientoDTO> listarHistorialEntrenamientos(String username) {
+    public List<HistorialEntrenamientosDTO> listarHistorialEntrenamientos(String username) {
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
 
         List<HistorialEntrenamientos> historial = historialEntrenamientosRepository
                 .findByUsuarioOrderByFechaHoraDesc(usuario);
 
-        List<HistorialEntrenamientoDTO> dtos = new ArrayList<>();
+        List<HistorialEntrenamientosDTO> dtos = new ArrayList<>();
 
         for (HistorialEntrenamientos h : historial) {
             dtos.add(entityToDto(h));
@@ -56,7 +56,7 @@ public class HistorialEntrenamientosService {
     }
 
     // Ver detalles de un registro
-    public HistorialEntrenamientoDTO verDetalles(Long id, String username) {
+    public HistorialEntrenamientosDTO verDetalles(Long id, String username) {
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
 
@@ -75,8 +75,8 @@ public class HistorialEntrenamientosService {
 
     // Mappers
 
-    public HistorialEntrenamientoDTO entityToDto(HistorialEntrenamientos historial) {
-        HistorialEntrenamientoDTO dto = new HistorialEntrenamientoDTO();
+    public HistorialEntrenamientosDTO entityToDto(HistorialEntrenamientos historial) {
+        HistorialEntrenamientosDTO dto = new HistorialEntrenamientosDTO();
 
         dto.setId(historial.getId());
 
@@ -99,7 +99,7 @@ public class HistorialEntrenamientosService {
         return dto;
     }
 
-    public HistorialEntrenamientos dtoToEntity(HistorialEntrenamientoDTO dto) {
+    public HistorialEntrenamientos dtoToEntity(HistorialEntrenamientosDTO dto) {
 
         HistorialEntrenamientos historial = new HistorialEntrenamientos();
 

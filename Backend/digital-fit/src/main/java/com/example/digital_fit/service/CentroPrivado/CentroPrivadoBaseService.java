@@ -33,6 +33,7 @@ public class CentroPrivadoBaseService {
         return entityToDto(entidad);
     }
 
+    // Mappers
     public CentroPrivadoBaseDTO entityToDto(CentroPrivadoBase entity) {
         CentroPrivadoBaseDTO dto = new CentroPrivadoBaseDTO();
         dto.setId(entity.getId());

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @JsonPropertyOrder({ "id", "entrenamiento", "lugar", "fecha", "duracionEnMinutos", "notas" })
-public class HistorialEntrenamientoDTO {
+public class HistorialEntrenamientosDTO {
 
     private Long id;
 
