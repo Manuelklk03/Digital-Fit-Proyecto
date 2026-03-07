@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.digital_fit.dto.Entrenamientos.CrearEntrenamientoComunidadDTO;
 import com.example.digital_fit.dto.Entrenamientos.EntrenamientoComunidadDTO;
 import com.example.digital_fit.exception.RecursoNoEncontradoException;
 import com.example.digital_fit.model.Auth.Usuario;
@@ -50,7 +51,7 @@ public class EntrenamientoComunidadService {
 
     // Crear entrenamiento de la comunidad
     @Transactional
-    public EntrenamientoComunidadDTO crearEntrenamiento(EntrenamientoComunidadDTO dto, String username) {
+    public EntrenamientoComunidadDTO crearEntrenamiento(CrearEntrenamientoComunidadDTO dto, String username) {
 
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));

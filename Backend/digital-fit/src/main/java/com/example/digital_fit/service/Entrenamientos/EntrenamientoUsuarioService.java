@@ -99,15 +99,10 @@ public class EntrenamientoUsuarioService {
         EntrenamientoUsuario entrenamientoUsuario = new EntrenamientoUsuario();
 
         entrenamientoUsuario.setNombre(entrenamientoComunidad.getNombre());
-
         entrenamientoUsuario.setDescripcion(entrenamientoComunidad.getDescripcion());
-
         entrenamientoUsuario.setCategoria(entrenamientoComunidad.getCategoria());
-
         entrenamientoUsuario.setNivel(entrenamientoComunidad.getNivel());
-
         entrenamientoUsuario.setDuracionEnMinutos(entrenamientoComunidad.getDuracionEnMinutos());
-
         entrenamientoUsuario.setUsuario(usuario);
 
         EntrenamientoUsuario entrenamientoUsuarioGuardado = entrenamientoUsuarioRepository.save(entrenamientoUsuario);
