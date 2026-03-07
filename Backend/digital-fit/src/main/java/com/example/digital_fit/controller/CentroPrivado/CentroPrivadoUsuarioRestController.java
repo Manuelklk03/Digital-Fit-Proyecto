@@ -28,19 +28,24 @@ public class CentroPrivadoUsuarioRestController {
     // Listar:
     @GetMapping
     public ResponseEntity<List<CentroPrivadoUsuarioDTO>> listar(Authentication authentication) {
-        return ResponseEntity.ok(centroPrivadoUsuarioService.listarMisCentros(authentication.getName()));
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(centroPrivadoUsuarioService.listarMisCentros(authentication.getName()));
     }
 
     // Detalle:
     @GetMapping("/{id}")
     public ResponseEntity<CentroPrivadoUsuarioDTO> obtenerPorId(@PathVariable Long id, Authentication authentication) {
-        return ResponseEntity.ok(centroPrivadoUsuarioService.verDetalle(id, authentication.getName()));
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(centroPrivadoUsuarioService.verDetalle(id, authentication.getName()));
     }
 
     // Añadir desde app:
     @PostMapping("/centros-app/{id}")
     public ResponseEntity<CentroPrivadoUsuarioDTO> AñadirPrivadoAMisCentros(@PathVariable Long id,
             Authentication authentication) {
+
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(centroPrivadoUsuarioService.AñadirPrivadoAMisCentros(id, authentication.getName()));
     }
@@ -49,6 +54,7 @@ public class CentroPrivadoUsuarioRestController {
     @PostMapping("/centros-maps")
     public ResponseEntity<CentroPrivadoUsuarioDTO> AñadirCentroPrivadoMaps(@RequestBody CrearCentroPrivadoDTO dto,
             Authentication authentication) {
+
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(centroPrivadoUsuarioService.AñdirCentroPrivadoMaps(dto, authentication.getName()));
     }
@@ -56,8 +62,10 @@ public class CentroPrivadoUsuarioRestController {
     // Borrar:
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> borrarDeMisCentrosGuardados(@PathVariable Long id, Authentication authentication) {
+
         centroPrivadoUsuarioService.borrarDeMisCentrosGuardados(id, authentication.getName());
-        return ResponseEntity.noContent().build();
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }

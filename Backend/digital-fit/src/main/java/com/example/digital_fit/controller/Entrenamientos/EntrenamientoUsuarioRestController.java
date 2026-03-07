@@ -27,7 +27,8 @@ public class EntrenamientoUsuarioRestController {
 
     @GetMapping
     public ResponseEntity<List<EntrenamientoUsuarioDTO>> listarMisEntrenamientos(Authentication authentication) {
-        return ResponseEntity.ok(entrenamientoUsuarioService.listarMisEntrenamientos(authentication.getName()));
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(entrenamientoUsuarioService.listarMisEntrenamientos(authentication.getName()));
     }
 
     @PostMapping
@@ -41,7 +42,7 @@ public class EntrenamientoUsuarioRestController {
     @PostMapping("desde-base/{idBase}")
     public ResponseEntity<EntrenamientoUsuarioDTO> AñadirEntrenamientoDesdeBase(@PathVariable Long idBase,
             Authentication authentication) {
-                
+
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(entrenamientoUsuarioService.añadirDesdeBase(idBase, authentication.getName()));
     }
@@ -49,7 +50,7 @@ public class EntrenamientoUsuarioRestController {
     @PostMapping("desde-comunidad/{idComunidad}")
     public ResponseEntity<EntrenamientoUsuarioDTO> AñadirEntrenamientoDesdeComunidad(@PathVariable Long idComunidad,
             Authentication authentication) {
-                
+
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(entrenamientoUsuarioService.añadirDesdeComunidad(idComunidad, authentication.getName()));
     }
@@ -60,6 +61,6 @@ public class EntrenamientoUsuarioRestController {
 
         entrenamientoUsuarioService.borrarDeMisEntrenamientos(id, authentication.getName());
 
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

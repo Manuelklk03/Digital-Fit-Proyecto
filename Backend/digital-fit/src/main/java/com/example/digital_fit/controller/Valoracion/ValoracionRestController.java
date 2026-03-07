@@ -3,6 +3,7 @@ package com.example.digital_fit.controller.Valoracion;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,14 +29,16 @@ public class ValoracionRestController {
     // Ver mis valoraciones
     @GetMapping("/mis-valoraciones")
     public ResponseEntity<List<ValoracionDTO>> verMisValoraciones(Authentication authentication) {
-        return ResponseEntity.ok(valoracionService.listarMisValoraciones(authentication.getName()));
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(valoracionService.listarMisValoraciones(authentication.getName()));
     }
 
     // Ver valoraciones de un contenido específico
     @GetMapping("/{tipoContenido}/{idContenido}")
     public ResponseEntity<List<ValoracionDTO>> verValoracionesPorContenido(
             @PathVariable TipoDeValoracion tipoContenido, @PathVariable Long idContenido) {
-        return ResponseEntity.ok(valoracionService.listarPorContenido(tipoContenido, idContenido));
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(valoracionService.listarPorContenido(tipoContenido, idContenido));
     }
 
     // Crear o actualizar una valoración
@@ -44,8 +47,9 @@ public class ValoracionRestController {
             @PathVariable Long idContenido, @RequestBody CrearValoracionDTO crearValoracionDTO,
             Authentication authentication) {
 
-        return ResponseEntity.ok(valoracionService.crearOActualizar(tipoContenido, idContenido,
-                crearValoracionDTO, authentication.getName()));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(valoracionService.crearOActualizar(tipoContenido, idContenido,
+                        crearValoracionDTO, authentication.getName()));
     }
 
     // Eliminar una valoración
@@ -55,7 +59,7 @@ public class ValoracionRestController {
 
         valoracionService.borrarMiValoracion(tipoContenido, idContenido, authentication.getName());
 
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }
