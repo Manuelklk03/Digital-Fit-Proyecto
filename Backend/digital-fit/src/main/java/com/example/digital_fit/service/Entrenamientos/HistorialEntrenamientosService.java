@@ -6,17 +6,24 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.digital_fit.dto.Entrenamientos.CrearEntrenamientoHistorialDTO;
 import com.example.digital_fit.dto.Entrenamientos.HistorialEntrenamientosDTO;
 import com.example.digital_fit.exception.OperacionNoPermitida;
 import com.example.digital_fit.exception.RecursoNoEncontradoException;
 import com.example.digital_fit.model.Auth.Usuario;
+import com.example.digital_fit.model.CentroPrivado.CentroPrivadoUsuario;
+import com.example.digital_fit.model.Entrenamientos.EntrenamientoBase;
+import com.example.digital_fit.model.Entrenamientos.EntrenamientoUsuario;
 import com.example.digital_fit.model.Entrenamientos.HistorialEntrenamientos;
+import com.example.digital_fit.model.LugarPublico.LugarPublicoUsuario;
 import com.example.digital_fit.repository.Auth.UsuarioRepository;
 import com.example.digital_fit.repository.CentroPrivado.CentroPrivadoUsuarioRepository;
 import com.example.digital_fit.repository.Entrenamientos.EntrenamientoBaseRepository;
 import com.example.digital_fit.repository.Entrenamientos.EntrenamientoUsuarioRepository;
 import com.example.digital_fit.repository.Entrenamientos.HistorialEntrenamientosRepository;
 import com.example.digital_fit.repository.LugarPublico.LugarPublicoUsuarioRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class HistorialEntrenamientosService {
@@ -70,8 +77,78 @@ public class HistorialEntrenamientosService {
     }
 
     // Crear registro de entrenamiento realizado
+    @Transactional
+    public HistorialEntrenamientosDTO crearHistorialEntrenamiento(CrearEntrenamientoHistorialDTO dto, String username) {
+
+        Usuario usuario = usuarioRepository.findByUsername(username)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
+
+        HistorialEntrenamientos historial = new HistorialEntrenamientos();
+
+        historial.setUsuario(usuario);
+        historial.setFechaHora(dto.getFecha());
+        historial.setDuracionMinutos(dto.getDuracionEnMinutos());
+        historial.setNotas(dto.getNotas());
+
+        // Entrenamiento base
+        if (dto.getEntrenamientoBaseId() != null) {
+            EntrenamientoBase entrenamientoBase = entrenamientoBaseRepository.findById(dto.getEntrenamientoBaseId())
+                    .orElseThrow(() -> new RecursoNoEncontradoException("Entrenamiento base con id: "
+                            + dto.getEntrenamientoBaseId() + " No encontrado."));
+
+            historial.setEntrenamientoBase(entrenamientoBase);
+        }
+
+        // Entrenamiento Usuario:
+        if (dto.getEntrenamientoUsuarioId() != null) {
+            EntrenamientoUsuario entrenamientoUsuario = entrenamientoUsuarioRepository
+                    .findById(dto.getEntrenamientoUsuarioId())
+                    .orElseThrow(() -> new RecursoNoEncontradoException("Entrenamiento usuario con id: "
+                            + dto.getEntrenamientoUsuarioId() + " No encontrado."));
+
+            historial.setEntrenamientoUsuario(entrenamientoUsuario);
+        }
+
+        // Lugar publico
+        if (dto.getLugarPublicoId() != null) {
+            LugarPublicoUsuario lugarPublico = lugarPublicoUsuarioRepository.findById(dto.getLugarPublicoId())
+                    .orElseThrow(() -> new RecursoNoEncontradoException("Lugar publico con id: "
+                            + dto.getLugarPublicoId() + " No encontrado."));
+
+            historial.setLugarPublico(lugarPublico);
+        }
+
+        // Centro privado
+        if (dto.getCentroPrivadoId() != null) {
+            CentroPrivadoUsuario centroPrivado = centroPrivadoUsuarioRepository.findById(dto.getCentroPrivadoId())
+                    .orElseThrow(() -> new RecursoNoEncontradoException("Centro privado con id: "
+                            + dto.getCentroPrivadoId() + " No encontrado."));
+
+            historial.setCentroPrivado(centroPrivado);
+        }
+
+        HistorialEntrenamientos historialGuardado = historialEntrenamientosRepository.save(historial);
+
+        return entityToDto(historialGuardado);
+
+    }
 
     // Borrar registro
+    @Transactional
+    public void borrarHistorialEntrenamiento(Long id, String username) {
+
+        Usuario usuario = usuarioRepository.findByUsername(username)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
+
+        HistorialEntrenamientos historial = historialEntrenamientosRepository.findById(id)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Registro con id: " + id + " No encontrado."));
+
+        if (!historial.getUsuario().getId().equals(usuario.getId())) {
+            throw new OperacionNoPermitida("No tienes permiso para borrar este registro.");
+        }
+
+        historialEntrenamientosRepository.delete(historial);
+    }
 
     // Mappers
 
