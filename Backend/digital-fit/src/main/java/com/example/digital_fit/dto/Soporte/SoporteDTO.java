@@ -4,12 +4,14 @@ import java.time.LocalDateTime;
 
 import com.example.digital_fit.model.Enums.EstadoSoporte;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
+@JsonPropertyOrder({ "id", "asunto", "mensaje", "fecha", "estado" })
 public class SoporteDTO {
 
     private Long id;

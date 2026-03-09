@@ -243,3 +243,17 @@ VALUES (
         -0.3872,
         'CIRCUITO_CICLISMO'
     );
+
+INSERT IGNORE INTO
+    usuarios (
+        username,
+        email,
+        password,
+        rol
+    )
+VALUES (
+        'admin',
+        'admin@digitalfit.com',
+        '$2a$10$Dow1p6QH8qU2uJdJ0C0bIuV7uW7Lkqk1g0Qz9H0k5sF7tQk8qG7Oe',
+        'ADMIN'
+    );
