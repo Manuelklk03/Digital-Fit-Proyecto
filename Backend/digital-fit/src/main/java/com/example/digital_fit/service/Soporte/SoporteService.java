@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.digital_fit.dto.Soporte.CrearSoporteDTO;
 import com.example.digital_fit.dto.Soporte.SoporteDTO;
+import com.example.digital_fit.dto.Soporte.Admin.CambiarEstadoSoporte;
 import com.example.digital_fit.exception.OperacionNoPermitida;
 import com.example.digital_fit.exception.RecursoNoEncontradoException;
 import com.example.digital_fit.model.Auth.Usuario;
@@ -98,6 +99,31 @@ public class SoporteService {
 
         return entityToDto(nuevoTicket);
 
+    }
+
+    // Metodo para panel de admin:
+    // Listar todos los tickets:
+    public List<SoporteDTO> listarTicketsAdmin() {
+        List<Soporte> tickets = soporteRepository.findAllByOrderByFechaDesc();
+        List<SoporteDTO> dtos = new ArrayList<>();
+        for (Soporte t : tickets) {
+            dtos.add(entityToDto(t));
+        }
+        return dtos;
+    }
+
+    // Cambiar estado de un ticket:
+    @Transactional
+    public SoporteDTO cambiarEstado(Long id, CambiarEstadoSoporte dto) {
+
+        Soporte ticket = soporteRepository.findById(id)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Ticket con id: " + id + " No encontrado."));
+
+        ticket.setEstado(dto.getEstado());
+
+        Soporte nuevoTicket = soporteRepository.save(ticket);
+
+        return entityToDto(nuevoTicket);
     }
 
     // Mappers:
