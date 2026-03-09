@@ -43,7 +43,7 @@ public class SoporteRestController {
     }
 
     // Ver detalles de ticket:
-    @GetMapping("/{id}")
+    @GetMapping("/mis-tickets/{id}")
     public ResponseEntity<SoporteDTO> verDetalles(@PathVariable Long id, Authentication authentication) {
 
         return ResponseEntity.status(HttpStatus.OK)
