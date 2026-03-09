@@ -11,4 +11,7 @@ import com.example.digital_fit.model.Soporte.Soporte;
 @Repository
 public interface SoporteRepository extends JpaRepository<Soporte, Long> {
     List<Soporte> findByUsuarioOrderByFechaDesc(Usuario usuario);
+
+    // Para panel de admin:
+    List<Soporte> findAllByOrderByFechaDesc();
 }
