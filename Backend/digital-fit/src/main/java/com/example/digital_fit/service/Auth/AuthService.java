@@ -57,10 +57,10 @@ public class AuthService {
 
         admin.setUsername(crearAdmin.getUsername());
         admin.setPassword(passwordEncoder.encode(crearAdmin.getPassword()));
+        admin.setEmail(crearAdmin.getUsername());
         admin.setRol(Rol.ADMIN);
 
         usuarioRepository.save(admin);
     }
 
-    
 }

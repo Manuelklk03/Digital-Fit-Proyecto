@@ -102,6 +102,7 @@ public class SoporteService {
     }
 
     // Metodo para panel de admin:
+
     // Listar todos los tickets:
     public List<SoporteDTO> listarTicketsAdmin() {
         List<Soporte> tickets = soporteRepository.findAllByOrderByFechaDesc();
@@ -124,6 +125,19 @@ public class SoporteService {
         Soporte nuevoTicket = soporteRepository.save(ticket);
 
         return entityToDto(nuevoTicket);
+    }
+
+    // Eliminar un ticket en estado cerrado:
+    @Transactional
+    public void borrarTicketCerrado(Long id) {
+        Soporte ticket = soporteRepository.findById(id)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Ticket con id: " + id + " No encontrado."));
+
+        if (!ticket.getEstado().equals(EstadoSoporte.CERRADO)) {
+            throw new OperacionNoPermitida("No se puede borrar un ticket que no este cerrado.");
+        }
+
+        soporteRepository.delete(ticket);
     }
 
     // Mappers:
