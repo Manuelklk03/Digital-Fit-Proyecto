@@ -61,4 +61,6 @@ public class AuthService {
 
         usuarioRepository.save(admin);
     }
+
+    
 }
