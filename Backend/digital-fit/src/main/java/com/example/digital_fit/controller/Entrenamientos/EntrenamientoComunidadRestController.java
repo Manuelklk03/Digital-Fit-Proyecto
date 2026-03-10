@@ -11,10 +11,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.digital_fit.dto.Entrenamientos.CrearEntrenamientoComunidadDTO;
 import com.example.digital_fit.dto.Entrenamientos.EntrenamientoComunidadDTO;
+import com.example.digital_fit.model.Enums.CategoriaEntrenamientoComunidad;
+import com.example.digital_fit.model.Enums.NivelEntrenamiento;
 import com.example.digital_fit.service.Entrenamientos.EntrenamientoComunidadService;
 
 @RestController
@@ -25,8 +28,12 @@ public class EntrenamientoComunidadRestController {
     private EntrenamientoComunidadService entrenamientoComunidadService;
 
     @GetMapping
-    public ResponseEntity<List<EntrenamientoComunidadDTO>> listarTodos() {
-        return ResponseEntity.status(HttpStatus.OK).body(entrenamientoComunidadService.listarTodos());
+    public ResponseEntity<List<EntrenamientoComunidadDTO>> listarOFiltrar(
+            @RequestParam(required = false) CategoriaEntrenamientoComunidad categoria,
+            @RequestParam(required = false) NivelEntrenamiento nivel,
+            @RequestParam(required = false) Integer duracionEnMinutos, @RequestParam(required = false) String nombre) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(entrenamientoComunidadService.listarOFiltrar(categoria, nivel, duracionEnMinutos, nombre));
     }
 
     @GetMapping("/{id}")
