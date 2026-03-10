@@ -15,6 +15,6 @@ public interface LugarPublicoBaseRepository extends JpaRepository<LugarPublicoBa
 
     List<LugarPublicoBase> findByDireccionContainingIgnoreCase(String direccion);
 
-    List<LugarPublicoBase> findByTipoLugar(TipoLugarPublico tipoLugarPublico);
+    List<LugarPublicoBase> findByTipo(TipoLugarPublico tipoLugarPublico);
 
 }
