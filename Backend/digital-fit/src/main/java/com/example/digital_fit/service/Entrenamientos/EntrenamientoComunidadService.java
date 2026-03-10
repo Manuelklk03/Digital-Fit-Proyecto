@@ -12,6 +12,8 @@ import com.example.digital_fit.dto.Entrenamientos.EntrenamientoComunidadDTO;
 import com.example.digital_fit.exception.RecursoNoEncontradoException;
 import com.example.digital_fit.model.Auth.Usuario;
 import com.example.digital_fit.model.Entrenamientos.EntrenamientoComunidad;
+import com.example.digital_fit.model.Enums.CategoriaEntrenamientoComunidad;
+import com.example.digital_fit.model.Enums.NivelEntrenamiento;
 import com.example.digital_fit.repository.Auth.UsuarioRepository;
 import com.example.digital_fit.repository.Entrenamientos.EntrenamientoComunidadRepository;
 
@@ -26,19 +28,42 @@ public class EntrenamientoComunidadService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    // Listar entrenamientos de la comunidad
-    public List<EntrenamientoComunidadDTO> listarTodos() {
+    // Listar o filtrar entrenamientos de la comunidad
+    public List<EntrenamientoComunidadDTO> listarOFiltrar(CategoriaEntrenamientoComunidad categoria,
+            NivelEntrenamiento nivel, Integer duracionEnMinutos, String nombre) {
 
-        List<EntrenamientoComunidad> entrenamientos = entrenamientoComunidadRepository
-                .findAllByOrderByFechaPublicacionDesc();
+        List<EntrenamientoComunidad> entrenamientosComunidad = new ArrayList<>();
 
-        List<EntrenamientoComunidadDTO> dtos = new ArrayList<>();
+        if (categoria != null) {
 
-        for (EntrenamientoComunidad entrenamiento : entrenamientos) {
-            dtos.add(entityToDto(entrenamiento));
+            entrenamientosComunidad = entrenamientoComunidadRepository.findByCategoria(categoria);
+
+        } else if (nivel != null) {
+
+            entrenamientosComunidad = entrenamientoComunidadRepository.findByNivel(nivel);
+
+        } else if (duracionEnMinutos != null) {
+
+            entrenamientosComunidad = entrenamientoComunidadRepository
+                    .findByDuracionEnMinutosLessThanEqual(duracionEnMinutos);
+
+        } else if (nombre != null) {
+
+            entrenamientosComunidad = entrenamientoComunidadRepository.findByNombreContainingIgnoreCase(nombre);
+
+        } else {
+
+            entrenamientosComunidad = entrenamientoComunidadRepository.findAllByOrderByFechaPublicacionDesc();
         }
 
-        return dtos;
+        List<EntrenamientoComunidadDTO> entrenamientosComunidadDTO = new ArrayList<>();
+
+        for (EntrenamientoComunidad entrenamientoComunidad : entrenamientosComunidad) {
+            entrenamientosComunidadDTO.add(entityToDto(entrenamientoComunidad));
+        }
+
+        return entrenamientosComunidadDTO;
+
     }
 
     // VER DETALLES:

@@ -11,14 +11,15 @@ import com.example.digital_fit.model.Enums.NivelEntrenamiento;
 
 @Repository
 public interface EntrenamientoComunidadRepository extends JpaRepository<EntrenamientoComunidad, Long> {
+
     List<EntrenamientoComunidad> findByCategoria(CategoriaEntrenamientoComunidad categoria);
 
     List<EntrenamientoComunidad> findByNivel(NivelEntrenamiento nivel);
 
-    List<EntrenamientoComunidad> findByCategoriaAndNivel(CategoriaEntrenamientoComunidad categoria,
-            NivelEntrenamiento nivel);
+    List<EntrenamientoComunidad> findByDuracionEnMinutosLessThanEqual(Integer duracionEnMinutos);
+
+    List<EntrenamientoComunidad> findByNombreContainingIgnoreCase(String nombre);
 
     List<EntrenamientoComunidad> findAllByOrderByFechaPublicacionDesc();
 
-    List<EntrenamientoComunidad> findAllByOrderByDuracionEnMinutosAsc();
 }
