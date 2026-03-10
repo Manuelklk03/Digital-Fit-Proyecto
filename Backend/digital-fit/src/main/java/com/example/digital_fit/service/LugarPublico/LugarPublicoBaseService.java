@@ -17,17 +17,11 @@ public class LugarPublicoBaseService {
     @Autowired
     private LugarPublicoBaseRepository lugarPublicoBaseRepository;
 
-    public List<LugarPublicoBaseDTO> listarTodos() {
+    public List<LugarPublicoBaseDTO> listarOFiltrar() {
 
-        List<LugarPublicoBase> lugares = lugarPublicoBaseRepository.findAll();
-
-        List<LugarPublicoBaseDTO> dtos = new ArrayList<>();
-        for (LugarPublicoBase lugar : lugares) {
-            dtos.add(entityToDto(lugar));
-        }
-        return dtos;
     }
 
+    // Ver detalles:
     public LugarPublicoBaseDTO buscarPorId(Long id) {
         LugarPublicoBase lugar = lugarPublicoBaseRepository.findById(id)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Lugar con id: " + id + " No encontrado."));

@@ -14,7 +14,7 @@ public interface CentroPrivadoUsuarioRepository extends JpaRepository<CentroPriv
 
     List<CentroPrivadoUsuario> findByUsuarioAndNombreContainingIgnoreCase(Usuario usuario, String nombre);
 
-    List<CentroPrivadoUsuario> findByUsuarioAndUsuarioAndDireccionContainingIgnoreCase(Usuario usuario,
+    List<CentroPrivadoUsuario> findByUsuarioAndDireccionContainingIgnoreCase(Usuario usuario,
             String direccion);
 
     List<CentroPrivadoUsuario> findByUsuarioAndPrecioMensualLessThanEqual(Usuario usuario, Double precioMensual);
