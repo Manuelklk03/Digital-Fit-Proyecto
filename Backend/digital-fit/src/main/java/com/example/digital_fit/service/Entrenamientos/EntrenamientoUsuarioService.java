@@ -14,6 +14,8 @@ import com.example.digital_fit.model.Auth.Usuario;
 import com.example.digital_fit.model.Entrenamientos.EntrenamientoBase;
 import com.example.digital_fit.model.Entrenamientos.EntrenamientoComunidad;
 import com.example.digital_fit.model.Entrenamientos.EntrenamientoUsuario;
+import com.example.digital_fit.model.Enums.CategoriaEntrenamientoComunidad;
+import com.example.digital_fit.model.Enums.NivelEntrenamiento;
 import com.example.digital_fit.repository.Auth.UsuarioRepository;
 import com.example.digital_fit.repository.Entrenamientos.EntrenamientoBaseRepository;
 import com.example.digital_fit.repository.Entrenamientos.EntrenamientoComunidadRepository;
@@ -36,17 +38,36 @@ public class EntrenamientoUsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    public List<EntrenamientoUsuarioDTO> listarMisEntrenamientos(String username) {
+    public List<EntrenamientoUsuarioDTO> listarOFiltrar(String username,
+            CategoriaEntrenamientoComunidad categoria, NivelEntrenamiento nivel, Integer duracionEnMinutos,
+            String nombre) {
+
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
 
-        List<EntrenamientoUsuario> entrenamientos = entrenamientoUsuarioRepository.findByUsuario(usuario);
+        List<EntrenamientoUsuario> entrenamientos = new ArrayList<>();
 
-        List<EntrenamientoUsuarioDTO> dtos = new ArrayList<>();
-        for (EntrenamientoUsuario entrenamiento : entrenamientos) {
-            dtos.add(entityToDto(entrenamiento));
+        if (categoria != null) {
+            entrenamientos = entrenamientoUsuarioRepository.findByUsuarioAndCategoria(usuario, categoria);
+        } else if (nivel != null) {
+            entrenamientos = entrenamientoUsuarioRepository.findByUsuarioAndNivel(usuario, nivel);
+        } else if (duracionEnMinutos != null) {
+            entrenamientos = entrenamientoUsuarioRepository.findByUsuarioAndDuracionEnMinutosLessThanEqual(usuario,
+                    duracionEnMinutos);
+        } else if (nombre != null) {
+            entrenamientos = entrenamientoUsuarioRepository.findByUsuarioAndNombreContainingIgnoreCase(usuario, nombre);
+        } else {
+            entrenamientos = entrenamientoUsuarioRepository.findByUsuario(usuario);
         }
-        return dtos;
+
+        List<EntrenamientoUsuarioDTO> entrenamientoDTOs = new ArrayList<>();
+
+        for (EntrenamientoUsuario entrenamiento : entrenamientos) {
+            entrenamientoDTOs.add(entityToDto(entrenamiento));
+        }
+
+        return entrenamientoDTOs;
+
     }
 
     @Transactional

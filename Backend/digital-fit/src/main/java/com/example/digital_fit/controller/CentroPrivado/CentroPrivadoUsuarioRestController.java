@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.digital_fit.dto.CentroPrivado.CentroPrivadoUsuarioDTO;
@@ -27,10 +28,13 @@ public class CentroPrivadoUsuarioRestController {
 
     // Listar:
     @GetMapping
-    public ResponseEntity<List<CentroPrivadoUsuarioDTO>> listar(Authentication authentication) {
+    public ResponseEntity<List<CentroPrivadoUsuarioDTO>> listar(Authentication authentication,
+            @RequestParam(required = false) String nombre, @RequestParam(required = false) String direccion,
+            @RequestParam(required = false) Double precioMensual) {
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(centroPrivadoUsuarioService.listarMisCentros(authentication.getName()));
+                .body(centroPrivadoUsuarioService.listarOFiltrar(authentication.getName(), nombre, direccion,
+                        precioMensual));
     }
 
     // Detalle:
