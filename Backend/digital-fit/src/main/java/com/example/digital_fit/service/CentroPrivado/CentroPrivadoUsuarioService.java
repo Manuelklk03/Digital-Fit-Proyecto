@@ -46,7 +46,7 @@ public class CentroPrivadoUsuarioService {
 
         } else if (direccion != null) {
             centros = centroPrivadoUsuarioRepository
-                    .findByUsuarioAndUsuarioAndDireccionContainingIgnoreCase(usuario, direccion);
+                    .findByUsuarioAndDireccionContainingIgnoreCase(usuario, direccion);
 
         } else if (precioMensual != null) {
             centros = centroPrivadoUsuarioRepository

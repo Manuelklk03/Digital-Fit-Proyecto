@@ -17,15 +17,31 @@ public class CentroPrivadoBaseService {
     @Autowired
     private CentroPrivadoBaseRepository centroPrivadoBaseRepository;
 
-    public List<CentroPrivadoBaseDTO> listarTodos() {
-        List<CentroPrivadoBase> entidades = centroPrivadoBaseRepository.findAll();
-        List<CentroPrivadoBaseDTO> dtos = new ArrayList<>();
-        for (CentroPrivadoBase entidad : entidades) {
-            dtos.add(entityToDto(entidad));
+    // Listar o filtrar
+    public List<CentroPrivadoBaseDTO> listarOFiltrar(String nombre, String direccion, Double precioMensual) {
+
+        List<CentroPrivadoBase> centros = new ArrayList<>();
+
+        if (nombre != null) {
+            centros = centroPrivadoBaseRepository.findByNombreContainingIgnoreCase(nombre);
+        } else if (direccion != null) {
+            centros = centroPrivadoBaseRepository.findByDireccionContainingIgnoreCase(direccion);
+        } else if (precioMensual != null) {
+            centros = centroPrivadoBaseRepository.findByPrecioMensualLessThanEqual(precioMensual);
+        } else {
+            centros = centroPrivadoBaseRepository.findAll();
         }
-        return dtos;
+
+        List<CentroPrivadoBaseDTO> centrosDTO = new ArrayList<>();
+
+        for (CentroPrivadoBase centro : centros) {
+            centrosDTO.add(entityToDto(centro));
+        }
+
+        return centrosDTO;
     }
 
+    // Ver detalle
     public CentroPrivadoBaseDTO obtenerPorId(Long id) {
         CentroPrivadoBase entidad = centroPrivadoBaseRepository.findById(id)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Centro con id: " + id + " No encontrado."));

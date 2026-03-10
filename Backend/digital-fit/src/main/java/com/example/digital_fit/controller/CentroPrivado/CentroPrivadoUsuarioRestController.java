@@ -26,7 +26,7 @@ public class CentroPrivadoUsuarioRestController {
     @Autowired
     private CentroPrivadoUsuarioService centroPrivadoUsuarioService;
 
-    // Listar:
+    // Listar y filtrar:
     @GetMapping
     public ResponseEntity<List<CentroPrivadoUsuarioDTO>> listar(Authentication authentication,
             @RequestParam(required = false) String nombre, @RequestParam(required = false) String direccion,
