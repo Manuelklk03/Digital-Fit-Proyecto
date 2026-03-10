@@ -29,6 +29,8 @@ public class EstadisticasService {
 
         dto.setMinutosEntrenados(estadisticasRepository.sumarMinutosEntrenados(usuario));
 
+        dto.setPromedioMinutosEntrenamiento(estadisticasRepository.promedioDuracionEntrenamientos(usuario));
+
         dto.setCentrosPrivadosVisitados(estadisticasRepository.contarCentrosPrivadosVisitados(usuario));
 
         dto.setLugaresPublicosVisitados(estadisticasRepository.contarLugaresPublicosVisitados(usuario));

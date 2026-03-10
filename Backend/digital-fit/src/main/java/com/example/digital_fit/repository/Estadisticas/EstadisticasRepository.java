@@ -48,4 +48,11 @@ public interface EstadisticasRepository extends Repository<Object, Long> {
             """)
     String entrenamientoMasRealizado(@Param("usuario") Usuario usuario);
 
+    @Query("""
+            SELECT AVG(h.duracionMinutos)
+            FROM HistorialEntrenamientos h
+            WHERE h.usuario = :usuario
+            """)
+    Double promedioDuracionEntrenamientos(@Param("usuario") Usuario usuario);
+
 }

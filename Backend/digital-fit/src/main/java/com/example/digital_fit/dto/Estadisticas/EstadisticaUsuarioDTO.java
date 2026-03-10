@@ -7,13 +7,16 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@JsonPropertyOrder({ "entrenamientosRealizados", "minutosEntrenados", "centrosPrivadosVisitados",
+@JsonPropertyOrder({ "entrenamientosRealizados", "minutosEntrenados", "promedioMinutosEntrenamiento",
+        "centrosPrivadosVisitados",
         "lugaresPublicosVisitados", "entrenamientoMasRealizado" })
 public class EstadisticaUsuarioDTO {
 
     private Long entrenamientosRealizados;
 
     private Integer minutosEntrenados;
+
+    private Double promedioMinutosEntrenamiento;
 
     private Long centrosPrivadosVisitados;
 
