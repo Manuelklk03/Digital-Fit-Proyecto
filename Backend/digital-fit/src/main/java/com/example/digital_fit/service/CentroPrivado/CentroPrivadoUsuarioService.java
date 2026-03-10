@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import com.example.digital_fit.dto.CentroPrivado.CentroPrivadoUsuarioDTO;
 import com.example.digital_fit.dto.CentroPrivado.CrearCentroPrivadoDTO;
 import com.example.digital_fit.exception.OperacionNoPermitida;
@@ -32,20 +31,37 @@ public class CentroPrivadoUsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    // Listar mis centros:
-    public List<CentroPrivadoUsuarioDTO> listarMisCentros(String username) {
+    // Listar filtrando mis centros:
+
+    public List<CentroPrivadoUsuarioDTO> listarOFiltrar(String username, String nombre, String direccion,
+            Double precioMensual) {
+
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
 
-        List<CentroPrivadoUsuario> centros = centroPrivadoUsuarioRepository.findByUsuario(usuario);
+        List<CentroPrivadoUsuario> centros = new ArrayList<>();
 
-        List<CentroPrivadoUsuarioDTO> dtos = new ArrayList<>();
+        if (nombre != null) {
+            centros = centroPrivadoUsuarioRepository.findByUsuarioAndNombreContainingIgnoreCase(usuario, nombre);
 
-        for (CentroPrivadoUsuario centro : centros) {
-            dtos.add(entityToDto(centro));
+        } else if (direccion != null) {
+            centros = centroPrivadoUsuarioRepository
+                    .findByUsuarioAndUsuarioAndDireccionContainingIgnoreCase(usuario, direccion);
+
+        } else if (precioMensual != null) {
+            centros = centroPrivadoUsuarioRepository
+                    .findByUsuarioAndPrecioMensualLessThanEqual(usuario, precioMensual);
+        } else {
+            centros = centroPrivadoUsuarioRepository.findByUsuario(usuario);
         }
 
-        return dtos;
+        List<CentroPrivadoUsuarioDTO> centrosDTO = new ArrayList<>();
+
+        for (CentroPrivadoUsuario centro : centros) {
+            centrosDTO.add(entityToDto(centro));
+        }
+
+        return centrosDTO;
     }
 
     // Añadir centro privado desde maps:
