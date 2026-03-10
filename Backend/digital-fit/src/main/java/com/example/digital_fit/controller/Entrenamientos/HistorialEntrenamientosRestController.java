@@ -1,5 +1,6 @@
 package com.example.digital_fit.controller.Entrenamientos;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.digital_fit.dto.Entrenamientos.CrearEntrenamientoHistorialDTO;
@@ -28,10 +30,12 @@ public class HistorialEntrenamientosRestController {
     // Listar historial:
     @GetMapping
     public ResponseEntity<List<HistorialEntrenamientosDTO>> listarHistorialEntrenamientos(
-            Authentication authentication) {
+            Authentication authentication, @RequestParam(required = false) Integer duracionMinutos,
+            @RequestParam(required = false) LocalDateTime fecha) {
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(historialEntrenamientosService.listarHistorialEntrenamientos(authentication.getName()));
+                .body(historialEntrenamientosService.listarOFiltrarHistorial(authentication.getName(), duracionMinutos,
+                        fecha));
     }
 
     // Ver detalles:

@@ -11,6 +11,7 @@ import com.example.digital_fit.dto.LugarPublico.LugarPublicoUsuarioDTO;
 import com.example.digital_fit.exception.OperacionNoPermitida;
 import com.example.digital_fit.exception.RecursoNoEncontradoException;
 import com.example.digital_fit.model.Auth.Usuario;
+import com.example.digital_fit.model.Enums.TipoLugarPublico;
 import com.example.digital_fit.model.LugarPublico.LugarPublicoBase;
 import com.example.digital_fit.model.LugarPublico.LugarPublicoUsuario;
 import com.example.digital_fit.repository.Auth.UsuarioRepository;
@@ -31,19 +32,42 @@ public class LugarPublicoUsuarioService {
     @Autowired
     private LugarPublicoBaseRepository lugarPublicoBaseRepository;
 
-    // Listar mis lugares:
-    public List<LugarPublicoUsuarioDTO> listarLugares(String username) {
+    // Listar o filtrar mis lugares:
+    public List<LugarPublicoUsuarioDTO> listarOFiltrar(String username, String nombre, String direccion,
+            TipoLugarPublico tipo) {
+
         Usuario usuario = usuarioRepository.findByUsername(username)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
+                .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado."));
 
-        List<LugarPublicoUsuario> lugares = lugarPublicoUsuarioRepository.findByUsuario(usuario);
+        List<LugarPublicoUsuario> lugares = new ArrayList<>();
 
-        List<LugarPublicoUsuarioDTO> dtos = new ArrayList<>();
+        if (nombre != null) {
+
+            lugares = lugarPublicoUsuarioRepository
+                    .findByUsuarioAndNombreContainingIgnoreCase(usuario, nombre);
+
+        } else if (direccion != null) {
+
+            lugares = lugarPublicoUsuarioRepository
+                    .findByUsuarioAndDireccionContainingIgnoreCase(usuario, direccion);
+
+        } else if (tipo != null) {
+
+            lugares = lugarPublicoUsuarioRepository
+                    .findByUsuarioAndTipo(usuario, tipo);
+
+        } else {
+
+            lugares = lugarPublicoUsuarioRepository.findByUsuario(usuario);
+        }
+
+        List<LugarPublicoUsuarioDTO> lugaresDTO = new ArrayList<>();
 
         for (LugarPublicoUsuario lugar : lugares) {
-            dtos.add(entityToDto(lugar));
+            lugaresDTO.add(entityToDto(lugar));
         }
-        return dtos;
+
+        return lugaresDTO;
     }
 
     // Ver detalles de un lugar:
