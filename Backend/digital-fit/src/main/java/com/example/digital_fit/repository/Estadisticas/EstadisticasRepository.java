@@ -5,8 +5,9 @@ import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.query.Param;
 
 import com.example.digital_fit.model.Auth.Usuario;
+import com.example.digital_fit.model.Entrenamientos.HistorialEntrenamientos;
 
-public interface EstadisticasRepository extends Repository<Object, Long> {
+public interface EstadisticasRepository extends Repository<HistorialEntrenamientos, Long> {
     @Query("""
             SELECT COUNT(h)
             FROM HistorialEntrenamientos h
