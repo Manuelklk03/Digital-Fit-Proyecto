@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.digital_fit.dto.Admin.CrearAdmin;
 import com.example.digital_fit.service.Auth.AuthService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/admin")
 public class AdminRestController {
@@ -21,7 +23,7 @@ public class AdminRestController {
 
     @PostMapping("/crear-admin")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<String> crearAdmin(@RequestBody CrearAdmin crearAdmin) {
+    public ResponseEntity<String> crearAdmin(@Valid @RequestBody CrearAdmin crearAdmin) {
 
         authService.registrarAdmin(crearAdmin);
 

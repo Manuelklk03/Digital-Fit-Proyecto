@@ -21,6 +21,8 @@ import com.example.digital_fit.model.Enums.CategoriaEntrenamientoComunidad;
 import com.example.digital_fit.model.Enums.NivelEntrenamiento;
 import com.example.digital_fit.service.Entrenamientos.EntrenamientoUsuarioService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/mis-entrenamientos")
 public class EntrenamientoUsuarioRestController {
@@ -29,13 +31,18 @@ public class EntrenamientoUsuarioRestController {
     private EntrenamientoUsuarioService entrenamientoUsuarioService;
 
     @GetMapping
-    public ResponseEntity<List<EntrenamientoUsuarioDTO>> listarOFiltrar(Authentication authentication,@RequestParam(required = false) CategoriaEntrenamientoComunidad categoria,@RequestParam(required = false) NivelEntrenamiento nivel,@RequestParam(required = false) Integer duracionEnMinutos,@RequestParam(required = false) String nombre) {
+    public ResponseEntity<List<EntrenamientoUsuarioDTO>> listarOFiltrar(Authentication authentication,
+            @RequestParam(required = false) CategoriaEntrenamientoComunidad categoria,
+            @RequestParam(required = false) NivelEntrenamiento nivel,
+            @RequestParam(required = false) Integer duracionEnMinutos, @RequestParam(required = false) String nombre) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(entrenamientoUsuarioService.listarOFiltrar(authentication.getName(),categoria,nivel,duracionEnMinutos,nombre));
+                .body(entrenamientoUsuarioService.listarOFiltrar(authentication.getName(), categoria, nivel,
+                        duracionEnMinutos, nombre));
     }
 
     @PostMapping
-    public ResponseEntity<EntrenamientoUsuarioDTO> crearEntrenamientoUsuario(@RequestBody CrearEntrenamientoUsuario dto,
+    public ResponseEntity<EntrenamientoUsuarioDTO> crearEntrenamientoUsuario(
+            @Valid @RequestBody CrearEntrenamientoUsuario dto,
             Authentication authentication) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(entrenamientoUsuarioService.crearEntrenamientoPersonalizado(dto, authentication.getName()));
