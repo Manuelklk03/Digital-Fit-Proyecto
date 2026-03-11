@@ -3,6 +3,8 @@ package com.example.digital_fit.service.Entrenamientos;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,9 +40,13 @@ public class EntrenamientoUsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    private static final Logger log = LoggerFactory.getLogger(EntrenamientoUsuarioService.class);
+
     public List<EntrenamientoUsuarioDTO> listarOFiltrar(String username,
             CategoriaEntrenamientoComunidad categoria, NivelEntrenamiento nivel, Integer duracionEnMinutos,
             String nombre) {
+
+        log.debug("Listando entrenamientos de usuario {}", username);
 
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
@@ -72,6 +78,9 @@ public class EntrenamientoUsuarioService {
 
     @Transactional
     public EntrenamientoUsuarioDTO crearEntrenamientoPersonalizado(CrearEntrenamientoUsuario dto, String username) {
+
+        log.info("Usuario {} crea Entrenamiento {}", username, dto.getNombre());
+
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
 
@@ -84,12 +93,18 @@ public class EntrenamientoUsuarioService {
         entrenamientoUsuario.setUsuario(usuario);
 
         EntrenamientoUsuario entrenamientoUsuarioGuardado = entrenamientoUsuarioRepository.save(entrenamientoUsuario);
+
+        log.info("Entrenamiento {} creado para usuario {}", dto.getNombre(), username);
+
         return entityToDto(entrenamientoUsuarioGuardado);
     }
 
     // Para añadir entrenamientos de la app a el apartado mis entrenamientos:
     @Transactional
     public EntrenamientoUsuarioDTO añadirDesdeBase(Long idBase, String username) {
+
+        log.info("Usuario {}añade entrenamiento de la base {}", username, idBase);
+
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
 
@@ -105,12 +120,18 @@ public class EntrenamientoUsuarioService {
         entrenamientoUsuario.setUsuario(usuario);
 
         EntrenamientoUsuario entrenamientoUsuarioGuardado = entrenamientoUsuarioRepository.save(entrenamientoUsuario);
+
+        log.info("Entrenamiento {} creado para usuario {}", entrenamientoBase.getNombre(), username);
+
         return entityToDto(entrenamientoUsuarioGuardado);
     }
 
     // Para añadir entrenamientos de la comunidad a el apartado mis entrenamientos:
     @Transactional
     public EntrenamientoUsuarioDTO añadirDesdeComunidad(Long idComunidad, String username) {
+
+        log.info("Usuario {}añade entrenamiento de la comunidad {}", username, idComunidad);
+
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
 
@@ -128,12 +149,17 @@ public class EntrenamientoUsuarioService {
 
         EntrenamientoUsuario entrenamientoUsuarioGuardado = entrenamientoUsuarioRepository.save(entrenamientoUsuario);
 
+        log.info("Entrenamiento {} creado para usuario {}", entrenamientoComunidad.getNombre(), username);
+
         return entityToDto(entrenamientoUsuarioGuardado);
     }
 
     // Para borrar entrenamientos de mis entrenamientos:
     @Transactional
     public void borrarDeMisEntrenamientos(Long id, String username) {
+
+        log.info("Usuario {} borra entrenamiento {}", username, id);
+
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
 
@@ -143,6 +169,9 @@ public class EntrenamientoUsuarioService {
         if (!entrenamientoUsuario.getUsuario().getId().equals(usuario.getId())) {
             throw new OperacionNoPermitida("No tienes permiso para borrar este entrenamiento");
         }
+
+        log.info("Entrenamiento {} borrado para usuario {}", id, username);
+
         entrenamientoUsuarioRepository.delete(entrenamientoUsuario);
     }
 

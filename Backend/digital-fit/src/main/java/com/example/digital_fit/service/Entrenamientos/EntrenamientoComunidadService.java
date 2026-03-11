@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,9 +30,13 @@ public class EntrenamientoComunidadService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    private static final Logger log = LoggerFactory.getLogger(EntrenamientoComunidadService.class);
+
     // Listar o filtrar entrenamientos de la comunidad
     public List<EntrenamientoComunidadDTO> listarOFiltrar(CategoriaEntrenamientoComunidad categoria,
             NivelEntrenamiento nivel, Integer duracionEnMinutos, String nombre) {
+
+        log.debug("Listando entrenamientos comunidad");
 
         List<EntrenamientoComunidad> entrenamientosComunidad = new ArrayList<>();
 
@@ -68,6 +74,9 @@ public class EntrenamientoComunidadService {
 
     // VER DETALLES:
     public EntrenamientoComunidadDTO verDetalles(Long id) {
+
+        log.debug("Buscando entrenamiento con id: {}", id);
+
         EntrenamientoComunidad entrenamiento = entrenamientoComunidadRepository.findById(id)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Entrenamiento no encontrado"));
 
@@ -77,6 +86,8 @@ public class EntrenamientoComunidadService {
     // Crear entrenamiento de la comunidad
     @Transactional
     public EntrenamientoComunidadDTO crearEntrenamiento(CrearEntrenamientoComunidadDTO dto, String username) {
+
+        log.info("Usuario {} crea entrenamiento de la comunidad", username);
 
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
@@ -93,6 +104,8 @@ public class EntrenamientoComunidadService {
 
         EntrenamientoComunidad entrenamientoGuardado = entrenamientoComunidadRepository.save(entrenamiento);
 
+        log.info("Entrenamiento {} creado para usuario {}", dto.getNombre(), username);
+        
         return entityToDto(entrenamientoGuardado);
     }
 

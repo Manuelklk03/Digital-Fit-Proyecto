@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,9 +49,13 @@ public class HistorialEntrenamientosService {
     @Autowired
     private CentroPrivadoUsuarioRepository centroPrivadoUsuarioRepository;
 
+    private static final Logger log = LoggerFactory.getLogger(HistorialEntrenamientosService.class);
+
     // Listar filtrado;
     public List<HistorialEntrenamientosDTO> listarOFiltrarHistorial(String username, Integer duracionEnMinutos,
             LocalDateTime fecha) {
+
+        log.info("Listar historial de entrenamientos");
 
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
@@ -78,6 +84,9 @@ public class HistorialEntrenamientosService {
 
     // Ver detalles de un registro
     public HistorialEntrenamientosDTO verDetalles(Long id, String username) {
+
+        log.debug("Buscando registro con id: {}", id);
+
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
 
@@ -93,6 +102,8 @@ public class HistorialEntrenamientosService {
     // Crear registro de entrenamiento realizado
     @Transactional
     public HistorialEntrenamientosDTO crearHistorialEntrenamiento(CrearEntrenamientoHistorialDTO dto, String username) {
+
+        log.info("Usuario {} crea registro de entrenamiento realizado", username);
 
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
@@ -134,6 +145,7 @@ public class HistorialEntrenamientosService {
 
         // Centro privado
         if (dto.getCentroPrivadoId() != null) {
+
             CentroPrivadoUsuario centroPrivado = centroPrivadoUsuarioRepository.findById(dto.getCentroPrivadoId())
                     .orElseThrow(() -> new RecursoNoEncontradoException("Centro privado con id: "
                             + dto.getCentroPrivadoId() + " No encontrado."));
@@ -143,6 +155,8 @@ public class HistorialEntrenamientosService {
 
         HistorialEntrenamientos historialGuardado = historialEntrenamientosRepository.save(historial);
 
+        log.info("Historial guardado con id: {}", historialGuardado.getId());
+
         return entityToDto(historialGuardado);
 
     }
@@ -150,6 +164,8 @@ public class HistorialEntrenamientosService {
     // Borrar registro
     @Transactional
     public void borrarHistorialEntrenamiento(Long id, String username) {
+
+        log.info("Usuario {} borra registro con id: {}", username, id);
 
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
@@ -160,6 +176,8 @@ public class HistorialEntrenamientosService {
         if (!historial.getUsuario().getId().equals(usuario.getId())) {
             throw new OperacionNoPermitida("No tienes permiso para borrar este registro.");
         }
+
+        log.info("Borrando registro con id: {}", id);
 
         historialEntrenamientosRepository.delete(historial);
     }

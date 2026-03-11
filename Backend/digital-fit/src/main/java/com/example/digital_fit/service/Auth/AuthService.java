@@ -19,8 +19,7 @@ import jakarta.transaction.Transactional;
 @Service
 public class AuthService {
 
-    @Autowired
-    private Logger log = LoggerFactory.getLogger(AuthService.class);
+    private static final Logger log = LoggerFactory.getLogger(AuthService.class);
 
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -75,6 +74,8 @@ public class AuthService {
         admin.setRol(Rol.ADMIN);
 
         usuarioRepository.save(admin);
+
+        log.info("Admin creado exitosamente {}", admin.getUsername());
     }
 
 }

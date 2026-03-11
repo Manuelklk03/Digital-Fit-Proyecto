@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,8 +30,12 @@ public class ValoracionService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    private static final Logger log = LoggerFactory.getLogger(ValoracionService.class);
+
     // Listar valoraciones de un contenido
     public List<ValoracionDTO> listarPorContenido(TipoDeValoracion tipo, Long contenidoId) {
+
+        log.info("Listando valoraciones de un contenido");
 
         List<Valoracion> valoraciones = valoracionRepository.findByTipoDeValoracionAndIdRelacionado(tipo, contenidoId);
 
@@ -44,6 +50,8 @@ public class ValoracionService {
 
     // Listar mis valoraciones
     public List<ValoracionDTO> listarMisValoraciones(String username) {
+
+        log.info("Listando mis valoraciones");
 
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
@@ -63,12 +71,16 @@ public class ValoracionService {
     @Transactional
     public void borrarMiValoracion(TipoDeValoracion tipo, Long contenidoId, String username) {
 
+        log.info("Borrando mi valoracion");
+
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
 
         Valoracion valoracion = valoracionRepository
                 .findByUsuarioAndTipoDeValoracionAndIdRelacionado(usuario, tipo, contenidoId)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Valoración no encontrada"));
+
+        log.info("Valoracion con id {} borrada", valoracion.getId());
 
         valoracionRepository.delete(valoracion);
 
@@ -77,6 +89,9 @@ public class ValoracionService {
     @Transactional
     public ValoracionDTO crearOActualizar(TipoDeValoracion tipo, Long contenidoId, CrearValoracionDTO dto,
             String username) {
+
+        log.info("Creando o actualizando valoracion");
+
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
 
@@ -98,6 +113,8 @@ public class ValoracionService {
         valoracion.setFecha(LocalDateTime.now());
 
         Valoracion guardada = valoracionRepository.save(valoracion);
+
+        log.info("Valoracion con id {} guardada/actualizada", guardada.getId());
 
         return entityToDto(guardada);
     }

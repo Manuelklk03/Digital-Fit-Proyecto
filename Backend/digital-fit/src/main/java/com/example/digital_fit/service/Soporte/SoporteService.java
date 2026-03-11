@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,8 +31,13 @@ public class SoporteService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    private static final Logger log = LoggerFactory.getLogger(SoporteService.class);
+
     // Listar tickets:
     public List<SoporteDTO> listarTickets(String username) {
+
+        log.info("Listando tickets");
+
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
 
@@ -47,6 +54,8 @@ public class SoporteService {
 
     // Ver detalles de un ticket:
     public SoporteDTO verDetalles(Long id, String username) {
+
+        log.debug("Buscando ticket con id: {}", id);
 
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
@@ -65,6 +74,8 @@ public class SoporteService {
     @Transactional
     public void borrarTicket(Long id, String username) {
 
+        log.info("Borrando ticket con id: {}", id);
+
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
 
@@ -75,12 +86,15 @@ public class SoporteService {
             throw new OperacionNoPermitida("No tienes permiso para borrar este ticket.");
         }
 
+        log.info("Ticket borrado con id: {}", id);
         soporteRepository.delete(ticket);
     }
 
     // Crear Ticket:
     @Transactional
     public SoporteDTO crearTicket(CrearSoporteDTO dto, String username) {
+
+        log.info("Creando ticket");
 
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
@@ -97,6 +111,8 @@ public class SoporteService {
 
         Soporte nuevoTicket = soporteRepository.save(ticket);
 
+        log.info("Ticket creado con id: {}", nuevoTicket.getId());
+
         return entityToDto(nuevoTicket);
 
     }
@@ -105,17 +121,25 @@ public class SoporteService {
 
     // Listar todos los tickets:
     public List<SoporteDTO> listarTicketsAdmin() {
+
+        log.info("Listando tickets");
+
         List<Soporte> tickets = soporteRepository.findAllByOrderByFechaDesc();
+
         List<SoporteDTO> dtos = new ArrayList<>();
+
         for (Soporte t : tickets) {
             dtos.add(entityToDto(t));
         }
+
         return dtos;
     }
 
     // Cambiar estado de un ticket:
     @Transactional
     public SoporteDTO cambiarEstado(Long id, CambiarEstadoSoporte dto) {
+
+        log.info("Cambiando estado de ticket con id: {}", id);
 
         Soporte ticket = soporteRepository.findById(id)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Ticket con id: " + id + " No encontrado."));
@@ -130,12 +154,17 @@ public class SoporteService {
     // Eliminar un ticket en estado cerrado:
     @Transactional
     public void borrarTicketCerrado(Long id) {
+
+        log.info("Borrando ticket con id: {}", id);
+
         Soporte ticket = soporteRepository.findById(id)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Ticket con id: " + id + " No encontrado."));
 
         if (!ticket.getEstado().equals(EstadoSoporte.CERRADO)) {
             throw new OperacionNoPermitida("No se puede borrar un ticket que no este cerrado.");
         }
+
+        log.info("Ticket borrado con id: {}", id);
 
         soporteRepository.delete(ticket);
     }
