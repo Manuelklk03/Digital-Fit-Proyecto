@@ -25,17 +25,24 @@ public class EstadisticasService {
 
         EstadisticaUsuarioDTO dto = new EstadisticaUsuarioDTO();
 
-        dto.setEntrenamientosRealizados(estadisticasRepository.contarEntrenamientos(usuario));
+        Long entrenamientosRealizados = estadisticasRepository.contarEntrenamientos(usuario);
 
-        dto.setMinutosEntrenados(estadisticasRepository.sumarMinutosEntrenados(usuario));
+        Integer minutosEntrenados = estadisticasRepository.sumarMinutosEntrenados(usuario);
 
-        dto.setPromedioMinutosEntrenamiento(estadisticasRepository.promedioDuracionEntrenamientos(usuario));
+        Double promedioMinutosEntrenamiento = estadisticasRepository.promedioDuracionEntrenamientos(usuario);
 
-        dto.setCentrosPrivadosVisitados(estadisticasRepository.contarCentrosPrivadosVisitados(usuario));
+        Long centrosPrivadosVisitados = estadisticasRepository.contarCentrosPrivadosVisitados(usuario);
 
-        dto.setLugaresPublicosVisitados(estadisticasRepository.contarLugaresPublicosVisitados(usuario));
+        Long lugaresPublicosVisitados = estadisticasRepository.contarLugaresPublicosVisitados(usuario);
 
-        dto.setEntrenamientoMasRealizado(estadisticasRepository.entrenamientoMasRealizado(usuario));
+        String entrenamientoMasRealizado = estadisticasRepository.entrenamientoMasRealizado(usuario);
+
+        dto.setEntrenamientosRealizados(entrenamientosRealizados != null ? entrenamientosRealizados : 0L);
+        dto.setMinutosEntrenados(minutosEntrenados != null ? minutosEntrenados : 0);
+        dto.setPromedioMinutosEntrenamiento(promedioMinutosEntrenamiento != null ? promedioMinutosEntrenamiento : 0.0);
+        dto.setCentrosPrivadosVisitados(centrosPrivadosVisitados != null ? centrosPrivadosVisitados : 0L);
+        dto.setLugaresPublicosVisitados(lugaresPublicosVisitados != null ? lugaresPublicosVisitados : 0L);
+        dto.setEntrenamientoMasRealizado(entrenamientoMasRealizado != null ? entrenamientoMasRealizado : "N/A");
 
         return dto;
     }
