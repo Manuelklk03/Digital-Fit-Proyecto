@@ -19,6 +19,8 @@ import com.example.digital_fit.dto.CentroPrivado.CentroPrivadoUsuarioDTO;
 import com.example.digital_fit.dto.CentroPrivado.CrearCentroPrivadoDTO;
 import com.example.digital_fit.service.CentroPrivado.CentroPrivadoUsuarioService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/mis-centros-privados")
 public class CentroPrivadoUsuarioRestController {
@@ -56,7 +58,7 @@ public class CentroPrivadoUsuarioRestController {
 
     // Añadir desde maps (Angular) :
     @PostMapping("/centros-maps")
-    public ResponseEntity<CentroPrivadoUsuarioDTO> AñadirCentroPrivadoMaps(@RequestBody CrearCentroPrivadoDTO dto,
+    public ResponseEntity<CentroPrivadoUsuarioDTO> AñadirCentroPrivadoMaps(@Valid @RequestBody CrearCentroPrivadoDTO dto,
             Authentication authentication) {
 
         return ResponseEntity.status(HttpStatus.CREATED)

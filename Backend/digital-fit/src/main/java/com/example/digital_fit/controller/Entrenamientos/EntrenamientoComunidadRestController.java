@@ -20,6 +20,8 @@ import com.example.digital_fit.model.Enums.CategoriaEntrenamientoComunidad;
 import com.example.digital_fit.model.Enums.NivelEntrenamiento;
 import com.example.digital_fit.service.Entrenamientos.EntrenamientoComunidadService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/entrenamientos-comunidad")
 public class EntrenamientoComunidadRestController {
@@ -43,7 +45,8 @@ public class EntrenamientoComunidadRestController {
 
     @PostMapping
     public ResponseEntity<EntrenamientoComunidadDTO> crearNuevo(
-            @RequestBody CrearEntrenamientoComunidadDTO entrenamientoComunidadDTO, Authentication authentication) {
+            @Valid @RequestBody CrearEntrenamientoComunidadDTO entrenamientoComunidadDTO,
+            Authentication authentication) {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(entrenamientoComunidadService.crearEntrenamiento(entrenamientoComunidadDTO,
