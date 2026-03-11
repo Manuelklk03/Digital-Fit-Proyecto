@@ -3,6 +3,8 @@ package com.example.digital_fit.service.CentroPrivado;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,10 +33,14 @@ public class CentroPrivadoUsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    private static final Logger log = LoggerFactory.getLogger(CentroPrivadoUsuarioService.class);
+
     // Listar filtrando mis centros:
 
     public List<CentroPrivadoUsuarioDTO> listarOFiltrar(String username, String nombre, String direccion,
             Double precioMensual) {
+
+        log.debug("Listando centros privados al usuario {}", username);
 
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
@@ -68,6 +74,8 @@ public class CentroPrivadoUsuarioService {
     @Transactional
     public CentroPrivadoUsuarioDTO AñdirCentroPrivadoMaps(CrearCentroPrivadoDTO dto, String username) {
 
+        log.info("Usuario {} añade centro privado desde maps {}", username, dto.getNombre());
+
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
 
@@ -83,12 +91,17 @@ public class CentroPrivadoUsuarioService {
         centro.setUsuario(usuario);
 
         CentroPrivadoUsuario centroGuardado = centroPrivadoUsuarioRepository.save(centro);
+
+        log.info("Centro privado {} guardado para usuario {}", dto.getNombre(), username);
+
         return entityToDto(centroGuardado);
     }
 
     // Añadir centro privado desde lista de la app:
     @Transactional
     public CentroPrivadoUsuarioDTO AñadirPrivadoAMisCentros(Long idBase, String username) {
+
+        log.info("Usuario {}añade centro privado de la base {}", username, idBase);
 
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
@@ -108,11 +121,17 @@ public class CentroPrivadoUsuarioService {
         centro.setUsuario(usuario);
 
         CentroPrivadoUsuario centroGuardado = centroPrivadoUsuarioRepository.save(centro);
+
+        log.info("Centro privado {} guardado para usuario {}", centroBase.getNombre(), username);
+
         return entityToDto(centroGuardado);
     }
 
     // Detalle CentroPrivado:
     public CentroPrivadoUsuarioDTO verDetalle(Long id, String username) {
+
+        log.debug("Usuario {} consulta centro privado {}", username, id);
+
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
 
@@ -120,14 +139,19 @@ public class CentroPrivadoUsuarioService {
                 .orElseThrow(() -> new RecursoNoEncontradoException("Centro con id: " + id + " No encontrado."));
 
         if (!centro.getUsuario().getId().equals(usuario.getId())) {
+            log.warn("Usuario {} intentó acceder sin permiso al centro {}", username, id);
             throw new OperacionNoPermitida("No tienes permiso para ver este centro.");
         }
+
         return entityToDto(centro);
     }
 
     // Borrar Centro de MisCentrosGuardados:
     @Transactional
     public void borrarDeMisCentrosGuardados(Long id, String username) {
+
+        log.info("Usuario {} borra centro privado {}", username, id);
+
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
 
@@ -135,9 +159,13 @@ public class CentroPrivadoUsuarioService {
                 .orElseThrow(() -> new RecursoNoEncontradoException("Centro con id: " + id + " No encontrado."));
 
         if (!centro.getUsuario().getId().equals(usuario.getId())) {
+            log.warn("Usuario {} intentó acceder sin permiso al centro {}", username, id);
             throw new OperacionNoPermitida("No tienes permiso para borrar este centro.");
         }
+
         centroPrivadoUsuarioRepository.delete(centro);
+
+        log.info("Centro privado {} borrado para usuario {}", id, username);
     }
 
     // Mappers:
