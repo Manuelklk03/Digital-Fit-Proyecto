@@ -31,6 +31,11 @@ public class AuthController {
 
     @GetMapping("/yo")
     public ResponseEntity<String> yo(Authentication authentication) {
+
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("No autenticado");
+        }
         return ResponseEntity.status(HttpStatus.OK).body(authentication.getName());
     }
 }
