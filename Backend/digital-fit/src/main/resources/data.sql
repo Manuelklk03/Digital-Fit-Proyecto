@@ -253,9 +253,9 @@ INSERT IGNORE INTO
     )
 VALUES (
         'admin@digitalfit.com',
-        '$2a$10$Dow1xP3Y8w2LZ7K0pR0z6O7UqL9QqF0vP0U3jP2V7M8F1uYzF9y5e',
+        '$2a$10$S3tQwJZtrEyaQkdbdptvxe.dvxr6yosKlbUHgWa.EPSYviqUesNbq',
         'ADMIN',
-        'admin'
+        'admin1'
     );
 
 INSERT IGNORE INTO
@@ -267,7 +267,7 @@ INSERT IGNORE INTO
     )
 VALUES (
         'user@digitalfit.com',
-        '$2a$10$Dow1xP3Y8w2LZ7K0pR0z6O7UqL9QqF0vP0U3jP2V7M8F1uYzF9y5e',
+        '$2a$10$DxFOrgNejnzMThd6HhM4.O0LCSMmtXmzcGN5SoTeIV.WbaRBkrnkW',
         'USER',
-        'user'
+        'usuario1'
     );
