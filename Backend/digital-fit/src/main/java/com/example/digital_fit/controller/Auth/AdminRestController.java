@@ -21,8 +21,9 @@ public class AdminRestController {
     @Autowired
     private AuthService authService;
 
-    @PostMapping("/crear-admin")
     @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/crear-admin")
+
     public ResponseEntity<String> crearAdmin(@Valid @RequestBody CrearAdmin crearAdmin) {
 
         authService.registrarAdmin(crearAdmin);
