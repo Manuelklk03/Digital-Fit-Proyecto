@@ -1,0 +1,30 @@
+.cabecera {
+    background-color: var(--color-azul);
+    padding: 15px 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo-enlace img {
+    height: 120px;
+}
+
+.menu-navegacion ul {
+    display: flex;
+    gap: 30px;
+    list-style: none;
+}
+
+.menu-navegacion a {
+    text-decoration: none;
+    font-weight: bold;
+    color: var(--color-negro);
+}
+
+.estado-usuario {
+    font-weight: bold;
+    background-color: rgba(255, 255, 255, 0.6);
+    padding: 6px 14px;
+    border-radius: 999px;
+}
