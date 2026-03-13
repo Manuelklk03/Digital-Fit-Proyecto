@@ -1,0 +1,47 @@
+<header class="cabecera">
+
+    <a class="logo-enlace" routerLink="/inicio">
+        <img src="assets/img/LOGOFINAL-removebg.png" alt="Logo Digital-FIT">
+    </a>
+
+    <nav class="menu-navegacion">
+
+        <ul>
+
+            <li>
+                <a routerLink="/inicio">Inicio</a>
+            </li>
+
+            <li>
+                <a routerLink="/entrenamientos">Entrenamientos</a>
+            </li>
+
+            <li>
+                <a routerLink="/centros">Centros</a>
+            </li>
+
+            <li>
+                <a routerLink="/soporte">Soporte</a>
+            </li>
+
+        </ul>
+
+    </nav>
+
+    <div class="estado-usuario">
+
+        <span *ngIf="!usuario">
+            Sesión no iniciada
+        </span>
+
+        <span *ngIf="usuario">
+            {{usuario}}
+        </span>
+
+        <button *ngIf="usuario" (click)="logout()">
+            Logout
+        </button>
+
+    </div>
+
+</header>
