@@ -1,1 +1,201 @@
-/* You can add global styles to this file, and also import other style files */
+/* RESET */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+/* PALETA DE COLORES */
+
+:root {
+    --color-azul: #3C91E6;
+    --color-azul-fondo: #b3d7ff;
+    --color-azul-caja: #d9eaff;
+    --color-azul-oscuro: #1a4f87;
+    --color-negro: #333333;
+    --color-gris-claro: #dedede;
+    --color-blanco: #ffffff;
+    --color-boton-rosa: #f4b4b4;
+}
+
+body {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    min-height: 100vh;
+    background-color: var(--color-azul-fondo);
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--color-negro);
+}
+
+/* ========================================= */
+/* CABECERA */
+/* ========================================= */
+.cabecera {
+    background-color: var(--color-azul);
+    padding: 15px 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Logo */
+.logo-enlace img {
+    height: 120px;
+    width: auto;
+}
+
+/* ========================================= */
+/* MENÚ DE NAVEGACIÓN (FLEXBOX) */
+/* ========================================= */
+.menu-navegacion ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.menu-navegacion li {
+    display: inline-block;
+    margin-left: 25px;
+}
+
+.menu-navegacion a {
+    text-decoration: none;
+    font-weight: bold;
+    color: var(--color-negro);
+    padding: 6px 12px;
+    border-radius: 4px;
+    transition: 0.3s ease;
+}
+
+/* Enlace activo */
+.enlace-activo {
+    background-color: var(--color-azul-oscuro);
+    color: var(--color-blanco) !important;
+}
+
+/* Hover */
+.menu-navegacion a:hover:not(.enlace-activo) {
+    background-color: var(--color-azul-caja);
+    color: var(--color-azul-oscuro);
+}
+
+/* ========================================= */
+/* ESTADO DEL USUARIO */
+/* ========================================= */
+
+/* Estado general (no iniciada) */
+.estado-usuario {
+    font-weight: bold;
+    background-color: rgba(255, 255, 255, 0.6);
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: 1px solid #a0b8d8;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    /* Transición suave */
+    transition: 0.3s ease;
+}
+
+/* Cuando la sesión está iniciada */
+.estado-usuario-iniciada {
+    background-color: #d7ffd7;
+    border-color: #7fbf7f;
+    color: #1e4d1e;
+}
+
+/* Icono pequeño */
+.icono-usuario-pequeno {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+
+/* FOOTER */
+
+.pie-pagina {
+    text-align: center;
+    padding: 18px;
+    background-color: var(--color-azul);
+    color: var(--color-negro);
+    border-top: 3px solid var(--color-azul-oscuro);
+}
+
+
+/* ANIMACIÓN GENERAL DE ENTRADA */
+
+
+@keyframes aparecerPagina {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+body {
+    animation: aparecerPagina 0.6s ease;
+}
+
+/* Animación cabecera */
+@keyframes deslizarCabecera {
+    from {
+        transform: translateY(-40px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.cabecera {
+    animation: deslizarCabecera 0.6s ease;
+}
+
+/* Footer suave */
+.pie-pagina {
+    animation: aparecerPagina 1s ease;
+}
+
+button {
+    transition: 0.3s ease;
+}
+
+.menu-navegacion ul {
+    display: flex;
+    gap: 30px;
+}
+
+.menu-navegacion a {
+    position: relative;
+}
+
+/* Línea animada debajo */
+.menu-navegacion a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    width: 0%;
+    height: 3px;
+    background-color: var(--color-azul-oscuro);
+    transition: 0.3s ease;
+}
+
+.menu-navegacion a:hover::after {
+    width: 100%;
+}
