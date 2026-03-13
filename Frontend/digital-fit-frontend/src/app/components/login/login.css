@@ -1,0 +1,90 @@
+@keyframes aparecerLogin {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.zona-login {
+    display: flex;
+    justify-content: center;
+    padding: 60px 20px;
+}
+
+.caja-login {
+    background-color: var(--color-azul-caja);
+    padding: 45px 40px;
+    border-radius: 18px;
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+    box-shadow: 0px 0px 18px rgba(0, 0, 0, 0.18);
+    border: 1px solid #b7c9ef;
+    animation: aparecerLogin 0.8s ease forwards;
+}
+
+.icono-usuario {
+    width: 150px;
+    margin-bottom: 20px;
+}
+
+.titulo-login {
+    font-size: 28px;
+    margin-bottom: 25px;
+    font-weight: bold;
+}
+
+.texto-etiqueta {
+    text-align: left;
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.campo-texto {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--color-negro);
+    border-radius: 8px;
+    margin-bottom: 22px;
+    font-size: 16px;
+    transition: 0.3s ease;
+}
+
+.campo-texto:focus {
+    border-color: var(--color-azul);
+    outline: none;
+    box-shadow: 0 0 5px var(--color-azul);
+}
+
+.boton-acceder {
+    width: 100%;
+    padding: 14px;
+    background-color: var(--color-boton-rosa);
+    border: 1px solid var(--color-negro);
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 15px;
+}
+
+.boton-acceder:hover {
+    background-color: #ffc4c4;
+    transform: scale(1.03);
+}
+
+.boton-acceder:active {
+    transform: scale(0.97);
+}
+
+.mensaje-error {
+    color: red;
+    margin-top: 15px;
+    font-weight: bold;
+}

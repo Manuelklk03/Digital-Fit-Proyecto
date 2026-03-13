@@ -1,0 +1,41 @@
+<header class="cabecera">
+
+    <a class="logo-enlace" routerLink="/">
+        <img src="assets/img/LOGOFINAL-removebg.png" alt="Logo Digital-FIT">
+    </a>
+
+    <div class="estado-usuario">
+        <span>Sesión no iniciada</span>
+    </div>
+
+</header>
+
+<main class="zona-login">
+
+    <div class="caja-login">
+
+        <img src="assets/img/usuario.png" alt="Icono de usuario" class="icono-usuario">
+
+        <h1 class="titulo-login">Iniciar sesión</h1>
+
+        <form (ngSubmit)="login()">
+
+            <label class="texto-etiqueta">Nombre de usuario</label>
+            <input class="campo-texto" type="text" name="username" [(ngModel)]="username" required>
+
+            <label class="texto-etiqueta">Contraseña</label>
+            <input class="campo-texto" type="password" name="password" [(ngModel)]="password" required>
+
+            <button class="boton-acceder" type="submit">
+                INICIAR SESIÓN
+            </button>
+        </form>
+
+        <p class="mensaje-error">{{ mensaje }}</p>
+
+    </div>
+</main>
+
+<footer class="pie-pagina">
+    <small>© 2025 Digital-FIT ® Todos los derechos reservados.</small>
+</footer>
