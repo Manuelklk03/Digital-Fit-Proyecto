@@ -1,47 +1,27 @@
 <header class="cabecera">
 
-    <a class="logo-enlace" routerLink="/inicio">
-        <img src="assets/img/LOGOFINAL-removebg.png" alt="Logo Digital-FIT">
-    </a>
+  <a class="logo-enlace" routerLink="/inicio">
+    <img src="assets/img/LOGOFINAL-removebg.png" alt="Logo Digital-FIT">
+  </a>
 
-    <nav class="menu-navegacion">
+  <nav class="menu-navegacion">
+    <ul>
+      <li><a routerLink="/inicio" routerLinkActive="enlace-activo">Inicio</a></li>
+      <li><a routerLink="/login" routerLinkActive="enlace-activo">Login</a></li>
+      <li><a routerLink="/register" routerLinkActive="enlace-activo">Registro</a></li>
+    </ul>
+  </nav>
 
-        <ul>
-
-            <li>
-                <a routerLink="/inicio">Inicio</a>
-            </li>
-
-            <li>
-                <a routerLink="/entrenamientos">Entrenamientos</a>
-            </li>
-
-            <li>
-                <a routerLink="/centros">Centros</a>
-            </li>
-
-            <li>
-                <a routerLink="/soporte">Soporte</a>
-            </li>
-
-        </ul>
-
-    </nav>
-
-    <div class="estado-usuario">
-
-        <span *ngIf="!usuario">
-            Sesión no iniciada
-        </span>
-
-        <span *ngIf="usuario">
-            {{usuario}}
-        </span>
-
-        <button *ngIf="usuario" (click)="logout()">
-            Logout
-        </button>
-
+  @if (usuario) {
+    <div class="estado-usuario estado-usuario-iniciada">
+      <img src="assets/img/usuario.png" alt="Usuario" class="icono-usuario-pequeno">
+      <span>{{ usuario }}</span>
+      <button class="boton-logout" (click)="logout()">Salir</button>
     </div>
+  } @else {
+    <div class="estado-usuario">
+      <span>Sesión no iniciada</span>
+    </div>
+  }
 
 </header>

@@ -1,17 +1,15 @@
-import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
+private http = inject(HttpClient);
+  private apiUrl = 'http://localhost:8080/api/auth';
 
-  private http = inject(HttpClient);
-  private api = 'http://localhost:8080/api/auth';
-
-  login(username: string, password: string): Observable<any> {
-
+  login(username: string, password: string): Observable<string> {
     const body = new URLSearchParams();
     body.set('username', username);
     body.set('password', password);
@@ -21,7 +19,7 @@ export class AuthService {
     });
 
     return this.http.post(
-      `${this.api}/login`,
+      `${this.apiUrl}/login`,
       body.toString(),
       {
         headers,
@@ -31,30 +29,36 @@ export class AuthService {
     );
   }
 
-  registrar(usuario: any): Observable<any> {
-
+  registrar(usuario: any): Observable<string> {
     return this.http.post(
-      `${this.api}/registro`,
+      `${this.apiUrl}/registro`,
       usuario,
       {
         withCredentials: true,
         responseType: 'text'
       }
     );
-
   }
 
-  yo(): Observable<any> {
-    return this.http.get(`${this.api}/yo`, {
-      withCredentials: true,
-      responseType: 'text'
-    });
+  yo(): Observable<string> {
+    return this.http.get(
+      `${this.apiUrl}/yo`,
+      {
+        withCredentials: true,
+        responseType: 'text'
+      }
+    );
   }
 
-  logout(): Observable<any> {
-    return this.http.post(`${this.api}/logout`, {}, {
-      withCredentials: true,
-      responseType: 'text'
-    });
+  logout(): Observable<string> {
+    return this.http.post(
+      `${this.apiUrl}/logout`,
+      {},
+      {
+        withCredentials: true,
+        responseType: 'text'
+      }
+    );
   }
+
 }
