@@ -4,8 +4,7 @@
     box-sizing: border-box;
 }
 
-html,
-body {
+html, body {
     margin: 0;
     padding: 0;
     height: 100%;
@@ -25,8 +24,6 @@ body {
 }
 
 body {
-    display: grid;
-    grid-template-rows: auto 1fr auto;
     min-height: 100vh;
     background-color: var(--color-azul-fondo);
     font-family: Arial, Helvetica, sans-serif;
@@ -36,6 +33,7 @@ body {
 /* ========================================= */
 /* CABECERA */
 /* ========================================= */
+
 .cabecera {
     background-color: var(--color-azul);
     padding: 15px 25px;
@@ -44,24 +42,25 @@ body {
     justify-content: space-between;
 }
 
-/* Logo */
 .logo-enlace img {
     height: 120px;
     width: auto;
 }
 
 /* ========================================= */
-/* MENÚ DE NAVEGACIÓN (FLEXBOX) */
+/* MENÚ DE NAVEGACIÓN */
 /* ========================================= */
+
 .menu-navegacion ul {
     margin: 0;
     padding: 0;
     list-style: none;
+    display: flex;
+    gap: 30px;
 }
 
 .menu-navegacion li {
     display: inline-block;
-    margin-left: 25px;
 }
 
 .menu-navegacion a {
@@ -71,120 +70,19 @@ body {
     padding: 6px 12px;
     border-radius: 4px;
     transition: 0.3s ease;
+    position: relative;
 }
 
-/* Enlace activo */
 .enlace-activo {
     background-color: var(--color-azul-oscuro);
     color: var(--color-blanco) !important;
 }
 
-/* Hover */
 .menu-navegacion a:hover:not(.enlace-activo) {
     background-color: var(--color-azul-caja);
     color: var(--color-azul-oscuro);
 }
 
-/* ========================================= */
-/* ESTADO DEL USUARIO */
-/* ========================================= */
-
-/* Estado general (no iniciada) */
-.estado-usuario {
-    font-weight: bold;
-    background-color: rgba(255, 255, 255, 0.6);
-    padding: 6px 14px;
-    border-radius: 999px;
-    border: 1px solid #a0b8d8;
-    font-size: 14px;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-
-    /* Transición suave */
-    transition: 0.3s ease;
-}
-
-/* Cuando la sesión está iniciada */
-.estado-usuario-iniciada {
-    background-color: #d7ffd7;
-    border-color: #7fbf7f;
-    color: #1e4d1e;
-}
-
-/* Icono pequeño */
-.icono-usuario-pequeno {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-
-/* FOOTER */
-
-.pie-pagina {
-    text-align: center;
-    padding: 18px;
-    background-color: var(--color-azul);
-    color: var(--color-negro);
-    border-top: 3px solid var(--color-azul-oscuro);
-}
-
-
-/* ANIMACIÓN GENERAL DE ENTRADA */
-
-
-@keyframes aparecerPagina {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-
-body {
-    animation: aparecerPagina 0.6s ease;
-}
-
-/* Animación cabecera */
-@keyframes deslizarCabecera {
-    from {
-        transform: translateY(-40px);
-        opacity: 0;
-    }
-
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-.cabecera {
-    animation: deslizarCabecera 0.6s ease;
-}
-
-/* Footer suave */
-.pie-pagina {
-    animation: aparecerPagina 1s ease;
-}
-
-button {
-    transition: 0.3s ease;
-}
-
-.menu-navegacion ul {
-    display: flex;
-    gap: 30px;
-}
-
-.menu-navegacion a {
-    position: relative;
-}
-
-/* Línea animada debajo */
 .menu-navegacion a::after {
     content: "";
     position: absolute;
@@ -198,4 +96,103 @@ button {
 
 .menu-navegacion a:hover::after {
     width: 100%;
+}
+
+/* ========================================= */
+/* ESTADO DEL USUARIO */
+/* ========================================= */
+
+.estado-usuario {
+    font-weight: bold;
+    background-color: rgba(255,255,255,0.6);
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: 1px solid #a0b8d8;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: 0.3s ease;
+}
+
+.estado-usuario-iniciada {
+    background-color: #d7ffd7;
+    border-color: #7fbf7f;
+    color: #1e4d1e;
+}
+
+.icono-usuario-pequeno {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* ========================================= */
+/* FOOTER */
+/* ========================================= */
+
+.pie-pagina {
+    text-align: center;
+    padding: 18px;
+    background-color: var(--color-azul);
+    color: var(--color-negro);
+    border-top: 3px solid var(--color-azul-oscuro);
+}
+
+/* ========================================= */
+/* ANIMACIONES GENERALES */
+/* ========================================= */
+
+@keyframes aparecerPagina {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes deslizarCabecera {
+    from {
+        transform: translateY(-40px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+body {
+    animation: aparecerPagina 0.6s ease;
+}
+
+.cabecera {
+    animation: deslizarCabecera 0.6s ease;
+}
+
+.pie-pagina {
+    animation: aparecerPagina 1s ease;
+}
+
+button {
+    transition: 0.3s ease;
+}
+
+/* ========================================= */
+/* AYUDAS GENERALES */
+/* ========================================= */
+
+main {
+    width: 100%;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+a {
+    cursor: pointer;
 }

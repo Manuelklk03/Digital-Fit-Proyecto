@@ -1,0 +1,50 @@
+<app-header></app-header>
+
+<main class="zona-login">
+
+  <div class="caja-login">
+
+    <img src="assets/img/usuario.png" alt="Icono de usuario" class="icono-usuario">
+
+    <h1 class="titulo-login">Iniciar sesión</h1>
+
+    <form (ngSubmit)="iniciarSesion()">
+
+      <label class="texto-etiqueta" for="usuario">Nombre de usuario</label>
+      <input
+        class="campo-texto"
+        type="text"
+        id="usuario"
+        name="usuario"
+        [(ngModel)]="username"
+        required
+      >
+
+      <label class="texto-etiqueta" for="contrasena">Contraseña</label>
+      <input
+        class="campo-texto"
+        type="password"
+        id="contrasena"
+        name="contrasena"
+        [(ngModel)]="password"
+        required
+      >
+
+      @if (mensajeError) {
+        <p class="mensaje-error">{{ mensajeError }}</p>
+      }
+
+      <button class="boton-acceder" type="submit">
+        INICIAR SESIÓN
+      </button>
+
+      <p class="texto-registro">
+        ¿No tienes cuenta?
+        <a routerLink="/register">Regístrate</a>
+      </p>
+    </form>
+
+  </div>
+</main>
+
+<app-footer></app-footer>

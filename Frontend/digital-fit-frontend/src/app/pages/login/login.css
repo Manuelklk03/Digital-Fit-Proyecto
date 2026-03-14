@@ -3,7 +3,6 @@
         opacity: 0;
         transform: translateY(40px);
     }
-
     to {
         opacity: 1;
         transform: translateY(0);
@@ -23,14 +22,14 @@
     width: 100%;
     max-width: 420px;
     text-align: center;
-    box-shadow: 0px 0px 18px rgba(0, 0, 0, 0.18);
+    box-shadow: 0px 0px 18px rgba(0,0,0,0.18);
     border: 1px solid #b7c9ef;
     animation: aparecerLogin 0.8s ease forwards;
 }
 
 .icono-usuario {
     width: 150px;
-    margin-bottom: 20px;
+    margin: 0 auto 20px;
 }
 
 .titulo-login {
@@ -70,7 +69,6 @@
     border-radius: 8px;
     font-weight: bold;
     cursor: pointer;
-    transition: all 0.3s ease;
     font-size: 15px;
 }
 
@@ -84,7 +82,17 @@
 }
 
 .mensaje-error {
-    color: red;
-    margin-top: 15px;
+    color: #c62828;
     font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.texto-registro {
+    margin-top: 18px;
+}
+
+.texto-registro a {
+    color: var(--color-azul-oscuro);
+    font-weight: bold;
+    text-decoration: none;
 }
