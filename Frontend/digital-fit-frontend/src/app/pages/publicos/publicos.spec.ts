@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Publicos } from './publicos';
+import { PublicosComponent } from './publicos';
 
 describe('Publicos', () => {
-  let component: Publicos;
-  let fixture: ComponentFixture<Publicos>;
+  let component: PublicosComponent;
+  let fixture: ComponentFixture<PublicosComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Publicos],
+      imports: [PublicosComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(Publicos);
+    fixture = TestBed.createComponent(PublicosComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

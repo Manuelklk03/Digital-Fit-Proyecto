@@ -6,6 +6,7 @@ import { PrivadosComponent } from './pages/privados/privados';
 import { PublicosComponent } from './pages/publicos/publicos';
 import { EntrenamientosComponent } from './pages/entrenamientos/entrenamientos';
 import { SoporteComponent } from './pages/soporte/soporte';
+import { ValoracionesComponent } from './pages/valoraciones/valoraciones';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -16,5 +17,6 @@ export const routes: Routes = [
   { path: 'publicos', component: PublicosComponent },
   { path: 'entrenamientos', component: EntrenamientosComponent },
   { path: 'soporte', component: SoporteComponent },
-  { path: '**', redirectTo: 'login' }
+  { path: '**', redirectTo: 'login' },
+  { path: 'valoraciones', component: ValoracionesComponent },
 ];
