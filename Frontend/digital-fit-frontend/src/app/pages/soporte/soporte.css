@@ -1,0 +1,12 @@
+.pagina-base {
+    padding: 40px 20px;
+}
+
+.bloque {
+    max-width: 1100px;
+    margin: 0 auto;
+    background-color: var(--color-azul-caja);
+    padding: 30px;
+    border-radius: 18px;
+    box-shadow: 0px 0px 18px rgba(0,0,0,0.12);
+}

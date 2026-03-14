@@ -6,22 +6,22 @@
 
   <nav class="menu-navegacion">
     <ul>
-      <li><a routerLink="/inicio" routerLinkActive="enlace-activo">Inicio</a></li>
-      <li><a routerLink="/login" routerLinkActive="enlace-activo">Login</a></li>
-      <li><a routerLink="/register" routerLinkActive="enlace-activo">Registro</a></li>
+      <li><a routerLink="/inicio">Inicio</a></li>
+      <li><a routerLink="/privados">Centros privados</a></li>
+      <li><a routerLink="/publicos">Lugares públicos</a></li>
+      <li><a routerLink="/entrenamientos">Entrenamientos</a></li>
+      <li><a routerLink="/soporte">Soporte</a></li>
     </ul>
   </nav>
 
-  @if (usuario) {
-    <div class="estado-usuario estado-usuario-iniciada">
-      <img src="assets/img/usuario.png" alt="Usuario" class="icono-usuario-pequeno">
-      <span>{{ usuario }}</span>
-      <button class="boton-logout" (click)="logout()">Salir</button>
-    </div>
-  } @else {
-    <div class="estado-usuario">
+  <div class="estado-usuario">
+    @if (usuarioActual) {
+      <span>Sesión iniciada: {{ usuarioActual }}</span>
+      <button class="boton-header" (click)="cerrarSesion()">Salir</button>
+    } @else {
       <span>Sesión no iniciada</span>
-    </div>
-  }
+      <a class="boton-header" routerLink="/login">Entrar</a>
+    }
+  </div>
 
 </header>

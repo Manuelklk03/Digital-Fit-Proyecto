@@ -1,1 +1,72 @@
-<p>inicio works!</p>
+<app-header></app-header>
+
+<main class="inicio">
+
+  <section class="hero">
+    <div class="hero-texto">
+      <h1>Bienvenido a Digital-FIT</h1>
+      <p>
+        Tu aplicación para descubrir centros deportivos, lugares públicos
+        para entrenar, rutinas y recursos fitness en un solo sitio.
+      </p>
+
+      <div class="hero-botones">
+        <a routerLink="/privados" class="boton-principal">Ver centros privados</a>
+        <a routerLink="/publicos" class="boton-secundario">Ver lugares públicos</a>
+      </div>
+    </div>
+
+    <div class="hero-imagen">
+      <img src="assets/img/inicio-gym.jpg" alt="Entrenamiento en gimnasio">
+    </div>
+  </section>
+
+  <section class="grid-accesos">
+    <article class="card-acceso">
+      <h2>Entrenamientos</h2>
+      <p>Consulta rutinas, ejercicios y sesiones disponibles.</p>
+      <a routerLink="/entrenamientos" class="boton-principal">Entrar</a>
+    </article>
+
+    <article class="card-acceso">
+      <h2>Centros privados</h2>
+      <p>Explora gimnasios y centros premium con sus servicios.</p>
+      <a routerLink="/privados" class="boton-principal">Entrar</a>
+    </article>
+
+    <article class="card-acceso">
+      <h2>Lugares públicos</h2>
+      <p>Encuentra parques y zonas para entrenar al aire libre.</p>
+      <a routerLink="/publicos" class="boton-principal">Entrar</a>
+    </article>
+
+    <article class="card-acceso">
+      <h2>Soporte</h2>
+      <p>Envía tus dudas, sugerencias o problemas técnicos.</p>
+      <a routerLink="/soporte" class="boton-principal">Entrar</a>
+    </article>
+  </section>
+
+  <section class="bloque-multimedia">
+    <div class="audio-box">
+      <h2>Motivación diaria</h2>
+      <p class="texto-motivacion">
+        Mantén la constancia y sigue avanzando en tus objetivos deportivos.
+      </p>
+      <audio controls>
+        <source src="assets/audio/motivacion.mp3" type="audio/mpeg">
+        Tu navegador no soporta audio.
+      </audio>
+    </div>
+
+    <div class="video-box">
+      <video controls>
+        <source src="assets/video/presentacion.mp4" type="video/mp4">
+        Tu navegador no soporta vídeo.
+      </video>
+    </div>
+  </section>
+
+</main>
+
+<app-footer></app-footer>
