@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Privados } from './privados';
+import { PrivadosComponent } from './privados';
 
 describe('Privados', () => {
-  let component: Privados;
-  let fixture: ComponentFixture<Privados>;
+  let component: PrivadosComponent;
+  let fixture: ComponentFixture<PrivadosComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Privados],
+      imports: [PrivadosComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(Privados);
+    fixture = TestBed.createComponent(PrivadosComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
