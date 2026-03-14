@@ -1,20 +1,19 @@
-import { AuthService } from './../../services/auth-service';
-import { Component, OnInit, inject } from '@angular/core';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-
+import { Component, inject } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../services/auth-service';
 
 @Component({
   selector: 'app-header',
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink],
   templateUrl: './header.html',
   styleUrl: './header.css'
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
 
   private authService = inject(AuthService);
   private router = inject(Router);
 
-  usuario: string | null = null;
+  usuarioActual: string | null = null;
 
   ngOnInit(): void {
     this.cargarUsuario();
@@ -23,22 +22,22 @@ export class HeaderComponent implements OnInit {
   cargarUsuario(): void {
     this.authService.yo().subscribe({
       next: (respuesta) => {
-        this.usuario = respuesta;
+        this.usuarioActual = respuesta;
       },
       error: () => {
-        this.usuario = null;
+        this.usuarioActual = null;
       }
     });
   }
 
-  logout(): void {
+  cerrarSesion(): void {
     this.authService.logout().subscribe({
       next: () => {
-        this.usuario = null;
+        this.usuarioActual = null;
         this.router.navigate(['/login']);
       },
       error: () => {
-        this.usuario = null;
+        this.usuarioActual = null;
         this.router.navigate(['/login']);
       }
     });
