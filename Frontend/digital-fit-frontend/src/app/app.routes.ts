@@ -7,16 +7,21 @@ import { PublicosComponent } from './pages/publicos/publicos';
 import { EntrenamientosComponent } from './pages/entrenamientos/entrenamientos';
 import { SoporteComponent } from './pages/soporte/soporte';
 import { ValoracionesComponent } from './pages/valoraciones/valoraciones';
+import { authGuard } from './guards/auth-guard';
+import { publicGuard } from './guards/public-guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
-  { path: 'inicio', component: InicioComponent },
-  { path: 'privados', component: PrivadosComponent },
-  { path: 'publicos', component: PublicosComponent },
-  { path: 'entrenamientos', component: EntrenamientosComponent },
-  { path: 'soporte', component: SoporteComponent },
-  { path: '**', redirectTo: 'login' },
-  { path: 'valoraciones', component: ValoracionesComponent },
+
+  { path: 'login', component: LoginComponent, canActivate: [publicGuard] },
+  { path: 'register', component: RegisterComponent, canActivate: [publicGuard] },
+
+  { path: 'inicio', component: InicioComponent, canActivate: [authGuard] },
+  { path: 'privados', component: PrivadosComponent, canActivate: [authGuard] },
+  { path: 'publicos', component: PublicosComponent, canActivate: [authGuard] },
+  { path: 'entrenamientos', component: EntrenamientosComponent, canActivate: [authGuard] },
+  { path: 'soporte', component: SoporteComponent, canActivate: [authGuard] },
+  { path: 'valoraciones', component: ValoracionesComponent, canActivate: [authGuard] },
+
+  { path: '**', redirectTo: 'login' }
 ];
