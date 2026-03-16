@@ -1,12 +1,13 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient,HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-private http = inject(HttpClient);
+
+  private http = inject(HttpClient);
   private apiUrl = 'http://localhost:8080/api/auth';
 
   login(username: string, password: string): Observable<string> {
@@ -60,5 +61,4 @@ private http = inject(HttpClient);
       }
     );
   }
-
 }
