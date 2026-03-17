@@ -30,7 +30,8 @@ export class LoginComponent {
 
     this.authService.login(this.username, this.password).subscribe({
       next: () => {
-        // 🔥 IMPORTANTE: cargar usuario antes de entrar
+
+        // 🔥 clave: cargar usuario global antes de redirigir
         this.authService.yo().subscribe({
           next: () => {
             this.router.navigate(['/inicio']);
@@ -39,6 +40,7 @@ export class LoginComponent {
             this.mensajeError = 'Error al recuperar sesión.';
           }
         });
+
       },
       error: () => {
         this.mensajeError = 'Usuario o contraseña incorrectos.';

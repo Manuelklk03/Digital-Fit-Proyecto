@@ -16,14 +16,14 @@ export class HeaderComponent {
   usuarioActual: string | null = null;
 
   ngOnInit(): void {
-    this.cargarUsuario();
-  }
 
-  cargarUsuario(): void {
+    // 🔥 escucha cambios de login en tiempo real
+    this.authService.usuario$.subscribe(usuario => {
+      this.usuarioActual = usuario;
+    });
+
+    // 🔥 al cargar la app intenta recuperar sesión
     this.authService.yo().subscribe({
-      next: (respuesta) => {
-        this.usuarioActual = respuesta;
-      },
       error: () => {
         this.usuarioActual = null;
       }
@@ -33,11 +33,6 @@ export class HeaderComponent {
   cerrarSesion(): void {
     this.authService.logout().subscribe({
       next: () => {
-        this.usuarioActual = null;
-        this.router.navigate(['/login']);
-      },
-      error: () => {
-        this.usuarioActual = null;
         this.router.navigate(['/login']);
       }
     });
