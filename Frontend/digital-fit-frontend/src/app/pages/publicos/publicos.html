@@ -1,12 +1,33 @@
 <app-header></app-header>
 
-<main class="pagina-base">
-  <section class="bloque">
-    <h1>Lugares públicos</h1>
-    <p>
-      Aquí mostraremos parques, zonas deportivas y espacios públicos donde entrenar.
-    </p>
-  </section>
+<main class="contenedor-listado">
+
+  <h1>Lugares públicos</h1>
+
+  <div class="grid-centros">
+
+    @for (lugar of publicos; track lugar.id) {
+
+      <div class="card-centro">
+
+        <h2>{{ lugar.nombre }}</h2>
+
+        <p><strong>Dirección:</strong> {{ lugar.direccion }}</p>
+
+        <p><strong>Tipo:</strong> {{ lugar.tipo }}</p>
+
+        <p><strong>Teléfono:</strong> {{ lugar.telefono }}</p>
+
+        <p><strong>Horario:</strong> {{ lugar.horario }}</p>
+
+        <p>{{ lugar.descripcion }}</p>
+
+      </div>
+
+    }
+
+  </div>
+
 </main>
 
 <app-footer></app-footer>
