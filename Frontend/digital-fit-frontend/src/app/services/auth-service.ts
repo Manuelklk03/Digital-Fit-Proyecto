@@ -53,7 +53,7 @@ export class AuthService {
         responseType: 'text'
       }
     ).pipe(
-      tap(usuario => this.usuarioSubject.next(usuario)) // 🔥 guarda usuario
+      tap(usuario => this.usuarioSubject.next(usuario)) //  guarda usuario
     );
   }
 

@@ -1,12 +1,33 @@
 <app-header></app-header>
 
-<main class="pagina-base">
-  <section class="bloque">
-    <h1>Centros privados</h1>
-    <p>
-      Aquí mostraremos los gimnasios y centros deportivos privados disponibles en Digital-FIT.
-    </p>
-  </section>
+<main class="contenedor-listado">
+
+  <h1>Centros privados</h1>
+
+  <div class="grid-centros">
+
+    @for (centro of privados; track centro.id) {
+
+      <div class="card-centro">
+
+        <h2>{{ centro.nombre }}</h2>
+
+        <p><strong>Dirección:</strong> {{ centro.direccion }}</p>
+
+        <p><strong>Teléfono:</strong> {{ centro.telefono }}</p>
+
+        <p><strong>Horario:</strong> {{ centro.horario }}</p>
+
+        <p><strong>Precio:</strong> {{ centro.precioMensual }} €</p>
+
+        <p>{{ centro.descripcion }}</p>
+
+      </div>
+
+    }
+
+  </div>
+
 </main>
 
 <app-footer></app-footer>
