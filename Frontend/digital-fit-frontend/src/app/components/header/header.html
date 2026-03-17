@@ -16,7 +16,7 @@
 
   <div class="estado-usuario">
     @if (usuarioActual) {
-      <span>Sesión iniciada: {{ usuarioActual }}</span>
+      <span>👤 {{ usuarioActual }}</span>
       <button class="boton-header" (click)="cerrarSesion()">Salir</button>
     } @else {
       <span>Sesión no iniciada</span>
