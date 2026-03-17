@@ -41,3 +41,62 @@
 2026-03-16 00:05:27 - Completed initialization in 1 ms
 2026-03-16 00:06:06 - Buscando usuario con login: 10480458
 2026-03-16 00:06:07 - Buscando usuario con login: 10480458
+2026-03-16 14:46:39 - Starting DigitalFitApplication using Java 25 with PID 3692 (C:\Users\manue\Desktop\2 DAW\PROYECTO\Código\DIGITAL-FIT\Digital-Fit-Proyecto\Backend\digital-fit\target\classes started by manue in C:\Users\manue\Desktop\2 DAW\PROYECTO\Código\DIGITAL-FIT\Digital-Fit-Proyecto\Backend\digital-fit)
+2026-03-16 14:46:39 - Running with Spring Boot v4.0.3, Spring v7.0.5
+2026-03-16 14:46:39 - No active profile set, falling back to 1 default profile: "default"
+2026-03-16 14:46:39 - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-03-16 14:46:39 - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-03-16 14:46:40 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-03-16 14:46:40 - Finished Spring Data repository scanning in 73 ms. Found 12 JPA repository interfaces.
+2026-03-16 14:46:40 - Tomcat initialized with port 8080 (http)
+2026-03-16 14:46:40 - Starting service [Tomcat]
+2026-03-16 14:46:40 - Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-03-16 14:46:40 - Root WebApplicationContext: initialization completed in 1530 ms
+2026-03-16 14:46:41 - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-03-16 14:46:41 - HHH000001: Hibernate ORM core version 7.2.4.Final
+2026-03-16 14:46:41 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-03-16 14:46:41 - HikariPool-1 - Starting...
+2026-03-16 14:46:42 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@268f2dee
+2026-03-16 14:46:42 - HikariPool-1 - Start completed.
+2026-03-16 14:46:42 - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://localhost:3306/digital_fit]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.41
+	Default catalog/schema: digital_fit/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-03-16 14:46:43 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-03-16 14:46:44 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-03-16 14:46:44 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-03-16 14:46:46 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-03-16 14:46:46 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2026-03-16 14:46:46 - Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2026-03-16 14:46:46 - Exposing 1 endpoint beneath base path '/actuator'
+2026-03-16 14:46:47 - Tomcat started on port 8080 (http) with context path '/'
+2026-03-16 14:46:47 - Started DigitalFitApplication in 7.906 seconds (process running for 8.327)
+2026-03-16 14:46:48 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-03-16 14:46:48 - Initializing Servlet 'dispatcherServlet'
+2026-03-16 14:46:48 - Completed initialization in 1 ms
+2026-03-16 14:47:33 - Buscando usuario con login: usuario1
+2026-03-16 14:47:33 - Usuario encontrado: usuario1
+2026-03-16 14:47:35 - Buscando usuario con login: usuario1
+2026-03-16 14:47:35 - Usuario encontrado: usuario1
+2026-03-16 14:47:36 - Buscando usuario con login: usuario1
+2026-03-16 14:47:36 - Usuario encontrado: usuario1
+2026-03-16 14:47:37 - Buscando usuario con login: usuario1
+2026-03-16 14:47:37 - Usuario encontrado: usuario1
+2026-03-16 14:47:38 - Buscando usuario con login: usuario1
+2026-03-16 14:47:38 - Usuario encontrado: usuario1
+2026-03-16 14:48:00 - Buscando usuario con login: manuel
+2026-03-16 14:48:00 - Usuario encontrado: manuel
+2026-03-16 14:48:25 - Buscando usuario con login: manuel
+2026-03-16 14:48:25 - Usuario encontrado: manuel
+2026-03-16 14:50:17 - Registrando usuario: manuel2
+2026-03-16 14:50:17 - Usuario registrado exitosamente manuel2
+2026-03-16 14:50:31 - Buscando usuario con login: manuel2
+2026-03-16 14:50:31 - Usuario encontrado: manuel2
