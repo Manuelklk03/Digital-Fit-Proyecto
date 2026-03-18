@@ -1,12 +1,80 @@
 <app-header></app-header>
 
-<main class="pagina-base">
-  <section class="bloque">
+<main class="pagina-soporte">
+
+  <section class="cabecera-soporte">
     <h1>Soporte</h1>
     <p>
-      Aquí irá el formulario o apartado de ayuda y contacto de la aplicación.
+      Si tienes alguna duda, problema o sugerencia sobre Digital-FIT,
+      puedes enviarnos un ticket desde este formulario.
     </p>
   </section>
+
+  <section class="contenedor-formulario">
+    <form class="formulario-soporte" (ngSubmit)="enviarFormulario()">
+
+      <div class="grupo-campo">
+        <label for="asunto">Asunto</label>
+        <input
+          type="text"
+          id="asunto"
+          name="asunto"
+          [(ngModel)]="asunto"
+          required
+        >
+      </div>
+
+      <div class="grupo-campo">
+        <label for="mensaje">Mensaje</label>
+        <textarea
+          id="mensaje"
+          name="mensaje"
+          rows="6"
+          [(ngModel)]="mensaje"
+          required
+        ></textarea>
+      </div>
+
+      <button type="submit" class="boton-enviar">
+        Enviar ticket
+      </button>
+
+      @if (mensajeExito) {
+        <p class="mensaje-exito">{{ mensajeExito }}</p>
+      }
+
+      @if (mensajeError) {
+        <p class="mensaje-error">{{ mensajeError }}</p>
+      }
+
+    </form>
+  </section>
+
+  <section class="seccion-tickets">
+    <h2>Mis tickets</h2>
+
+    @if (tickets.length > 0) {
+      <div class="lista-tickets">
+
+        @for (ticket of tickets; track ticket.id) {
+          <article class="ticket-card">
+            <h3>{{ ticket.asunto }}</h3>
+            <p>{{ ticket.mensaje }}</p>
+            <p><strong>Fecha:</strong> {{ ticket.fecha }}</p>
+            <p><strong>Estado:</strong> {{ ticket.estado }}</p>
+
+            <button class="boton-borrar" (click)="borrarTicket(ticket.id)">
+              Borrar ticket
+            </button>
+          </article>
+        }
+
+      </div>
+    } @else {
+      <p class="sin-tickets">No tienes tickets todavía.</p>
+    }
+  </section>
+
 </main>
 
 <app-footer></app-footer>

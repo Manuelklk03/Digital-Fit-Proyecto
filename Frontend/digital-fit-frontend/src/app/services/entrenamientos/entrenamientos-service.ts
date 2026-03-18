@@ -15,4 +15,10 @@ export class EntrenamientosService {
       withCredentials: true
     });
   }
+
+  getEntrenamientoById(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${id}`, {
+      withCredentials: true
+    });
+  }
 }

@@ -12,11 +12,17 @@
 
         <h2>{{ entrenamiento.nombre }}</h2>
 
-        <p><strong>Duración:</strong> {{ entrenamiento.duracionEnMinutos }} minutos</p>
+        <p><strong>Categoría:</strong> {{ entrenamiento.categoria }}</p>
 
         <p><strong>Nivel:</strong> {{ entrenamiento.nivel }}</p>
 
+        <p><strong>Duración:</strong> {{ entrenamiento.duracionEnMinutos }} min</p>
+
         <p>{{ entrenamiento.descripcion }}</p>
+
+        <a class="boton-detalle" [routerLink]="['/entrenamientos', entrenamiento.id]">
+          Ver detalle
+        </a>
 
       </div>
 
