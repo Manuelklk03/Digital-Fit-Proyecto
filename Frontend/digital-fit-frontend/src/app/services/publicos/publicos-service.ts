@@ -15,4 +15,10 @@ export class PublicosService {
       withCredentials: true
     });
   }
+
+  getPublicoById(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${id}`, {
+      withCredentials: true
+    });
+  }
 }

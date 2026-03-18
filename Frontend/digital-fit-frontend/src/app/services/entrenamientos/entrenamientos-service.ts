@@ -5,19 +5,13 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class PrivadosService {
+export class EntrenamientosService {
 
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/api/centros-privados';
+  private apiUrl = 'http://localhost:8080/api/entrenamientos';
 
-  getPrivados(): Observable<any[]> {
+  getEntrenamientos(): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrl, {
-      withCredentials: true
-    });
-  }
-
-  getPrivadoById(id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${id}`, {
       withCredentials: true
     });
   }

@@ -1,12 +1,29 @@
 <app-header></app-header>
 
-<main class="pagina-base">
-  <section class="bloque">
-    <h1>Entrenamientos</h1>
-    <p>
-      Aquí mostraremos las rutinas, ejercicios y sesiones de entrenamiento disponibles.
-    </p>
-  </section>
+<main class="contenedor-listado">
+
+  <h1>Entrenamientos</h1>
+
+  <div class="grid-centros">
+
+    @for (entrenamiento of entrenamientos; track entrenamiento.id) {
+
+      <div class="card-centro">
+
+        <h2>{{ entrenamiento.nombre }}</h2>
+
+        <p><strong>Duración:</strong> {{ entrenamiento.duracionEnMinutos }} minutos</p>
+
+        <p><strong>Nivel:</strong> {{ entrenamiento.nivel }}</p>
+
+        <p>{{ entrenamiento.descripcion }}</p>
+
+      </div>
+
+    }
+
+  </div>
+
 </main>
 
 <app-footer></app-footer>
