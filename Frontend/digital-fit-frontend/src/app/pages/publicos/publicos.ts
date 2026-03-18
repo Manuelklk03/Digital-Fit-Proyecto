@@ -1,12 +1,13 @@
 import { PublicosService } from './../../services/publicos/publicos-service';
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../components/header/header';
 import { Footer } from '../../components/footer/footer';
-import { ChangeDetectorRef } from '@angular/core';
+
 
 @Component({
   selector: 'app-publicos',
-  imports: [HeaderComponent, Footer],
+  imports: [HeaderComponent, Footer, RouterLink],
   templateUrl: './publicos.html',
   styleUrl: './publicos.css'
 })
@@ -21,10 +22,7 @@ export class PublicosComponent {
     this.publicosService.getPublicos().subscribe({
       next: (data) => {
         console.log('DATOS PUBLICOS:', data);
-
         this.publicos = data;
-
-        // 🔥 igual que privados
         this.cdr.detectChanges();
       },
       error: (err) => {

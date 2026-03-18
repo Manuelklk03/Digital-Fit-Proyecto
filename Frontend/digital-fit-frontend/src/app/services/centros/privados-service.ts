@@ -15,4 +15,10 @@ export class PrivadosService {
       withCredentials: true
     });
   }
+
+  getPrivadoById(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${id}`, {
+      withCredentials: true
+    });
+  }
 }

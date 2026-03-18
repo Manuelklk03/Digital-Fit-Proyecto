@@ -22,6 +22,10 @@
 
         <p>{{ lugar.descripcion }}</p>
 
+        <a class="boton-detalle" [routerLink]="['/publicos', lugar.id]">
+          Ver detalle
+        </a>
+
       </div>
 
     }
