@@ -1,12 +1,13 @@
 import { EntrenamientosService } from './../../services/entrenamientos/entrenamientos-service';
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../components/header/header';
 import { Footer } from '../../components/footer/footer';
-import { ChangeDetectorRef } from '@angular/core';
+
 
 @Component({
   selector: 'app-entrenamientos',
-  imports: [HeaderComponent, Footer],
+  imports: [HeaderComponent, Footer, RouterLink],
   templateUrl: './entrenamientos.html',
   styleUrl: './entrenamientos.css'
 })
@@ -21,9 +22,7 @@ export class EntrenamientosComponent {
     this.entrenamientosService.getEntrenamientos().subscribe({
       next: (data) => {
         console.log('DATOS ENTRENAMIENTOS:', data);
-
         this.entrenamientos = data;
-
         this.cdr.detectChanges();
       },
       error: (err) => {

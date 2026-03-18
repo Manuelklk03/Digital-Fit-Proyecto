@@ -11,6 +11,7 @@ import { ValoracionesComponent } from './pages/valoraciones/valoraciones';
 import { DetallePrivadoComponent } from './pages/detalle-privado/detalle-privado';
 import { authGuard } from './guards/auth-guard';
 import { publicGuard } from './guards/public-guard';
+import { DetalleEntrenamientoComponent } from './pages/detalle-entrenamientos/detalle-entrenamiento-base/detalle-entrenamiento-base';
 
 
 export const routes: Routes = [
@@ -27,5 +28,6 @@ export const routes: Routes = [
   { path: 'soporte', component: SoporteComponent, canActivate: [authGuard] },
   { path: 'valoraciones', component: ValoracionesComponent, canActivate: [authGuard] },
   { path: 'publicos/:id', component: DetallePublicoComponent, canActivate: [authGuard] },
+  { path: 'entrenamientos/:id', component: DetalleEntrenamientoComponent, canActivate: [authGuard] },
   { path: '**', redirectTo: 'login' }
 ];
