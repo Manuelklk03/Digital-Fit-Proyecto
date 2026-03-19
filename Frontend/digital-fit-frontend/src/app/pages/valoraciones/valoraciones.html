@@ -2,68 +2,113 @@
 
 <main class="pagina-valoraciones">
 
-  <section class="hero-valoraciones">
-    <div class="contenedor-hero">
-      <h1>Valoraciones de usuarios</h1>
-      <p>
-        En este apartado se mostrarán las opiniones y reseñas realizadas
-        por los usuarios sobre centros deportivos y espacios públicos.
-      </p>
-    </div>
+  <section class="cabecera-valoraciones">
+    <h1>Valoraciones</h1>
+    <p>
+      Aquí podrás ver tus valoraciones y crear nuevas de forma base mientras cerramos la estructura principal.
+    </p>
   </section>
 
-  <section class="seccion-valoraciones">
-    <div class="grid-valoraciones">
+  <section class="bloque-formulario">
+    <h2>Crear o actualizar valoración</h2>
 
-      <article class="tarjeta-valoracion">
-        <div class="cabecera-valoracion">
-          <h3>Gym Energy Center</h3>
-          <span class="nota">4.8 ★</span>
-        </div>
-        <p class="autor">Usuario: manuel_fit</p>
-        <p class="comentario">
-          Muy buen ambiente, máquinas bastante cuidadas y personal atento.
-          El centro está limpio y las instalaciones están bien organizadas.
-        </p>
-      </article>
+    <form class="formulario-valoracion" (ngSubmit)="guardarValoracion()">
 
-      <article class="tarjeta-valoracion">
-        <div class="cabecera-valoracion">
-          <h3>Parque Deportivo Norte</h3>
-          <span class="nota">4.3 ★</span>
-        </div>
-        <p class="autor">Usuario: maria_sport</p>
-        <p class="comentario">
-          Buen sitio para entrenar al aire libre. Tiene espacio suficiente
-          para correr y hacer ejercicios básicos. Faltaría algo más de mantenimiento.
-        </p>
-      </article>
+      <div class="grupo-campo">
+        <label for="tipoContenido">Tipo de contenido</label>
+        <select
+          id="tipoContenido"
+          name="tipoContenido"
+          [(ngModel)]="tipoContenido"
+        >
+          <option value="CENTRO_PRIVADO">CENTRO_PRIVADO</option>
+          <option value="LUGAR_PUBLICO">LUGAR_PUBLICO</option>
+          <option value="ENTRENAMIENTO_BASE">ENTRENAMIENTO_BASE</option>
+          <option value="ENTRENAMIENTO_COMUNIDAD">ENTRENAMIENTO_COMUNIDAD</option>
+        </select>
+      </div>
 
-      <article class="tarjeta-valoracion">
-        <div class="cabecera-valoracion">
-          <h3>Fitness Club Roquetas</h3>
-          <span class="nota">4.6 ★</span>
-        </div>
-        <p class="autor">Usuario: juan_training</p>
-        <p class="comentario">
-          Las clases dirigidas están bastante bien y el horario es cómodo.
-          La aplicación podría mostrar más detalles del centro.
-        </p>
-      </article>
+      <div class="grupo-campo">
+        <label for="idContenido">ID del contenido</label>
+        <input
+          type="number"
+          id="idContenido"
+          name="idContenido"
+          [(ngModel)]="idContenido"
+          required
+        >
+      </div>
 
-      <article class="tarjeta-valoracion">
-        <div class="cabecera-valoracion">
-          <h3>Zona Calistenia Playa</h3>
-          <span class="nota">4.5 ★</span>
-        </div>
-        <p class="autor">Usuario: laura_move</p>
-        <p class="comentario">
-          Muy buena ubicación y bastante útil para entrenamientos funcionales.
-          Como punto positivo, el entorno también acompaña bastante.
-        </p>
-      </article>
+      <div class="grupo-campo">
+        <label for="puntuacion">Puntuación</label>
+        <select
+          id="puntuacion"
+          name="puntuacion"
+          [(ngModel)]="puntuacion"
+        >
+          <option [value]="1">1</option>
+          <option [value]="2">2</option>
+          <option [value]="3">3</option>
+          <option [value]="4">4</option>
+          <option [value]="5">5</option>
+        </select>
+      </div>
 
-    </div>
+      <div class="grupo-campo">
+        <label for="comentario">Comentario</label>
+        <textarea
+          id="comentario"
+          name="comentario"
+          rows="5"
+          [(ngModel)]="comentario"
+        ></textarea>
+      </div>
+
+      <button type="submit" class="boton-guardar">
+        Guardar valoración
+      </button>
+
+      @if (mensajeExito) {
+        <p class="mensaje-exito">{{ mensajeExito }}</p>
+      }
+
+      @if (mensajeError) {
+        <p class="mensaje-error">{{ mensajeError }}</p>
+      }
+
+    </form>
+  </section>
+
+  <section class="bloque-listado">
+    <h2>Mis valoraciones</h2>
+
+    @if (misValoraciones.length > 0) {
+      <div class="grid-valoraciones">
+
+        @for (valoracion of misValoraciones; track valoracion.id) {
+          <article class="tarjeta-valoracion">
+
+            <h3>{{ valoracion.tipoDeValoracion }}</h3>
+
+            <p><strong>ID contenido:</strong> {{ valoracion.contenidoId }}</p>
+            <p><strong>Puntuación:</strong> {{ valoracion.puntuacion }}</p>
+            <p><strong>Comentario:</strong> {{ valoracion.comentario }}</p>
+            <p><strong>Fecha:</strong> {{ valoracion.fecha }}</p>
+
+            <button
+              class="boton-borrar"
+              (click)="borrarValoracion(valoracion.tipoDeValoracion, valoracion.contenidoId)"
+            >
+              Borrar valoración
+            </button>
+
+          </article>
+        }
+
+      </div>
+    } @else {
+      <p class="sin-valoraciones">No tienes valoraciones todavía.</p>
+    }
   </section>
 
 </main>
