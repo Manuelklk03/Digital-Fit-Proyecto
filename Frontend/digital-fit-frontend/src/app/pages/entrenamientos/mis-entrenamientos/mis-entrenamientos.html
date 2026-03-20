@@ -1,0 +1,131 @@
+<app-header></app-header>
+
+<main class="pagina-mis-entrenamientos">
+
+  <section class="cabecera-pagina">
+    <h1>Mis entrenamientos</h1>
+    <p>
+      Aquí puedes ver tus entrenamientos guardados y crear entrenamientos personalizados.
+    </p>
+  </section>
+
+  <section class="bloque-formulario">
+    <h2>Crear entrenamiento personalizado</h2>
+
+    <form class="formulario-entrenamiento" (ngSubmit)="crearEntrenamiento()">
+
+      <div class="grupo-campo">
+        <label for="nombre">Nombre</label>
+        <input
+          type="text"
+          id="nombre"
+          name="nombre"
+          [(ngModel)]="nombre"
+          required
+        >
+      </div>
+
+      <div class="grupo-campo">
+        <label for="descripcion">Descripción</label>
+        <textarea
+          id="descripcion"
+          name="descripcion"
+          rows="4"
+          [(ngModel)]="descripcion"
+          required
+        ></textarea>
+      </div>
+
+      <div class="grupo-campo">
+        <label for="categoria">Categoría</label>
+        <select
+          id="categoria"
+          name="categoria"
+          [(ngModel)]="categoria"
+        >
+          <option value="FUERZA_TOTAL">FUERZA_TOTAL</option>
+          <option value="FUERZA_TREN_SUPERIOR">FUERZA_TREN_SUPERIOR</option>
+          <option value="FUERZA_TREN_INFERIOR">FUERZA_TREN_INFERIOR</option>
+          <option value="CARDIO_SUAVE">CARDIO_SUAVE</option>
+          <option value="CARDIO_INTENSO">CARDIO_INTENSO</option>
+          <option value="HIIT">HIIT</option>
+          <option value="ESTIRAMIENTOS">ESTIRAMIENTOS</option>
+          <option value="MOVILIDAD">MOVILIDAD</option>
+        </select>
+      </div>
+
+      <div class="grupo-campo">
+        <label for="nivel">Nivel</label>
+        <select
+          id="nivel"
+          name="nivel"
+          [(ngModel)]="nivel"
+        >
+          <option value="PRINCIPIANTE">PRINCIPIANTE</option>
+          <option value="INTERMEDIO">INTERMEDIO</option>
+          <option value="AVANZADO">AVANZADO</option>
+          <option value="EXPERTO">EXPERTO</option>
+        </select>
+      </div>
+
+      <div class="grupo-campo">
+        <label for="duracionEnMinutos">Duración (minutos)</label>
+        <input
+          type="number"
+          id="duracionEnMinutos"
+          name="duracionEnMinutos"
+          [(ngModel)]="duracionEnMinutos"
+          required
+        >
+      </div>
+
+      <button type="submit" class="boton-guardar">
+        Guardar entrenamiento
+      </button>
+
+      @if (mensajeExito) {
+        <p class="mensaje-exito">{{ mensajeExito }}</p>
+      }
+
+      @if (mensajeError) {
+        <p class="mensaje-error">{{ mensajeError }}</p>
+      }
+
+    </form>
+  </section>
+
+  <section class="bloque-listado">
+    <h2>Listado de mis entrenamientos</h2>
+
+    @if (entrenamientos.length > 0) {
+      <div class="grid-entrenamientos">
+
+        @for (entrenamiento of entrenamientos; track entrenamiento.id) {
+          <article class="tarjeta-entrenamiento">
+
+            <h3>{{ entrenamiento.nombre }}</h3>
+
+            <p><strong>Categoría:</strong> {{ entrenamiento.categoria }}</p>
+            <p><strong>Nivel:</strong> {{ entrenamiento.nivel }}</p>
+            <p><strong>Duración:</strong> {{ entrenamiento.duracionEnMinutos }} min</p>
+            <p>{{ entrenamiento.descripcion }}</p>
+
+            <button
+              class="boton-borrar"
+              (click)="borrarEntrenamiento(entrenamiento.id)"
+            >
+              Borrar entrenamiento
+            </button>
+
+          </article>
+        }
+
+      </div>
+    } @else {
+      <p class="sin-datos">No tienes entrenamientos guardados todavía.</p>
+    }
+  </section>
+
+</main>
+
+<app-footer></app-footer>
