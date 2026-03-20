@@ -12,6 +12,9 @@ import { DetallePrivadoComponent } from './pages/detalle-privado/detalle-privado
 import { authGuard } from './guards/auth-guard';
 import { publicGuard } from './guards/public-guard';
 import { DetalleEntrenamientoComponent } from './pages/detalle-entrenamientos/detalle-entrenamiento-base/detalle-entrenamiento-base';
+import { MisEntrenamientosComponent } from './pages/entrenamientos/mis-entrenamientos/mis-entrenamientos';
+import { MisCentrosComponent } from './pages/privados/mis-centros/mis-centros';
+import { DetalleMiCentroComponent } from './pages/detalle-privado/detalle-mi-centro/detalle-mi-centro';
 
 
 export const routes: Routes = [
@@ -29,5 +32,8 @@ export const routes: Routes = [
   { path: 'valoraciones', component: ValoracionesComponent, canActivate: [authGuard] },
   { path: 'publicos/:id', component: DetallePublicoComponent, canActivate: [authGuard] },
   { path: 'entrenamientos/:id', component: DetalleEntrenamientoComponent, canActivate: [authGuard] },
+  { path: 'mis-entrenamientos', component: MisEntrenamientosComponent, canActivate: [authGuard] },
+  { path: 'mis-centros', component: MisCentrosComponent, canActivate: [authGuard] },
+{ path: 'mis-centros/:id', component: DetalleMiCentroComponent, canActivate: [authGuard] },
   { path: '**', redirectTo: 'login' }
 ];

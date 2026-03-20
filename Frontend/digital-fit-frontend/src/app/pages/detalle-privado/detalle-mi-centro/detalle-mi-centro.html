@@ -1,0 +1,68 @@
+<app-header></app-header>
+
+<main class="detalle-mi-centro">
+
+  @if (centro) {
+    <div class="grid-detalle">
+
+      <div class="columna-imagen">
+        <div class="imagen-wrapper">
+          <img src="img/LOGOFINAL-removebg.png" alt="Mi centro">
+          <span class="badge">Mi centro</span>
+        </div>
+      </div>
+
+      <div class="columna-info">
+
+        <h1>{{ centro.nombre }}</h1>
+
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="label">Dirección:</span>
+            <span>{{ centro.direccion }}</span>
+          </div>
+
+          <div class="info-item">
+            <span class="label">Teléfono:</span>
+            <span>{{ centro.telefono }}</span>
+          </div>
+
+          <div class="info-item">
+            <span class="label">Horario:</span>
+            <span>{{ centro.horario }}</span>
+          </div>
+
+          <div class="info-item">
+            <span class="label">Precio mensual:</span>
+            <span>{{ centro.precioMensual }} €</span>
+          </div>
+
+          <div class="info-item">
+            <span class="label">Latitud:</span>
+            <span>{{ centro.latitud }}</span>
+          </div>
+
+          <div class="info-item">
+            <span class="label">Longitud:</span>
+            <span>{{ centro.longitud }}</span>
+          </div>
+        </div>
+
+        <details class="bloque-detalles">
+          <summary>Descripción</summary>
+          <p>{{ centro.descripcion }}</p>
+        </details>
+
+        <button class="boton-ubicacion">
+          Ver ubicación
+        </button>
+
+      </div>
+    </div>
+  } @else {
+    <p class="mensaje-cargando">Cargando detalle...</p>
+  }
+
+</main>
+
+<app-footer></app-footer>

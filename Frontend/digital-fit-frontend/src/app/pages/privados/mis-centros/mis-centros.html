@@ -1,0 +1,113 @@
+<app-header></app-header>
+
+<main class="pagina-mis-centros">
+
+  <section class="cabecera-pagina">
+    <h1>Mis centros</h1>
+    <p>
+      Aquí puedes ver tus centros guardados y añadir centros personalizados.
+    </p>
+  </section>
+
+  <section class="bloque-formulario">
+    <h2>Añadir centro personalizado</h2>
+
+    <form class="formulario-centro" (ngSubmit)="crearCentro()">
+
+      <div class="grupo-campo">
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" name="nombre" [(ngModel)]="nombre" required>
+      </div>
+
+      <div class="grupo-campo">
+        <label for="direccion">Dirección</label>
+        <input type="text" id="direccion" name="direccion" [(ngModel)]="direccion" required>
+      </div>
+
+      <div class="grupo-campo">
+        <label for="telefono">Teléfono</label>
+        <input type="text" id="telefono" name="telefono" [(ngModel)]="telefono">
+      </div>
+
+      <div class="grupo-campo">
+        <label for="horario">Horario</label>
+        <input type="text" id="horario" name="horario" [(ngModel)]="horario">
+      </div>
+
+      <div class="grupo-campo">
+        <label for="precioMensual">Precio mensual</label>
+        <input type="number" id="precioMensual" name="precioMensual" [(ngModel)]="precioMensual">
+      </div>
+
+      <div class="grupo-campo">
+        <label for="descripcion">Descripción</label>
+        <textarea id="descripcion" name="descripcion" rows="4" [(ngModel)]="descripcion"></textarea>
+      </div>
+
+      <div class="grupo-campo">
+        <label for="latitud">Latitud</label>
+        <input type="number" id="latitud" name="latitud" [(ngModel)]="latitud">
+      </div>
+
+      <div class="grupo-campo">
+        <label for="longitud">Longitud</label>
+        <input type="number" id="longitud" name="longitud" [(ngModel)]="longitud">
+      </div>
+
+      <button type="submit" class="boton-guardar">
+        Guardar centro
+      </button>
+
+      @if (mensajeExito) {
+        <p class="mensaje-exito">{{ mensajeExito }}</p>
+      }
+
+      @if (mensajeError) {
+        <p class="mensaje-error">{{ mensajeError }}</p>
+      }
+
+    </form>
+  </section>
+
+  <section class="bloque-listado">
+    <h2>Listado de mis centros</h2>
+
+    @if (centros.length > 0) {
+      <div class="grid-centros">
+
+        @for (centro of centros; track centro.id) {
+          <article class="tarjeta-centro">
+
+            <h3>{{ centro.nombre }}</h3>
+
+            <p><strong>Dirección:</strong> {{ centro.direccion }}</p>
+            <p><strong>Teléfono:</strong> {{ centro.telefono }}</p>
+            <p><strong>Horario:</strong> {{ centro.horario }}</p>
+            <p><strong>Precio:</strong> {{ centro.precioMensual }} €</p>
+            <p>{{ centro.descripcion }}</p>
+
+            <div class="acciones-centro">
+              <a class="boton-detalle" [routerLink]="['/mis-centros', centro.id]">
+                Ver detalle
+              </a>
+
+              <button
+                class="boton-borrar"
+                (click)="borrarCentro(centro.id)"
+              >
+                Borrar centro
+              </button>
+            </div>
+
+          </article>
+        }
+
+      </div>
+    } @else {
+      <p class="sin-datos">No tienes centros guardados todavía.</p>
+    }
+  </section>
+
+</main>
+
+<app-footer></app-footer>
