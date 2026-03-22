@@ -175,6 +175,24 @@ public class EntrenamientoUsuarioService {
         entrenamientoUsuarioRepository.delete(entrenamientoUsuario);
     }
 
+    // Para mostrar detalle de entrenamientos:
+    public EntrenamientoUsuarioDTO detalle(Long id, String username) {
+
+        log.debug("Usuario {} consulta entrenamiento {}", username, id);
+
+        Usuario usuario = usuarioRepository.findByUsername(username)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
+
+        EntrenamientoUsuario entrenamientoUsuario = entrenamientoUsuarioRepository.findById(id)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Entrenamiento usuario no encontrado"));
+
+        if (!entrenamientoUsuario.getUsuario().getId().equals(usuario.getId())) {
+            throw new OperacionNoPermitida("No tienes permiso para ver este entrenamiento");
+        }
+
+        return entityToDto(entrenamientoUsuario);
+    }
+
     // Mappers:
     public EntrenamientoUsuarioDTO entityToDto(EntrenamientoUsuario entrenamientoUsuario) {
         EntrenamientoUsuarioDTO entrenamientoUsuarioDTO = new EntrenamientoUsuarioDTO();
