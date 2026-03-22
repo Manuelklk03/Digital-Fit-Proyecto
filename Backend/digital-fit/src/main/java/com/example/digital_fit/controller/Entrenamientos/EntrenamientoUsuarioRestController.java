@@ -27,50 +27,62 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/mis-entrenamientos")
 public class EntrenamientoUsuarioRestController {
 
-    @Autowired
-    private EntrenamientoUsuarioService entrenamientoUsuarioService;
+        @Autowired
+        private EntrenamientoUsuarioService entrenamientoUsuarioService;
 
-    @GetMapping
-    public ResponseEntity<List<EntrenamientoUsuarioDTO>> listarOFiltrar(Authentication authentication,
-            @RequestParam(required = false) CategoriaEntrenamientoComunidad categoria,
-            @RequestParam(required = false) NivelEntrenamiento nivel,
-            @RequestParam(required = false) Integer duracionEnMinutos, @RequestParam(required = false) String nombre) {
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(entrenamientoUsuarioService.listarOFiltrar(authentication.getName(), categoria, nivel,
-                        duracionEnMinutos, nombre));
-    }
+        @GetMapping
+        public ResponseEntity<List<EntrenamientoUsuarioDTO>> listarOFiltrar(Authentication authentication,
+                        @RequestParam(required = false) CategoriaEntrenamientoComunidad categoria,
+                        @RequestParam(required = false) NivelEntrenamiento nivel,
+                        @RequestParam(required = false) Integer duracionEnMinutos,
+                        @RequestParam(required = false) String nombre) {
+                return ResponseEntity.status(HttpStatus.OK)
+                                .body(entrenamientoUsuarioService.listarOFiltrar(authentication.getName(), categoria,
+                                                nivel,
+                                                duracionEnMinutos, nombre));
+        }
 
-    @PostMapping
-    public ResponseEntity<EntrenamientoUsuarioDTO> crearEntrenamientoUsuario(
-            @Valid @RequestBody CrearEntrenamientoUsuario dto,
-            Authentication authentication) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(entrenamientoUsuarioService.crearEntrenamientoPersonalizado(dto, authentication.getName()));
+        @PostMapping
+        public ResponseEntity<EntrenamientoUsuarioDTO> crearEntrenamientoUsuario(
+                        @Valid @RequestBody CrearEntrenamientoUsuario dto,
+                        Authentication authentication) {
+                return ResponseEntity.status(HttpStatus.CREATED)
+                                .body(entrenamientoUsuarioService.crearEntrenamientoPersonalizado(dto,
+                                                authentication.getName()));
 
-    }
+        }
 
-    @PostMapping("desde-base/{idBase}")
-    public ResponseEntity<EntrenamientoUsuarioDTO> AñadirEntrenamientoDesdeBase(@PathVariable Long idBase,
-            Authentication authentication) {
+        @PostMapping("desde-base/{idBase}")
+        public ResponseEntity<EntrenamientoUsuarioDTO> AñadirEntrenamientoDesdeBase(@PathVariable Long idBase,
+                        Authentication authentication) {
 
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(entrenamientoUsuarioService.añadirDesdeBase(idBase, authentication.getName()));
-    }
+                return ResponseEntity.status(HttpStatus.CREATED)
+                                .body(entrenamientoUsuarioService.añadirDesdeBase(idBase, authentication.getName()));
+        }
 
-    @PostMapping("desde-comunidad/{idComunidad}")
-    public ResponseEntity<EntrenamientoUsuarioDTO> AñadirEntrenamientoDesdeComunidad(@PathVariable Long idComunidad,
-            Authentication authentication) {
+        @PostMapping("desde-comunidad/{idComunidad}")
+        public ResponseEntity<EntrenamientoUsuarioDTO> AñadirEntrenamientoDesdeComunidad(@PathVariable Long idComunidad,
+                        Authentication authentication) {
 
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(entrenamientoUsuarioService.añadirDesdeComunidad(idComunidad, authentication.getName()));
-    }
+                return ResponseEntity.status(HttpStatus.CREATED)
+                                .body(entrenamientoUsuarioService.añadirDesdeComunidad(idComunidad,
+                                                authentication.getName()));
+        }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<EntrenamientoUsuarioDTO> borrarEntrenamientoUsuario(@PathVariable Long id,
-            Authentication authentication) {
+        @DeleteMapping("/{id}")
+        public ResponseEntity<EntrenamientoUsuarioDTO> borrarEntrenamientoUsuario(@PathVariable Long id,
+                        Authentication authentication) {
 
-        entrenamientoUsuarioService.borrarDeMisEntrenamientos(id, authentication.getName());
+                entrenamientoUsuarioService.borrarDeMisEntrenamientos(id, authentication.getName());
 
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+
+        @GetMapping("/{id}")
+        public ResponseEntity<EntrenamientoUsuarioDTO> obtenerPorId(@PathVariable Long id,
+                        Authentication authentication) {
+
+                return ResponseEntity.status(HttpStatus.OK)
+                                .body(entrenamientoUsuarioService.detalle(id, authentication.getName()));
+        }
 }
