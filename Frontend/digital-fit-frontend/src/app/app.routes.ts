@@ -15,6 +15,7 @@ import { DetalleEntrenamientoComponent } from './pages/detalle-entrenamientos/de
 import { MisEntrenamientosComponent } from './pages/entrenamientos/mis-entrenamientos/mis-entrenamientos';
 import { MisCentrosComponent } from './pages/privados/mis-centros/mis-centros';
 import { DetalleMiCentroComponent } from './pages/detalle-privado/detalle-mi-centro/detalle-mi-centro';
+import { DetalleMiEntrenamientoComponent } from './pages/detalle-entrenamientos/detalle-mis-entrenamientos/detalle-mis-entrenamientos';
 
 
 export const routes: Routes = [
@@ -35,5 +36,6 @@ export const routes: Routes = [
   { path: 'mis-entrenamientos', component: MisEntrenamientosComponent, canActivate: [authGuard] },
   { path: 'mis-centros', component: MisCentrosComponent, canActivate: [authGuard] },
 { path: 'mis-centros/:id', component: DetalleMiCentroComponent, canActivate: [authGuard] },
+{ path: 'mis-entrenamientos/:id', component: DetalleMiEntrenamientoComponent, canActivate: [authGuard] },
   { path: '**', redirectTo: 'login' }
 ];

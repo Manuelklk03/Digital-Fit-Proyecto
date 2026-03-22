@@ -110,12 +110,18 @@
             <p><strong>Duración:</strong> {{ entrenamiento.duracionEnMinutos }} min</p>
             <p>{{ entrenamiento.descripcion }}</p>
 
-            <button
-              class="boton-borrar"
-              (click)="borrarEntrenamiento(entrenamiento.id)"
-            >
-              Borrar entrenamiento
-            </button>
+            <div class="acciones-entrenamiento">
+              <a class="boton-detalle" [routerLink]="['/mis-entrenamientos', entrenamiento.id]">
+                Ver detalle
+              </a>
+
+              <button
+                class="boton-borrar"
+                (click)="borrarEntrenamiento(entrenamiento.id)"
+              >
+                Borrar entrenamiento
+              </button>
+            </div>
 
           </article>
         }
