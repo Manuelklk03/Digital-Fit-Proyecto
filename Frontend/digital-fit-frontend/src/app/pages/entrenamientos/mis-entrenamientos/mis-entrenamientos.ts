@@ -3,11 +3,12 @@ import { Footer } from './../../../components/footer/footer';
 import { HeaderComponent } from './../../../components/header/header';
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 
 
 @Component({
   selector: 'app-mis-entrenamientos',
-  imports: [HeaderComponent, Footer, FormsModule],
+  imports: [HeaderComponent, Footer, FormsModule, RouterLink],
   templateUrl: './mis-entrenamientos.html',
   styleUrl: './mis-entrenamientos.css'
 })

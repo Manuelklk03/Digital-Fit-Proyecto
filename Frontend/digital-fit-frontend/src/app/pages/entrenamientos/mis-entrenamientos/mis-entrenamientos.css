@@ -158,4 +158,28 @@
         width: 100%;
         text-align: center;
     }
+
+    .acciones-entrenamiento {
+    display: flex;
+    gap: 12px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+}
+
+.boton-detalle {
+    padding: 12px 18px;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    transition: 0.3s ease;
+    display: inline-block;
+    background-color: var(--color-azul-oscuro);
+    color: white;
+}
+
+.boton-detalle:hover {
+    transform: translateY(-2px);
+}
 }
