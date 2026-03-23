@@ -10,8 +10,7 @@ export class AuthService {
   private http = inject(HttpClient);
   private apiUrl = 'http://localhost:8080/api/auth';
 
-  //  estado global del usuario
-  private usuarioSubject = new BehaviorSubject<string | null>(null);
+  private usuarioSubject = new BehaviorSubject<any | null>(null);
   usuario$ = this.usuarioSubject.asObservable();
 
   login(username: string, password: string): Observable<string> {
@@ -52,8 +51,17 @@ export class AuthService {
         withCredentials: true,
         responseType: 'text'
       }
+    );
+  }
+
+  me(): Observable<any> {
+    return this.http.get<any>(
+      `${this.apiUrl}/me`,
+      {
+        withCredentials: true
+      }
     ).pipe(
-      tap(usuario => this.usuarioSubject.next(usuario)) //  guarda usuario
+      tap(usuario => this.usuarioSubject.next(usuario))
     );
   }
 
@@ -66,7 +74,7 @@ export class AuthService {
         responseType: 'text'
       }
     ).pipe(
-      tap(() => this.usuarioSubject.next(null)) // 🔥 limpia usuario
+      tap(() => this.usuarioSubject.next(null))
     );
   }
 }
