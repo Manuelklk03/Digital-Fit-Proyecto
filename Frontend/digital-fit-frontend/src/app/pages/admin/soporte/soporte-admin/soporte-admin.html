@@ -1,0 +1,64 @@
+<app-header></app-header>
+
+<main class="pagina-admin-soporte">
+
+  <section class="cabecera-pagina">
+    <h1>Panel admin - Soporte</h1>
+    <p>
+      Aquí puedes consultar todos los tickets de soporte y gestionarlos.
+    </p>
+  </section>
+
+  @if (mensajeExito) {
+    <p class="mensaje-exito">{{ mensajeExito }}</p>
+  }
+
+  @if (mensajeError) {
+    <p class="mensaje-error">{{ mensajeError }}</p>
+  }
+
+  <section class="bloque-listado">
+    <h2>Listado de tickets</h2>
+
+    @if (tickets.length > 0) {
+      <div class="grid-tickets">
+
+        @for (ticket of tickets; track ticket.id) {
+          <article class="tarjeta-ticket">
+
+            <h3>{{ ticket.asunto }}</h3>
+
+            <p><strong>Mensaje:</strong> {{ ticket.mensaje }}</p>
+            <p><strong>Fecha:</strong> {{ ticket.fecha }}</p>
+            <p><strong>Estado:</strong> {{ ticket.estado }}</p>
+
+            <div class="acciones-ticket">
+              <button class="boton-estado" (click)="cambiarEstado(ticket.id, 'ABIERTO')">
+                ABIERTO
+              </button>
+
+              <button class="boton-estado" (click)="cambiarEstado(ticket.id, 'EN_PROCESO')">
+                EN_PROCESO
+              </button>
+
+              <button class="boton-estado" (click)="cambiarEstado(ticket.id, 'CERRADO')">
+                CERRADO
+              </button>
+
+              <button class="boton-borrar" (click)="borrarTicket(ticket.id)">
+                Borrar
+              </button>
+            </div>
+
+          </article>
+        }
+
+      </div>
+    } @else {
+      <p class="sin-datos">No hay tickets disponibles.</p>
+    }
+  </section>
+
+</main>
+
+<app-footer></app-footer>

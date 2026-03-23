@@ -11,12 +11,16 @@
       <li><a routerLink="/publicos">Lugares públicos</a></li>
       <li><a routerLink="/entrenamientos">Entrenamientos</a></li>
       <li><a routerLink="/soporte">Soporte</a></li>
+
+      @if (esAdmin()) {
+        <li><a routerLink="/admin/soporte">Panel soporte</a></li>
+      }
     </ul>
   </nav>
 
   <div class="estado-usuario">
     @if (usuarioActual) {
-      <span>👤 {{ usuarioActual }}</span>
+      <span>{{ iconoUsuario() }} {{ usuarioActual.username }} ({{ usuarioActual.rol }})</span>
       <button class="boton-header" (click)="cerrarSesion()">Salir</button>
     } @else {
       <span>Sesión no iniciada</span>
