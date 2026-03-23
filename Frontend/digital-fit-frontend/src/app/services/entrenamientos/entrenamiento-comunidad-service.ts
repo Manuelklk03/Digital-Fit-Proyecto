@@ -27,4 +27,16 @@ export class EntrenamientosComunidadService {
       withCredentials: true
     });
   }
+
+  actualizarEntrenamientoComunidad(id: number, entrenamiento: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${id}`, entrenamiento, {
+      withCredentials: true
+    });
+  }
+
+  borrarEntrenamientoComunidad(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`, {
+      withCredentials: true
+    });
+  }
 }

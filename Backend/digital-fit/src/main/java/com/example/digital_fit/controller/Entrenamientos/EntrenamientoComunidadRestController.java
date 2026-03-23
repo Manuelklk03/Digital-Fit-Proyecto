@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -51,6 +53,20 @@ public class EntrenamientoComunidadRestController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(entrenamientoComunidadService.crearEntrenamiento(entrenamientoComunidadDTO,
                         authentication.getName()));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<EntrenamientoComunidadDTO> actualizarEntrenamiento(@PathVariable Long id,
+            @Valid @RequestBody CrearEntrenamientoComunidadDTO entrenamientoComunidadDTO,
+            Authentication authentication) {
+        return ResponseEntity.status(HttpStatus.OK).body(entrenamientoComunidadService.actualizarEntrenamiento(id,
+                entrenamientoComunidadDTO, authentication.getName()));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> borrarEntrenamiento(@PathVariable Long id, Authentication authentication) {
+        entrenamientoComunidadService.borrarEntrenamiento(id, authentication.getName());
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }
