@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.digital_fit.dto.Entrenamientos.CrearEntrenamientoComunidadDTO;
 import com.example.digital_fit.dto.Entrenamientos.EntrenamientoComunidadDTO;
+import com.example.digital_fit.exception.OperacionNoPermitida;
 import com.example.digital_fit.exception.RecursoNoEncontradoException;
 import com.example.digital_fit.model.Auth.Usuario;
 import com.example.digital_fit.model.Entrenamientos.EntrenamientoComunidad;
@@ -105,7 +106,58 @@ public class EntrenamientoComunidadService {
         EntrenamientoComunidad entrenamientoGuardado = entrenamientoComunidadRepository.save(entrenamiento);
 
         log.info("Entrenamiento {} creado para usuario {}", dto.getNombre(), username);
-        
+
+        return entityToDto(entrenamientoGuardado);
+    }
+
+    // Borrar entrenamiento de la comunidad
+    @Transactional
+    public void borrarEntrenamiento(Long id, String username) {
+
+        log.info("Usuario {} borra entrenamiento {}", username, id);
+
+        Usuario usuario = usuarioRepository.findByUsername(username)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
+
+        EntrenamientoComunidad entrenamiento = entrenamientoComunidadRepository.findById(id)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Entrenamiento no encontrado"));
+
+        if (!entrenamiento.getUsuario().getId().equals(usuario.getId())) {
+            throw new OperacionNoPermitida("No tienes permiso para borrar este entrenamiento");
+        }
+
+        entrenamientoComunidadRepository.delete(entrenamiento);
+
+        log.info("Entrenamiento {} borrado para usuario {}", id, username);
+    }
+
+    // Actualizar entrenamiento de la comunidad
+    @Transactional
+    public EntrenamientoComunidadDTO actualizarEntrenamiento(Long id, CrearEntrenamientoComunidadDTO dto,
+            String username) {
+
+        log.info("Usuario {} actualiza entrenamiento {}", username, id);
+
+        Usuario usuario = usuarioRepository.findByUsername(username)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
+
+        EntrenamientoComunidad entrenamiento = entrenamientoComunidadRepository.findById(id)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Entrenamiento no encontrado"));
+
+        if (!entrenamiento.getUsuario().getId().equals(usuario.getId())) {
+            throw new OperacionNoPermitida("No tienes permiso para actualizar este entrenamiento");
+        }
+
+        entrenamiento.setNombre(dto.getNombre());
+        entrenamiento.setDescripcion(dto.getDescripcion());
+        entrenamiento.setCategoria(dto.getCategoria());
+        entrenamiento.setNivel(dto.getNivel());
+        entrenamiento.setDuracionEnMinutos(dto.getDuracionEnMinutos());
+
+        EntrenamientoComunidad entrenamientoGuardado = entrenamientoComunidadRepository.save(entrenamiento);
+
+        log.info("Entrenamiento {} actualizado para usuario {}", id, username);
+
         return entityToDto(entrenamientoGuardado);
     }
 
