@@ -7,8 +7,8 @@ import { HistorialEntrenamientosService } from '../../../services/entrenamientos
 @Component({
   selector: 'app-detalle-historial-entrenamiento',
   imports: [HeaderComponent, Footer],
-  templateUrl: './detalle-historial-entrenamiento.html',
-  styleUrl: './detalle-historial-entrenamiento.css'
+  templateUrl: './detalle-historial.html',
+  styleUrl: './detalle-historial.css'
 })
 export class DetalleHistorialEntrenamientoComponent {
 
