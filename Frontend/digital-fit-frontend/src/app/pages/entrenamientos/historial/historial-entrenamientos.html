@@ -1,0 +1,108 @@
+<app-header></app-header>
+
+<main class="pagina-historial">
+
+    <section class="cabecera-pagina">
+        <h1>Historial de entrenamientos</h1>
+        <p>
+            Aquí puedes registrar entrenamientos realizados y consultar tu historial.
+        </p>
+    </section>
+
+    <section class="bloque-formulario">
+        <h2>Registrar entrenamiento realizado</h2>
+
+        <form class="formulario-historial" (ngSubmit)="crearRegistro()">
+
+            <div class="grupo-campo">
+                <label for="entrenamientoBaseId">ID entrenamiento base</label>
+                <input type="number" id="entrenamientoBaseId" name="entrenamientoBaseId"
+                    [(ngModel)]="entrenamientoBaseId">
+            </div>
+
+            <div class="grupo-campo">
+                <label for="entrenamientoUsuarioId">ID entrenamiento usuario</label>
+                <input type="number" id="entrenamientoUsuarioId" name="entrenamientoUsuarioId"
+                    [(ngModel)]="entrenamientoUsuarioId">
+            </div>
+
+            <div class="grupo-campo">
+                <label for="lugarPublicoId">ID lugar público</label>
+                <input type="number" id="lugarPublicoId" name="lugarPublicoId" [(ngModel)]="lugarPublicoId">
+            </div>
+
+            <div class="grupo-campo">
+                <label for="centroPrivadoId">ID centro privado</label>
+                <input type="number" id="centroPrivadoId" name="centroPrivadoId" [(ngModel)]="centroPrivadoId">
+            </div>
+
+            <div class="grupo-campo">
+                <label for="fecha">Fecha</label>
+                <input type="text" id="fecha" name="fecha" [(ngModel)]="fecha" placeholder="2026-03-23 18:30:00"
+                    required>
+            </div>
+
+            <div class="grupo-campo">
+                <label for="duracionEnMinutos">Duración (minutos)</label>
+                <input type="number" id="duracionEnMinutos" name="duracionEnMinutos" [(ngModel)]="duracionEnMinutos"
+                    required>
+            </div>
+
+            <div class="grupo-campo">
+                <label for="notas">Notas</label>
+                <textarea id="notas" name="notas" rows="4" [(ngModel)]="notas"></textarea>
+            </div>
+
+            <button type="submit" class="boton-guardar">
+                Guardar registro
+            </button>
+
+            @if (mensajeExito) {
+            <p class="mensaje-exito">{{ mensajeExito }}</p>
+            }
+
+            @if (mensajeError) {
+            <p class="mensaje-error">{{ mensajeError }}</p>
+            }
+
+        </form>
+    </section>
+
+    <section class="bloque-listado">
+        <h2>Mi historial</h2>
+
+        @if (historial.length > 0) {
+        <div class="grid-historial">
+
+            @for (registro of historial; track registro.id) {
+            <article class="tarjeta-historial">
+
+                <h3>{{ registro.entrenamiento }}</h3>
+
+                <p><strong>Lugar:</strong> {{ registro.lugar }}</p>
+                <p><strong>Fecha:</strong> {{ registro.fecha }}</p>
+                <p><strong>Duración:</strong> {{ registro.duracionEnMinutos }} min</p>
+                <p><strong>Notas:</strong> {{ registro.notas }}</p>
+
+                <div class="acciones-historial">
+                    <a class="boton-detalle" [routerLink]="['/historial-entrenamientos', registro.id]">
+                        Ver detalle
+                    </a>
+
+                    <button class="boton-borrar" (click)="borrarRegistro(registro.id)">
+                        Borrar registro
+                    </button>
+                </div>
+
+            </article>
+            }
+
+        </div>
+        } @else {
+        <p class="sin-datos">No tienes registros de historial todavía.</p>
+        }
+    </section>
+
+</main>
+
+<app-footer></app-footer>

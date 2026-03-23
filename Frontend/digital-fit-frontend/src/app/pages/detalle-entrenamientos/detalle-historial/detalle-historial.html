@@ -1,0 +1,49 @@
+<app-header></app-header>
+
+<main class="detalle-historial">
+
+    @if (registro) {
+    <div class="grid-detalle">
+
+        <div class="columna-imagen">
+            <div class="imagen-wrapper">
+                <img src="img/LOGOFINAL-removebg.png" alt="Historial entrenamiento">
+                <span class="badge">Historial</span>
+            </div>
+        </div>
+
+        <div class="columna-info">
+
+            <h1>{{ registro.entrenamiento }}</h1>
+
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="label">Lugar:</span>
+                    <span>{{ registro.lugar }}</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="label">Fecha:</span>
+                    <span>{{ registro.fecha }}</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="label">Duración:</span>
+                    <span>{{ registro.duracionEnMinutos }} min</span>
+                </div>
+            </div>
+
+            <details class="bloque-detalles">
+                <summary>Notas</summary>
+                <p>{{ registro.notas }}</p>
+            </details>
+
+        </div>
+    </div>
+    } @else {
+    <p class="mensaje-cargando">Cargando detalle...</p>
+    }
+
+</main>
+
+<app-footer></app-footer>
