@@ -16,7 +16,8 @@ import { MisEntrenamientosComponent } from './pages/entrenamientos/mis-entrenami
 import { MisCentrosComponent } from './pages/privados/mis-centros/mis-centros';
 import { DetalleMiCentroComponent } from './pages/detalle-privado/detalle-mi-centro/detalle-mi-centro';
 import { DetalleMiEntrenamientoComponent } from './pages/detalle-entrenamientos/detalle-mis-entrenamientos/detalle-mis-entrenamientos';
-
+import { DetalleMiLugarComponent } from './pages/detalle-publico/detalle-mis-lugares/detalle-mi-lugar/detalle-mi-lugar';
+import { MisLugaresComponent } from './pages/publicos/mis-lugares/mis-lugares';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -35,7 +36,9 @@ export const routes: Routes = [
   { path: 'entrenamientos/:id', component: DetalleEntrenamientoComponent, canActivate: [authGuard] },
   { path: 'mis-entrenamientos', component: MisEntrenamientosComponent, canActivate: [authGuard] },
   { path: 'mis-centros', component: MisCentrosComponent, canActivate: [authGuard] },
-{ path: 'mis-centros/:id', component: DetalleMiCentroComponent, canActivate: [authGuard] },
-{ path: 'mis-entrenamientos/:id', component: DetalleMiEntrenamientoComponent, canActivate: [authGuard] },
+  { path: 'mis-centros/:id', component: DetalleMiCentroComponent, canActivate: [authGuard] },
+  { path: 'mis-entrenamientos/:id', component: DetalleMiEntrenamientoComponent, canActivate: [authGuard] },
+  { path: 'mis-lugares', component: MisLugaresComponent, canActivate: [authGuard] },
+  { path: 'mis-lugares/:id', component: DetalleMiLugarComponent, canActivate: [authGuard] },
   { path: '**', redirectTo: 'login' }
 ];
