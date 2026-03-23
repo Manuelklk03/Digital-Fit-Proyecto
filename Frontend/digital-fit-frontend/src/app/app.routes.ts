@@ -20,6 +20,8 @@ import { DetalleMiLugarComponent } from './pages/detalle-publico/detalle-mis-lug
 import { MisLugaresComponent } from './pages/publicos/mis-lugares/mis-lugares';
 import { EntrenamientosComunidadComponent } from './pages/entrenamientos/comunidad/entrenamientos-comunidad';
 import { DetalleEntrenamientoComunidadComponent } from './pages/detalle-entrenamientos/detalle-comunidad/detalle-entrenamiento-comunidad/detalle-entrenamiento-comunidad';
+import { HistorialEntrenamientosComponent } from './pages/entrenamientos/historial/historial-entrenamientos';
+import { DetalleHistorialEntrenamientoComponent } from './pages/detalle-entrenamientos/detalle-historial/detalle-historial';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -44,5 +46,7 @@ export const routes: Routes = [
   { path: 'mis-lugares/:id', component: DetalleMiLugarComponent, canActivate: [authGuard] },
   { path: 'entrenamientos-comunidad', component: EntrenamientosComunidadComponent, canActivate: [authGuard] },
   { path: 'entrenamientos-comunidad/:id', component: DetalleEntrenamientoComunidadComponent, canActivate: [authGuard] },
+  { path: 'historial-entrenamientos', component: HistorialEntrenamientosComponent, canActivate: [authGuard] },
+{ path: 'historial-entrenamientos/:id', component: DetalleHistorialEntrenamientoComponent, canActivate: [authGuard] },
   { path: '**', redirectTo: 'login' }
 ];
