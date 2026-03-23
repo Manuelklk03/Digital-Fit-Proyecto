@@ -1,0 +1,52 @@
+<app-header></app-header>
+
+<main class="pagina-estadisticas">
+
+  <section class="cabecera-pagina">
+    <h1>Estadísticas</h1>
+    <p>
+      Aquí puedes consultar un resumen automático de tu actividad dentro de Digital-FIT.
+    </p>
+  </section>
+
+  @if (estadisticas) {
+    <section class="grid-estadisticas">
+
+      <article class="tarjeta-estadistica">
+        <h2>Entrenamientos realizados</h2>
+        <p class="valor">{{ estadisticas.entrenamientosRealizados }}</p>
+      </article>
+
+      <article class="tarjeta-estadistica">
+        <h2>Minutos entrenados</h2>
+        <p class="valor">{{ estadisticas.minutosEntrenados }}</p>
+      </article>
+
+      <article class="tarjeta-estadistica">
+        <h2>Promedio por entrenamiento</h2>
+        <p class="valor">{{ estadisticas.promedioMinutosEntrenamiento }}</p>
+      </article>
+
+      <article class="tarjeta-estadistica">
+        <h2>Centros privados visitados</h2>
+        <p class="valor">{{ estadisticas.centrosPrivadosVisitados }}</p>
+      </article>
+
+      <article class="tarjeta-estadistica">
+        <h2>Lugares públicos visitados</h2>
+        <p class="valor">{{ estadisticas.lugaresPublicosVisitados }}</p>
+      </article>
+
+      <article class="tarjeta-estadistica tarjeta-destacada">
+        <h2>Entrenamiento más realizado</h2>
+        <p class="valor texto">{{ estadisticas.entrenamientoMasRealizado }}</p>
+      </article>
+
+    </section>
+  } @else {
+    <p class="mensaje-cargando">Cargando estadísticas...</p>
+  }
+
+</main>
+
+<app-footer></app-footer>
