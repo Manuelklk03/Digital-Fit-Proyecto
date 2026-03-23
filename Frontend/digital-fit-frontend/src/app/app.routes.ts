@@ -23,6 +23,7 @@ import { DetalleEntrenamientoComunidadComponent } from './pages/detalle-entrenam
 import { HistorialEntrenamientosComponent } from './pages/entrenamientos/historial/historial-entrenamientos';
 import { DetalleHistorialEntrenamientoComponent } from './pages/detalle-entrenamientos/detalle-historial/detalle-historial';
 import { EstadisticasComponent } from './pages/estadisticas/estadisticas';
+import { AdminSoporteComponent } from './pages/admin/soporte/soporte-admin/soporte-admin';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -50,5 +51,6 @@ export const routes: Routes = [
   { path: 'historial-entrenamientos', component: HistorialEntrenamientosComponent, canActivate: [authGuard] },
 { path: 'historial-entrenamientos/:id', component: DetalleHistorialEntrenamientoComponent, canActivate: [authGuard] },
 { path: 'estadisticas', component: EstadisticasComponent, canActivate: [authGuard] },
+{ path: 'admin/soporte', component: AdminSoporteComponent, canActivate: [authGuard] },
   { path: '**', redirectTo: 'login' }
 ];
