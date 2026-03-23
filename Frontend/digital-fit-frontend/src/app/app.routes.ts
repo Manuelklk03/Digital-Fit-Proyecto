@@ -18,6 +18,8 @@ import { DetalleMiCentroComponent } from './pages/detalle-privado/detalle-mi-cen
 import { DetalleMiEntrenamientoComponent } from './pages/detalle-entrenamientos/detalle-mis-entrenamientos/detalle-mis-entrenamientos';
 import { DetalleMiLugarComponent } from './pages/detalle-publico/detalle-mis-lugares/detalle-mi-lugar/detalle-mi-lugar';
 import { MisLugaresComponent } from './pages/publicos/mis-lugares/mis-lugares';
+import { EntrenamientosComunidadComponent } from './pages/entrenamientos/comunidad/entrenamientos-comunidad';
+import { DetalleEntrenamientoComunidadComponent } from './pages/detalle-entrenamientos/detalle-comunidad/detalle-entrenamiento-comunidad/detalle-entrenamiento-comunidad';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -40,5 +42,7 @@ export const routes: Routes = [
   { path: 'mis-entrenamientos/:id', component: DetalleMiEntrenamientoComponent, canActivate: [authGuard] },
   { path: 'mis-lugares', component: MisLugaresComponent, canActivate: [authGuard] },
   { path: 'mis-lugares/:id', component: DetalleMiLugarComponent, canActivate: [authGuard] },
+  { path: 'entrenamientos-comunidad', component: EntrenamientosComunidadComponent, canActivate: [authGuard] },
+  { path: 'entrenamientos-comunidad/:id', component: DetalleEntrenamientoComunidadComponent, canActivate: [authGuard] },
   { path: '**', redirectTo: 'login' }
 ];

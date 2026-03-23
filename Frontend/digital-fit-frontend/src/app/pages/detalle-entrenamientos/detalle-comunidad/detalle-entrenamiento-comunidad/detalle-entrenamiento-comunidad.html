@@ -1,1 +1,63 @@
-<p>detalle-entrenamiento-comunidad works!</p>
+<app-header></app-header>
+
+<main class="detalle-entrenamiento-comunidad">
+
+    @if (entrenamiento) {
+    <div class="grid-detalle">
+
+        <div class="columna-imagen">
+            <div class="imagen-wrapper">
+                <img src="img/LOGOFINAL-removebg.png" alt="Entrenamiento comunidad">
+                <span class="badge">Comunidad</span>
+            </div>
+        </div>
+
+        <div class="columna-info">
+
+            <h1>{{ entrenamiento.nombre }}</h1>
+
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="label">Categoría:</span>
+                    <span>{{ entrenamiento.categoria }}</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="label">Nivel:</span>
+                    <span>{{ entrenamiento.nivel }}</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="label">Duración:</span>
+                    <span>{{ entrenamiento.duracionEnMinutos }} min</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="label">Usuario:</span>
+                    <span>{{ entrenamiento.usuario }}</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="label">Fecha publicación:</span>
+                    <span>{{ entrenamiento.fechaPublicacion }}</span>
+                </div>
+            </div>
+
+            <details class="bloque-detalles">
+                <summary>Descripción</summary>
+                <p>{{ entrenamiento.descripcion }}</p>
+            </details>
+
+            <button class="boton-anadir">
+                Añadir a mis entrenamientos
+            </button>
+
+        </div>
+    </div>
+    } @else {
+    <p class="mensaje-cargando">Cargando detalle...</p>
+    }
+
+</main>
+
+<app-footer></app-footer>

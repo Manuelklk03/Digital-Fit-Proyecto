@@ -1,0 +1,135 @@
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.pagina-entrenamientos-comunidad {
+    min-height: 100vh;
+    padding: 50px 20px 80px;
+    background: linear-gradient(180deg, var(--color-azul-fondo), #dceeff);
+}
+
+.cabecera-pagina {
+    max-width: 1000px;
+    margin: 0 auto 30px auto;
+    text-align: center;
+    animation: fadeUp 0.7s ease;
+}
+
+.cabecera-pagina h1 {
+    font-size: 40px;
+    margin-bottom: 12px;
+    color: var(--color-azul-oscuro);
+}
+
+.cabecera-pagina p {
+    font-size: 17px;
+    line-height: 1.7;
+}
+
+.bloque-formulario,
+.bloque-listado {
+    max-width: 1000px;
+    margin: 0 auto 35px auto;
+    background-color: var(--color-azul-caja);
+    border-radius: 22px;
+    padding: 30px;
+    box-shadow: 0px 10px 24px rgba(0, 0, 0, 0.12);
+    animation: fadeUp 0.9s ease;
+}
+
+.formulario-entrenamiento {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.grupo-campo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.grupo-campo label {
+    font-weight: bold;
+    color: var(--color-azul-oscuro);
+}
+
+.grupo-campo input,
+.grupo-campo select,
+.grupo-campo textarea {
+    padding: 14px;
+    border: 1px solid #aac5eb;
+    border-radius: 12px;
+    font-size: 15px;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: white;
+    transition: 0.3s ease;
+}
+
+.grupo-campo input:focus,
+.grupo-campo select:focus,
+.grupo-campo textarea:focus {
+    outline: none;
+    border-color: var(--color-azul);
+    box-shadow: 0 0 0 3px rgba(60, 145, 230, 0.15);
+}
+
+.boton-guardar,
+.boton-detalle {
+    padding: 12px 18px;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    transition: 0.3s ease;
+    display: inline-block;
+    background-color: var(--color-azul-oscuro);
+    color: white;
+}
+
+.boton-guardar:hover,
+.boton-detalle:hover {
+    transform: translateY(-2px);
+}
+
+.mensaje-exito {
+    margin: 0;
+    font-weight: bold;
+    color: #1f7a37;
+}
+
+.mensaje-error {
+    margin: 0;
+    font-weight: bold;
+    color: #c62828;
+}
+
+.grid-entrenamientos {
+    display: grid;
+    gap: 20px;
+}
+
+.tarjeta-entrenamiento {
+    background-color: #eef6ff;
+    padding: 22px;
+    border-radius: 18px;
+    box-shadow: 0px 8px 18px rgba(0, 0, 0, 0.08);
+}
+
+.tarjeta-entrenamiento h3 {
+    margin-top: 0;
+    color: var(--color-azul-oscuro);
+}
+
+.sin-datos {
+    font-weight: bold;
+}
