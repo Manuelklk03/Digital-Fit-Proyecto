@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 
 import com.example.digital_fit.dto.Admin.CrearAdmin;
 import com.example.digital_fit.dto.Auth.UsuarioDTO;
+import com.example.digital_fit.dto.Auth.UsuarioSesionDTO;
 import com.example.digital_fit.exception.EmailYaExisteException;
+import com.example.digital_fit.exception.RecursoNoEncontradoException;
 import com.example.digital_fit.exception.UsernameYaExiste;
 import com.example.digital_fit.model.Auth.Usuario;
 import com.example.digital_fit.model.Enums.Rol;
@@ -76,6 +78,14 @@ public class AuthService {
         usuarioRepository.save(admin);
 
         log.info("Admin creado exitosamente {}", admin.getUsername());
+    }
+
+    // Metodo que obtiene sesion (Admin o user)
+    public UsuarioSesionDTO obtenerSesion(String username) {
+        Usuario usuario = usuarioRepository.findByUsername(username).orElseThrow(
+                () -> new RecursoNoEncontradoException("No se encuentra el usuario"));
+
+        return new UsuarioSesionDTO(usuario.getUsername(), usuario.getEmail(), usuario.getRol());
     }
 
 }

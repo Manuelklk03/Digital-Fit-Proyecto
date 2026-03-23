@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.digital_fit.dto.Auth.UsuarioDTO;
+import com.example.digital_fit.dto.Auth.UsuarioSesionDTO;
 import com.example.digital_fit.service.Auth.AuthService;
 
 import jakarta.validation.Valid;
@@ -37,5 +38,15 @@ public class AuthController {
                     .body("No autenticado");
         }
         return ResponseEntity.status(HttpStatus.OK).body(authentication.getName());
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<UsuarioSesionDTO> me(Authentication authentication) {
+
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .build();
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(authService.obtenerSesion(authentication.getName()));
     }
 }
