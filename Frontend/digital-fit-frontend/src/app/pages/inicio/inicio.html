@@ -2,94 +2,111 @@
 
 <main class="pagina-inicio">
 
-  <section class="hero-inicio">
-    <div class="hero-contenido">
-      <div class="hero-texto">
-        <h1>Bienvenido a Digital-FIT</h1>
-        <p>
-          Tu plataforma para descubrir centros deportivos, lugares públicos,
-          entrenamientos, valoraciones y recursos relacionados con el deporte y la actividad física.
-        </p>
+  @if (cargando) {
+    <section class="hero-inicio">
+      <h1>Bienvenido a Digital-FIT</h1>
+      <p>Cargando panel...</p>
+    </section>
+  } @else if (esAdmin()) {
 
-        <div class="hero-botones">
-          <a routerLink="/privados" class="boton-principal">Ver centros privados</a>
-          <a routerLink="/publicos" class="boton-secundario">Ver lugares públicos</a>
-        </div>
+    <section class="hero-inicio hero-admin">
+      <img src="img/LOGOFINAL-removebg.png" alt="Logo Digital-FIT" class="logo-inicio">
+      <h1>Panel de administración</h1>
+      <p>
+        Bienvenido, <strong>{{ usuarioActual.username }}</strong>.
+        Desde aquí puedes gestionar el contenido principal de la aplicación.
+      </p>
+    </section>
+
+    <section class="bloque-accesos">
+      <h2>Accesos de administración</h2>
+
+      <div class="grid-accesos">
+        <a class="tarjeta-acceso admin" routerLink="/privados">
+          <h3>Centros privados base</h3>
+          <p>Revisar y gestionar los centros privados base de la app.</p>
+        </a>
+
+        <a class="tarjeta-acceso admin" routerLink="/publicos">
+          <h3>Lugares públicos base</h3>
+          <p>Revisar y gestionar los lugares públicos base de la app.</p>
+        </a>
+
+        <a class="tarjeta-acceso admin" routerLink="/entrenamientos">
+          <h3>Entrenamientos base</h3>
+          <p>Revisar y gestionar los entrenamientos base de la app.</p>
+        </a>
+
+        <a class="tarjeta-acceso admin" routerLink="/admin/soporte">
+          <h3>Panel soporte</h3>
+          <p>Consultar tickets, cambiar estados y borrar cerrados.</p>
+        </a>
+
+        <a class="tarjeta-acceso admin" routerLink="/admin/crear-admin">
+          <h3>Crear admin</h3>
+          <p>Crear nuevos administradores para la aplicación.</p>
+        </a>
       </div>
+    </section>
 
-      <div class="hero-imagen">
-        <img src="img/LOGOFINAL-remog.png" alt="Logo Digital-FIT">
+  } @else {
+
+    <section class="hero-inicio hero-user">
+      <img src="img/LOGOFINAL-removebg.png" alt="Logo Digital-FIT" class="logo-inicio">
+      <h1>Bienvenido a Digital-FIT</h1>
+      <p>
+        Hola, <strong>{{ usuarioActual.username }}</strong>.
+        Explora recursos, registra tu actividad y gestiona tus espacios y entrenamientos.
+      </p>
+    </section>
+
+    <section class="bloque-accesos">
+      <h2>Explorar la app</h2>
+
+      <div class="grid-accesos">
+        <a class="tarjeta-acceso user" routerLink="/privados">
+          <h3>Centros privados base</h3>
+          <p>Consulta los centros privados que ofrece la app.</p>
+        </a>
+
+        <a class="tarjeta-acceso user" routerLink="/publicos">
+          <h3>Lugares públicos base</h3>
+          <p>Consulta lugares públicos y espacios deportivos.</p>
+        </a>
+
+        <a class="tarjeta-acceso user" routerLink="/entrenamientos">
+          <h3>Entrenamientos base</h3>
+          <p>Consulta entrenamientos base de la aplicación.</p>
+        </a>
+
+        <a class="tarjeta-acceso user" routerLink="/entrenamientos-comunidad">
+          <h3>Entrenamientos comunidad</h3>
+          <p>Descubre entrenamientos compartidos por otros usuarios.</p>
+        </a>
+
+        <a class="tarjeta-acceso user" routerLink="/historial-entrenamientos">
+          <h3>Historial</h3>
+          <p>Consulta y registra tu historial de entrenamientos.</p>
+        </a>
+
+        <a class="tarjeta-acceso user" routerLink="/estadisticas">
+          <h3>Estadísticas</h3>
+          <p>Consulta tus estadísticas automáticas de actividad.</p>
+        </a>
+
+        <a class="tarjeta-acceso user" routerLink="/soporte">
+          <h3>Soporte</h3>
+          <p>Contacta con soporte y revisa tus tickets.</p>
+        </a>
+
+        <a class="tarjeta-acceso user" routerLink="/valoraciones">
+          <h3>Valoraciones</h3>
+          <p>Consulta y gestiona valoraciones de contenidos.</p>
+        </a>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="seccion-destacada">
-    <h2 class="titulo-seccion">¿Qué puedes hacer en Digital-FIT?</h2>
-
-    <div class="grid-tarjetas">
-      <article class="tarjeta">
-        <h3>Centros privados</h3>
-        <p>
-          Consulta gimnasios, centros deportivos y otros espacios privados
-          disponibles dentro de la aplicación.
-        </p>
-        <a routerLink="/privados">Entrar</a>
-      </article>
-
-      <article class="tarjeta">
-        <h3>Lugares públicos</h3>
-        <p>
-          Descubre parques, zonas de entrenamiento y espacios públicos
-          para realizar actividad física.
-        </p>
-        <a routerLink="/publicos">Entrar</a>
-      </article>
-
-      <article class="tarjeta">
-        <h3>Entrenamientos</h3>
-        <p>
-          Accede a rutinas, ejercicios y futuras recomendaciones adaptadas
-          al tipo de usuario.
-        </p>
-        <a routerLink="/entrenamientos">Entrar</a>
-      </article>
-
-      <article class="tarjeta">
-        <h3>Valoraciones</h3>
-        <p>
-          Consulta opiniones y reseñas de usuarios sobre centros deportivos
-          y otros espacios disponibles en la aplicación.
-        </p>
-        <a routerLink="/valoraciones">Entrar</a>
-      </article>
-
-      <article class="tarjeta tarjeta-ancha">
-        <h3>Soporte</h3>
-        <p>
-          Consulta ayuda, dudas frecuentes y apartados de contacto
-          relacionados con la aplicación.
-        </p>
-        <a routerLink="/soporte">Entrar</a>
-      </article>
-    </div>
-  </section>
-
-  <section class="seccion-info">
-    <div class="bloque-info">
-      <div class="texto-info">
-        <h2>Una plataforma pensada para organizar mejor el deporte</h2>
-        <p>
-          Digital-FIT nace como una aplicación orientada a centralizar información
-          de interés sobre espacios deportivos, recursos útiles y funcionalidades
-          orientadas a usuarios que quieran entrenar de una forma más cómoda.
-        </p>
-        <p>
-          Más adelante, esta página también integrará mapas, filtros de búsqueda,
-          fichas más detalladas y conexión completa con los datos del backend.
-        </p>
-      </div>
-    </div>
-  </section>
+  }
 
 </main>
 
