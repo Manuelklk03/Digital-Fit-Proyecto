@@ -1,36 +1,135 @@
 <app-header></app-header>
 
-<main class="contenedor-listado">
+<main class="pagina-privados">
 
-  <h1>Centros privados</h1>
+  <section class="cabecera-pagina">
+    <h1>Centros privados base</h1>
+    <p>
+      Aquí puedes consultar los centros privados base disponibles en la aplicación.
+    </p>
+  </section>
 
-  <div class="grid-centros">
+  @if (esAdmin()) {
+  <section class="bloque-formulario">
+    <h2>
+      @if (editandoId !== null) {
+      Editar centro privado base
+      } @else {
+      Crear centro privado base
+      }
+    </h2>
 
-    @for (centro of privados; track centro.id) {
+    <form class="formulario-centro" (ngSubmit)="guardarCentroBase()">
 
-      <div class="card-centro">
-
-        <h2>{{ centro.nombre }}</h2>
-
-        <p><strong>Dirección:</strong> {{ centro.direccion }}</p>
-
-        <p><strong>Teléfono:</strong> {{ centro.telefono }}</p>
-
-        <p><strong>Horario:</strong> {{ centro.horario }}</p>
-
-        <p><strong>Precio:</strong> {{ centro.precioMensual }} €</p>
-
-        <p>{{ centro.descripcion }}</p>
-
-        <a class="boton-detalle" [routerLink]="['/privados', centro.id]">
-          Ver detalle
-        </a>
-
+      <div class="grupo-campo">
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" name="nombre" [(ngModel)]="nombre" required>
       </div>
 
-    }
+      <div class="grupo-campo">
+        <label for="direccion">Dirección</label>
+        <input type="text" id="direccion" name="direccion" [(ngModel)]="direccion" required>
+      </div>
 
-  </div>
+      <div class="grupo-campo">
+        <label for="telefono">Teléfono</label>
+        <input type="text" id="telefono" name="telefono" [(ngModel)]="telefono">
+      </div>
+
+      <div class="grupo-campo">
+        <label for="horario">Horario</label>
+        <input type="text" id="horario" name="horario" [(ngModel)]="horario">
+      </div>
+
+      <div class="grupo-campo">
+        <label for="precioMensual">Precio mensual</label>
+        <input type="number" id="precioMensual" name="precioMensual" [(ngModel)]="precioMensual">
+      </div>
+
+      <div class="grupo-campo">
+        <label for="descripcion">Descripción</label>
+        <textarea id="descripcion" name="descripcion" rows="4" [(ngModel)]="descripcion"></textarea>
+      </div>
+
+      <div class="grupo-campo">
+        <label for="latitud">Latitud</label>
+        <input type="number" id="latitud" name="latitud" [(ngModel)]="latitud">
+      </div>
+
+      <div class="grupo-campo">
+        <label for="longitud">Longitud</label>
+        <input type="number" id="longitud" name="longitud" [(ngModel)]="longitud">
+      </div>
+
+      <button type="submit" class="boton-guardar">
+        @if (editandoId !== null) {
+        Guardar cambios
+        } @else {
+        Crear centro
+        }
+      </button>
+
+      @if (editandoId !== null) {
+      <button type="button" class="boton-cancelar" (click)="cancelarEdicion()">
+        Cancelar edición
+      </button>
+      }
+
+      @if (mensajeExito) {
+      <p class="mensaje-exito">{{ mensajeExito }}</p>
+      }
+
+      @if (mensajeError) {
+      <p class="mensaje-error">{{ mensajeError }}</p>
+      }
+
+    </form>
+  </section>
+  }
+
+  <section class="bloque-listado">
+    <h2>Listado de centros privados base</h2>
+
+    @if (centros.length > 0) {
+    <div class="grid-centros">
+
+      @for (centro of centros; track centro.id) {
+      <article class="tarjeta-centro">
+        <h3>{{ centro.nombre }}</h3>
+
+        <p><strong>Dirección:</strong> {{ centro.direccion }}</p>
+        <p><strong>Teléfono:</strong> {{ centro.telefono }}</p>
+        <p><strong>Horario:</strong> {{ centro.horario }}</p>
+        <p><strong>Precio:</strong> {{ centro.precioMensual }} €</p>
+        <p>{{ centro.descripcion }}</p>
+
+        <div class="acciones-centro">
+          <a class="boton-detalle" [routerLink]="['/privados', centro.id]">
+            Ver detalle
+          </a>
+
+          @if (esAdmin()) {
+          <button class="boton-editar" type="button" (click)="editarCentroBase(centro)">
+            Editar
+          </button>
+
+          <button class="boton-borrar" type="button" (click)="borrarCentroBase(centro.id)">
+            Borrar
+          </button>
+          } @else {
+          <button class="boton-anadir" type="button" (click)="anadirAMisCentros(centro.id)">
+            Añadir a mis centros
+          </button>
+          }
+        </div>
+      </article>
+      }
+
+    </div>
+    } @else {
+    <p class="sin-datos">No hay centros privados base disponibles.</p>
+    }
+  </section>
 
 </main>
 

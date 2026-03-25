@@ -10,13 +10,13 @@ export class PrivadosService {
   private http = inject(HttpClient);
   private apiUrl = 'http://localhost:8080/api/centros-privados';
 
-  getPrivados(): Observable<any[]> {
+  getCentrosPrivados(): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrl, {
       withCredentials: true
     });
   }
 
-  getPrivadoById(id: number): Observable<any> {
+  getCentroPrivadoById(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${id}`, {
       withCredentials: true
     });
