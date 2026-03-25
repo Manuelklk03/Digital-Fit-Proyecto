@@ -9,9 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.digital_fit.dto.CentroPrivado.CentroPrivadoBaseDTO;
+import com.example.digital_fit.dto.CentroPrivado.CrearCentroPrivadoDTO;
 import com.example.digital_fit.exception.RecursoNoEncontradoException;
 import com.example.digital_fit.model.CentroPrivado.CentroPrivadoBase;
 import com.example.digital_fit.repository.CentroPrivado.CentroPrivadoBaseRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class CentroPrivadoBaseService {
@@ -59,6 +62,62 @@ public class CentroPrivadoBaseService {
     }
 
     // Metodos panel admin:
+    @Transactional
+    public CentroPrivadoBaseDTO crearCentroPrivado(CrearCentroPrivadoDTO dto) {
+
+        log.info("Creando centro privado {}", dto.getNombre());
+
+        CentroPrivadoBase centroPrivadoBase = new CentroPrivadoBase();
+        centroPrivadoBase.setNombre(dto.getNombre());
+        centroPrivadoBase.setDireccion(dto.getDireccion());
+        centroPrivadoBase.setTelefono(dto.getTelefono());
+        centroPrivadoBase.setHorario(dto.getHorario());
+        centroPrivadoBase.setPrecioMensual(dto.getPrecioMensual());
+        centroPrivadoBase.setDescripcion(dto.getDescripcion());
+        centroPrivadoBase.setLatitud(dto.getLatitud());
+        centroPrivadoBase.setLongitud(dto.getLongitud());
+
+        centroPrivadoBase = centroPrivadoBaseRepository.save(centroPrivadoBase);
+
+        return entityToDto(centroPrivadoBase);
+    }
+
+    @Transactional
+    public CentroPrivadoBaseDTO actualizarCentroPrivado(Long id, CrearCentroPrivadoDTO dto) {
+
+        log.info("Actualizando centro privado con id: {}", id);
+
+        CentroPrivadoBase centroPrivadoBase = centroPrivadoBaseRepository.findById(id)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Centro con id: " + id + " No encontrado."));
+
+        centroPrivadoBase.setNombre(dto.getNombre());
+        centroPrivadoBase.setDireccion(dto.getDireccion());
+        centroPrivadoBase.setTelefono(dto.getTelefono());
+        centroPrivadoBase.setHorario(dto.getHorario());
+        centroPrivadoBase.setPrecioMensual(dto.getPrecioMensual());
+        centroPrivadoBase.setDescripcion(dto.getDescripcion());
+        centroPrivadoBase.setLatitud(dto.getLatitud());
+        centroPrivadoBase.setLongitud(dto.getLongitud());
+
+        centroPrivadoBase = centroPrivadoBaseRepository.save(centroPrivadoBase);
+
+        log.info("Centro privado actualizado con id: {}", id);
+
+        return entityToDto(centroPrivadoBase);
+    }
+
+    @Transactional
+    public void borrarCentroPrivado(Long id) {
+
+        log.info("Borrando centro privado con id: {}", id);
+
+        CentroPrivadoBase entidad = centroPrivadoBaseRepository.findById(id)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Centro con id: " + id + " No encontrado."));
+
+        centroPrivadoBaseRepository.delete(entidad);
+
+        log.info("Centro privado con id: {} borrado", id);
+    }
 
     // Mappers
     public CentroPrivadoBaseDTO entityToDto(CentroPrivadoBase entity) {
