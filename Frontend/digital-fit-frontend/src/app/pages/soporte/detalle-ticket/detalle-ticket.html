@@ -1,0 +1,30 @@
+<app-header></app-header>
+
+<main class="detalle-ticket">
+
+  @if (ticket) {
+    <div class="contenedor-detalle">
+      <h1>{{ ticket.asunto }}</h1>
+
+      <div class="info-item">
+        <span class="label">Fecha:</span>
+        <span>{{ ticket.fecha }}</span>
+      </div>
+
+      <div class="info-item">
+        <span class="label">Estado:</span>
+        <span>{{ ticket.estado }}</span>
+      </div>
+
+      <details class="bloque-detalles" open>
+        <summary>Mensaje</summary>
+        <p>{{ ticket.mensaje }}</p>
+      </details>
+    </div>
+  } @else {
+    <p class="mensaje-cargando">Cargando detalle...</p>
+  }
+
+</main>
+
+<app-footer></app-footer>
