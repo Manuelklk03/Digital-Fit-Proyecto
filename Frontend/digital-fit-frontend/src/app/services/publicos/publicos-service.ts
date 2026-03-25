@@ -10,13 +10,13 @@ export class PublicosService {
   private http = inject(HttpClient);
   private apiUrl = 'http://localhost:8080/api/lugares-publicos';
 
-  getPublicos(): Observable<any[]> {
+  getLugaresPublicos(): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrl, {
       withCredentials: true
     });
   }
 
-  getPublicoById(id: number): Observable<any> {
+  getLugarPublicoById(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${id}`, {
       withCredentials: true
     });

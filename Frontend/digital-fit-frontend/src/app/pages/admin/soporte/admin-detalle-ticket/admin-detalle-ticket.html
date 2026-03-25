@@ -1,0 +1,45 @@
+<app-header></app-header>
+
+<main class="detalle-ticket">
+
+  @if (ticket) {
+    <div class="contenedor-detalle">
+      <h1>{{ ticket.asunto }}</h1>
+
+      <div class="info-item">
+        <span class="label">Fecha:</span>
+        <span>{{ ticket.fecha }}</span>
+      </div>
+
+      <div class="info-item">
+        <span class="label">Estado:</span>
+        <span>{{ ticket.estado }}</span>
+      </div>
+
+      <details class="bloque-detalles" open>
+        <summary>Mensaje</summary>
+        <p>{{ ticket.mensaje }}</p>
+      </details>
+
+      <div class="acciones-ticket">
+        <button class="boton-estado" (click)="cambiarEstado('ABIERTO')">ABIERTO</button>
+        <button class="boton-estado" (click)="cambiarEstado('EN_PROCESO')">EN_PROCESO</button>
+        <button class="boton-estado" (click)="cambiarEstado('CERRADO')">CERRADO</button>
+        <button class="boton-borrar" (click)="borrarTicket()">Borrar</button>
+      </div>
+
+      @if (mensajeExito) {
+        <p class="mensaje-exito">{{ mensajeExito }}</p>
+      }
+
+      @if (mensajeError) {
+        <p class="mensaje-error">{{ mensajeError }}</p>
+      }
+    </div>
+  } @else {
+    <p class="mensaje-cargando">Cargando detalle...</p>
+  }
+
+</main>
+
+<app-footer></app-footer>

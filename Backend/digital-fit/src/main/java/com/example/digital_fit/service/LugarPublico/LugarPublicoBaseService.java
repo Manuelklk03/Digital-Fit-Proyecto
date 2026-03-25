@@ -8,11 +8,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.digital_fit.dto.LugarPublico.CrearLugarPublicoDTO;
 import com.example.digital_fit.dto.LugarPublico.LugarPublicoBaseDTO;
 import com.example.digital_fit.exception.RecursoNoEncontradoException;
 import com.example.digital_fit.model.Enums.TipoLugarPublico;
 import com.example.digital_fit.model.LugarPublico.LugarPublicoBase;
 import com.example.digital_fit.repository.LugarPublico.LugarPublicoBaseRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class LugarPublicoBaseService {
@@ -56,6 +59,68 @@ public class LugarPublicoBaseService {
                 .orElseThrow(() -> new RecursoNoEncontradoException("Lugar con id: " + id + " No encontrado."));
 
         return entityToDto(lugar);
+    }
+
+    // Metodos panel admin:
+
+    @Transactional
+    public LugarPublicoBaseDTO crearLugarPublico(CrearLugarPublicoDTO dto) {
+
+        log.info("Creando lugar publico {}", dto.getNombre());
+
+        LugarPublicoBase lugar = new LugarPublicoBase();
+        lugar.setNombre(dto.getNombre());
+        lugar.setDireccion(dto.getDireccion());
+        lugar.setTelefono(dto.getTelefono());
+        lugar.setHorario(dto.getHorario());
+        lugar.setDescripcion(dto.getDescripcion());
+        lugar.setLatitud(dto.getLatitud());
+        lugar.setLongitud(dto.getLongitud());
+        lugar.setTipo(dto.getTipo());
+
+        LugarPublicoBase lugarGuardado = lugarPublicoBaseRepository.save(lugar);
+
+        log.info("Lugar publico base {} creado", dto.getNombre());
+
+        return entityToDto(lugarGuardado);
+
+    }
+
+    @Transactional
+    public LugarPublicoBaseDTO actualizarLugarPublico(Long id, CrearLugarPublicoDTO dto) {
+
+        log.info("Actualizando lugar publico con id: {}", id);
+
+        LugarPublicoBase lugar = lugarPublicoBaseRepository.findById(id)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Lugar con id: " + id + " No encontrado."));
+
+        lugar.setNombre(dto.getNombre());
+        lugar.setDireccion(dto.getDireccion());
+        lugar.setTelefono(dto.getTelefono());
+        lugar.setHorario(dto.getHorario());
+        lugar.setDescripcion(dto.getDescripcion());
+        lugar.setLatitud(dto.getLatitud());
+        lugar.setLongitud(dto.getLongitud());
+        lugar.setTipo(dto.getTipo());
+
+        LugarPublicoBase lugarGuardado = lugarPublicoBaseRepository.save(lugar);
+
+        log.info("Lugar publico base {} actualizado", dto.getNombre());
+
+        return entityToDto(lugarGuardado);
+    }
+
+    @Transactional
+    public void eliminarLugarPublico(Long id) {
+
+        log.info("Eliminando lugar publico con id: {}", id);
+
+        LugarPublicoBase lugar = lugarPublicoBaseRepository.findById(id)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Lugar con id: " + id + " No encontrado."));
+
+        lugarPublicoBaseRepository.delete(lugar);
+
+        log.info("Lugar publico base {} eliminado", lugar.getNombre());
     }
 
     // MAPPERS:

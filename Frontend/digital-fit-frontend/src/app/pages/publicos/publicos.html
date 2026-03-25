@@ -1,36 +1,158 @@
 <app-header></app-header>
 
-<main class="contenedor-listado">
+<main class="pagina-publicos">
 
-  <h1>Lugares públicos</h1>
+  <section class="cabecera-pagina">
+    <h1>Lugares públicos base</h1>
+    <p>
+      Aquí puedes consultar los lugares públicos base disponibles en la aplicación.
+    </p>
+  </section>
 
-  <div class="grid-centros">
+  @if (esAdmin()) {
+    <section class="bloque-formulario">
+      <h2>
+        @if (editandoId !== null) {
+          Editar lugar público base
+        } @else {
+          Crear lugar público base
+        }
+      </h2>
 
-    @for (lugar of publicos; track lugar.id) {
+      <form class="formulario-lugar" (ngSubmit)="guardarLugarBase()">
 
-      <div class="card-centro">
+        <div class="grupo-campo">
+          <label for="nombre">Nombre</label>
+          <input type="text" id="nombre" name="nombre" [(ngModel)]="nombre" required>
+        </div>
 
-        <h2>{{ lugar.nombre }}</h2>
+        <div class="grupo-campo">
+          <label for="direccion">Dirección</label>
+          <input type="text" id="direccion" name="direccion" [(ngModel)]="direccion" required>
+        </div>
 
-        <p><strong>Dirección:</strong> {{ lugar.direccion }}</p>
+        <div class="grupo-campo">
+          <label for="descripcion">Descripción</label>
+          <textarea id="descripcion" name="descripcion" rows="4" [(ngModel)]="descripcion"></textarea>
+        </div>
 
-        <p><strong>Tipo:</strong> {{ lugar.tipo }}</p>
+        <div class="grupo-campo">
+          <label for="telefono">Teléfono</label>
+          <input type="text" id="telefono" name="telefono" [(ngModel)]="telefono">
+        </div>
 
-        <p><strong>Teléfono:</strong> {{ lugar.telefono }}</p>
+        <div class="grupo-campo">
+          <label for="horario">Horario</label>
+          <input type="text" id="horario" name="horario" [(ngModel)]="horario">
+        </div>
 
-        <p><strong>Horario:</strong> {{ lugar.horario }}</p>
+        <div class="grupo-campo">
+          <label for="latitud">Latitud</label>
+          <input type="number" id="latitud" name="latitud" [(ngModel)]="latitud">
+        </div>
 
-        <p>{{ lugar.descripcion }}</p>
+        <div class="grupo-campo">
+          <label for="longitud">Longitud</label>
+          <input type="number" id="longitud" name="longitud" [(ngModel)]="longitud">
+        </div>
 
-        <a class="boton-detalle" [routerLink]="['/publicos', lugar.id]">
-          Ver detalle
-        </a>
+        <div class="grupo-campo">
+          <label for="tipo">Tipo</label>
+          <select id="tipo" name="tipo" [(ngModel)]="tipo">
+            <option value="PISTA_PADEL">PISTA_PADEL</option>
+            <option value="PISTA_TENIS">PISTA_TENIS</option>
+            <option value="PISTA_FRONTON">PISTA_FRONTON</option>
+            <option value="PISTA_FUTBOL">PISTA_FUTBOL</option>
+            <option value="PISTA_BALONCESTO">PISTA_BALONCESTO</option>
+            <option value="PISTA_VOLEIBOL">PISTA_VOLEIBOL</option>
+            <option value="CAMPO_RUGBY">CAMPO_RUGBY</option>
+            <option value="RUTA_RUNNING">RUTA_RUNNING</option>
+            <option value="CIRCUITO_CICLISMO">CIRCUITO_CICLISMO</option>
+            <option value="CARRIL_BICI">CARRIL_BICI</option>
+            <option value="PARQUE_CALISTENIA">PARQUE_CALISTENIA</option>
+            <option value="ZONA_BARRAS">ZONA_BARRAS</option>
+            <option value="CIRCUITO_BIOSALUDABLE">CIRCUITO_BIOSALUDABLE</option>
+            <option value="RUTA_SENDERISMO">RUTA_SENDERISMO</option>
+            <option value="ZONA_MONTAÑA">ZONA_MONTAÑA</option>
+            <option value="RUTA_FLUVIAL">RUTA_FLUVIAL</option>
+            <option value="PLAYA_DEPORTIVA">PLAYA_DEPORTIVA</option>
+            <option value="ZONA_VOLEY_PLAYA">ZONA_VOLEY_PLAYA</option>
+            <option value="ZONA_MULTIDEPORTE">ZONA_MULTIDEPORTE</option>
+            <option value="PARQUE_PUBLICO">PARQUE_PUBLICO</option>
+            <option value="PISCINA_PUBLICA">PISCINA_PUBLICA</option>
+            <option value="ZONA_REMAR">ZONA_REMAR</option>
+          </select>
+        </div>
+
+        <button type="submit" class="boton-guardar">
+          @if (editandoId !== null) {
+            Guardar cambios
+          } @else {
+            Crear lugar
+          }
+        </button>
+
+        @if (editandoId !== null) {
+          <button type="button" class="boton-cancelar" (click)="cancelarEdicion()">
+            Cancelar edición
+          </button>
+        }
+
+        @if (mensajeExito) {
+          <p class="mensaje-exito">{{ mensajeExito }}</p>
+        }
+
+        @if (mensajeError) {
+          <p class="mensaje-error">{{ mensajeError }}</p>
+        }
+
+      </form>
+    </section>
+  }
+
+  <section class="bloque-listado">
+    <h2>Listado de lugares públicos base</h2>
+
+    @if (lugares.length > 0) {
+      <div class="grid-lugares">
+
+        @for (lugar of lugares; track lugar.id) {
+          <article class="tarjeta-lugar">
+            <h3>{{ lugar.nombre }}</h3>
+
+            <p><strong>Dirección:</strong> {{ lugar.direccion }}</p>
+            <p><strong>Tipo:</strong> {{ lugar.tipo }}</p>
+            <p><strong>Teléfono:</strong> {{ lugar.telefono }}</p>
+            <p><strong>Horario:</strong> {{ lugar.horario }}</p>
+            <p>{{ lugar.descripcion }}</p>
+
+            <div class="acciones-lugar">
+              <a class="boton-detalle" [routerLink]="['/publicos', lugar.id]">
+                Ver detalle
+              </a>
+
+              @if (esAdmin()) {
+                <button class="boton-editar" type="button" (click)="editarLugarBase(lugar)">
+                  Editar
+                </button>
+
+                <button class="boton-borrar" type="button" (click)="borrarLugarBase(lugar.id)">
+                  Borrar
+                </button>
+              } @else {
+                <button class="boton-anadir" type="button" (click)="anadirAMisLugares(lugar.id)">
+                  Añadir a mis lugares
+                </button>
+              }
+            </div>
+          </article>
+        }
 
       </div>
-
+    } @else {
+      <p class="sin-datos">No hay lugares públicos base disponibles.</p>
     }
-
-  </div>
+  </section>
 
 </main>
 
