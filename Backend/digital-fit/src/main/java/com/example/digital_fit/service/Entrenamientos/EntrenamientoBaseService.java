@@ -8,12 +8,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.digital_fit.dto.Entrenamientos.CrearEntrenamientoBaseDTO;
 import com.example.digital_fit.dto.Entrenamientos.EntrenamientoBaseDTO;
 import com.example.digital_fit.exception.RecursoNoEncontradoException;
 import com.example.digital_fit.model.Entrenamientos.EntrenamientoBase;
 import com.example.digital_fit.model.Enums.CategoriaEntrenamientoComunidad;
 import com.example.digital_fit.model.Enums.NivelEntrenamiento;
 import com.example.digital_fit.repository.Entrenamientos.EntrenamientoBaseRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class EntrenamientoBaseService {
@@ -82,5 +85,60 @@ public class EntrenamientoBaseService {
         entrenamientoBase.setNivel(dto.getNivel());
         entrenamientoBase.setDuracionEnMinutos(dto.getDuracionEnMinutos());
         return entrenamientoBase;
+    }
+
+    // Metodos panel admin:
+    @Transactional
+    public EntrenamientoBaseDTO crearEntrenamientoBase(CrearEntrenamientoBaseDTO dto) {
+
+        log.info("Creando entrenamiento base {}", dto.getNombre());
+
+        EntrenamientoBase entrenamientoBase = new EntrenamientoBase();
+        entrenamientoBase.setNombre(dto.getNombre());
+        entrenamientoBase.setDescripcion(dto.getDescripcion());
+        entrenamientoBase.setCategoria(dto.getCategoria());
+        entrenamientoBase.setNivel(dto.getNivel());
+        entrenamientoBase.setDuracionEnMinutos(dto.getDuracionEnMinutos());
+
+        EntrenamientoBase entrenamientoBaseGuardado = entrenamientoBaseRepository.save(entrenamientoBase);
+
+        log.info("Entrenamiento base {} creado", dto.getNombre());
+
+        return entityToDto(entrenamientoBaseGuardado);
+
+    }
+
+    @Transactional
+    public EntrenamientoBaseDTO actualizarEntrenamientoBase(Long id, CrearEntrenamientoBaseDTO dto) {
+
+        log.info("Actualizando entrenamiento base con id {}", id);
+
+        EntrenamientoBase entrenamientoBase = entrenamientoBaseRepository.findById(id)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Entrenamiento base no encontrado con ID: " + id));
+
+        entrenamientoBase.setNombre(dto.getNombre());
+        entrenamientoBase.setDescripcion(dto.getDescripcion());
+        entrenamientoBase.setCategoria(dto.getCategoria());
+        entrenamientoBase.setNivel(dto.getNivel());
+        entrenamientoBase.setDuracionEnMinutos(dto.getDuracionEnMinutos());
+
+        EntrenamientoBase entrenamientoBaseGuardado = entrenamientoBaseRepository.save(entrenamientoBase);
+
+        log.info("Entrenamiento base con id {} actualizado", id);
+
+        return entityToDto(entrenamientoBaseGuardado);
+    }
+
+    @Transactional
+    public void eliminarEntrenamientoBase(Long id) {
+
+        log.info("Eliminando entrenamiento base con id {}", id);
+
+        EntrenamientoBase entrenamientoBase = entrenamientoBaseRepository.findById(id)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Entrenamiento base no encontrado con ID: " + id));
+
+        entrenamientoBaseRepository.delete(entrenamientoBase);
+
+        log.info("Entrenamiento base con id {} eliminado", id);
     }
 }

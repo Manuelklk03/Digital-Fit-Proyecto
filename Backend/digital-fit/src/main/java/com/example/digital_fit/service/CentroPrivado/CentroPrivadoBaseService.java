@@ -58,6 +58,8 @@ public class CentroPrivadoBaseService {
         return entityToDto(entidad);
     }
 
+    // Metodos panel admin:
+
     // Mappers
     public CentroPrivadoBaseDTO entityToDto(CentroPrivadoBase entity) {
         CentroPrivadoBaseDTO dto = new CentroPrivadoBaseDTO();
