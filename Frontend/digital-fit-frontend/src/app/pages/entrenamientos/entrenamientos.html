@@ -1,34 +1,150 @@
 <app-header></app-header>
 
-<main class="contenedor-listado">
+<main class="pagina-entrenamientos">
 
-  <h1>Entrenamientos</h1>
+  <section class="cabecera-pagina">
+    <h1>Entrenamientos base</h1>
+    <p>
+      Aquí puedes consultar los entrenamientos base disponibles en la aplicación.
+    </p>
+  </section>
 
-  <div class="grid-centros">
+  @if (esAdmin()) {
+  <section class="bloque-formulario">
+    <h2>
+      @if (editandoId !== null) {
+      Editar entrenamiento base
+      } @else {
+      Crear entrenamiento base
+      }
+    </h2>
 
-    @for (entrenamiento of entrenamientos; track entrenamiento.id) {
+    <form class="formulario-entrenamiento" (ngSubmit)="guardarEntrenamientoBase()">
 
-      <div class="card-centro">
-
-        <h2>{{ entrenamiento.nombre }}</h2>
-
-        <p><strong>Categoría:</strong> {{ entrenamiento.categoria }}</p>
-
-        <p><strong>Nivel:</strong> {{ entrenamiento.nivel }}</p>
-
-        <p><strong>Duración:</strong> {{ entrenamiento.duracionEnMinutos }} min</p>
-
-        <p>{{ entrenamiento.descripcion }}</p>
-
-        <a class="boton-detalle" [routerLink]="['/entrenamientos', entrenamiento.id]">
-          Ver detalle
-        </a>
-
+      <div class="grupo-campo">
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" name="nombre" [(ngModel)]="nombre" required>
       </div>
 
-    }
+      <div class="grupo-campo">
+        <label for="descripcion">Descripción</label>
+        <textarea id="descripcion" name="descripcion" rows="4" [(ngModel)]="descripcion" required></textarea>
+      </div>
 
-  </div>
+      <div class="grupo-campo">
+        <label for="categoria">Categoría</label>
+        <select id="categoria" name="categoria" [(ngModel)]="categoria">
+          <option value="FUERZA_TOTAL">FUERZA_TOTAL</option>
+          <option value="FUERZA_TREN_SUPERIOR">FUERZA_TREN_SUPERIOR</option>
+          <option value="FUERZA_TREN_INFERIOR">FUERZA_TREN_INFERIOR</option>
+          <option value="FUERZA_CORE">FUERZA_CORE</option>
+          <option value="CARDIO_SUAVE">CARDIO_SUAVE</option>
+          <option value="CARDIO_INTENSO">CARDIO_INTENSO</option>
+          <option value="HIIT">HIIT</option>
+          <option value="RESISTENCIA">RESISTENCIA</option>
+          <option value="CALISTENIA_BASICA">CALISTENIA_BASICA</option>
+          <option value="CALISTENIA_AVANZADA">CALISTENIA_AVANZADA</option>
+          <option value="CALISTENIA_FULL_BODY">CALISTENIA_FULL_BODY</option>
+          <option value="ENTRENAMIENTO_FUNCIONAL">ENTRENAMIENTO_FUNCIONAL</option>
+          <option value="CIRCUITO_FUNCIONAL">CIRCUITO_FUNCIONAL</option>
+          <option value="MOVILIDAD">MOVILIDAD</option>
+          <option value="FLEXIBILIDAD">FLEXIBILIDAD</option>
+          <option value="ESTIRAMIENTOS">ESTIRAMIENTOS</option>
+          <option value="RUNNING">RUNNING</option>
+          <option value="TRAIL_RUNNING">TRAIL_RUNNING</option>
+          <option value="CICLISMO">CICLISMO</option>
+          <option value="BOXEO">BOXEO</option>
+          <option value="ARTES_MARCIALES">ARTES_MARCIALES</option>
+          <option value="CROSSFIT">CROSSFIT</option>
+          <option value="EQUILIBRIO">EQUILIBRIO</option>
+          <option value="COORDINACION">COORDINACION</option>
+          <option value="RECUPERACION">RECUPERACION</option>
+        </select>
+      </div>
+
+      <div class="grupo-campo">
+        <label for="nivel">Nivel</label>
+        <select id="nivel" name="nivel" [(ngModel)]="nivel">
+          <option value="PRINCIPIANTE">PRINCIPIANTE</option>
+          <option value="INTERMEDIO">INTERMEDIO</option>
+          <option value="AVANZADO">AVANZADO</option>
+          <option value="EXPERTO">EXPERTO</option>
+        </select>
+      </div>
+
+      <div class="grupo-campo">
+        <label for="duracionEnMinutos">Duración (minutos)</label>
+        <input type="number" id="duracionEnMinutos" name="duracionEnMinutos" [(ngModel)]="duracionEnMinutos" required>
+      </div>
+
+      <button type="submit" class="boton-guardar">
+        @if (editandoId !== null) {
+        Guardar cambios
+        } @else {
+        Crear entrenamiento
+        }
+      </button>
+
+      @if (editandoId !== null) {
+      <button type="button" class="boton-cancelar" (click)="cancelarEdicion()">
+        Cancelar edición
+      </button>
+      }
+
+      @if (mensajeExito) {
+      <p class="mensaje-exito">{{ mensajeExito }}</p>
+      }
+
+      @if (mensajeError) {
+      <p class="mensaje-error">{{ mensajeError }}</p>
+      }
+
+    </form>
+  </section>
+  }
+
+  <section class="bloque-listado">
+    <h2>Listado de entrenamientos base</h2>
+
+    @if (entrenamientos.length > 0) {
+    <div class="grid-entrenamientos">
+
+      @for (entrenamiento of entrenamientos; track entrenamiento.id) {
+      <article class="tarjeta-entrenamiento">
+        <h3>{{ entrenamiento.nombre }}</h3>
+
+        <p><strong>Categoría:</strong> {{ entrenamiento.categoria }}</p>
+        <p><strong>Nivel:</strong> {{ entrenamiento.nivel }}</p>
+        <p><strong>Duración:</strong> {{ entrenamiento.duracionEnMinutos }} min</p>
+        <p>{{ entrenamiento.descripcion }}</p>
+
+        <div class="acciones-entrenamiento">
+          <a class="boton-detalle" [routerLink]="['/entrenamientos', entrenamiento.id]">
+            Ver detalle
+          </a>
+
+          @if (esAdmin()) {
+          <button class="boton-editar" type="button" (click)="editarEntrenamientoBase(entrenamiento)">
+            Editar
+          </button>
+
+          <button class="boton-borrar" type="button" (click)="borrarEntrenamientoBase(entrenamiento.id)">
+            Borrar
+          </button>
+          } @else {
+          <button class="boton-anadir" type="button" (click)="anadirAMisEntrenamientos(entrenamiento.id)">
+            Añadir a mis entrenamientos
+          </button>
+          }
+        </div>
+      </article>
+      }
+
+    </div>
+    } @else {
+    <p class="sin-datos">No hay entrenamientos base disponibles.</p>
+    }
+  </section>
 
 </main>
 
