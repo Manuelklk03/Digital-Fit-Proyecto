@@ -1,11 +1,8 @@
-import { HeaderComponent } from './../../../components/header/header';
-import { Footer } from './../../../components/footer/footer';
-import { PublicosService } from './../../../services/publicos/publicos-service';
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-
-
-
+import { HeaderComponent } from '../../../components/header/header';
+import { Footer } from '../../../components/footer/footer';
+import { PublicosService } from '../../../services/publicos/publicos-service';
 
 @Component({
   selector: 'app-detalle-publico',
@@ -24,14 +21,13 @@ export class DetallePublicoComponent {
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
 
-    this.publicosService.getPublicoById(id).subscribe({
-      next: (data) => {
-        console.log('DETALLE PUBLICO:', data);
+    this.publicosService.getLugarPublicoById(id).subscribe({
+      next: (data: any) => {
         this.lugar = data;
         this.cdr.detectChanges();
       },
-      error: (err) => {
-        console.error('ERROR DETALLE PUBLICO:', err);
+      error: (err: any) => {
+        console.error('ERROR DETALLE LUGAR PUBLICO:', err);
       }
     });
   }
