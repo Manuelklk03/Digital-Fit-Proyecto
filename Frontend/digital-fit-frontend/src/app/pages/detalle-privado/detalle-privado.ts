@@ -1,9 +1,8 @@
-import { PrivadosService } from './../../services/centros/privados-service';
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HeaderComponent } from '../../components/header/header';
 import { Footer } from '../../components/footer/footer';
-
+import { PrivadosService } from '../../services/centros/privados-service';
 
 @Component({
   selector: 'app-detalle-privado',
@@ -22,14 +21,13 @@ export class DetallePrivadoComponent {
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
 
-    this.privadosService.getPrivadoById(id).subscribe({
-      next: (data) => {
-        console.log('DETALLE PRIVADO:', data);
+    this.privadosService.getCentroPrivadoById(id).subscribe({
+      next: (data: any) => {
         this.centro = data;
         this.cdr.detectChanges();
       },
-      error: (err) => {
-        console.error('ERROR DETALLE PRIVADO:', err);
+      error: (err: any) => {
+        console.error('ERROR DETALLE CENTRO PRIVADO:', err);
       }
     });
   }

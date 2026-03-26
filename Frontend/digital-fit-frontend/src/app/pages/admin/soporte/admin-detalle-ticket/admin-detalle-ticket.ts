@@ -25,20 +25,20 @@ export class AdminDetalleTicketComponent {
 
   ngOnInit(): void {
     this.authService.me().subscribe({
-      next: (usuario) => {
+      next: (usuario: any) => {
         if (usuario?.rol !== 'ADMIN') {
-          this.router.navigate(['/soporte']);
+          this.router.navigate(['/inicio']);
           return;
         }
 
         const id = Number(this.route.snapshot.paramMap.get('id'));
 
-        this.adminSoporteService.getTicketsAdmin(id).subscribe({
-          next: (data) => {
+        this.adminSoporteService.getTicketAdminById(id).subscribe({
+          next: (data: any) => {
             this.ticket = data;
             this.cdr.detectChanges();
           },
-          error: (err) => {
+          error: (err: any) => {
             console.error('ERROR DETALLE TICKET ADMIN:', err);
           }
         });
@@ -50,13 +50,15 @@ export class AdminDetalleTicketComponent {
   }
 
   cambiarEstado(estado: string): void {
-    if (!this.ticket) return;
+    if (!this.ticket) {
+      return;
+    }
 
     this.mensajeError = '';
     this.mensajeExito = '';
 
     this.adminSoporteService.cambiarEstado(this.ticket.id, estado).subscribe({
-      next: (data) => {
+      next: (data: any) => {
         this.ticket = data;
         this.mensajeExito = 'Estado actualizado correctamente.';
         this.cdr.detectChanges();
@@ -68,7 +70,9 @@ export class AdminDetalleTicketComponent {
   }
 
   borrarTicket(): void {
-    if (!this.ticket) return;
+    if (!this.ticket) {
+      return;
+    }
 
     this.mensajeError = '';
     this.mensajeExito = '';

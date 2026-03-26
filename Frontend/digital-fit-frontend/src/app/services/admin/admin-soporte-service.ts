@@ -16,6 +16,12 @@ export class AdminSoporteService {
     });
   }
 
+  getTicketAdminById(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${id}`, {
+      withCredentials: true
+    });
+  }
+
   cambiarEstado(id: number, estado: string): Observable<any> {
     return this.http.patch<any>(`${this.apiUrl}/${id}/estado`, { estado }, {
       withCredentials: true
