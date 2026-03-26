@@ -16,11 +16,14 @@ export class HeaderComponent {
   usuarioActual: any = null;
 
   ngOnInit(): void {
-    this.authService.usuario$.subscribe(usuario => {
+    this.authService.usuario$.subscribe((usuario) => {
       this.usuarioActual = usuario;
     });
 
     this.authService.me().subscribe({
+      next: (usuario) => {
+        this.usuarioActual = usuario;
+      },
       error: () => {
         this.usuarioActual = null;
       }
