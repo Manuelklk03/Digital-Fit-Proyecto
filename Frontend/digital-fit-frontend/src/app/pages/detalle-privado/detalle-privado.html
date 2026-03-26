@@ -1,66 +1,71 @@
 <app-header></app-header>
 
-<main class="detalle-privado">
+<main class="pagina-detalle-privado">
 
   @if (centro) {
-    <div class="grid-detalle">
+    <section class="cabecera-detalle">
+      <h1>{{ centro.nombre }}</h1>
+      <p>Consulta toda la información del centro privado base.</p>
+    </section>
 
-      <div class="columna-imagen">
-        <div class="imagen-wrapper">
-          <img src="img/LOGOFINAL-removebg.png" alt="Centro privado">
-          <span class="badge">Centro privado</span>
-        </div>
+    <section class="bloque-detalle">
+      <div class="dato-detalle">
+        <span class="etiqueta">Nombre</span>
+        <span>{{ centro.nombre }}</span>
       </div>
 
-      <div class="columna-info">
-
-        <h1>{{ centro.nombre }}</h1>
-
-        <div class="info-grid">
-          <div class="info-item">
-            <span class="label">Dirección:</span>
-            <span>{{ centro.direccion }}</span>
-          </div>
-
-          <div class="info-item">
-            <span class="label">Teléfono:</span>
-            <span>{{ centro.telefono }}</span>
-          </div>
-
-          <div class="info-item">
-            <span class="label">Horario:</span>
-            <span>{{ centro.horario }}</span>
-          </div>
-
-          <div class="info-item">
-            <span class="label">Precio mensual:</span>
-            <span>{{ centro.precioMensual }} €</span>
-          </div>
-
-          <div class="info-item">
-            <span class="label">Latitud:</span>
-            <span>{{ centro.latitud }}</span>
-          </div>
-
-          <div class="info-item">
-            <span class="label">Longitud:</span>
-            <span>{{ centro.longitud }}</span>
-          </div>
-        </div>
-
-        <details class="bloque-detalles">
-          <summary>Descripción</summary>
-          <p>{{ centro.descripcion }}</p>
-        </details>
-
-        <button class="boton-reservar">
-          Reservar
-        </button>
-
+      <div class="dato-detalle">
+        <span class="etiqueta">Dirección</span>
+        <span>{{ centro.direccion }}</span>
       </div>
-    </div>
+
+      <div class="dato-detalle">
+        <span class="etiqueta">Teléfono</span>
+        <span>{{ centro.telefono }}</span>
+      </div>
+
+      <div class="dato-detalle">
+        <span class="etiqueta">Horario</span>
+        <span>{{ centro.horario }}</span>
+      </div>
+
+      <div class="dato-detalle">
+        <span class="etiqueta">Precio mensual</span>
+        <span>{{ centro.precioMensual }} €</span>
+      </div>
+
+      <div class="descripcion-detalle">
+        <h2>Descripción</h2>
+        <p>{{ centro.descripcion }}</p>
+      </div>
+
+      <div class="acciones-detalle">
+        <a class="boton-volver" routerLink="/privados">Volver</a>
+
+        @if (esAdmin()) {
+          <button class="boton-borrar" type="button" (click)="borrarCentroBase()">
+            Borrar centro
+          </button>
+        } @else {
+          <button class="boton-anadir" type="button" (click)="anadirAMisCentros()">
+            Añadir a mis centros
+          </button>
+        }
+      </div>
+
+      @if (mensajeExito) {
+        <p class="mensaje-exito">{{ mensajeExito }}</p>
+      }
+
+      @if (mensajeError) {
+        <p class="mensaje-error">{{ mensajeError }}</p>
+      }
+    </section>
   } @else {
-    <p class="mensaje-cargando">Cargando detalle...</p>
+    <section class="cabecera-detalle">
+      <h1>Detalle de centro privado</h1>
+      <p>Cargando información...</p>
+    </section>
   }
 
 </main>
