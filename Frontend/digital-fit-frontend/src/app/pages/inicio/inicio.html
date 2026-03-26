@@ -3,108 +3,108 @@
 <main class="pagina-inicio">
 
   @if (cargando) {
-    <section class="hero-inicio">
-      <h1>Bienvenido a Digital-FIT</h1>
-      <p>Cargando panel...</p>
-    </section>
+  <section class="hero-inicio">
+    <h1>Bienvenido a Digital-FIT</h1>
+    <p>Cargando panel...</p>
+  </section>
   } @else if (esAdmin()) {
 
-    <section class="hero-inicio hero-admin">
-      <img src="img/LOGOFINAL-removebg.png" alt="Logo Digital-FIT" class="logo-inicio">
-      <h1>Panel de administración</h1>
-      <p>
-        Bienvenido, <strong>{{ usuarioActual.username }}</strong>.
-        Desde aquí puedes gestionar el contenido principal de la aplicación.
-      </p>
-    </section>
+  <section class="hero-inicio hero-admin">
+    <img src="img/LOGOFINAL-removebg.png" alt="Logo Digital-FIT" class="logo-inicio">
+    <h1>Panel de administración</h1>
+    <p>
+      Bienvenido, <strong>{{ usuarioActual.username }}</strong>.
+      Desde aquí puedes gestionar el contenido principal de la aplicación.
+    </p>
+  </section>
 
-    <section class="bloque-accesos">
-      <h2>Accesos de administración</h2>
+  <section class="bloque-accesos">
+    <h2>Accesos de administración</h2>
 
-      <div class="grid-accesos">
-        <a class="tarjeta-acceso admin" routerLink="/privados">
-          <h3>Centros privados base</h3>
-          <p>Revisar y gestionar los centros privados base de la app.</p>
-        </a>
+    <div class="grid-accesos">
+      <a class="tarjeta-acceso admin" routerLink="/privados">
+        <h3>Centros privados base</h3>
+        <p>Revisar y gestionar los centros privados base de la app.</p>
+      </a>
 
-        <a class="tarjeta-acceso admin" routerLink="/publicos">
-          <h3>Lugares públicos base</h3>
-          <p>Revisar y gestionar los lugares públicos base de la app.</p>
-        </a>
+      <a class="tarjeta-acceso admin" routerLink="/publicos">
+        <h3>Lugares públicos base</h3>
+        <p>Revisar y gestionar los lugares públicos base de la app.</p>
+      </a>
 
-        <a class="tarjeta-acceso admin" routerLink="/entrenamientos">
-          <h3>Entrenamientos base</h3>
-          <p>Revisar y gestionar los entrenamientos base de la app.</p>
-        </a>
+      <a class="tarjeta-acceso admin" routerLink="/entrenamientos">
+        <h3>Entrenamientos base</h3>
+        <p>Revisar y gestionar los entrenamientos base de la app.</p>
+      </a>
 
-        <a class="tarjeta-acceso admin" routerLink="/admin/soporte">
-          <h3>Panel soporte</h3>
-          <p>Consultar tickets, cambiar estados y borrar cerrados.</p>
-        </a>
+      <a class="tarjeta-acceso admin" routerLink="/admin/soporte">
+        <h3>Panel soporte</h3>
+        <p>Consultar tickets, cambiar estados y borrar cerrados.</p>
+      </a>
 
-        <a class="tarjeta-acceso admin" routerLink="/admin/crear-admin">
-          <h3>Crear admin</h3>
-          <p>Crear nuevos administradores para la aplicación.</p>
-        </a>
-      </div>
-    </section>
+      <a class="tarjeta-acceso admin" routerLink="/admin/crear-admin">
+        <h3>Crear admin</h3>
+        <p>Crear nuevos administradores para la aplicación.</p>
+      </a>
+    </div>
+  </section>
 
   } @else {
 
-    <section class="hero-inicio hero-user">
-      <img src="img/LOGOFINAL-removebg.png" alt="Logo Digital-FIT" class="logo-inicio">
-      <h1>Bienvenido a Digital-FIT</h1>
-      <p>
-        Hola, <strong>{{ usuarioActual.username }}</strong>.
-        Explora recursos, registra tu actividad y gestiona tus espacios y entrenamientos.
-      </p>
-    </section>
+  <section class="hero-inicio hero-user">
+    <img src="img/LOGOFINAL-removebg.png" alt="Logo Digital-FIT" class="logo-inicio">
+    <h1>Bienvenido a Digital-FIT</h1>
+    <p>
+      Hola, <strong>{{ usuarioActual.username }}</strong>.
+      Explora recursos, registra tu actividad y gestiona tus espacios y entrenamientos.
+    </p>
+  </section>
 
-    <section class="bloque-accesos">
-      <h2>Explorar la app</h2>
+  <section class="bloque-accesos">
+    <h2>Explorar la app</h2>
 
-      <div class="grid-accesos">
-        <a class="tarjeta-acceso user" routerLink="/privados">
-          <h3>Centros privados base</h3>
-          <p>Consulta los centros privados que ofrece la app.</p>
-        </a>
+    <div class="grid-accesos">
+      <a class="tarjeta-acceso user" routerLink="/privados">
+        <h3>Centros privados base</h3>
+        <p>Consulta los centros privados que ofrece la app.</p>
+      </a>
 
-        <a class="tarjeta-acceso user" routerLink="/publicos">
-          <h3>Lugares públicos base</h3>
-          <p>Consulta lugares públicos y espacios deportivos.</p>
-        </a>
+      <a class="tarjeta-acceso user" routerLink="/publicos">
+        <h3>Lugares públicos base</h3>
+        <p>Consulta lugares públicos y espacios deportivos.</p>
+      </a>
 
-        <a class="tarjeta-acceso user" routerLink="/entrenamientos">
-          <h3>Entrenamientos base</h3>
-          <p>Consulta entrenamientos base de la aplicación.</p>
-        </a>
+      <a class="tarjeta-acceso user" routerLink="/entrenamientos">
+        <h3>Entrenamientos base</h3>
+        <p>Consulta entrenamientos base de la aplicación.</p>
+      </a>
 
-        <a class="tarjeta-acceso user" routerLink="/entrenamientos-comunidad">
-          <h3>Entrenamientos comunidad</h3>
-          <p>Descubre entrenamientos compartidos por otros usuarios.</p>
-        </a>
+      <a class="tarjeta-acceso user" routerLink="/entrenamientos-comunidad">
+        <h3>Entrenamientos comunidad</h3>
+        <p>Descubre entrenamientos compartidos por otros usuarios.</p>
+      </a>
 
-        <a class="tarjeta-acceso user" routerLink="/historial-entrenamientos">
-          <h3>Historial</h3>
-          <p>Consulta y registra tu historial de entrenamientos.</p>
-        </a>
+      <a class="tarjeta-acceso user" routerLink="/historial-entrenamientos">
+        <h3>Historial</h3>
+        <p>Consulta y registra tu historial de entrenamientos.</p>
+      </a>
 
-        <a class="tarjeta-acceso user" routerLink="/estadisticas">
-          <h3>Estadísticas</h3>
-          <p>Consulta tus estadísticas automáticas de actividad.</p>
-        </a>
+      <a class="tarjeta-acceso user" routerLink="/estadisticas">
+        <h3>Estadísticas</h3>
+        <p>Consulta tus estadísticas automáticas de actividad.</p>
+      </a>
 
-        <a class="tarjeta-acceso user" routerLink="/soporte">
-          <h3>Soporte</h3>
-          <p>Contacta con soporte y revisa tus tickets.</p>
-        </a>
+      <a class="tarjeta-acceso user" routerLink="/soporte">
+        <h3>Soporte</h3>
+        <p>Contacta con soporte y revisa tus tickets.</p>
+      </a>
 
-        <a class="tarjeta-acceso user" routerLink="/valoraciones">
-          <h3>Valoraciones</h3>
-          <p>Consulta y gestiona valoraciones de contenidos.</p>
-        </a>
-      </div>
-    </section>
+      <a class="tarjeta-acceso user" routerLink="/valoraciones">
+        <h3>Valoraciones</h3>
+        <p>Consulta y gestiona valoraciones de contenidos.</p>
+      </a>
+    </div>
+  </section>
 
   }
 

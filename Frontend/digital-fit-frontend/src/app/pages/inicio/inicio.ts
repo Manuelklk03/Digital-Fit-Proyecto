@@ -1,5 +1,6 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { finalize } from 'rxjs';
 import { HeaderComponent } from '../../components/header/header';
 import { Footer } from '../../components/footer/footer';
 import { AuthService } from '../../services/auth-service';
@@ -14,21 +15,36 @@ export class InicioComponent {
 
   private authService = inject(AuthService);
   private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
 
   usuarioActual: any = null;
   cargando = true;
 
   ngOnInit(): void {
-    this.authService.me().subscribe({
-      next: (usuario) => {
+    this.authService.usuario$.subscribe((usuario) => {
+      if (usuario) {
         this.usuarioActual = usuario;
         this.cargando = false;
-      },
-      error: () => {
-        this.cargando = false;
-        this.router.navigate(['/login']);
+        this.cdr.detectChanges();
       }
     });
+
+    this.authService.me()
+      .pipe(
+        finalize(() => {
+          this.cargando = false;
+          this.cdr.detectChanges();
+        })
+      )
+      .subscribe({
+        next: (usuario: any) => {
+          this.usuarioActual = usuario;
+          this.cdr.detectChanges();
+        },
+        error: () => {
+          this.router.navigate(['/login']);
+        }
+      });
   }
 
   esAdmin(): boolean {

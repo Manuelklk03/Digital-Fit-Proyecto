@@ -361,3 +361,208 @@ Caused by: org.hibernate.HibernateException: Unable to determine Dialect without
 2026-03-26 09:36:29 - Initializing Spring DispatcherServlet 'dispatcherServlet'
 2026-03-26 09:36:29 - Initializing Servlet 'dispatcherServlet'
 2026-03-26 09:36:29 - Completed initialization in 5 ms
+2026-03-26 11:47:49 - Starting DigitalFitApplication using Java 25.0.2 with PID 2000 (C:\Users\TiendaRoquetas\Desktop\MANU PRACTICAS\Digital-Fit-Proyecto\Backend\digital-fit\target\classes started by TiendaRoquetas in C:\Users\TiendaRoquetas\Desktop\MANU PRACTICAS\Digital-Fit-Proyecto\Backend\digital-fit)
+2026-03-26 11:47:49 - Running with Spring Boot v4.0.3, Spring v7.0.5
+2026-03-26 11:47:49 - No active profile set, falling back to 1 default profile: "default"
+2026-03-26 11:47:49 - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-03-26 11:47:49 - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-03-26 11:47:52 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-03-26 11:47:53 - Finished Spring Data repository scanning in 376 ms. Found 12 JPA repository interfaces.
+2026-03-26 11:47:55 - Tomcat initialized with port 8080 (http)
+2026-03-26 11:47:55 - Starting service [Tomcat]
+2026-03-26 11:47:55 - Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-03-26 11:47:55 - Root WebApplicationContext: initialization completed in 6257 ms
+2026-03-26 11:47:57 - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-03-26 11:47:57 - HHH000001: Hibernate ORM core version 7.2.4.Final
+2026-03-26 11:47:59 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-03-26 11:47:59 - HikariPool-1 - Starting...
+2026-03-26 11:48:00 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@1f430ba
+2026-03-26 11:48:00 - HikariPool-1 - Start completed.
+2026-03-26 11:48:01 - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://localhost:3306/digital_fit]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.45
+	Default catalog/schema: digital_fit/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-03-26 11:48:03 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-03-26 11:48:03 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-03-26 11:48:03 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-03-26 11:48:05 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-03-26 11:48:06 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2026-03-26 11:48:06 - Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2026-03-26 11:48:07 - Exposing 1 endpoint beneath base path '/actuator'
+2026-03-26 11:48:08 - Tomcat started on port 8080 (http) with context path '/'
+2026-03-26 11:48:08 - Started DigitalFitApplication in 19.209 seconds (process running for 20.859)
+2026-03-26 11:48:09 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-03-26 11:48:09 - Initializing Servlet 'dispatcherServlet'
+2026-03-26 11:48:09 - Completed initialization in 3 ms
+2026-03-26 11:49:16 - Buscando usuario con login: usuario1
+2026-03-26 11:49:17 - Usuario encontrado: usuario1
+2026-03-26 11:49:26 - Listando centros privados
+2026-03-26 11:49:28 - Buscando centro privado con id: 1
+2026-03-26 11:49:31 - Listando centros privados
+2026-03-26 11:49:36 - Usuario usuario1añade centro privado de la base 1
+2026-03-26 11:49:36 - Centro privado AltaFit Valencia Centro guardado para usuario usuario1
+2026-03-26 11:49:39 - Listando lugares publicos de la app
+2026-03-26 11:49:40 - Guardando lugar desde base con id: 1
+2026-03-26 11:49:40 - Lugar guardado con id: 1
+2026-03-26 11:49:41 - Buscando lugar con id: 1
+2026-03-26 11:49:42 - Listando entrenamientos base
+2026-03-26 11:49:43 - Buscando entrenamiento base con id: 1
+2026-03-26 11:49:45 - Listando entrenamientos base
+2026-03-26 11:49:46 - Usuario usuario1añade entrenamiento de la base 1
+2026-03-26 11:49:46 - Entrenamiento Full Body Principiante creado para usuario usuario1
+2026-03-26 11:49:47 - Listando entrenamientos comunidad
+2026-03-26 11:49:50 - Listando entrenamientos de usuario usuario1
+2026-03-26 11:49:54 - Listando entrenamientos base
+2026-03-26 11:49:55 - Usuario usuario1añade entrenamiento de la base 2
+2026-03-26 11:49:56 - Entrenamiento Cardio Running Río Turia creado para usuario usuario1
+2026-03-26 11:49:57 - Listando entrenamientos de usuario usuario1
+2026-03-26 11:49:59 - Usuario usuario1 consulta entrenamiento 2
+2026-03-26 11:50:02 - Listando entrenamientos de usuario usuario1
+2026-03-26 11:50:06 - Usuario usuario1 borra entrenamiento 2
+2026-03-26 11:50:06 - Entrenamiento 2 borrado para usuario usuario1
+2026-03-26 11:50:06 - Listando entrenamientos de usuario usuario1
+2026-03-26 11:50:11 - Listando centros privados al usuario usuario1
+2026-03-26 11:50:17 - Listando mis lugares publicos
+2026-03-26 11:50:21 - Listar historial de entrenamientos
+2026-03-26 11:50:24 - Obteniendo estadisticas del usuario usuario1
+2026-03-26 11:50:24 - Estadisticas del usuario usuario1 obtenidas exitosamente
+2026-03-26 11:50:26 - Listando tickets
+2026-03-26 11:50:27 - Listando mis valoraciones
+2026-03-26 11:51:25 - Listando centros privados
+2026-03-26 11:51:36 - Buscando usuario con login: usuario1
+2026-03-26 11:51:36 - Usuario encontrado: usuario1
+2026-03-26 12:30:45 - Starting DigitalFitApplication using Java 25.0.2 with PID 12080 (C:\Users\TiendaRoquetas\Desktop\MANU PRACTICAS\Digital-Fit-Proyecto\Backend\digital-fit\target\classes started by TiendaRoquetas in C:\Users\TiendaRoquetas\Desktop\MANU PRACTICAS\Digital-Fit-Proyecto\Backend\digital-fit)
+2026-03-26 12:30:45 - Running with Spring Boot v4.0.3, Spring v7.0.5
+2026-03-26 12:30:45 - No active profile set, falling back to 1 default profile: "default"
+2026-03-26 12:30:45 - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-03-26 12:30:45 - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-03-26 12:30:49 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-03-26 12:30:49 - Finished Spring Data repository scanning in 267 ms. Found 12 JPA repository interfaces.
+2026-03-26 12:30:51 - Tomcat initialized with port 8080 (http)
+2026-03-26 12:30:51 - Starting service [Tomcat]
+2026-03-26 12:30:51 - Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-03-26 12:30:51 - Root WebApplicationContext: initialization completed in 6569 ms
+2026-03-26 12:30:52 - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-03-26 12:30:53 - HHH000001: Hibernate ORM core version 7.2.4.Final
+2026-03-26 12:30:54 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-03-26 12:30:55 - HikariPool-1 - Starting...
+2026-03-26 12:30:56 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@24977c29
+2026-03-26 12:30:56 - HikariPool-1 - Start completed.
+2026-03-26 12:30:56 - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://localhost:3306/digital_fit]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.45
+	Default catalog/schema: digital_fit/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-03-26 12:30:59 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-03-26 12:31:00 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-03-26 12:31:00 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-03-26 12:31:01 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'authController' defined in file [C:\Users\TiendaRoquetas\Desktop\MANU PRACTICAS\Digital-Fit-Proyecto\Backend\digital-fit\target\classes\com\example\digital_fit\controller\Auth\AuthController.class]: Failed to instantiate [com.example.digital_fit.controller.Auth.AuthController]: Constructor threw exception
+2026-03-26 12:31:01 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-03-26 12:31:01 - HikariPool-1 - Shutdown initiated...
+2026-03-26 12:31:01 - HikariPool-1 - Shutdown completed.
+2026-03-26 12:31:01 - Stopping service [Tomcat]
+2026-03-26 12:31:01 - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-03-26 12:31:01 - Application run failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'authController' defined in file [C:\Users\TiendaRoquetas\Desktop\MANU PRACTICAS\Digital-Fit-Proyecto\Backend\digital-fit\target\classes\com\example\digital_fit\controller\Auth\AuthController.class]: Failed to instantiate [com.example.digital_fit.controller.Auth.AuthController]: Constructor threw exception
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateBean(AbstractAutowireCapableBeanFactory.java:1344)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1231)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:565)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:196)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.instantiateSingleton(DefaultListableBeanFactory.java:1218)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingleton(DefaultListableBeanFactory.java:1184)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:1121)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:994)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621)
+	at org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:143)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:756)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:445)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:321)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1365)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354)
+	at com.example.digital_fit.DigitalFitApplication.main(DigitalFitApplication.java:10)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:52)
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.example.digital_fit.controller.Auth.AuthController]: Constructor threw exception
+	at org.springframework.beans.BeanUtils.instantiateClass(BeanUtils.java:220)
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:106)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateBean(AbstractAutowireCapableBeanFactory.java:1338)
+	... 22 common frames omitted
+Caused by: java.lang.Error: Unresolved compilation problem: 
+	Syntax error on token "A", invalid Modifiers
+
+	at com.example.digital_fit.controller.Auth.AuthController.<init>(AuthController.java:24)
+	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:499)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:483)
+	at org.springframework.beans.BeanUtils.instantiateClass(BeanUtils.java:194)
+	... 24 common frames omitted
+2026-03-26 12:42:57 - Starting DigitalFitApplication using Java 25.0.2 with PID 14296 (C:\Users\TiendaRoquetas\Desktop\MANU PRACTICAS\Digital-Fit-Proyecto\Backend\digital-fit\target\classes started by TiendaRoquetas in C:\Users\TiendaRoquetas\Desktop\MANU PRACTICAS\Digital-Fit-Proyecto\Backend\digital-fit)
+2026-03-26 12:42:57 - Running with Spring Boot v4.0.3, Spring v7.0.5
+2026-03-26 12:42:57 - No active profile set, falling back to 1 default profile: "default"
+2026-03-26 12:42:57 - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-03-26 12:42:57 - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-03-26 12:42:59 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-03-26 12:43:00 - Finished Spring Data repository scanning in 197 ms. Found 12 JPA repository interfaces.
+2026-03-26 12:43:01 - Tomcat initialized with port 8080 (http)
+2026-03-26 12:43:01 - Starting service [Tomcat]
+2026-03-26 12:43:01 - Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-03-26 12:43:01 - Root WebApplicationContext: initialization completed in 4576 ms
+2026-03-26 12:43:02 - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-03-26 12:43:02 - HHH000001: Hibernate ORM core version 7.2.4.Final
+2026-03-26 12:43:03 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-03-26 12:43:03 - HikariPool-1 - Starting...
+2026-03-26 12:43:03 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@2a300d65
+2026-03-26 12:43:03 - HikariPool-1 - Start completed.
+2026-03-26 12:43:04 - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://localhost:3306/digital_fit]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.45
+	Default catalog/schema: digital_fit/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-03-26 12:43:05 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-03-26 12:43:05 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-03-26 12:43:05 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-03-26 12:43:07 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-03-26 12:43:07 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2026-03-26 12:43:08 - Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2026-03-26 12:43:08 - Exposing 1 endpoint beneath base path '/actuator'
+2026-03-26 12:43:09 - Tomcat started on port 8080 (http) with context path '/'
+2026-03-26 12:43:09 - Started DigitalFitApplication in 12.71 seconds (process running for 13.899)
+2026-03-26 12:43:11 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-03-26 12:43:11 - Initializing Servlet 'dispatcherServlet'
+2026-03-26 12:43:11 - Completed initialization in 1 ms
+2026-03-26 12:43:51 - Buscando usuario con login: admin1
+2026-03-26 12:43:51 - Usuario encontrado: admin1
+2026-03-26 12:43:55 - Listando tickets
+2026-03-26 12:44:02 - Buscando usuario con login: usuario1
+2026-03-26 12:44:02 - Usuario encontrado: usuario1
+2026-03-26 12:44:11 - Listando entrenamientos de usuario usuario1
+2026-03-26 12:44:15 - Listando centros privados al usuario usuario1
