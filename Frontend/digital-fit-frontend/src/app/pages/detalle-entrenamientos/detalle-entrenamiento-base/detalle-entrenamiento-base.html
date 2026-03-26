@@ -1,51 +1,66 @@
 <app-header></app-header>
 
-<main class="detalle-entrenamiento">
+<main class="pagina-detalle-entrenamiento">
 
   @if (entrenamiento) {
-    <div class="grid-detalle">
+    <section class="cabecera-detalle">
+      <h1>{{ entrenamiento.nombre }}</h1>
+      <p>Consulta toda la información del entrenamiento base.</p>
+    </section>
 
-      <div class="columna-imagen">
-        <div class="imagen-wrapper">
-          <img src="img/LOGOFINAL-removebg.png" alt="Entrenamiento">
-          <span class="badge">Entrenamiento base</span>
-        </div>
+    <section class="bloque-detalle">
+      <div class="dato-detalle">
+        <span class="etiqueta">Nombre</span>
+        <span>{{ entrenamiento.nombre }}</span>
       </div>
 
-      <div class="columna-info">
-
-        <h1>{{ entrenamiento.nombre }}</h1>
-
-        <div class="info-grid">
-          <div class="info-item">
-            <span class="label">Categoría:</span>
-            <span>{{ entrenamiento.categoria }}</span>
-          </div>
-
-          <div class="info-item">
-            <span class="label">Nivel:</span>
-            <span>{{ entrenamiento.nivel }}</span>
-          </div>
-
-          <div class="info-item">
-            <span class="label">Duración:</span>
-            <span>{{ entrenamiento.duracionEnMinutos }} min</span>
-          </div>
-        </div>
-
-        <details class="bloque-detalles">
-          <summary>Descripción</summary>
-          <p>{{ entrenamiento.descripcion }}</p>
-        </details>
-
-        <button class="boton-anadir">
-          Añadir a mis entrenamientos
-        </button>
-
+      <div class="dato-detalle">
+        <span class="etiqueta">Categoría</span>
+        <span>{{ entrenamiento.categoria }}</span>
       </div>
-    </div>
+
+      <div class="dato-detalle">
+        <span class="etiqueta">Nivel</span>
+        <span>{{ entrenamiento.nivel }}</span>
+      </div>
+
+      <div class="dato-detalle">
+        <span class="etiqueta">Duración</span>
+        <span>{{ entrenamiento.duracionEnMinutos }} min</span>
+      </div>
+
+      <div class="descripcion-detalle">
+        <h2>Descripción</h2>
+        <p>{{ entrenamiento.descripcion }}</p>
+      </div>
+
+      <div class="acciones-detalle">
+        <a class="boton-volver" routerLink="/entrenamientos">Volver</a>
+
+        @if (esAdmin()) {
+          <button class="boton-borrar" type="button" (click)="borrarEntrenamientoBase()">
+            Borrar entrenamiento
+          </button>
+        } @else {
+          <button class="boton-anadir" type="button" (click)="anadirAMisEntrenamientos()">
+            Añadir a mis entrenamientos
+          </button>
+        }
+      </div>
+
+      @if (mensajeExito) {
+        <p class="mensaje-exito">{{ mensajeExito }}</p>
+      }
+
+      @if (mensajeError) {
+        <p class="mensaje-error">{{ mensajeError }}</p>
+      }
+    </section>
   } @else {
-    <p class="mensaje-cargando">Cargando detalle...</p>
+    <section class="cabecera-detalle">
+      <h1>Detalle de entrenamiento</h1>
+      <p>Cargando información...</p>
+    </section>
   }
 
 </main>

@@ -566,3 +566,64 @@ Caused by: java.lang.Error: Unresolved compilation problem:
 2026-03-26 12:44:02 - Usuario encontrado: usuario1
 2026-03-26 12:44:11 - Listando entrenamientos de usuario usuario1
 2026-03-26 12:44:15 - Listando centros privados al usuario usuario1
+2026-03-26 18:19:38 - Starting DigitalFitApplication using Java 25 with PID 20248 (C:\Users\manue\Desktop\2 DAW\PROYECTO\Código\DIGITAL-FIT\Digital-Fit-Proyecto\Backend\digital-fit\target\classes started by manue in C:\Users\manue\Desktop\2 DAW\PROYECTO\Código\DIGITAL-FIT\Digital-Fit-Proyecto\Backend\digital-fit)
+2026-03-26 18:19:38 - Running with Spring Boot v4.0.5, Spring v7.0.6
+2026-03-26 18:19:38 - No active profile set, falling back to 1 default profile: "default"
+2026-03-26 18:19:38 - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-03-26 18:19:38 - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-03-26 18:19:39 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-03-26 18:19:39 - Finished Spring Data repository scanning in 73 ms. Found 12 JPA repository interfaces.
+2026-03-26 18:19:40 - Tomcat initialized with port 8080 (http)
+2026-03-26 18:19:40 - Starting service [Tomcat]
+2026-03-26 18:19:40 - Starting Servlet engine: [Apache Tomcat/11.0.20]
+2026-03-26 18:19:40 - Root WebApplicationContext: initialization completed in 1575 ms
+2026-03-26 18:19:40 - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-03-26 18:19:40 - HHH000001: Hibernate ORM core version 7.2.7.Final
+2026-03-26 18:19:40 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-03-26 18:19:40 - HikariPool-1 - Starting...
+2026-03-26 18:19:41 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@5183a398
+2026-03-26 18:19:41 - HikariPool-1 - Start completed.
+2026-03-26 18:19:41 - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://localhost:3306/digital_fit]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.41
+	Default catalog/schema: digital_fit/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-03-26 18:19:41 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-03-26 18:19:42 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-03-26 18:19:42 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-03-26 18:19:42 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-03-26 18:19:42 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2026-03-26 18:19:43 - Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2026-03-26 18:19:43 - Exposing 1 endpoint beneath base path '/actuator'
+2026-03-26 18:19:43 - Tomcat started on port 8080 (http) with context path '/'
+2026-03-26 18:19:43 - Started DigitalFitApplication in 5.065 seconds (process running for 5.532)
+2026-03-26 18:19:44 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-03-26 18:19:44 - Initializing Servlet 'dispatcherServlet'
+2026-03-26 18:19:44 - Completed initialization in 1 ms
+2026-03-26 18:21:13 - Buscando usuario con login: usuario1
+2026-03-26 18:21:13 - Usuario encontrado: usuario1
+2026-03-26 18:21:21 - Listando centros privados
+2026-03-26 18:21:27 - Listando entrenamientos de usuario usuario1
+2026-03-26 18:21:36 - Listando centros privados al usuario usuario1
+2026-03-26 18:21:38 - Listando mis lugares publicos
+2026-03-26 18:21:49 - Listando entrenamientos de usuario usuario1
+2026-03-26 18:21:57 - Listando entrenamientos comunidad
+2026-03-26 18:22:06 - Listar historial de entrenamientos
+2026-03-26 18:22:19 - Obteniendo estadisticas del usuario usuario1
+2026-03-26 18:22:19 - Estadisticas del usuario usuario1 obtenidas exitosamente
+2026-03-26 18:22:25 - Listando tickets
+2026-03-26 18:22:30 - Listando entrenamientos de usuario usuario1
+2026-03-26 18:22:36 - Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<com.example.digital_fit.dto.Entrenamientos.EntrenamientoUsuarioDTO> com.example.digital_fit.controller.Entrenamientos.EntrenamientoUsuarioRestController.crearEntrenamientoUsuario(com.example.digital_fit.dto.Entrenamientos.CrearEntrenamientoUsuario,org.springframework.security.core.Authentication): [Field error in object 'crearEntrenamientoUsuario' on field 'descripcion': rejected value []; codes [NotBlank.crearEntrenamientoUsuario.descripcion,NotBlank.descripcion,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [crearEntrenamientoUsuario.descripcion,descripcion]; arguments []; default message [descripcion]]; default message [La descripción es obligatoria]] ]
+2026-03-26 18:22:49 - Usuario usuario1 crea Entrenamiento eeeee
+2026-03-26 18:22:49 - Entrenamiento eeeee creado para usuario usuario1
+2026-03-26 18:22:49 - Listando entrenamientos de usuario usuario1
+2026-03-26 18:22:53 - Usuario usuario1 consulta entrenamiento 3
+2026-03-26 18:22:59 - Obteniendo estadisticas del usuario usuario1
+2026-03-26 18:22:59 - Estadisticas del usuario usuario1 obtenidas exitosamente

@@ -1,66 +1,71 @@
 <app-header></app-header>
 
-<main class="detalle-publico">
+<main class="pagina-detalle-publico">
 
   @if (lugar) {
-    <div class="grid-detalle">
+    <section class="cabecera-detalle">
+      <h1>{{ lugar.nombre }}</h1>
+      <p>Consulta toda la información del lugar público base.</p>
+    </section>
 
-      <div class="columna-imagen">
-        <div class="imagen-wrapper">
-          <img src="img/LOGOFINAL-removebg.png" alt="Lugar público">
-          <span class="badge">Lugar público</span>
-        </div>
+    <section class="bloque-detalle">
+      <div class="dato-detalle">
+        <span class="etiqueta">Nombre</span>
+        <span>{{ lugar.nombre }}</span>
       </div>
 
-      <div class="columna-info">
-
-        <h1>{{ lugar.nombre }}</h1>
-
-        <div class="info-grid">
-          <div class="info-item">
-            <span class="label">Dirección:</span>
-            <span>{{ lugar.direccion }}</span>
-          </div>
-
-          <div class="info-item">
-            <span class="label">Teléfono:</span>
-            <span>{{ lugar.telefono }}</span>
-          </div>
-
-          <div class="info-item">
-            <span class="label">Horario:</span>
-            <span>{{ lugar.horario }}</span>
-          </div>
-
-          <div class="info-item">
-            <span class="label">Tipo:</span>
-            <span>{{ lugar.tipo }}</span>
-          </div>
-
-          <div class="info-item">
-            <span class="label">Latitud:</span>
-            <span>{{ lugar.latitud }}</span>
-          </div>
-
-          <div class="info-item">
-            <span class="label">Longitud:</span>
-            <span>{{ lugar.longitud }}</span>
-          </div>
-        </div>
-
-        <details class="bloque-detalles">
-          <summary>Descripción</summary>
-          <p>{{ lugar.descripcion }}</p>
-        </details>
-
-        <button class="boton-favorito">
-          Añadir a favoritos
-        </button>
-
+      <div class="dato-detalle">
+        <span class="etiqueta">Dirección</span>
+        <span>{{ lugar.direccion }}</span>
       </div>
-    </div>
+
+      <div class="dato-detalle">
+        <span class="etiqueta">Tipo</span>
+        <span>{{ lugar.tipo }}</span>
+      </div>
+
+      <div class="dato-detalle">
+        <span class="etiqueta">Teléfono</span>
+        <span>{{ lugar.telefono }}</span>
+      </div>
+
+      <div class="dato-detalle">
+        <span class="etiqueta">Horario</span>
+        <span>{{ lugar.horario }}</span>
+      </div>
+
+      <div class="descripcion-detalle">
+        <h2>Descripción</h2>
+        <p>{{ lugar.descripcion }}</p>
+      </div>
+
+      <div class="acciones-detalle">
+        <a class="boton-volver" routerLink="/publicos">Volver</a>
+
+        @if (esAdmin()) {
+          <button class="boton-borrar" type="button" (click)="borrarLugarBase()">
+            Borrar lugar
+          </button>
+        } @else {
+          <button class="boton-anadir" type="button" (click)="anadirAMisLugares()">
+            Añadir a mis lugares
+          </button>
+        }
+      </div>
+
+      @if (mensajeExito) {
+        <p class="mensaje-exito">{{ mensajeExito }}</p>
+      }
+
+      @if (mensajeError) {
+        <p class="mensaje-error">{{ mensajeError }}</p>
+      }
+    </section>
   } @else {
-    <p class="mensaje-cargando">Cargando detalle...</p>
+    <section class="cabecera-detalle">
+      <h1>Detalle de lugar público</h1>
+      <p>Cargando información...</p>
+    </section>
   }
 
 </main>

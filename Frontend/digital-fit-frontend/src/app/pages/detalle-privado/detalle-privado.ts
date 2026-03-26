@@ -1,24 +1,48 @@
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../components/header/header';
 import { Footer } from '../../components/footer/footer';
 import { PrivadosService } from '../../services/centros/privados-service';
+import { MisCentrosService } from '../../services/centros/mis-centros-service';
+import { AdminCentrosPrivadosBaseService } from '../../services/admin/admin-centro-base';
+import { AuthService } from '../../services/auth-service';
 
 @Component({
   selector: 'app-detalle-privado',
-  imports: [HeaderComponent, Footer],
+  imports: [HeaderComponent, Footer, RouterLink],
   templateUrl: './detalle-privado.html',
   styleUrl: './detalle-privado.css'
 })
 export class DetallePrivadoComponent {
 
   private route = inject(ActivatedRoute);
-  private privadosService = inject(PrivadosService);
+  private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
 
+  private privadosService = inject(PrivadosService);
+  private misCentrosService = inject(MisCentrosService);
+  private adminCentrosPrivadosBaseService = inject(AdminCentrosPrivadosBaseService);
+  private authService = inject(AuthService);
+
   centro: any = null;
+  usuarioActual: any = null;
+
+  mensajeExito = '';
+  mensajeError = '';
 
   ngOnInit(): void {
+    this.authService.me().subscribe({
+      next: (usuario: any) => {
+        this.usuarioActual = usuario;
+        this.cargarDetalle();
+      },
+      error: () => {
+        this.router.navigate(['/login']);
+      }
+    });
+  }
+
+  cargarDetalle(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
 
     this.privadosService.getCentroPrivadoById(id).subscribe({
@@ -28,6 +52,47 @@ export class DetallePrivadoComponent {
       },
       error: (err: any) => {
         console.error('ERROR DETALLE CENTRO PRIVADO:', err);
+        this.mensajeError = 'No se pudo cargar el detalle del centro.';
+      }
+    });
+  }
+
+  esAdmin(): boolean {
+    return this.usuarioActual?.rol === 'ADMIN';
+  }
+
+  anadirAMisCentros(): void {
+    this.mensajeExito = '';
+    this.mensajeError = '';
+
+    if (!this.centro?.id) {
+      return;
+    }
+
+    this.misCentrosService.anadirCentroDesdeApp(this.centro.id).subscribe({
+      next: () => {
+        this.mensajeExito = 'Centro añadido a mis centros.';
+      },
+      error: () => {
+        this.mensajeError = 'No se pudo añadir a mis centros.';
+      }
+    });
+  }
+
+  borrarCentroBase(): void {
+    this.mensajeExito = '';
+    this.mensajeError = '';
+
+    if (!this.centro?.id) {
+      return;
+    }
+
+    this.adminCentrosPrivadosBaseService.borrarCentroPrivadoBase(this.centro.id).subscribe({
+      next: () => {
+        this.router.navigate(['/privados']);
+      },
+      error: () => {
+        this.mensajeError = 'No se pudo borrar el centro privado base.';
       }
     });
   }
