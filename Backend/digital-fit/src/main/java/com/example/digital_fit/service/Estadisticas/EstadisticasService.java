@@ -24,7 +24,7 @@ public class EstadisticasService {
 
     public EstadisticaUsuarioDTO obtenerEstadisticas(String username) {
 
-        log.info("Obteniendo estadisticas del usuario {}", username);
+        log.info("Obteniendo estadísticas del usuario {}", username);
 
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado."));
@@ -37,11 +37,11 @@ public class EstadisticasService {
 
         Double promedioMinutosEntrenamiento = estadisticasRepository.promedioDuracionEntrenamientos(usuario);
 
-        Long centrosPrivadosVisitados = estadisticasRepository.contarCentrosPrivadosVisitados(usuario);
+        Long centrosPrivadosVisitados = estadisticasRepository.contarCentrosPrivadosVisitados(usuario.getId());
 
-        Long lugaresPublicosVisitados = estadisticasRepository.contarLugaresPublicosVisitados(usuario);
+        Long lugaresPublicosVisitados = estadisticasRepository.contarLugaresPublicosVisitados(usuario.getId());
 
-        String entrenamientoMasRealizado = estadisticasRepository.entrenamientoMasRealizado(usuario);
+        String entrenamientoMasRealizado = estadisticasRepository.entrenamientoMasRealizado(usuario.getId());
 
         dto.setEntrenamientosRealizados(entrenamientosRealizados != null ? entrenamientosRealizados : 0L);
         dto.setMinutosEntrenados(minutosEntrenados != null ? minutosEntrenados : 0);
@@ -50,7 +50,7 @@ public class EstadisticasService {
         dto.setLugaresPublicosVisitados(lugaresPublicosVisitados != null ? lugaresPublicosVisitados : 0L);
         dto.setEntrenamientoMasRealizado(entrenamientoMasRealizado != null ? entrenamientoMasRealizado : "N/A");
 
-        log.info("Estadisticas del usuario {} obtenidas exitosamente", username);
+        log.info("Estadísticas del usuario {} obtenidas exitosamente", username);
 
         return dto;
     }
