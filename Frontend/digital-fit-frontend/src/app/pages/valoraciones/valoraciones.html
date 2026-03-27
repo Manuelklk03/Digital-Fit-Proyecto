@@ -5,7 +5,7 @@
   <section class="cabecera-valoraciones">
     <h1>Valoraciones</h1>
     <p>
-      Aquí podrás ver tus valoraciones y crear nuevas de forma base mientras cerramos la estructura principal.
+      Aquí puedes crear nuevas valoraciones y consultar las que ya has hecho.
     </p>
   </section>
 
@@ -15,28 +15,36 @@
     <form class="formulario-valoracion" (ngSubmit)="guardarValoracion()">
 
       <div class="grupo-campo">
-        <label for="tipoContenido">Tipo de contenido</label>
+        <label for="tipoContenido">Qué quieres valorar</label>
         <select
           id="tipoContenido"
           name="tipoContenido"
           [(ngModel)]="tipoContenido"
+          (change)="cambiarTipoContenido()"
         >
-          <option value="CENTRO_PRIVADO">CENTRO_PRIVADO</option>
-          <option value="LUGAR_PUBLICO">LUGAR_PUBLICO</option>
-          <option value="ENTRENAMIENTO_BASE">ENTRENAMIENTO_BASE</option>
-          <option value="ENTRENAMIENTO_COMUNIDAD">ENTRENAMIENTO_COMUNIDAD</option>
+          <option value="CENTRO_PRIVADO">Centro privado</option>
+          <option value="LUGAR_PUBLICO">Lugar público</option>
+          <option value="ENTRENAMIENTO_BASE">Entrenamiento base</option>
+          <option value="ENTRENAMIENTO_COMUNIDAD">Entrenamiento comunidad</option>
         </select>
       </div>
 
       <div class="grupo-campo">
-        <label for="idContenido">ID del contenido</label>
-        <input
-          type="number"
-          id="idContenido"
-          name="idContenido"
-          [(ngModel)]="idContenido"
+        <label for="contenidoSeleccionadoId">Contenido</label>
+        <select
+          id="contenidoSeleccionadoId"
+          name="contenidoSeleccionadoId"
+          [(ngModel)]="contenidoSeleccionadoId"
           required
         >
+          <option [ngValue]="null">Selecciona un contenido</option>
+
+          @for (item of getOpcionesContenidoActual(); track item.id) {
+            <option [ngValue]="item.id">
+              {{ getTextoOpcionContenido(item) }}
+            </option>
+          }
+        </select>
       </div>
 
       <div class="grupo-campo">
@@ -46,11 +54,11 @@
           name="puntuacion"
           [(ngModel)]="puntuacion"
         >
-          <option [value]="1">1</option>
-          <option [value]="2">2</option>
-          <option [value]="3">3</option>
-          <option [value]="4">4</option>
-          <option [value]="5">5</option>
+          <option [value]="1">1 - Muy mala</option>
+          <option [value]="2">2 - Mala</option>
+          <option [value]="3">3 - Normal</option>
+          <option [value]="4">4 - Buena</option>
+          <option [value]="5">5 - Muy buena</option>
         </select>
       </div>
 
@@ -61,6 +69,7 @@
           name="comentario"
           rows="5"
           [(ngModel)]="comentario"
+          placeholder="Escribe aquí tu opinión..."
         ></textarea>
       </div>
 
@@ -80,19 +89,29 @@
   </section>
 
   <section class="bloque-listado">
-    <h2>Mis valoraciones</h2>
+    <div class="cabecera-listado">
+      <h2>Mis valoraciones</h2>
 
-    @if (misValoraciones.length > 0) {
+      <div class="grupo-busqueda">
+        <input
+          type="text"
+          placeholder="Buscar por tipo, puntuación, comentario o fecha..."
+          [(ngModel)]="busqueda"
+          (input)="aplicarBusqueda()"
+        >
+      </div>
+    </div>
+
+    @if (valoracionesFiltradas.length > 0) {
       <div class="grid-valoraciones">
 
-        @for (valoracion of misValoraciones; track valoracion.id) {
+        @for (valoracion of valoracionesFiltradas; track valoracion.id) {
           <article class="tarjeta-valoracion">
 
-            <h3>{{ valoracion.tipoDeValoracion }}</h3>
+            <h3>{{ mostrarTipoContenido(valoracion.tipoDeValoracion) }}</h3>
 
-            <p><strong>ID contenido:</strong> {{ valoracion.contenidoId }}</p>
-            <p><strong>Puntuación:</strong> {{ valoracion.puntuacion }}</p>
-            <p><strong>Comentario:</strong> {{ valoracion.comentario }}</p>
+            <p><strong>Puntuación:</strong> {{ valoracion.puntuacion }}/5</p>
+            <p><strong>Comentario:</strong> {{ valoracion.comentario || 'Sin comentario' }}</p>
             <p><strong>Fecha:</strong> {{ valoracion.fecha }}</p>
 
             <button
@@ -107,7 +126,7 @@
 
       </div>
     } @else {
-      <p class="sin-valoraciones">No tienes valoraciones todavía.</p>
+      <p class="sin-valoraciones">No tienes valoraciones todavía o no coinciden con la búsqueda.</p>
     }
   </section>
 
