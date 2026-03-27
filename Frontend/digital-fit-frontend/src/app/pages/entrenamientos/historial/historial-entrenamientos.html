@@ -15,31 +15,71 @@
         <form class="formulario-historial" (ngSubmit)="crearRegistro()">
 
             <div class="grupo-campo">
-                <label for="entrenamientoBaseId">ID entrenamiento base</label>
-                <input type="number" id="entrenamientoBaseId" name="entrenamientoBaseId"
-                    [(ngModel)]="entrenamientoBaseId">
+                <label for="tipoEntrenamientoSeleccionado">Tipo de entrenamiento</label>
+                <select id="tipoEntrenamientoSeleccionado" name="tipoEntrenamientoSeleccionado"
+                    [(ngModel)]="tipoEntrenamientoSeleccionado" (change)="cambiarTipoEntrenamiento()">
+                    <option value="BASE">Entrenamiento base de la app</option>
+                    <option value="MIS">Uno de mis entrenamientos</option>
+                </select>
+            </div>
+
+            @if (tipoEntrenamientoSeleccionado === 'BASE') {
+            <div class="grupo-campo">
+                <label for="entrenamientoBaseId">Entrenamiento base</label>
+                <select id="entrenamientoBaseId" name="entrenamientoBaseId" [(ngModel)]="entrenamientoBaseId">
+                    <option [ngValue]="null">Selecciona un entrenamiento base</option>
+                    @for (entrenamiento of entrenamientosBase; track entrenamiento.id) {
+                    <option [ngValue]="entrenamiento.id">
+                        {{ entrenamiento.nombre }} - {{ entrenamiento.nivel }} - {{ entrenamiento.duracionEnMinutos }}
+                        min
+                    </option>
+                    }
+                </select>
+            </div>
+            }
+
+            @if (tipoEntrenamientoSeleccionado === 'MIS') {
+            <div class="grupo-campo">
+                <label for="entrenamientoUsuarioId">Mis entrenamientos</label>
+                <select id="entrenamientoUsuarioId" name="entrenamientoUsuarioId" [(ngModel)]="entrenamientoUsuarioId">
+                    <option [ngValue]="null">Selecciona uno de tus entrenamientos</option>
+                    @for (entrenamiento of misEntrenamientos; track entrenamiento.id) {
+                    <option [ngValue]="entrenamiento.id">
+                        {{ entrenamiento.nombre }} - {{ entrenamiento.nivel }} - {{ entrenamiento.duracionEnMinutos }}
+                        min
+                    </option>
+                    }
+                </select>
+            </div>
+            }
+
+            <div class="grupo-campo">
+                <label for="lugarPublicoId">Lugar público</label>
+                <select id="lugarPublicoId" name="lugarPublicoId" [(ngModel)]="lugarPublicoId">
+                    <option [ngValue]="null">Sin lugar público</option>
+                    @for (lugar of misLugares; track lugar.id) {
+                    <option [ngValue]="lugar.id">
+                        {{ lugar.nombre }} - {{ lugar.tipo }}
+                    </option>
+                    }
+                </select>
             </div>
 
             <div class="grupo-campo">
-                <label for="entrenamientoUsuarioId">ID entrenamiento usuario</label>
-                <input type="number" id="entrenamientoUsuarioId" name="entrenamientoUsuarioId"
-                    [(ngModel)]="entrenamientoUsuarioId">
+                <label for="centroPrivadoId">Centro privado</label>
+                <select id="centroPrivadoId" name="centroPrivadoId" [(ngModel)]="centroPrivadoId">
+                    <option [ngValue]="null">Sin centro privado</option>
+                    @for (centro of misCentros; track centro.id) {
+                    <option [ngValue]="centro.id">
+                        {{ centro.nombre }} - {{ centro.direccion }}
+                    </option>
+                    }
+                </select>
             </div>
 
             <div class="grupo-campo">
-                <label for="lugarPublicoId">ID lugar público</label>
-                <input type="number" id="lugarPublicoId" name="lugarPublicoId" [(ngModel)]="lugarPublicoId">
-            </div>
-
-            <div class="grupo-campo">
-                <label for="centroPrivadoId">ID centro privado</label>
-                <input type="number" id="centroPrivadoId" name="centroPrivadoId" [(ngModel)]="centroPrivadoId">
-            </div>
-
-            <div class="grupo-campo">
-                <label for="fecha">Fecha</label>
-                <input type="text" id="fecha" name="fecha" [(ngModel)]="fecha" placeholder="2026-03-23 18:30:00"
-                    required>
+                <label for="fecha">Fecha y hora</label>
+                <input type="datetime-local" id="fecha" name="fecha" [(ngModel)]="fecha" required>
             </div>
 
             <div class="grupo-campo">
@@ -69,20 +109,27 @@
     </section>
 
     <section class="bloque-listado">
-        <h2>Mi historial</h2>
+        <div class="cabecera-listado">
+            <h2>Mi historial</h2>
 
-        @if (historial.length > 0) {
+            <div class="grupo-busqueda">
+                <input type="text" placeholder="Buscar por entrenamiento, lugar, fecha o notas..."
+                    [(ngModel)]="busqueda" (input)="aplicarFiltroBusqueda()">
+            </div>
+        </div>
+
+        @if (historialFiltrado.length > 0) {
         <div class="grid-historial">
 
-            @for (registro of historial; track registro.id) {
+            @for (registro of historialFiltrado; track registro.id) {
             <article class="tarjeta-historial">
 
                 <h3>{{ registro.entrenamiento }}</h3>
 
-                <p><strong>Lugar:</strong> {{ registro.lugar }}</p>
+                <p><strong>Lugar:</strong> {{ registro.lugar || 'No indicado' }}</p>
                 <p><strong>Fecha:</strong> {{ registro.fecha }}</p>
                 <p><strong>Duración:</strong> {{ registro.duracionEnMinutos }} min</p>
-                <p><strong>Notas:</strong> {{ registro.notas }}</p>
+                <p><strong>Notas:</strong> {{ registro.notas || 'Sin notas' }}</p>
 
                 <div class="acciones-historial">
                     <a class="boton-detalle" [routerLink]="['/historial-entrenamientos', registro.id]">
@@ -99,7 +146,7 @@
 
         </div>
         } @else {
-        <p class="sin-datos">No tienes registros de historial todavía.</p>
+        <p class="sin-datos">No hay registros que coincidan con la búsqueda.</p>
         }
     </section>
 
