@@ -627,3 +627,51 @@ Caused by: java.lang.Error: Unresolved compilation problem:
 2026-03-26 18:22:53 - Usuario usuario1 consulta entrenamiento 3
 2026-03-26 18:22:59 - Obteniendo estadisticas del usuario usuario1
 2026-03-26 18:22:59 - Estadisticas del usuario usuario1 obtenidas exitosamente
+2026-03-27 10:30:26 - Starting DigitalFitApplication using Java 25.0.2 with PID 19932 (C:\Users\TiendaRoquetas\Desktop\MANU PRACTICAS\Digital-Fit-Proyecto\Backend\digital-fit\target\classes started by TiendaRoquetas in C:\Users\TiendaRoquetas\Desktop\MANU PRACTICAS\Digital-Fit-Proyecto\Backend\digital-fit)
+2026-03-27 10:30:26 - Running with Spring Boot v4.0.5, Spring v7.0.6
+2026-03-27 10:30:26 - No active profile set, falling back to 1 default profile: "default"
+2026-03-27 10:30:27 - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-03-27 10:30:27 - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-03-27 10:30:30 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-03-27 10:30:30 - Finished Spring Data repository scanning in 329 ms. Found 12 JPA repository interfaces.
+2026-03-27 10:30:32 - Tomcat initialized with port 8080 (http)
+2026-03-27 10:30:32 - Starting service [Tomcat]
+2026-03-27 10:30:32 - Starting Servlet engine: [Apache Tomcat/11.0.20]
+2026-03-27 10:30:32 - Root WebApplicationContext: initialization completed in 5744 ms
+2026-03-27 10:30:33 - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-03-27 10:30:33 - HHH000001: Hibernate ORM core version 7.2.7.Final
+2026-03-27 10:30:34 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-03-27 10:30:34 - HikariPool-1 - Starting...
+2026-03-27 10:30:35 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@1b987c17
+2026-03-27 10:30:35 - HikariPool-1 - Start completed.
+2026-03-27 10:30:35 - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://localhost:3306/digital_fit]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.45
+	Default catalog/schema: digital_fit/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-03-27 10:30:37 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-03-27 10:30:37 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-03-27 10:30:37 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-03-27 10:30:39 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-03-27 10:30:40 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2026-03-27 10:30:40 - Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2026-03-27 10:30:41 - Exposing 1 endpoint beneath base path '/actuator'
+2026-03-27 10:30:41 - Tomcat started on port 8080 (http) with context path '/'
+2026-03-27 10:30:41 - Started DigitalFitApplication in 14.905 seconds (process running for 15.708)
+2026-03-27 10:30:42 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-03-27 10:30:42 - Initializing Servlet 'dispatcherServlet'
+2026-03-27 10:30:42 - Completed initialization in 1 ms
+2026-03-27 10:32:37 - Buscando usuario con login: usuario1
+2026-03-27 10:32:38 - Usuario encontrado: usuario1
+2026-03-27 10:32:41 - Listar historial de entrenamientos
+2026-03-27 10:32:41 - Listando mis lugares publicos
+2026-03-27 10:32:41 - Listando centros privados al usuario usuario1
+2026-03-27 10:32:41 - Listando entrenamientos base
+2026-03-27 10:32:41 - Listando entrenamientos de usuario usuario1
