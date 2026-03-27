@@ -3,7 +3,9 @@ package com.example.digital_fit.model.Entrenamientos;
 import java.time.LocalDateTime;
 
 import com.example.digital_fit.model.Auth.Usuario;
+import com.example.digital_fit.model.CentroPrivado.CentroPrivadoBase;
 import com.example.digital_fit.model.CentroPrivado.CentroPrivadoUsuario;
+import com.example.digital_fit.model.LugarPublico.LugarPublicoBase;
 import com.example.digital_fit.model.LugarPublico.LugarPublicoUsuario;
 
 import jakarta.persistence.Column;
@@ -31,37 +33,46 @@ public class HistorialEntrenamientos {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Usuario que realizo el entrenamiento
+    // Usuario que realizó el entrenamiento
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
-    // Entrenamiento base de la app (Opcional)
+    // Entrenamiento base
     @ManyToOne
     @JoinColumn(name = "entrenamiento_base_id")
     private EntrenamientoBase entrenamientoBase;
 
-    // Entrnamiento creado o guardado por el usuario (Opcional)
+    // Entrenamiento del usuario
     @ManyToOne
     @JoinColumn(name = "entrenamiento_usuario_id")
     private EntrenamientoUsuario entrenamientoUsuario;
 
-    // Lugar publico donde se realizo el entrenamiento (Opcional)
+    // Lugar público base
     @ManyToOne
-    @JoinColumn(name = "lugar_publico_id")
-    private LugarPublicoUsuario lugarPublico;
+    @JoinColumn(name = "lugar_publico_base_id")
+    private LugarPublicoBase lugarPublicoBase;
 
-    // Centro privado donde se realizo el entrenamiento (Opcional)
+    // Lugar público del usuario
     @ManyToOne
-    @JoinColumn(name = "centro_privado_id")
-    private CentroPrivadoUsuario centroPrivado;
+    @JoinColumn(name = "lugar_publico_usuario_id")
+    private LugarPublicoUsuario lugarPublicoUsuario;
 
-    // Fecha y hora del entrenamiento
+    // Centro privado base
+    @ManyToOne
+    @JoinColumn(name = "centro_privado_base_id")
+    private CentroPrivadoBase centroPrivadoBase;
+
+    // Centro privado del usuario
+    @ManyToOne
+    @JoinColumn(name = "centro_privado_usuario_id")
+    private CentroPrivadoUsuario centroPrivadoUsuario;
+
+    // Fecha y hora
     private LocalDateTime fechaHora;
 
-    private Integer duracionMinutos; // Duración del entrenamiento en minutos
+    private Integer duracionMinutos;
 
-    // Notas del usuario:
     @Column(length = 2000)
     private String notas;
 }

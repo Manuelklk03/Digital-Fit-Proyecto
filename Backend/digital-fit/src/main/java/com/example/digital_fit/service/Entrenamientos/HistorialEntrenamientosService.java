@@ -14,16 +14,20 @@ import com.example.digital_fit.dto.Entrenamientos.HistorialEntrenamientosDTO;
 import com.example.digital_fit.exception.OperacionNoPermitida;
 import com.example.digital_fit.exception.RecursoNoEncontradoException;
 import com.example.digital_fit.model.Auth.Usuario;
+import com.example.digital_fit.model.CentroPrivado.CentroPrivadoBase;
 import com.example.digital_fit.model.CentroPrivado.CentroPrivadoUsuario;
 import com.example.digital_fit.model.Entrenamientos.EntrenamientoBase;
 import com.example.digital_fit.model.Entrenamientos.EntrenamientoUsuario;
 import com.example.digital_fit.model.Entrenamientos.HistorialEntrenamientos;
+import com.example.digital_fit.model.LugarPublico.LugarPublicoBase;
 import com.example.digital_fit.model.LugarPublico.LugarPublicoUsuario;
 import com.example.digital_fit.repository.Auth.UsuarioRepository;
+import com.example.digital_fit.repository.CentroPrivado.CentroPrivadoBaseRepository;
 import com.example.digital_fit.repository.CentroPrivado.CentroPrivadoUsuarioRepository;
 import com.example.digital_fit.repository.Entrenamientos.EntrenamientoBaseRepository;
 import com.example.digital_fit.repository.Entrenamientos.EntrenamientoUsuarioRepository;
 import com.example.digital_fit.repository.Entrenamientos.HistorialEntrenamientosRepository;
+import com.example.digital_fit.repository.LugarPublico.LugarPublicoBaseRepository;
 import com.example.digital_fit.repository.LugarPublico.LugarPublicoUsuarioRepository;
 
 import jakarta.transaction.Transactional;
@@ -44,14 +48,20 @@ public class HistorialEntrenamientosService {
     private EntrenamientoUsuarioRepository entrenamientoUsuarioRepository;
 
     @Autowired
+    private LugarPublicoBaseRepository lugarPublicoBaseRepository;
+
+    @Autowired
     private LugarPublicoUsuarioRepository lugarPublicoUsuarioRepository;
+
+    @Autowired
+    private CentroPrivadoBaseRepository centroPrivadoBaseRepository;
 
     @Autowired
     private CentroPrivadoUsuarioRepository centroPrivadoUsuarioRepository;
 
     private static final Logger log = LoggerFactory.getLogger(HistorialEntrenamientosService.class);
 
-    // Listar filtrado;
+    // Listar filtrado
     public List<HistorialEntrenamientosDTO> listarOFiltrarHistorial(String username, Integer duracionEnMinutos,
             LocalDateTime fecha) {
 
@@ -64,8 +74,7 @@ public class HistorialEntrenamientosService {
 
         if (duracionEnMinutos != null) {
             registros = historialEntrenamientosRepository
-                    .findByUsuarioAndDuracionMinutosLessThanEqualOrderByFechaHoraDesc(usuario,
-                            duracionEnMinutos);
+                    .findByUsuarioAndDuracionMinutosLessThanEqualOrderByFechaHoraDesc(usuario, duracionEnMinutos);
         } else if (fecha != null) {
             registros = historialEntrenamientosRepository
                     .findByUsuarioAndFechaHoraAfterOrderByFechaHoraDesc(usuario, fecha);
@@ -82,7 +91,7 @@ public class HistorialEntrenamientosService {
         return registrosDTO;
     }
 
-    // Ver detalles de un registro
+    // Ver detalles
     public HistorialEntrenamientosDTO verDetalles(Long id, String username) {
 
         log.debug("Buscando registro con id: {}", id);
@@ -96,10 +105,11 @@ public class HistorialEntrenamientosService {
         if (!historial.getUsuario().getId().equals(usuario.getId())) {
             throw new OperacionNoPermitida("No tienes permiso para ver este registro.");
         }
+
         return entityToDto(historial);
     }
 
-    // Crear registro de entrenamiento realizado
+    // Crear registro
     @Transactional
     public HistorialEntrenamientosDTO crearHistorialEntrenamiento(CrearEntrenamientoHistorialDTO dto, String username) {
 
@@ -108,8 +118,24 @@ public class HistorialEntrenamientosService {
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
 
-        HistorialEntrenamientos historial = new HistorialEntrenamientos();
+        boolean tieneEntrenamientoBase = dto.getEntrenamientoBaseId() != null;
+        boolean tieneEntrenamientoUsuario = dto.getEntrenamientoUsuarioId() != null;
 
+        if (tieneEntrenamientoBase == tieneEntrenamientoUsuario) {
+            throw new OperacionNoPermitida("Debes seleccionar un único entrenamiento: base o de usuario.");
+        }
+
+        int ubicacionesSeleccionadas = 0;
+        if (dto.getLugarPublicoBaseId() != null) ubicacionesSeleccionadas++;
+        if (dto.getLugarPublicoUsuarioId() != null) ubicacionesSeleccionadas++;
+        if (dto.getCentroPrivadoBaseId() != null) ubicacionesSeleccionadas++;
+        if (dto.getCentroPrivadoUsuarioId() != null) ubicacionesSeleccionadas++;
+
+        if (ubicacionesSeleccionadas > 1) {
+            throw new OperacionNoPermitida("Solo puedes seleccionar una ubicación para el historial.");
+        }
+
+        HistorialEntrenamientos historial = new HistorialEntrenamientos();
         historial.setUsuario(usuario);
         historial.setFechaHora(dto.getFecha());
         historial.setDuracionMinutos(dto.getDuracionEnMinutos());
@@ -118,39 +144,68 @@ public class HistorialEntrenamientosService {
         // Entrenamiento base
         if (dto.getEntrenamientoBaseId() != null) {
             EntrenamientoBase entrenamientoBase = entrenamientoBaseRepository.findById(dto.getEntrenamientoBaseId())
-                    .orElseThrow(() -> new RecursoNoEncontradoException("Entrenamiento base con id: "
-                            + dto.getEntrenamientoBaseId() + " No encontrado."));
+                    .orElseThrow(() -> new RecursoNoEncontradoException(
+                            "Entrenamiento base con id: " + dto.getEntrenamientoBaseId() + " No encontrado."));
 
             historial.setEntrenamientoBase(entrenamientoBase);
         }
 
-        // Entrenamiento Usuario:
+        // Entrenamiento usuario
         if (dto.getEntrenamientoUsuarioId() != null) {
             EntrenamientoUsuario entrenamientoUsuario = entrenamientoUsuarioRepository
                     .findById(dto.getEntrenamientoUsuarioId())
-                    .orElseThrow(() -> new RecursoNoEncontradoException("Entrenamiento usuario con id: "
-                            + dto.getEntrenamientoUsuarioId() + " No encontrado."));
+                    .orElseThrow(() -> new RecursoNoEncontradoException(
+                            "Entrenamiento usuario con id: " + dto.getEntrenamientoUsuarioId() + " No encontrado."));
+
+            if (!entrenamientoUsuario.getUsuario().getId().equals(usuario.getId())) {
+                throw new OperacionNoPermitida("No puedes usar un entrenamiento que no es tuyo.");
+            }
 
             historial.setEntrenamientoUsuario(entrenamientoUsuario);
         }
 
-        // Lugar publico
-        if (dto.getLugarPublicoId() != null) {
-            LugarPublicoUsuario lugarPublico = lugarPublicoUsuarioRepository.findById(dto.getLugarPublicoId())
-                    .orElseThrow(() -> new RecursoNoEncontradoException("Lugar publico con id: "
-                            + dto.getLugarPublicoId() + " No encontrado."));
+        // Lugar público base
+        if (dto.getLugarPublicoBaseId() != null) {
+            LugarPublicoBase lugarPublicoBase = lugarPublicoBaseRepository.findById(dto.getLugarPublicoBaseId())
+                    .orElseThrow(() -> new RecursoNoEncontradoException(
+                            "Lugar público base con id: " + dto.getLugarPublicoBaseId() + " No encontrado."));
 
-            historial.setLugarPublico(lugarPublico);
+            historial.setLugarPublicoBase(lugarPublicoBase);
         }
 
-        // Centro privado
-        if (dto.getCentroPrivadoId() != null) {
+        // Lugar público usuario
+        if (dto.getLugarPublicoUsuarioId() != null) {
+            LugarPublicoUsuario lugarPublicoUsuario = lugarPublicoUsuarioRepository.findById(dto.getLugarPublicoUsuarioId())
+                    .orElseThrow(() -> new RecursoNoEncontradoException(
+                            "Lugar público usuario con id: " + dto.getLugarPublicoUsuarioId() + " No encontrado."));
 
-            CentroPrivadoUsuario centroPrivado = centroPrivadoUsuarioRepository.findById(dto.getCentroPrivadoId())
-                    .orElseThrow(() -> new RecursoNoEncontradoException("Centro privado con id: "
-                            + dto.getCentroPrivadoId() + " No encontrado."));
+            if (!lugarPublicoUsuario.getUsuario().getId().equals(usuario.getId())) {
+                throw new OperacionNoPermitida("No puedes usar un lugar público que no es tuyo.");
+            }
 
-            historial.setCentroPrivado(centroPrivado);
+            historial.setLugarPublicoUsuario(lugarPublicoUsuario);
+        }
+
+        // Centro privado base
+        if (dto.getCentroPrivadoBaseId() != null) {
+            CentroPrivadoBase centroPrivadoBase = centroPrivadoBaseRepository.findById(dto.getCentroPrivadoBaseId())
+                    .orElseThrow(() -> new RecursoNoEncontradoException(
+                            "Centro privado base con id: " + dto.getCentroPrivadoBaseId() + " No encontrado."));
+
+            historial.setCentroPrivadoBase(centroPrivadoBase);
+        }
+
+        // Centro privado usuario
+        if (dto.getCentroPrivadoUsuarioId() != null) {
+            CentroPrivadoUsuario centroPrivadoUsuario = centroPrivadoUsuarioRepository.findById(dto.getCentroPrivadoUsuarioId())
+                    .orElseThrow(() -> new RecursoNoEncontradoException(
+                            "Centro privado usuario con id: " + dto.getCentroPrivadoUsuarioId() + " No encontrado."));
+
+            if (!centroPrivadoUsuario.getUsuario().getId().equals(usuario.getId())) {
+                throw new OperacionNoPermitida("No puedes usar un centro privado que no es tuyo.");
+            }
+
+            historial.setCentroPrivadoUsuario(centroPrivadoUsuario);
         }
 
         HistorialEntrenamientos historialGuardado = historialEntrenamientosRepository.save(historial);
@@ -158,7 +213,6 @@ public class HistorialEntrenamientosService {
         log.info("Historial guardado con id: {}", historialGuardado.getId());
 
         return entityToDto(historialGuardado);
-
     }
 
     // Borrar registro
@@ -182,8 +236,7 @@ public class HistorialEntrenamientosService {
         historialEntrenamientosRepository.delete(historial);
     }
 
-    // Mappers
-
+    // Mapper
     public HistorialEntrenamientosDTO entityToDto(HistorialEntrenamientos historial) {
         HistorialEntrenamientosDTO dto = new HistorialEntrenamientosDTO();
 
@@ -191,14 +244,24 @@ public class HistorialEntrenamientosService {
 
         if (historial.getEntrenamientoBase() != null) {
             dto.setEntrenamiento(historial.getEntrenamientoBase().getNombre());
+            dto.setTipoEntrenamiento("ENTRENAMIENTO_BASE");
         } else if (historial.getEntrenamientoUsuario() != null) {
             dto.setEntrenamiento(historial.getEntrenamientoUsuario().getNombre());
+            dto.setTipoEntrenamiento("MI_ENTRENAMIENTO");
         }
 
-        if (historial.getLugarPublico() != null) {
-            dto.setLugar(historial.getLugarPublico().getNombre());
-        } else if (historial.getCentroPrivado() != null) {
-            dto.setLugar(historial.getCentroPrivado().getNombre());
+        if (historial.getLugarPublicoBase() != null) {
+            dto.setUbicacion(historial.getLugarPublicoBase().getNombre());
+            dto.setTipoUbicacion("LUGAR_PUBLICO_BASE");
+        } else if (historial.getLugarPublicoUsuario() != null) {
+            dto.setUbicacion(historial.getLugarPublicoUsuario().getNombre());
+            dto.setTipoUbicacion("MI_LUGAR_PUBLICO");
+        } else if (historial.getCentroPrivadoBase() != null) {
+            dto.setUbicacion(historial.getCentroPrivadoBase().getNombre());
+            dto.setTipoUbicacion("CENTRO_PRIVADO_BASE");
+        } else if (historial.getCentroPrivadoUsuario() != null) {
+            dto.setUbicacion(historial.getCentroPrivadoUsuario().getNombre());
+            dto.setTipoUbicacion("MI_CENTRO_PRIVADO");
         }
 
         dto.setFecha(historial.getFechaHora());
@@ -209,7 +272,6 @@ public class HistorialEntrenamientosService {
     }
 
     public HistorialEntrenamientos dtoToEntity(HistorialEntrenamientosDTO dto) {
-
         HistorialEntrenamientos historial = new HistorialEntrenamientos();
 
         historial.setId(dto.getId());
@@ -217,10 +279,6 @@ public class HistorialEntrenamientosService {
         historial.setDuracionMinutos(dto.getDuracionEnMinutos());
         historial.setNotas(dto.getNotas());
 
-        // Las relaciones (usuario, entrenamiento, lugar, centro)
-        // se asignan en el service porque necesitan buscarse en los repositories
-
         return historial;
     }
-
 }
