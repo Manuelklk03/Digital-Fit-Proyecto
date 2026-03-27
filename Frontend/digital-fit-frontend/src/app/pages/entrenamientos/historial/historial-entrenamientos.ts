@@ -6,7 +6,9 @@ import { Footer } from '../../../components/footer/footer';
 import { HistorialEntrenamientosService } from '../../../services/entrenamientos/historial-entrenamientos';
 import { EntrenamientosService } from '../../../services/entrenamientos/entrenamientos-service';
 import { MisEntrenamientosService } from '../../../services/entrenamientos/mis-entrenamientos-service';
+import { PrivadosService } from '../../../services/centros/privados-service';
 import { MisCentrosService } from '../../../services/centros/mis-centros-service';
+import { PublicosService } from '../../../services/publicos/publicos-service';
 import { MisLugaresService } from '../../../services/publicos/mis-lugares';
 
 @Component({
@@ -20,7 +22,9 @@ export class HistorialEntrenamientosComponent {
   private historialService = inject(HistorialEntrenamientosService);
   private entrenamientosService = inject(EntrenamientosService);
   private misEntrenamientosService = inject(MisEntrenamientosService);
+  private privadosService = inject(PrivadosService);
   private misCentrosService = inject(MisCentrosService);
+  private publicosService = inject(PublicosService);
   private misLugaresService = inject(MisLugaresService);
   private cdr = inject(ChangeDetectorRef);
 
@@ -29,14 +33,14 @@ export class HistorialEntrenamientosComponent {
 
   entrenamientosBase: any[] = [];
   misEntrenamientos: any[] = [];
+  centrosBase: any[] = [];
   misCentros: any[] = [];
+  lugaresBase: any[] = [];
   misLugares: any[] = [];
 
-  tipoEntrenamientoSeleccionado = 'BASE';
-  entrenamientoBaseId: number | null = null;
-  entrenamientoUsuarioId: number | null = null;
-  lugarPublicoId: number | null = null;
-  centroPrivadoId: number | null = null;
+  entrenamientoSeleccionado = '';
+  ubicacionSeleccionada = '';
+
   fecha = '';
   duracionEnMinutos = 30;
   notas = '';
@@ -48,7 +52,7 @@ export class HistorialEntrenamientosComponent {
 
   ngOnInit(): void {
     this.cargarHistorial();
-    this.cargarDatosFormulario();
+    this.cargarOpcionesFormulario();
   }
 
   cargarHistorial(): void {
@@ -65,15 +69,13 @@ export class HistorialEntrenamientosComponent {
     });
   }
 
-  cargarDatosFormulario(): void {
+  cargarOpcionesFormulario(): void {
     this.entrenamientosService.getEntrenamientos().subscribe({
       next: (data: any[]) => {
         this.entrenamientosBase = data;
         this.cdr.detectChanges();
       },
-      error: (err: any) => {
-        console.error('ERROR ENTRENAMIENTOS BASE:', err);
-      }
+      error: (err: any) => console.error('ERROR ENTRENAMIENTOS BASE:', err)
     });
 
     this.misEntrenamientosService.getMisEntrenamientos().subscribe({
@@ -81,9 +83,15 @@ export class HistorialEntrenamientosComponent {
         this.misEntrenamientos = data;
         this.cdr.detectChanges();
       },
-      error: (err: any) => {
-        console.error('ERROR MIS ENTRENAMIENTOS:', err);
-      }
+      error: (err: any) => console.error('ERROR MIS ENTRENAMIENTOS:', err)
+    });
+
+    this.privadosService.getCentrosPrivados().subscribe({
+      next: (data: any[]) => {
+        this.centrosBase = data;
+        this.cdr.detectChanges();
+      },
+      error: (err: any) => console.error('ERROR CENTROS BASE:', err)
     });
 
     this.misCentrosService.getMisCentros().subscribe({
@@ -91,9 +99,15 @@ export class HistorialEntrenamientosComponent {
         this.misCentros = data;
         this.cdr.detectChanges();
       },
-      error: (err: any) => {
-        console.error('ERROR MIS CENTROS:', err);
-      }
+      error: (err: any) => console.error('ERROR MIS CENTROS:', err)
+    });
+
+    this.publicosService.getLugaresPublicos().subscribe({
+      next: (data: any[]) => {
+        this.lugaresBase = data;
+        this.cdr.detectChanges();
+      },
+      error: (err: any) => console.error('ERROR LUGARES BASE:', err)
     });
 
     this.misLugaresService.getMisLugares().subscribe({
@@ -101,42 +115,54 @@ export class HistorialEntrenamientosComponent {
         this.misLugares = data;
         this.cdr.detectChanges();
       },
-      error: (err: any) => {
-        console.error('ERROR MIS LUGARES:', err);
-      }
+      error: (err: any) => console.error('ERROR MIS LUGARES:', err)
     });
-  }
-
-  cambiarTipoEntrenamiento(): void {
-    this.entrenamientoBaseId = null;
-    this.entrenamientoUsuarioId = null;
   }
 
   crearRegistro(): void {
     this.mensajeExito = '';
     this.mensajeError = '';
 
-    if (this.tipoEntrenamientoSeleccionado === 'BASE' && !this.entrenamientoBaseId) {
-      this.mensajeError = 'Debes seleccionar un entrenamiento base.';
+    if (!this.entrenamientoSeleccionado) {
+      this.mensajeError = 'Debes seleccionar un entrenamiento.';
       return;
     }
 
-    if (this.tipoEntrenamientoSeleccionado === 'MIS' && !this.entrenamientoUsuarioId) {
-      this.mensajeError = 'Debes seleccionar uno de tus entrenamientos.';
-      return;
-    }
-
-    const nuevoRegistro = {
-      entrenamientoBaseId: this.tipoEntrenamientoSeleccionado === 'BASE' ? this.entrenamientoBaseId : null,
-      entrenamientoUsuarioId: this.tipoEntrenamientoSeleccionado === 'MIS' ? this.entrenamientoUsuarioId : null,
-      lugarPublicoId: this.lugarPublicoId,
-      centroPrivadoId: this.centroPrivadoId,
+    const payload: any = {
+      entrenamientoBaseId: null,
+      entrenamientoUsuarioId: null,
+      lugarPublicoBaseId: null,
+      lugarPublicoUsuarioId: null,
+      centroPrivadoBaseId: null,
+      centroPrivadoUsuarioId: null,
       fecha: this.formatearFechaParaBackend(this.fecha),
       duracionEnMinutos: this.duracionEnMinutos,
       notas: this.notas
     };
 
-    this.historialService.crearRegistro(nuevoRegistro).subscribe({
+    const [tipoEntrenamiento, idEntrenamiento] = this.entrenamientoSeleccionado.split('-');
+
+    if (tipoEntrenamiento === 'BASE') {
+      payload.entrenamientoBaseId = Number(idEntrenamiento);
+    } else if (tipoEntrenamiento === 'MIS') {
+      payload.entrenamientoUsuarioId = Number(idEntrenamiento);
+    }
+
+    if (this.ubicacionSeleccionada) {
+      const [tipoUbicacion, idUbicacion] = this.ubicacionSeleccionada.split('-');
+
+      if (tipoUbicacion === 'LPB') {
+        payload.lugarPublicoBaseId = Number(idUbicacion);
+      } else if (tipoUbicacion === 'LPU') {
+        payload.lugarPublicoUsuarioId = Number(idUbicacion);
+      } else if (tipoUbicacion === 'CPB') {
+        payload.centroPrivadoBaseId = Number(idUbicacion);
+      } else if (tipoUbicacion === 'CPU') {
+        payload.centroPrivadoUsuarioId = Number(idUbicacion);
+      }
+    }
+
+    this.historialService.crearRegistro(payload).subscribe({
       next: () => {
         this.mensajeExito = 'Registro guardado correctamente.';
         this.limpiarFormulario();
@@ -173,18 +199,17 @@ export class HistorialEntrenamientosComponent {
 
     this.historialFiltrado = this.historial.filter((registro: any) =>
       (registro.entrenamiento || '').toLowerCase().includes(texto) ||
-      (registro.lugar || '').toLowerCase().includes(texto) ||
+      (registro.ubicacion || '').toLowerCase().includes(texto) ||
+      (registro.tipoEntrenamiento || '').toLowerCase().includes(texto) ||
+      (registro.tipoUbicacion || '').toLowerCase().includes(texto) ||
       (registro.notas || '').toLowerCase().includes(texto) ||
       (registro.fecha || '').toLowerCase().includes(texto)
     );
   }
 
   limpiarFormulario(): void {
-    this.tipoEntrenamientoSeleccionado = 'BASE';
-    this.entrenamientoBaseId = null;
-    this.entrenamientoUsuarioId = null;
-    this.lugarPublicoId = null;
-    this.centroPrivadoId = null;
+    this.entrenamientoSeleccionado = '';
+    this.ubicacionSeleccionada = '';
     this.fecha = '';
     this.duracionEnMinutos = 30;
     this.notas = '';
@@ -195,8 +220,32 @@ export class HistorialEntrenamientosComponent {
       return '';
     }
 
-    return fechaLocal.replace('T', ':00').length === 16
-      ? `${fechaLocal.replace('T', ' ')}:00`
-      : fechaLocal.replace('T', ' ');
+    return `${fechaLocal.replace('T', ' ')}:00`;
+  }
+
+  mostrarTipoEntrenamiento(tipo: string): string {
+    switch (tipo) {
+      case 'ENTRENAMIENTO_BASE':
+        return 'Entrenamiento base';
+      case 'MI_ENTRENAMIENTO':
+        return 'Mi entrenamiento';
+      default:
+        return 'No indicado';
+    }
+  }
+
+  mostrarTipoUbicacion(tipo: string): string {
+    switch (tipo) {
+      case 'LUGAR_PUBLICO_BASE':
+        return 'Lugar público base';
+      case 'MI_LUGAR_PUBLICO':
+        return 'Mi lugar público';
+      case 'CENTRO_PRIVADO_BASE':
+        return 'Centro privado base';
+      case 'MI_CENTRO_PRIVADO':
+        return 'Mi centro privado';
+      default:
+        return 'Sin ubicación';
+    }
   }
 }
