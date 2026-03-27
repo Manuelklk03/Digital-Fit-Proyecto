@@ -81,6 +81,29 @@
     box-shadow: 0 0 0 3px rgba(60, 145, 230, 0.15);
 }
 
+.cabecera-listado {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.grupo-busqueda {
+    flex: 1;
+    min-width: 280px;
+}
+
+.grupo-busqueda input {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #aac5eb;
+    border-radius: 12px;
+    font-size: 15px;
+    background-color: white;
+}
+
 .boton-guardar {
     align-self: flex-start;
     padding: 14px 24px;
@@ -92,7 +115,8 @@
     cursor: pointer;
 }
 
-.boton-guardar:hover {
+.boton-guardar:hover,
+.boton-borrar:hover {
     transform: translateY(-2px);
 }
 
@@ -134,10 +158,6 @@
     color: white;
     font-weight: bold;
     cursor: pointer;
-}
-
-.boton-borrar:hover {
-    transform: translateY(-2px);
 }
 
 .sin-valoraciones {
