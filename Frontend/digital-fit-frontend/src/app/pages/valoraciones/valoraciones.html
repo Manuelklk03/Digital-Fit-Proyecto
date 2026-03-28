@@ -15,34 +15,38 @@
     <form class="formulario-valoracion" (ngSubmit)="guardarValoracion()">
 
       <div class="grupo-campo">
-        <label for="tipoContenido">Qué quieres valorar</label>
+        <label for="categoriaContenido">Seleccione contenido a valorar</label>
         <select
-          id="tipoContenido"
-          name="tipoContenido"
-          [(ngModel)]="tipoContenido"
-          (change)="cambiarTipoContenido()"
+          id="categoriaContenido"
+          name="categoriaContenido"
+          [(ngModel)]="categoriaContenido"
+          (change)="cambiarCategoriaContenido()"
         >
-          <option value="CENTRO_PRIVADO">Centro privado</option>
-          <option value="LUGAR_PUBLICO">Lugar público</option>
-          <option value="ENTRENAMIENTO_BASE">Entrenamiento base</option>
-          <option value="ENTRENAMIENTO_COMUNIDAD">Entrenamiento comunidad</option>
+          <option value="ENTRENAMIENTOS">Entrenamientos</option>
+          <option value="CENTROS_PRIVADOS">Centros privados</option>
+          <option value="LUGARES_PUBLICOS">Lugares públicos</option>
         </select>
       </div>
 
       <div class="grupo-campo">
-        <label for="contenidoSeleccionadoId">Contenido</label>
+        <label for="contenidoAgrupado">Contenido</label>
         <select
-          id="contenidoSeleccionadoId"
-          name="contenidoSeleccionadoId"
-          [(ngModel)]="contenidoSeleccionadoId"
+          id="contenidoAgrupado"
+          name="contenidoAgrupado"
+          [ngModel]="getValorSeleccionadoContenido()"
+          (ngModelChange)="seleccionarContenido($event)"
           required
         >
-          <option [ngValue]="null">Selecciona un contenido</option>
+          <option value="">Selecciona un contenido</option>
 
-          @for (item of getOpcionesContenidoActual(); track item.id) {
-            <option [ngValue]="item.id">
-              {{ getTextoOpcionContenido(item) }}
-            </option>
+          @for (grupo of getOpcionesActuales(); track grupo.grupo) {
+            <optgroup [label]="grupo.grupo">
+              @for (item of grupo.items; track item.id) {
+                <option [value]="grupo.tipoReal + '-' + item.id">
+                  {{ getTextoOpcion(item, grupo.tipoReal) }}
+                </option>
+              }
+            </optgroup>
           }
         </select>
       </div>
@@ -95,7 +99,7 @@
       <div class="grupo-busqueda">
         <input
           type="text"
-          placeholder="Buscar por tipo, puntuación, comentario o fecha..."
+          placeholder="Buscar por tipo, contenido, puntuación, comentario o fecha..."
           [(ngModel)]="busqueda"
           (input)="aplicarBusqueda()"
         >
@@ -110,6 +114,7 @@
 
             <h3>{{ mostrarTipoContenido(valoracion.tipoDeValoracion) }}</h3>
 
+            <p><strong>Contenido:</strong> {{ valoracion.contenidoNombre || 'Sin nombre' }}</p>
             <p><strong>Puntuación:</strong> {{ valoracion.puntuacion }}/5</p>
             <p><strong>Comentario:</strong> {{ valoracion.comentario || 'Sin comentario' }}</p>
             <p><strong>Fecha:</strong> {{ valoracion.fecha }}</p>

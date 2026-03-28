@@ -25,6 +25,8 @@ public class ValoracionDTO {
 
     private Long contenidoId;
 
+    private String contenidoNombre;
+
     private Long usuarioId;
 
     private String username;

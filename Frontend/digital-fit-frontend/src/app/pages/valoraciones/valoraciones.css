@@ -81,6 +81,12 @@
     box-shadow: 0 0 0 3px rgba(60, 145, 230, 0.15);
 }
 
+.grupo-campo optgroup {
+    font-style: normal;
+    font-weight: bold;
+    color: var(--color-azul-oscuro);
+}
+
 .cabecera-listado {
     display: flex;
     justify-content: space-between;
@@ -147,6 +153,10 @@
 .tarjeta-valoracion h3 {
     margin-top: 0;
     color: var(--color-azul-oscuro);
+}
+
+.tarjeta-valoracion p {
+    margin: 8px 0;
 }
 
 .boton-borrar {
