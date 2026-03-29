@@ -16,7 +16,7 @@
 }
 
 .cabecera-detalle {
-    max-width: 900px;
+    max-width: 1000px;
     margin: 0 auto 30px auto;
     text-align: center;
     animation: fadeUp 0.7s ease;
@@ -33,14 +33,42 @@
     line-height: 1.7;
 }
 
+.bloque-mensaje,
 .bloque-detalle {
-    max-width: 900px;
-    margin: 0 auto;
+    max-width: 1000px;
+    margin: 0 auto 25px auto;
     background-color: var(--color-azul-caja);
     border-radius: 22px;
-    padding: 30px;
+    padding: 24px 30px;
     box-shadow: 0px 10px 24px rgba(0, 0, 0, 0.12);
     animation: fadeUp 0.9s ease;
+}
+
+.bloque-mensaje p {
+    margin: 0;
+    font-weight: bold;
+}
+
+.bloque-mensaje-exito {
+    border-left: 6px solid #1f7a37;
+}
+
+.bloque-mensaje-error {
+    border-left: 6px solid #c62828;
+}
+
+.bloque-mensaje-exito p {
+    color: #1f7a37;
+}
+
+.bloque-mensaje-error p {
+    color: #c62828;
+}
+
+.grid-detalle {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 24px;
 }
 
 .dato-detalle {
@@ -58,15 +86,36 @@
     color: var(--color-azul-oscuro);
 }
 
-.descripcion-detalle {
-    margin-top: 24px;
+.descripcion-detalle,
+.bloque-mapa-placeholder {
+    margin-top: 18px;
     padding: 20px;
     background-color: white;
     border-radius: 16px;
 }
 
-.descripcion-detalle h2 {
+.descripcion-detalle h2,
+.bloque-mapa-placeholder h2 {
     margin-top: 0;
+    color: var(--color-azul-oscuro);
+}
+
+.mapa-placeholder {
+    margin-top: 18px;
+    min-height: 220px;
+    border: 2px dashed #8fb6e8;
+    border-radius: 16px;
+    background-color: #eef6ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+}
+
+.mapa-placeholder p {
+    margin: 0;
+    font-weight: bold;
     color: var(--color-azul-oscuro);
 }
 
@@ -107,14 +156,30 @@
     transform: translateY(-2px);
 }
 
-.mensaje-exito {
-    margin-top: 18px;
-    font-weight: bold;
-    color: #1f7a37;
+@media (max-width: 800px) {
+    .grid-detalle {
+        grid-template-columns: 1fr;
+    }
 }
 
-.mensaje-error {
-    margin-top: 18px;
-    font-weight: bold;
-    color: #c62828;
+@media (max-width: 600px) {
+    .cabecera-detalle h1 {
+        font-size: 30px;
+    }
+
+    .bloque-mensaje,
+    .bloque-detalle {
+        padding: 22px;
+    }
+
+    .dato-detalle {
+        flex-direction: column;
+    }
+
+    .boton-volver,
+    .boton-anadir,
+    .boton-borrar {
+        width: 100%;
+        text-align: center;
+    }
 }

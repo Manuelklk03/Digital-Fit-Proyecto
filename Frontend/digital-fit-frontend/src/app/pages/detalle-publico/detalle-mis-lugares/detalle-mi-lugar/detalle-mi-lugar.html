@@ -1,67 +1,82 @@
 <app-header></app-header>
 
-<main class="detalle-mi-lugar">
+<main class="pagina-detalle-mi-lugar">
 
-    @if (lugar) {
-    <div class="grid-detalle">
+  @if (lugar) {
+    <section class="cabecera-detalle">
+      <h1>{{ lugar.nombre }}</h1>
+      <p>Consulta toda la información de tu lugar guardado.</p>
+    </section>
 
-        <div class="columna-imagen">
-            <div class="imagen-wrapper">
-                <img src="img/LOGOFINAL-removebg.png" alt="Mi lugar">
-                <span class="badge">Mi lugar</span>
-            </div>
-        </div>
+    @if (mensajeError) {
+      <section class="bloque-mensaje bloque-mensaje-error">
+        <p>{{ mensajeError }}</p>
+      </section>
+    }
+
+    <section class="bloque-detalle">
+      <div class="grid-detalle">
 
         <div class="columna-info">
+          <div class="dato-detalle">
+            <span class="etiqueta">Nombre</span>
+            <span>{{ lugar.nombre }}</span>
+          </div>
 
-            <h1>{{ lugar.nombre }}</h1>
+          <div class="dato-detalle">
+            <span class="etiqueta">Dirección</span>
+            <span>{{ lugar.direccion }}</span>
+          </div>
 
-            <div class="info-grid">
-                <div class="info-item">
-                    <span class="label">Dirección:</span>
-                    <span>{{ lugar.direccion }}</span>
-                </div>
+          <div class="dato-detalle">
+            <span class="etiqueta">Teléfono</span>
+            <span>{{ lugar.telefono || 'No disponible' }}</span>
+          </div>
 
-                <div class="info-item">
-                    <span class="label">Teléfono:</span>
-                    <span>{{ lugar.telefono }}</span>
-                </div>
+          <div class="dato-detalle">
+            <span class="etiqueta">Horario</span>
+            <span>{{ lugar.horario || 'No disponible' }}</span>
+          </div>
 
-                <div class="info-item">
-                    <span class="label">Horario:</span>
-                    <span>{{ lugar.horario }}</span>
-                </div>
+          <div class="dato-detalle">
+            <span class="etiqueta">Tipo</span>
+            <span>{{ mostrarTipoLegible(lugar.tipo) }}</span>
+          </div>
 
-                <div class="info-item">
-                    <span class="label">Tipo:</span>
-                    <span>{{ lugar.tipo }}</span>
-                </div>
-
-                <div class="info-item">
-                    <span class="label">Latitud:</span>
-                    <span>{{ lugar.latitud }}</span>
-                </div>
-
-                <div class="info-item">
-                    <span class="label">Longitud:</span>
-                    <span>{{ lugar.longitud }}</span>
-                </div>
-            </div>
-
-            <details class="bloque-detalles">
-                <summary>Descripción</summary>
-                <p>{{ lugar.descripcion }}</p>
-            </details>
-
-            <button class="boton-ubicacion">
-                Ver ubicación
-            </button>
-
+          <div class="descripcion-detalle">
+            <h2>Descripción</h2>
+            <p>{{ lugar.descripcion || 'Sin descripción' }}</p>
+          </div>
         </div>
-    </div>
-    } @else {
-    <p class="mensaje-cargando">Cargando detalle...</p>
-    }
+
+        <div class="columna-mapa">
+          <div class="bloque-mapa-placeholder">
+            <h2>Ubicación y mapa</h2>
+
+            @if (hayCoordenadas()) {
+              <p>Este lugar tiene coordenadas registradas y se podrá mostrar en el mapa.</p>
+            } @else {
+              <p>Este lugar todavía no tiene coordenadas registradas.</p>
+            }
+
+            <div class="mapa-placeholder">
+              <p>Aquí irá el mapa de tu lugar con Leaflet + OpenStreetMap.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="acciones-detalle">
+        <a class="boton-volver" routerLink="/mis-lugares">Volver</a>
+      </div>
+    </section>
+  } @else {
+    <section class="cabecera-detalle">
+      <h1>Detalle de mi lugar</h1>
+      <p>Cargando información...</p>
+    </section>
+  }
 
 </main>
 

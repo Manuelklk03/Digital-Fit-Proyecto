@@ -96,4 +96,9 @@ export class DetallePrivadoComponent {
       }
     });
   }
+
+  hayCoordenadas(): boolean {
+    return this.centro?.latitud !== null && this.centro?.latitud !== undefined
+      && this.centro?.longitud !== null && this.centro?.longitud !== undefined;
+  }
 }
