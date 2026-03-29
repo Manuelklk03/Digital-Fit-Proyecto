@@ -96,4 +96,18 @@ export class DetallePublicoComponent {
       }
     });
   }
+
+  mostrarTipoLegible(tipo: string): string {
+    if (!tipo) {
+      return 'Sin tipo';
+    }
+
+    return tipo.replaceAll('_', ' ').toLowerCase()
+      .replace(/\b\w/g, (letra) => letra.toUpperCase());
+  }
+
+  hayCoordenadas(): boolean {
+    return this.lugar?.latitud !== null && this.lugar?.latitud !== undefined
+      && this.lugar?.longitud !== null && this.lugar?.longitud !== undefined;
+  }
 }

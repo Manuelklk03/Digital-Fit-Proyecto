@@ -1,99 +1,162 @@
 @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-.detalle-mi-centro {
-    padding: 60px 20px 80px;
-    display: grid;
+.pagina-detalle-mi-centro {
+    min-height: 100vh;
+    padding: 50px 20px 80px;
+    background: linear-gradient(180deg, var(--color-azul-fondo), #dceeff);
+}
+
+.cabecera-detalle {
+    max-width: 1000px;
+    margin: 0 auto 30px auto;
+    text-align: center;
+    animation: fadeUp 0.7s ease;
+}
+
+.cabecera-detalle h1 {
+    font-size: 38px;
+    margin-bottom: 12px;
+    color: var(--color-azul-oscuro);
+}
+
+.cabecera-detalle p {
+    font-size: 17px;
+    line-height: 1.7;
+}
+
+.bloque-mensaje,
+.bloque-detalle {
+    max-width: 1000px;
+    margin: 0 auto 25px auto;
+    background-color: var(--color-azul-caja);
+    border-radius: 22px;
+    padding: 24px 30px;
+    box-shadow: 0px 10px 24px rgba(0, 0, 0, 0.12);
+    animation: fadeUp 0.9s ease;
+}
+
+.bloque-mensaje p {
+    margin: 0;
+    font-weight: bold;
+}
+
+.bloque-mensaje-error {
+    border-left: 6px solid #c62828;
+}
+
+.bloque-mensaje-error p {
+    color: #c62828;
 }
 
 .grid-detalle {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 50px;
-    animation: fadeUp 0.8s ease;
-    max-width: 1200px;
-    margin: 0 auto;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 24px;
 }
 
-@media (max-width: 900px) {
+.dato-detalle {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 16px;
+    margin-bottom: 14px;
+    background-color: #eef6ff;
+    border-radius: 12px;
+}
+
+.etiqueta {
+    font-weight: bold;
+    color: var(--color-azul-oscuro);
+}
+
+.descripcion-detalle,
+.bloque-mapa-placeholder {
+    margin-top: 18px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 16px;
+}
+
+.descripcion-detalle h2,
+.bloque-mapa-placeholder h2 {
+    margin-top: 0;
+    color: var(--color-azul-oscuro);
+}
+
+.mapa-placeholder {
+    margin-top: 18px;
+    min-height: 220px;
+    border: 2px dashed #8fb6e8;
+    border-radius: 16px;
+    background-color: #eef6ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+}
+
+.mapa-placeholder p {
+    margin: 0;
+    font-weight: bold;
+    color: var(--color-azul-oscuro);
+}
+
+.acciones-detalle {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 24px;
+}
+
+.boton-volver {
+    padding: 12px 18px;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    transition: 0.3s ease;
+    display: inline-block;
+    background-color: var(--color-azul-oscuro);
+    color: white;
+}
+
+.boton-volver:hover {
+    transform: translateY(-2px);
+}
+
+@media (max-width: 800px) {
     .grid-detalle {
         grid-template-columns: 1fr;
     }
 }
 
-.imagen-wrapper {
-    position: relative;
-    overflow: hidden;
-    border-radius: 20px;
-    background-color: var(--color-azul-caja);
-    padding: 20px;
-}
+@media (max-width: 600px) {
+    .cabecera-detalle h1 {
+        font-size: 30px;
+    }
 
-.imagen-wrapper img {
-    width: 100%;
-    display: block;
-}
+    .bloque-mensaje,
+    .bloque-detalle {
+        padding: 22px;
+    }
 
-.badge {
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    background-color: var(--color-azul-oscuro);
-    color: white;
-    padding: 6px 12px;
-    border-radius: 10px;
-    font-weight: bold;
-}
+    .dato-detalle {
+        flex-direction: column;
+    }
 
-.columna-info {
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
-}
-
-.columna-info h1 {
-    margin: 0;
-    color: var(--color-azul-oscuro);
-}
-
-.info-grid {
-    display: grid;
-    gap: 12px;
-}
-
-.info-item {
-    display: flex;
-    justify-content: space-between;
-    background-color: var(--color-azul-caja);
-    padding: 12px 18px;
-    border-radius: 10px;
-    gap: 15px;
-}
-
-.label {
-    font-weight: bold;
-}
-
-.bloque-detalles summary {
-    cursor: pointer;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.boton-ubicacion {
-    padding: 14px 28px;
-    border-radius: 12px;
-    border: none;
-    background-color: var(--color-azul);
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    width: fit-content;
-}
-
-.mensaje-cargando {
-    text-align: center;
-    font-weight: bold;
+    .boton-volver {
+        width: 100%;
+        text-align: center;
+    }
 }

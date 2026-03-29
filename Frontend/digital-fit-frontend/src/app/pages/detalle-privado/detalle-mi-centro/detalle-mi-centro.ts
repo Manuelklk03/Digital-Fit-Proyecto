@@ -2,11 +2,11 @@ import { MisCentrosService } from './../../../services/centros/mis-centros-servi
 import { Footer } from './../../../components/footer/footer';
 import { HeaderComponent } from './../../../components/header/header';
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-detalle-mi-centro',
-  imports: [HeaderComponent, Footer],
+  imports: [HeaderComponent, Footer, RouterLink],
   templateUrl: './detalle-mi-centro.html',
   styleUrl: './detalle-mi-centro.css'
 })
@@ -17,19 +17,25 @@ export class DetalleMiCentroComponent {
   private cdr = inject(ChangeDetectorRef);
 
   centro: any = null;
+  mensajeError = '';
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
 
     this.misCentrosService.getMiCentroById(id).subscribe({
       next: (data) => {
-        console.log('DETALLE MI CENTRO:', data);
         this.centro = data;
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('ERROR DETALLE MI CENTRO:', err);
+        this.mensajeError = 'No se pudo cargar el detalle del centro.';
       }
     });
+  }
+
+  hayCoordenadas(): boolean {
+    return this.centro?.latitud !== null && this.centro?.latitud !== undefined
+      && this.centro?.longitud !== null && this.centro?.longitud !== undefined;
   }
 }
