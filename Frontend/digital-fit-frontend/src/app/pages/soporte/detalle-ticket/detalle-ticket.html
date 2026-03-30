@@ -3,26 +3,33 @@
 <main class="detalle-ticket">
 
   @if (ticket) {
-    <div class="contenedor-detalle">
-      <h1>{{ ticket.asunto }}</h1>
+  <section class="cabecera-detalle">
+    <h1>{{ ticket.asunto }}</h1>
+    <p>Consulta toda la información del ticket enviado a soporte.</p>
+  </section>
 
-      <div class="info-item">
-        <span class="label">Fecha:</span>
-        <span>{{ ticket.fecha }}</span>
-      </div>
-
-      <div class="info-item">
-        <span class="label">Estado:</span>
-        <span>{{ ticket.estado }}</span>
-      </div>
-
-      <details class="bloque-detalles" open>
-        <summary>Mensaje</summary>
-        <p>{{ ticket.mensaje }}</p>
-      </details>
+  <section class="contenedor-detalle">
+    <div class="info-item">
+      <span class="label">Fecha</span>
+      <span>{{ ticket.fecha }}</span>
     </div>
+
+    <div class="info-item">
+      <span class="label">Estado</span>
+      <span>{{ mostrarEstado(ticket.estado) }}</span>
+    </div>
+
+    <div class="bloque-detalles">
+      <h2>Mensaje</h2>
+      <p>{{ ticket.mensaje }}</p>
+    </div>
+
+    <div class="acciones-detalle">
+      <a class="boton-volver" routerLink="/soporte">Volver</a>
+    </div>
+  </section>
   } @else {
-    <p class="mensaje-cargando">Cargando detalle...</p>
+  <p class="mensaje-cargando">Cargando detalle...</p>
   }
 
 </main>

@@ -3,6 +3,7 @@
         opacity: 0;
         transform: translateY(25px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -15,8 +16,54 @@
     background: linear-gradient(180deg, var(--color-azul-fondo), #dceeff);
 }
 
+.popup-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.28);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 110px;
+    z-index: 2500;
+}
+
+.popup-mensaje {
+    width: min(420px, calc(100% - 40px));
+    background-color: #1f7a37;
+    color: white;
+    border-radius: 16px;
+    padding: 20px 22px;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.22);
+    animation: fadeUp 0.25s ease;
+    text-align: center;
+}
+
+.popup-mensaje p {
+    margin: 0 0 14px 0;
+    font-weight: bold;
+    line-height: 1.5;
+}
+
+.popup-mensaje button {
+    border: none;
+    background-color: white;
+    color: #1f7a37;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.popup-error {
+    background-color: #c62828;
+}
+
+.popup-error button {
+    color: #c62828;
+}
+
 .cabecera-soporte {
-    max-width: 900px;
+    max-width: 1000px;
     margin: 0 auto 30px auto;
     text-align: center;
     animation: fadeUp 0.7s ease;
@@ -33,17 +80,18 @@
     line-height: 1.7;
 }
 
-.contenedor-formulario {
-    max-width: 800px;
-    margin: 0 auto 40px auto;
+.bloque-formulario,
+.bloque-listado {
+    max-width: 1100px;
+    margin: 0 auto 25px auto;
+    background-color: var(--color-azul-caja);
+    border-radius: 22px;
+    padding: 24px 30px;
+    box-shadow: 0px 10px 24px rgba(0, 0, 0, 0.12);
     animation: fadeUp 0.9s ease;
 }
 
 .formulario-soporte {
-    background-color: var(--color-azul-caja);
-    padding: 35px;
-    border-radius: 22px;
-    box-shadow: 0px 10px 24px rgba(0, 0, 0, 0.12);
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -61,7 +109,9 @@
 }
 
 .grupo-campo input,
-.grupo-campo textarea {
+.grupo-campo textarea,
+.barra-busqueda input,
+.barra-busqueda select {
     padding: 14px;
     border: 1px solid #aac5eb;
     border-radius: 12px;
@@ -72,49 +122,43 @@
 }
 
 .grupo-campo input:focus,
-.grupo-campo textarea:focus {
+.grupo-campo textarea:focus,
+.barra-busqueda input:focus,
+.barra-busqueda select:focus {
     outline: none;
     border-color: var(--color-azul);
     box-shadow: 0 0 0 3px rgba(60, 145, 230, 0.15);
 }
 
-.boton-enviar {
-    align-self: flex-start;
-    padding: 14px 24px;
-    border: none;
-    border-radius: 12px;
-    background-color: var(--color-azul-oscuro);
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s ease;
+.acciones-formulario {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
 }
 
-.boton-enviar:hover {
-    transform: translateY(-2px);
+.cabecera-listado {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 22px;
 }
 
-.mensaje-exito {
-    margin: 0;
-    font-weight: bold;
-    color: #1f7a37;
+.texto-secundario {
+    margin: 6px 0 0 0;
+    color: #4b5d73;
 }
 
-.mensaje-error {
-    margin: 0;
-    font-weight: bold;
-    color: #c62828;
+.barra-busqueda {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
 }
 
-.seccion-tickets {
-    max-width: 1000px;
-    margin: 0 auto;
-    animation: fadeUp 1s ease;
-}
-
-.seccion-tickets h2 {
-    color: var(--color-azul-oscuro);
-    margin-bottom: 20px;
+.barra-busqueda input {
+    min-width: 240px;
 }
 
 .lista-tickets {
@@ -123,7 +167,7 @@
 }
 
 .ticket-card {
-    background-color: var(--color-azul-caja);
+    background-color: #eef6ff;
     padding: 24px;
     border-radius: 18px;
     box-shadow: 0px 8px 18px rgba(0, 0, 0, 0.10);
@@ -134,18 +178,47 @@
     color: var(--color-azul-oscuro);
 }
 
-.boton-borrar {
-    margin-top: 12px;
-    padding: 10px 16px;
-    border: none;
-    border-radius: 10px;
-    background-color: #c62828;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
+.acciones-ticket {
+    display: flex;
+    gap: 12px;
+    margin-top: 14px;
+    flex-wrap: wrap;
 }
 
-.boton-borrar:hover {
+.boton-enviar,
+.boton-detalle,
+.boton-borrar,
+.boton-limpiar {
+    padding: 12px 18px;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    transition: 0.3s ease;
+    display: inline-block;
+}
+
+.boton-enviar,
+.boton-detalle {
+    background-color: var(--color-azul-oscuro);
+    color: white;
+}
+
+.boton-borrar {
+    background-color: #c62828;
+    color: white;
+}
+
+.boton-limpiar {
+    background-color: #f0a500;
+    color: white;
+}
+
+.boton-enviar:hover,
+.boton-detalle:hover,
+.boton-borrar:hover,
+.boton-limpiar:hover {
     transform: translateY(-2px);
 }
 
@@ -158,12 +231,24 @@
         font-size: 30px;
     }
 
-    .formulario-soporte {
-        padding: 24px;
+    .bloque-formulario,
+    .bloque-listado {
+        padding: 22px;
     }
 
+    .barra-busqueda {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .barra-busqueda input,
+    .barra-busqueda select,
+    .boton-limpiar,
     .boton-enviar {
         width: 100%;
-        text-align: center;
+    }
+
+    .popup-overlay {
+        padding-top: 90px;
     }
 }
