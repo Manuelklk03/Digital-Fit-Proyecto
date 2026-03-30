@@ -2,10 +2,19 @@
 
 <main class="pagina-valoraciones">
 
+  @if (mostrarPopup) {
+  <div class="popup-overlay">
+    <div class="popup-mensaje" [class.popup-error]="tipoPopup === 'error'">
+      <p>{{ textoPopup }}</p>
+      <button type="button" (click)="cerrarPopup()">Cerrar</button>
+    </div>
+  </div>
+  }
+
   <section class="cabecera-valoraciones">
     <h1>Valoraciones</h1>
     <p>
-      Aquí puedes crear nuevas valoraciones y consultar las que ya has hecho.
+      Aquí puedes crear nuevas valoraciones, consultar tus valoraciones y ver las del contenido seleccionado.
     </p>
   </section>
 
@@ -16,12 +25,8 @@
 
       <div class="grupo-campo">
         <label for="categoriaContenido">Seleccione contenido a valorar</label>
-        <select
-          id="categoriaContenido"
-          name="categoriaContenido"
-          [(ngModel)]="categoriaContenido"
-          (change)="cambiarCategoriaContenido()"
-        >
+        <select id="categoriaContenido" name="categoriaContenido" [(ngModel)]="categoriaContenido"
+          (change)="cambiarCategoriaContenido()">
           <option value="ENTRENAMIENTOS">Entrenamientos</option>
           <option value="CENTROS_PRIVADOS">Centros privados</option>
           <option value="LUGARES_PUBLICOS">Lugares públicos</option>
@@ -29,35 +34,26 @@
       </div>
 
       <div class="grupo-campo">
-        <label for="contenidoAgrupado">Contenido</label>
-        <select
-          id="contenidoAgrupado"
-          name="contenidoAgrupado"
-          [ngModel]="getValorSeleccionadoContenido()"
-          (ngModelChange)="seleccionarContenido($event)"
-          required
-        >
+        <label for="contenidoSeleccionado">Contenido</label>
+        <select id="contenidoSeleccionado" name="contenidoSeleccionado" [ngModel]="getValorSeleccionadoContenido()"
+          (ngModelChange)="seleccionarContenido($event)">
           <option value="">Selecciona un contenido</option>
 
           @for (grupo of getOpcionesActuales(); track grupo.grupo) {
-            <optgroup [label]="grupo.grupo">
-              @for (item of grupo.items; track item.id) {
-                <option [value]="grupo.tipoReal + '-' + item.id">
-                  {{ getTextoOpcion(item, grupo.tipoReal) }}
-                </option>
-              }
-            </optgroup>
+          <optgroup [label]="grupo.grupo">
+            @for (item of grupo.items; track item.id) {
+            <option [value]="grupo.tipoReal + '|' + item.id">
+              {{ getTextoOpcion(item, grupo.tipoReal) }}
+            </option>
+            }
+          </optgroup>
           }
         </select>
       </div>
 
       <div class="grupo-campo">
         <label for="puntuacion">Puntuación</label>
-        <select
-          id="puntuacion"
-          name="puntuacion"
-          [(ngModel)]="puntuacion"
-        >
+        <select id="puntuacion" name="puntuacion" [(ngModel)]="puntuacion">
           <option [value]="1">1 - Muy mala</option>
           <option [value]="2">2 - Mala</option>
           <option [value]="3">3 - Normal</option>
@@ -68,70 +64,102 @@
 
       <div class="grupo-campo">
         <label for="comentario">Comentario</label>
-        <textarea
-          id="comentario"
-          name="comentario"
-          rows="5"
-          [(ngModel)]="comentario"
-          placeholder="Escribe aquí tu opinión..."
-        ></textarea>
+        <textarea id="comentario" name="comentario" rows="5" [(ngModel)]="comentario"
+          placeholder="Escribe aquí tu opinión..."></textarea>
       </div>
 
-      <button type="submit" class="boton-guardar">
-        Guardar valoración
-      </button>
-
-      @if (mensajeExito) {
-        <p class="mensaje-exito">{{ mensajeExito }}</p>
-      }
-
-      @if (mensajeError) {
-        <p class="mensaje-error">{{ mensajeError }}</p>
-      }
+      <div class="acciones-formulario">
+        <button type="submit" class="boton-guardar">
+          Guardar valoración
+        </button>
+      </div>
 
     </form>
   </section>
 
   <section class="bloque-listado">
     <div class="cabecera-listado">
-      <h2>Mis valoraciones</h2>
+      <div>
+        <h2>Mis valoraciones</h2>
+        <p class="texto-secundario">{{ misValoracionesFiltradas.length }} valoración(es)</p>
+      </div>
 
-      <div class="grupo-busqueda">
-        <input
-          type="text"
-          placeholder="Buscar por tipo, contenido, puntuación, comentario o fecha..."
-          [(ngModel)]="busqueda"
-          (input)="aplicarBusqueda()"
-        >
+      <div class="barra-busqueda">
+        <select name="tipoBusquedaMisValoraciones" [(ngModel)]="tipoBusquedaMisValoraciones"
+          (ngModelChange)="alCambiarBusquedaMisValoraciones()">
+          <option value="general">Búsqueda general</option>
+          <option value="tipo">Tipo</option>
+          <option value="contenido">Contenido</option>
+          <option value="comentario">Comentario</option>
+          <option value="fecha">Fecha</option>
+        </select>
+
+        <input type="text" placeholder="Escribe aquí..." [(ngModel)]="busquedaMisValoraciones"
+          (input)="alCambiarBusquedaMisValoraciones()">
+
+        <button type="button" class="boton-limpiar" (click)="limpiarBusquedaMisValoraciones()">
+          Limpiar
+        </button>
       </div>
     </div>
 
-    @if (valoracionesFiltradas.length > 0) {
-      <div class="grid-valoraciones">
+    @if (misValoracionesFiltradas.length > 0) {
+    <div class="grid-valoraciones">
 
-        @for (valoracion of valoracionesFiltradas; track valoracion.id) {
-          <article class="tarjeta-valoracion">
+      @for (valoracion of misValoracionesFiltradas; track valoracion.id) {
+      <article class="tarjeta-valoracion">
 
-            <h3>{{ mostrarTipoContenido(valoracion.tipoDeValoracion) }}</h3>
+        <h3>{{ valoracion.contenidoNombre || 'Contenido sin nombre' }}</h3>
 
-            <p><strong>Contenido:</strong> {{ valoracion.contenidoNombre || 'Sin nombre' }}</p>
-            <p><strong>Puntuación:</strong> {{ valoracion.puntuacion }}/5</p>
-            <p><strong>Comentario:</strong> {{ valoracion.comentario || 'Sin comentario' }}</p>
-            <p><strong>Fecha:</strong> {{ valoracion.fecha }}</p>
+        <p><strong>Tipo:</strong> {{ mostrarTipoContenido(valoracion.tipoDeValoracion) }}</p>
+        <p><strong>Puntuación:</strong> {{ valoracion.puntuacion }}/5</p>
+        <p><strong>Comentario:</strong> {{ valoracion.comentario || 'Sin comentario' }}</p>
+        <p><strong>Fecha:</strong> {{ valoracion.fecha }}</p>
 
-            <button
-              class="boton-borrar"
-              (click)="borrarValoracion(valoracion.tipoDeValoracion, valoracion.contenidoId)"
-            >
-              Borrar valoración
-            </button>
+        <div class="acciones-valoracion">
+          <button class="boton-borrar" (click)="borrarValoracion(valoracion.tipoDeValoracion, valoracion.contenidoId)">
+            Borrar valoración
+          </button>
+        </div>
 
-          </article>
-        }
+      </article>
+      }
 
-      </div>
+    </div>
     } @else {
-      <p class="sin-valoraciones">No tienes valoraciones todavía o no coinciden con la búsqueda.</p>
+    <p class="sin-datos">No tienes valoraciones todavía o no coinciden con la búsqueda.</p>
+    }
+  </section>
+
+  <section class="bloque-listado">
+    <div class="cabecera-listado">
+      <div>
+        <h2>Valoraciones del contenido seleccionado</h2>
+        <p class="texto-secundario">{{ valoracionesContenido.length }} valoración(es)</p>
+      </div>
+    </div>
+
+    @if (contenidoSeleccionadoId) {
+    @if (valoracionesContenido.length > 0) {
+    <div class="grid-valoraciones">
+
+      @for (valoracion of valoracionesContenido; track valoracion.id) {
+      <article class="tarjeta-valoracion">
+        <h3>{{ valoracion.contenidoNombre || 'Contenido' }}</h3>
+
+        <p><strong>Usuario:</strong> {{ valoracion.username }}</p>
+        <p><strong>Puntuación:</strong> {{ valoracion.puntuacion }}/5</p>
+        <p><strong>Comentario:</strong> {{ valoracion.comentario || 'Sin comentario' }}</p>
+        <p><strong>Fecha:</strong> {{ valoracion.fecha }}</p>
+      </article>
+      }
+
+    </div>
+    } @else {
+    <p class="sin-datos">Todavía no hay valoraciones para este contenido.</p>
+    }
+    } @else {
+    <p class="sin-datos">Selecciona un contenido para ver sus valoraciones.</p>
     }
   </section>
 

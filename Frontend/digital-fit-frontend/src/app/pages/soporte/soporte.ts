@@ -1,14 +1,14 @@
 import { SoporteService } from './../../services/soporte';
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../components/header/header';
 import { Footer } from '../../components/footer/footer';
 import { AuthService } from '../../services/auth-service';
 
 @Component({
   selector: 'app-soporte',
-  imports: [HeaderComponent, Footer, FormsModule],
+  imports: [HeaderComponent, Footer, FormsModule, RouterLink],
   templateUrl: './soporte.html',
   styleUrl: './soporte.css'
 })
@@ -21,15 +21,22 @@ export class SoporteComponent {
 
   asunto = '';
   mensaje = '';
-  mensajeExito = '';
-  mensajeError = '';
 
   tickets: any[] = [];
+  ticketsFiltrados: any[] = [];
   usuarioActual: any = null;
+
+  tipoBusqueda = 'general';
+  busqueda = '';
+
+  mostrarPopup = false;
+  textoPopup = '';
+  tipoPopup: 'exito' | 'error' = 'exito';
+  private popupTimeout: any;
 
   ngOnInit(): void {
     this.authService.me().subscribe({
-      next: (usuario) => {
+      next: (usuario: any) => {
         this.usuarioActual = usuario;
 
         if (usuario?.rol === 'ADMIN') {
@@ -46,11 +53,8 @@ export class SoporteComponent {
   }
 
   enviarFormulario(): void {
-    this.mensajeExito = '';
-    this.mensajeError = '';
-
     if (!this.asunto.trim() || !this.mensaje.trim()) {
-      this.mensajeError = 'Debes completar todos los campos.';
+      this.abrirPopup('Debes completar todos los campos.', 'error');
       return;
     }
 
@@ -61,26 +65,27 @@ export class SoporteComponent {
 
     this.soporteService.crearTicket(nuevoTicket).subscribe({
       next: () => {
-        this.mensajeExito = 'Ticket enviado correctamente.';
+        this.abrirPopup('Ticket enviado correctamente.', 'exito');
         this.asunto = '';
         this.mensaje = '';
         this.cargarTickets();
       },
       error: () => {
-        this.mensajeError = 'No se pudo enviar el ticket.';
+        this.abrirPopup('No se pudo enviar el ticket.', 'error');
       }
     });
   }
 
   cargarTickets(): void {
     this.soporteService.getMisTickets().subscribe({
-      next: (data) => {
-        console.log('MIS TICKETS:', data);
+      next: (data: any[]) => {
         this.tickets = data;
+        this.aplicarBusqueda();
         this.cdr.detectChanges();
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('ERROR TICKETS:', err);
+        this.abrirPopup('No se pudieron cargar los tickets.', 'error');
       }
     });
   }
@@ -88,11 +93,95 @@ export class SoporteComponent {
   borrarTicket(id: number): void {
     this.soporteService.borrarTicket(id).subscribe({
       next: () => {
+        this.abrirPopup('Ticket borrado correctamente.', 'error');
         this.cargarTickets();
       },
       error: () => {
-        this.mensajeError = 'No se pudo borrar el ticket.';
+        this.abrirPopup('No se pudo borrar el ticket.', 'error');
       }
     });
+  }
+
+  aplicarBusqueda(): void {
+    const texto = this.busqueda.trim().toLowerCase();
+
+    if (!texto) {
+      this.ticketsFiltrados = [...this.tickets];
+      return;
+    }
+
+    this.ticketsFiltrados = this.tickets.filter((ticket: any) => {
+      const asunto = (ticket.asunto || '').toLowerCase();
+      const mensaje = (ticket.mensaje || '').toLowerCase();
+      const fecha = (ticket.fecha || '').toLowerCase();
+      const estado = this.mostrarEstado(ticket.estado).toLowerCase();
+
+      if (this.tipoBusqueda === 'asunto') {
+        return asunto.includes(texto);
+      }
+
+      if (this.tipoBusqueda === 'mensaje') {
+        return mensaje.includes(texto);
+      }
+
+      if (this.tipoBusqueda === 'estado') {
+        return estado.includes(texto);
+      }
+
+      if (this.tipoBusqueda === 'fecha') {
+        return fecha.includes(texto);
+      }
+
+      return (
+        asunto.includes(texto) ||
+        mensaje.includes(texto) ||
+        fecha.includes(texto) ||
+        estado.includes(texto)
+      );
+    });
+  }
+
+  alCambiarBusqueda(): void {
+    this.aplicarBusqueda();
+  }
+
+  limpiarBusqueda(): void {
+    this.tipoBusqueda = 'general';
+    this.busqueda = '';
+    this.aplicarBusqueda();
+  }
+
+  mostrarEstado(estado: string): string {
+    switch (estado) {
+      case 'ABIERTO':
+        return 'Abierto';
+      case 'EN_PROCESO':
+        return 'En proceso';
+      case 'CERRADO':
+        return 'Cerrado';
+      default:
+        return estado || 'Sin estado';
+    }
+  }
+
+  abrirPopup(texto: string, tipo: 'exito' | 'error'): void {
+    this.textoPopup = texto;
+    this.tipoPopup = tipo;
+    this.mostrarPopup = true;
+    this.cdr.detectChanges();
+
+    if (this.popupTimeout) {
+      clearTimeout(this.popupTimeout);
+    }
+
+    this.popupTimeout = setTimeout(() => {
+      this.mostrarPopup = false;
+      this.cdr.detectChanges();
+    }, 3000);
+  }
+
+  cerrarPopup(): void {
+    this.mostrarPopup = false;
+    this.cdr.detectChanges();
   }
 }
