@@ -176,3 +176,150 @@
 2026-03-29 19:35:08 - Listando centros privados al usuario usuario1
 2026-03-29 19:35:09 - Listando centros privados al usuario usuario1
 2026-03-29 19:35:09 - Listando centros privados al usuario usuario1
+2026-03-30 09:59:22 - Starting DigitalFitApplication using Java 25.0.2 with PID 19964 (C:\Users\TiendaRoquetas\Desktop\MANU PRACTICAS\Digital-Fit-Proyecto\Backend\digital-fit\target\classes started by TiendaRoquetas in C:\Users\TiendaRoquetas\Desktop\MANU PRACTICAS\Digital-Fit-Proyecto\Backend\digital-fit)
+2026-03-30 09:59:22 - Running with Spring Boot v4.0.5, Spring v7.0.6
+2026-03-30 09:59:22 - No active profile set, falling back to 1 default profile: "default"
+2026-03-30 09:59:22 - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-03-30 09:59:22 - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-03-30 09:59:26 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-03-30 09:59:27 - Finished Spring Data repository scanning in 403 ms. Found 12 JPA repository interfaces.
+2026-03-30 09:59:29 - Tomcat initialized with port 8080 (http)
+2026-03-30 09:59:29 - Starting service [Tomcat]
+2026-03-30 09:59:29 - Starting Servlet engine: [Apache Tomcat/11.0.20]
+2026-03-30 09:59:29 - Root WebApplicationContext: initialization completed in 6874 ms
+2026-03-30 09:59:30 - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-03-30 09:59:30 - HHH000001: Hibernate ORM core version 7.2.7.Final
+2026-03-30 09:59:32 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-03-30 09:59:32 - HikariPool-1 - Starting...
+2026-03-30 09:59:32 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@399f14a4
+2026-03-30 09:59:32 - HikariPool-1 - Start completed.
+2026-03-30 09:59:33 - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://localhost:3306/digital_fit]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.45
+	Default catalog/schema: digital_fit/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-03-30 09:59:35 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-03-30 09:59:36 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-03-30 09:59:36 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-03-30 09:59:39 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-03-30 09:59:39 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2026-03-30 09:59:40 - Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2026-03-30 09:59:41 - Exposing 1 endpoint beneath base path '/actuator'
+2026-03-30 09:59:41 - Tomcat started on port 8080 (http) with context path '/'
+2026-03-30 09:59:41 - Started DigitalFitApplication in 20.118 seconds (process running for 22.268)
+2026-03-30 09:59:42 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-03-30 09:59:42 - Initializing Servlet 'dispatcherServlet'
+2026-03-30 09:59:42 - Completed initialization in 2 ms
+2026-03-30 10:01:15 - Buscando usuario con login: usuario1
+2026-03-30 10:01:15 - Usuario encontrado: usuario1
+2026-03-30 10:01:20 - Listando entrenamientos base
+2026-03-30 10:01:24 - Listando entrenamientos base
+2026-03-30 10:01:25 - Listando entrenamientos base
+2026-03-30 10:01:27 - Listando entrenamientos base
+2026-03-30 10:01:28 - Listando entrenamientos base
+2026-03-30 10:01:32 - Usuario usuario1 añade entrenamiento de la base 1
+2026-03-30 10:01:33 - Entrenamiento Full Body Principiante creado para usuario usuario1
+2026-03-30 10:01:33 - Buscando entrenamiento base con id: 1
+2026-03-30 10:01:34 - Usuario usuario1 añade entrenamiento de la base 1
+2026-03-30 10:01:34 - Entrenamiento Full Body Principiante creado para usuario usuario1
+2026-03-30 10:01:36 - Listando entrenamientos base
+2026-03-30 10:01:41 - Listando entrenamientos de usuario usuario1
+2026-03-30 10:01:44 - Usuario usuario1 borra entrenamiento 3
+2026-03-30 10:01:44 - Entrenamiento 3 borrado para usuario usuario1
+2026-03-30 10:01:44 - Listando entrenamientos de usuario usuario1
+2026-03-30 10:01:46 - Usuario usuario1 borra entrenamiento 1
+2026-03-30 10:01:46 - Entrenamiento 1 borrado para usuario usuario1
+2026-03-30 10:01:46 - Listando entrenamientos de usuario usuario1
+2026-03-30 10:01:57 - Listando entrenamientos base
+2026-03-30 10:01:59 - Listando lugares publicos de la app
+2026-03-30 10:02:02 - Listando centros privados
+2026-03-30 10:02:04 - Listando entrenamientos base
+2026-03-30 10:02:09 - Listando entrenamientos comunidad
+2026-03-30 12:06:17 - Buscando usuario con login: usuario1
+2026-03-30 12:06:17 - Usuario encontrado: usuario1
+2026-03-30 12:06:20 - Listando entrenamientos base
+2026-03-30 12:06:23 - Usuario usuario1 añade entrenamiento de la base 3
+2026-03-30 12:06:23 - Entrenamiento HIIT 20 minutos creado para usuario usuario1
+2026-03-30 12:06:26 - Buscando entrenamiento base con id: 3
+2026-03-30 12:06:28 - Listando entrenamientos base
+2026-03-30 12:06:32 - Listando entrenamientos de usuario usuario1
+2026-03-30 12:06:36 - Usuario usuario1 borra entrenamiento 5
+2026-03-30 12:06:36 - Entrenamiento 5 borrado para usuario usuario1
+2026-03-30 12:06:36 - Listando entrenamientos de usuario usuario1
+2026-03-30 12:06:39 - Usuario usuario1 consulta entrenamiento 4
+2026-03-30 12:06:41 - Listando entrenamientos de usuario usuario1
+2026-03-30 12:06:43 - Usuario usuario1 consulta entrenamiento 4
+2026-03-30 12:06:45 - Listando entrenamientos de usuario usuario1
+2026-03-30 12:06:51 - Listando entrenamientos base
+2026-03-30 12:06:51 - Listando entrenamientos de usuario usuario1
+2026-03-30 12:06:51 - Listando lugares publicos de la app
+2026-03-30 12:06:51 - Listando centros privados
+2026-03-30 12:06:51 - Listar historial de entrenamientos
+2026-03-30 12:06:51 - Listando mis lugares publicos
+2026-03-30 12:06:51 - Listando centros privados al usuario usuario1
+2026-03-30 12:06:56 - Listando entrenamientos comunidad
+2026-03-30 12:07:13 - Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<com.example.digital_fit.dto.Entrenamientos.EntrenamientoComunidadDTO> com.example.digital_fit.controller.Entrenamientos.EntrenamientoComunidadRestController.crearNuevo(com.example.digital_fit.dto.Entrenamientos.CrearEntrenamientoComunidadDTO,org.springframework.security.core.Authentication): [Field error in object 'crearEntrenamientoComunidadDTO' on field 'fechaPublicacion': rejected value [null]; codes [NotNull.crearEntrenamientoComunidadDTO.fechaPublicacion,NotNull.fechaPublicacion,NotNull.java.time.LocalDateTime,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [crearEntrenamientoComunidadDTO.fechaPublicacion,fechaPublicacion]; arguments []; default message [fechaPublicacion]]; default message [La fecha es obligatoria]] ]
+2026-03-30 12:07:19 - Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<com.example.digital_fit.dto.Entrenamientos.EntrenamientoComunidadDTO> com.example.digital_fit.controller.Entrenamientos.EntrenamientoComunidadRestController.crearNuevo(com.example.digital_fit.dto.Entrenamientos.CrearEntrenamientoComunidadDTO,org.springframework.security.core.Authentication): [Field error in object 'crearEntrenamientoComunidadDTO' on field 'fechaPublicacion': rejected value [null]; codes [NotNull.crearEntrenamientoComunidadDTO.fechaPublicacion,NotNull.fechaPublicacion,NotNull.java.time.LocalDateTime,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [crearEntrenamientoComunidadDTO.fechaPublicacion,fechaPublicacion]; arguments []; default message [fechaPublicacion]]; default message [La fecha es obligatoria]] ]
+2026-03-30 12:07:24 - Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<com.example.digital_fit.dto.Entrenamientos.EntrenamientoComunidadDTO> com.example.digital_fit.controller.Entrenamientos.EntrenamientoComunidadRestController.crearNuevo(com.example.digital_fit.dto.Entrenamientos.CrearEntrenamientoComunidadDTO,org.springframework.security.core.Authentication): [Field error in object 'crearEntrenamientoComunidadDTO' on field 'fechaPublicacion': rejected value [null]; codes [NotNull.crearEntrenamientoComunidadDTO.fechaPublicacion,NotNull.fechaPublicacion,NotNull.java.time.LocalDateTime,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [crearEntrenamientoComunidadDTO.fechaPublicacion,fechaPublicacion]; arguments []; default message [fechaPublicacion]]; default message [La fecha es obligatoria]] ]
+2026-03-30 12:07:29 - Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<com.example.digital_fit.dto.Entrenamientos.EntrenamientoComunidadDTO> com.example.digital_fit.controller.Entrenamientos.EntrenamientoComunidadRestController.crearNuevo(com.example.digital_fit.dto.Entrenamientos.CrearEntrenamientoComunidadDTO,org.springframework.security.core.Authentication): [Field error in object 'crearEntrenamientoComunidadDTO' on field 'fechaPublicacion': rejected value [null]; codes [NotNull.crearEntrenamientoComunidadDTO.fechaPublicacion,NotNull.fechaPublicacion,NotNull.java.time.LocalDateTime,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [crearEntrenamientoComunidadDTO.fechaPublicacion,fechaPublicacion]; arguments []; default message [fechaPublicacion]]; default message [La fecha es obligatoria]] ]
+2026-03-30 12:07:34 - Listando centros privados al usuario usuario1
+2026-03-30 12:07:34 - Listando entrenamientos base
+2026-03-30 12:07:34 - Listando entrenamientos de usuario usuario1
+2026-03-30 12:07:34 - Listar historial de entrenamientos
+2026-03-30 12:07:34 - Listando lugares publicos de la app
+2026-03-30 12:07:34 - Listando centros privados
+2026-03-30 12:07:34 - Listando mis lugares publicos
+2026-03-30 12:07:40 - Obteniendo estadísticas del usuario usuario1
+2026-03-30 12:07:41 - Estadísticas del usuario usuario1 obtenidas exitosamente
+2026-03-30 13:17:50 - Buscando usuario con login: usuario1
+2026-03-30 13:17:50 - Usuario encontrado: usuario1
+2026-03-30 13:17:53 - Listar historial de entrenamientos
+2026-03-30 13:17:53 - Listando entrenamientos de usuario usuario1
+2026-03-30 13:17:53 - Listando entrenamientos base
+2026-03-30 13:17:53 - Listando centros privados al usuario usuario1
+2026-03-30 13:17:53 - Listando lugares publicos de la app
+2026-03-30 13:17:53 - Listando centros privados
+2026-03-30 13:17:53 - Listando mis lugares publicos
+2026-03-30 13:17:59 - Listando entrenamientos de usuario usuario1
+2026-03-30 13:18:01 - Usuario usuario1 consulta entrenamiento 4
+2026-03-30 13:18:06 - Listando entrenamientos de usuario usuario1
+2026-03-30 13:18:09 - Listando entrenamientos base
+2026-03-30 13:18:09 - Listando entrenamientos de usuario usuario1
+2026-03-30 13:18:09 - Listar historial de entrenamientos
+2026-03-30 13:18:09 - Listando centros privados
+2026-03-30 13:18:09 - Listando entrenamientos comunidad
+2026-03-30 13:18:09 - Listando mis valoraciones
+2026-03-30 13:18:09 - Listando mis lugares publicos
+2026-03-30 13:18:09 - Listando centros privados al usuario usuario1
+2026-03-30 13:18:09 - Listando lugares publicos de la app
+2026-03-30 13:18:16 - Listando entrenamientos de usuario usuario1
+2026-03-30 13:18:20 - Listando centros privados al usuario usuario1
+2026-03-30 13:18:23 - Listando mis lugares publicos
+2026-03-30 13:18:27 - Listando entrenamientos de usuario usuario1
+2026-03-30 13:18:27 - Listando centros privados
+2026-03-30 13:18:27 - Listando entrenamientos base
+2026-03-30 13:18:27 - Listando entrenamientos comunidad
+2026-03-30 13:18:27 - Listar historial de entrenamientos
+2026-03-30 13:18:27 - Listando mis valoraciones
+2026-03-30 13:18:27 - Listando centros privados al usuario usuario1
+2026-03-30 13:18:27 - Listando lugares publicos de la app
+2026-03-30 13:18:27 - Listando mis lugares publicos
+2026-03-30 13:19:56 - Buscando usuario con login: usuario1
+2026-03-30 13:19:56 - Usuario encontrado: usuario1
+2026-03-30 13:20:55 - Listando entrenamientos de usuario usuario1
+2026-03-30 13:20:57 - Usuario usuario1 consulta entrenamiento 4
+2026-03-30 13:20:59 - Listando centros privados al usuario usuario1
+2026-03-30 13:21:03 - Usuario usuario1 consulta centro privado 1
+2026-03-30 13:21:07 - Listando mis lugares publicos
+2026-03-30 13:21:08 - Buscando lugar con id: 1
+2026-03-30 13:21:27 - Listando centros privados al usuario usuario1
+2026-03-30 13:21:28 - Usuario usuario1 consulta centro privado 1
+2026-03-30 13:21:29 - Listando mis lugares publicos
+2026-03-30 13:21:31 - Buscando lugar con id: 1

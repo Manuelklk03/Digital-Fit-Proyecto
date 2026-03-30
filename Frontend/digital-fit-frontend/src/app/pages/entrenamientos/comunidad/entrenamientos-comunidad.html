@@ -14,7 +14,7 @@
   <section class="cabecera-pagina">
     <h1>Entrenamientos comunidad</h1>
     <p>
-      Aquí puedes publicar tus entrenamientos y ver los compartidos por toda la comunidad.
+      Aquí puedes publicar entrenamientos, gestionar los tuyos y ver los del resto de usuarios.
     </p>
   </section>
 
@@ -36,29 +36,34 @@
         </div>
 
         <div class="grupo-campo">
+          <label for="duracionEnMinutos">Duración (minutos)</label>
+          <input type="number" id="duracionEnMinutos" name="duracionEnMinutos" [(ngModel)]="duracionEnMinutos" required>
+        </div>
+
+        <div class="grupo-campo">
           <label for="categoria">Categoría</label>
           <select id="categoria" name="categoria" [(ngModel)]="categoria">
-            <option value="FUERZA_TOTAL">Fuerza Total</option>
-            <option value="FUERZA_TREN_SUPERIOR">Fuerza Tren Superior</option>
-            <option value="FUERZA_TREN_INFERIOR">Fuerza Tren Inferior</option>
-            <option value="FUERZA_CORE">Fuerza Core</option>
-            <option value="CARDIO_SUAVE">Cardio Suave</option>
-            <option value="CARDIO_INTENSO">Cardio Intenso</option>
+            <option value="FUERZA_TOTAL">Fuerza total</option>
+            <option value="FUERZA_TREN_SUPERIOR">Fuerza tren superior</option>
+            <option value="FUERZA_TREN_INFERIOR">Fuerza tren inferior</option>
+            <option value="FUERZA_CORE">Fuerza core</option>
+            <option value="CARDIO_SUAVE">Cardio suave</option>
+            <option value="CARDIO_INTENSO">Cardio intenso</option>
             <option value="HIIT">HIIT</option>
             <option value="RESISTENCIA">Resistencia</option>
-            <option value="CALISTENIA_BASICA">Calistenia Básica</option>
-            <option value="CALISTENIA_AVANZADA">Calistenia Avanzada</option>
-            <option value="CALISTENIA_FULL_BODY">Calistenia Full Body</option>
-            <option value="ENTRENAMIENTO_FUNCIONAL">Entrenamiento Funcional</option>
-            <option value="CIRCUITO_FUNCIONAL">Circuito Funcional</option>
+            <option value="CALISTENIA_BASICA">Calistenia básica</option>
+            <option value="CALISTENIA_AVANZADA">Calistenia avanzada</option>
+            <option value="CALISTENIA_FULL_BODY">Calistenia full body</option>
+            <option value="ENTRENAMIENTO_FUNCIONAL">Entrenamiento funcional</option>
+            <option value="CIRCUITO_FUNCIONAL">Circuito funcional</option>
             <option value="MOVILIDAD">Movilidad</option>
             <option value="FLEXIBILIDAD">Flexibilidad</option>
             <option value="ESTIRAMIENTOS">Estiramientos</option>
             <option value="RUNNING">Running</option>
-            <option value="TRAIL_RUNNING">Trail Running</option>
+            <option value="TRAIL_RUNNING">Trail running</option>
             <option value="CICLISMO">Ciclismo</option>
             <option value="BOXEO">Boxeo</option>
-            <option value="ARTES_MARCIALES">Artes Marciales</option>
+            <option value="ARTES_MARCIALES">Artes marciales</option>
             <option value="CROSSFIT">Crossfit</option>
             <option value="EQUILIBRIO">Equilibrio</option>
             <option value="COORDINACION">Coordinación</option>
@@ -74,11 +79,6 @@
             <option value="AVANZADO">Avanzado</option>
             <option value="EXPERTO">Experto</option>
           </select>
-        </div>
-
-        <div class="grupo-campo">
-          <label for="duracionEnMinutos">Duración (minutos)</label>
-          <input type="number" id="duracionEnMinutos" name="duracionEnMinutos" [(ngModel)]="duracionEnMinutos" required>
         </div>
       </div>
 
@@ -109,9 +109,7 @@
     <div class="cabecera-listado">
       <div>
         <h2>Mis entrenamientos subidos</h2>
-        <p class="texto-secundario">
-          {{ misEntrenamientosSubidos.length }} entrenamiento(s)
-        </p>
+        <p class="texto-secundario">{{ misEntrenamientosSubidos.length }} entrenamiento(s)</p>
       </div>
 
       <div class="barra-busqueda">
@@ -139,9 +137,9 @@
         <p><strong>Nivel:</strong> {{ mostrarNivelLegible(entrenamiento.nivel) }}</p>
         <p><strong>Duración:</strong> {{ entrenamiento.duracionEnMinutos }} min</p>
         <p><strong>Fecha:</strong> {{ entrenamiento.fechaPublicacion }}</p>
-        <p><strong>Descripción:</strong> {{ entrenamiento.descripcion || 'Sin descripción' }}</p>
+        <p>{{ entrenamiento.descripcion }}</p>
 
-        <div class="acciones-comunidad">
+        <div class="acciones-entrenamiento">
           <a class="boton-detalle" [routerLink]="['/entrenamientos-comunidad', entrenamiento.id]">
             Ver detalle
           </a>
@@ -165,10 +163,8 @@
   <section class="bloque-listado">
     <div class="cabecera-listado">
       <div>
-        <h2>Entrenamientos de toda la comunidad</h2>
-        <p class="texto-secundario">
-          {{ entrenamientosRestoComunidad.length }} entrenamiento(s)
-        </p>
+        <h2>Entrenamientos de la comunidad</h2>
+        <p class="texto-secundario">{{ entrenamientosRestoComunidad.length }} entrenamiento(s)</p>
       </div>
     </div>
 
@@ -183,9 +179,9 @@
         <p><strong>Duración:</strong> {{ entrenamiento.duracionEnMinutos }} min</p>
         <p><strong>Usuario:</strong> {{ entrenamiento.usuario }}</p>
         <p><strong>Fecha:</strong> {{ entrenamiento.fechaPublicacion }}</p>
-        <p><strong>Descripción:</strong> {{ entrenamiento.descripcion || 'Sin descripción' }}</p>
+        <p>{{ entrenamiento.descripcion }}</p>
 
-        <div class="acciones-comunidad">
+        <div class="acciones-entrenamiento">
           <a class="boton-detalle" [routerLink]="['/entrenamientos-comunidad', entrenamiento.id]">
             Ver detalle
           </a>

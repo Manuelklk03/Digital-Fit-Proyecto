@@ -45,10 +45,13 @@ export class HistorialEntrenamientosComponent {
   duracionEnMinutos = 30;
   notas = '';
 
+  tipoBusqueda = 'general';
   busqueda = '';
 
-  mensajeExito = '';
-  mensajeError = '';
+  mostrarPopup = false;
+  textoPopup = '';
+  tipoPopup: 'exito' | 'error' = 'exito';
+  private popupTimeout: any;
 
   ngOnInit(): void {
     this.cargarHistorial();
@@ -64,7 +67,7 @@ export class HistorialEntrenamientosComponent {
       },
       error: (err: any) => {
         console.error('ERROR HISTORIAL:', err);
-        this.mensajeError = 'No se pudo cargar el historial.';
+        this.abrirPopup('No se pudo cargar el historial.', 'error');
       }
     });
   }
@@ -120,11 +123,13 @@ export class HistorialEntrenamientosComponent {
   }
 
   crearRegistro(): void {
-    this.mensajeExito = '';
-    this.mensajeError = '';
-
     if (!this.entrenamientoSeleccionado) {
-      this.mensajeError = 'Debes seleccionar un entrenamiento.';
+      this.abrirPopup('Debes seleccionar un entrenamiento.', 'error');
+      return;
+    }
+
+    if (!this.fecha) {
+      this.abrirPopup('Debes indicar una fecha y hora.', 'error');
       return;
     }
 
@@ -164,27 +169,24 @@ export class HistorialEntrenamientosComponent {
 
     this.historialService.crearRegistro(payload).subscribe({
       next: () => {
-        this.mensajeExito = 'Registro guardado correctamente.';
+        this.abrirPopup('Registro guardado correctamente.', 'exito');
         this.limpiarFormulario();
         this.cargarHistorial();
       },
       error: () => {
-        this.mensajeError = 'No se pudo guardar el registro.';
+        this.abrirPopup('No se pudo guardar el registro.', 'error');
       }
     });
   }
 
   borrarRegistro(id: number): void {
-    this.mensajeExito = '';
-    this.mensajeError = '';
-
     this.historialService.borrarRegistro(id).subscribe({
       next: () => {
-        this.mensajeExito = 'Registro borrado correctamente.';
+        this.abrirPopup('Registro borrado correctamente.', 'error');
         this.cargarHistorial();
       },
       error: () => {
-        this.mensajeError = 'No se pudo borrar el registro.';
+        this.abrirPopup('No se pudo borrar el registro.', 'error');
       }
     });
   }
@@ -197,14 +199,51 @@ export class HistorialEntrenamientosComponent {
       return;
     }
 
-    this.historialFiltrado = this.historial.filter((registro: any) =>
-      (registro.entrenamiento || '').toLowerCase().includes(texto) ||
-      (registro.ubicacion || '').toLowerCase().includes(texto) ||
-      (registro.tipoEntrenamiento || '').toLowerCase().includes(texto) ||
-      (registro.tipoUbicacion || '').toLowerCase().includes(texto) ||
-      (registro.notas || '').toLowerCase().includes(texto) ||
-      (registro.fecha || '').toLowerCase().includes(texto)
-    );
+    this.historialFiltrado = this.historial.filter((registro: any) => {
+      const entrenamiento = (registro.entrenamiento || '').toLowerCase();
+      const ubicacion = (registro.ubicacion || '').toLowerCase();
+      const tipoEntrenamiento = this.mostrarTipoEntrenamiento(registro.tipoEntrenamiento).toLowerCase();
+      const tipoUbicacion = this.mostrarTipoUbicacion(registro.tipoUbicacion).toLowerCase();
+      const notas = (registro.notas || '').toLowerCase();
+      const fecha = (registro.fecha || '').toLowerCase();
+      const duracion = String(registro.duracionEnMinutos || '');
+
+      if (this.tipoBusqueda === 'entrenamiento') {
+        return entrenamiento.includes(texto);
+      }
+
+      if (this.tipoBusqueda === 'ubicacion') {
+        return ubicacion.includes(texto);
+      }
+
+      if (this.tipoBusqueda === 'fecha') {
+        return fecha.includes(texto);
+      }
+
+      if (this.tipoBusqueda === 'notas') {
+        return notas.includes(texto);
+      }
+
+      return (
+        entrenamiento.includes(texto) ||
+        ubicacion.includes(texto) ||
+        tipoEntrenamiento.includes(texto) ||
+        tipoUbicacion.includes(texto) ||
+        notas.includes(texto) ||
+        fecha.includes(texto) ||
+        duracion.includes(texto)
+      );
+    });
+  }
+
+  alCambiarBusqueda(): void {
+    this.aplicarFiltroBusqueda();
+  }
+
+  limpiarBusqueda(): void {
+    this.tipoBusqueda = 'general';
+    this.busqueda = '';
+    this.aplicarFiltroBusqueda();
   }
 
   limpiarFormulario(): void {
@@ -228,6 +267,7 @@ export class HistorialEntrenamientosComponent {
       case 'ENTRENAMIENTO_BASE':
         return 'Entrenamiento base';
       case 'MI_ENTRENAMIENTO':
+      case 'ENTRENAMIENTO_USUARIO':
         return 'Mi entrenamiento';
       default:
         return 'No indicado';
@@ -239,13 +279,36 @@ export class HistorialEntrenamientosComponent {
       case 'LUGAR_PUBLICO_BASE':
         return 'Lugar público base';
       case 'MI_LUGAR_PUBLICO':
+      case 'LUGAR_PUBLICO_USUARIO':
         return 'Mi lugar público';
       case 'CENTRO_PRIVADO_BASE':
         return 'Centro privado base';
       case 'MI_CENTRO_PRIVADO':
+      case 'CENTRO_PRIVADO_USUARIO':
         return 'Mi centro privado';
       default:
         return 'Sin ubicación';
     }
+  }
+
+  abrirPopup(texto: string, tipo: 'exito' | 'error'): void {
+    this.textoPopup = texto;
+    this.tipoPopup = tipo;
+    this.mostrarPopup = true;
+    this.cdr.detectChanges();
+
+    if (this.popupTimeout) {
+      clearTimeout(this.popupTimeout);
+    }
+
+    this.popupTimeout = setTimeout(() => {
+      this.mostrarPopup = false;
+      this.cdr.detectChanges();
+    }, 3000);
+  }
+
+  cerrarPopup(): void {
+    this.mostrarPopup = false;
+    this.cdr.detectChanges();
   }
 }

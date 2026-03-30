@@ -208,7 +208,7 @@ export class EntrenamientosComunidadComponent {
   borrarEntrenamiento(id: number): void {
     this.entrenamientosComunidadService.borrarEntrenamientoComunidad(id).subscribe({
       next: () => {
-        this.abrirPopup('Entrenamiento borrado correctamente.', 'exito');
+        this.abrirPopup('Entrenamiento borrado correctamente.', 'error');
         this.cargarEntrenamientosComunidad();
       },
       error: () => {
