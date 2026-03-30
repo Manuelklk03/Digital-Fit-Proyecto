@@ -1,9 +1,10 @@
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { EntrenamientosComunidadService } from '../../../../services/entrenamientos/entrenamiento-comunidad-service';
+import { MisEntrenamientosService } from '../../../../services/entrenamientos/mis-entrenamientos-service';
+import { AuthService } from '../../../../services/auth-service';
 import { HeaderComponent } from '../../../../components/header/header';
 import { Footer } from '../../../../components/footer/footer';
-import { MisEntrenamientosService } from '../../../../services/entrenamientos/mis-entrenamientos-service';
 
 @Component({
   selector: 'app-detalle-entrenamiento-comunidad',
@@ -14,11 +15,14 @@ import { MisEntrenamientosService } from '../../../../services/entrenamientos/mi
 export class DetalleEntrenamientoComunidadComponent {
 
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
   private entrenamientosComunidadService = inject(EntrenamientosComunidadService);
   private misEntrenamientosService = inject(MisEntrenamientosService);
+  private authService = inject(AuthService);
   private cdr = inject(ChangeDetectorRef);
 
   entrenamiento: any = null;
+  usuarioActual: any = null;
 
   mostrarPopup = false;
   textoPopup = '';
@@ -26,18 +30,34 @@ export class DetalleEntrenamientoComunidadComponent {
   private popupTimeout: any;
 
   ngOnInit(): void {
+    this.authService.me().subscribe({
+      next: (usuario: any) => {
+        this.usuarioActual = usuario;
+        this.cargarDetalle();
+      },
+      error: () => {
+        this.cargarDetalle();
+      }
+    });
+  }
+
+  cargarDetalle(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
 
     this.entrenamientosComunidadService.getEntrenamientoComunidadById(id).subscribe({
-      next: (data) => {
+      next: (data: any) => {
         this.entrenamiento = data;
         this.cdr.detectChanges();
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('ERROR DETALLE ENTRENAMIENTO COMUNIDAD:', err);
         this.abrirPopup('No se pudo cargar el detalle del entrenamiento.', 'error');
       }
     });
+  }
+
+  esMio(): boolean {
+    return this.usuarioActual?.username === this.entrenamiento?.usuario;
   }
 
   anadirAMisEntrenamientos(): void {
@@ -51,6 +71,21 @@ export class DetalleEntrenamientoComunidadComponent {
       },
       error: () => {
         this.abrirPopup('No se pudo añadir a mis entrenamientos.', 'error');
+      }
+    });
+  }
+
+  borrarEntrenamiento(): void {
+    if (!this.entrenamiento?.id) {
+      return;
+    }
+
+    this.entrenamientosComunidadService.borrarEntrenamientoComunidad(this.entrenamiento.id).subscribe({
+      next: () => {
+        this.router.navigate(['/entrenamientos-comunidad']);
+      },
+      error: () => {
+        this.abrirPopup('No se pudo borrar el entrenamiento.', 'error');
       }
     });
   }

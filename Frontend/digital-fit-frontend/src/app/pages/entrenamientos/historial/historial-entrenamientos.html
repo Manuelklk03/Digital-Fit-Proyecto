@@ -2,6 +2,15 @@
 
 <main class="pagina-historial">
 
+    @if (mostrarPopup) {
+    <div class="popup-overlay">
+        <div class="popup-mensaje" [class.popup-error]="tipoPopup === 'error'">
+            <p>{{ textoPopup }}</p>
+            <button type="button" (click)="cerrarPopup()">Cerrar</button>
+        </div>
+    </div>
+    }
+
     <section class="cabecera-pagina">
         <h1>Historial de entrenamientos</h1>
         <p>
@@ -14,80 +23,82 @@
 
         <form class="formulario-historial" (ngSubmit)="crearRegistro()">
 
-            <div class="grupo-campo">
-                <label for="entrenamientoSeleccionado">Entrenamiento</label>
-                <select id="entrenamientoSeleccionado" name="entrenamientoSeleccionado"
-                    [(ngModel)]="entrenamientoSeleccionado">
-                    <option value="">Selecciona un entrenamiento</option>
+            <div class="grid-formulario">
+                <div class="grupo-campo">
+                    <label for="entrenamientoSeleccionado">Entrenamiento</label>
+                    <select id="entrenamientoSeleccionado" name="entrenamientoSeleccionado"
+                        [(ngModel)]="entrenamientoSeleccionado">
+                        <option value="">Selecciona un entrenamiento</option>
 
-                    <optgroup label="Entrenamientos base">
-                        @for (entrenamiento of entrenamientosBase; track entrenamiento.id) {
-                        <option [value]="'BASE-' + entrenamiento.id">
-                            {{ entrenamiento.nombre }} - {{ entrenamiento.nivel }} - {{ entrenamiento.duracionEnMinutos
-                            }} min
-                        </option>
-                        }
-                    </optgroup>
+                        <optgroup label="Entrenamientos base">
+                            @for (entrenamiento of entrenamientosBase; track entrenamiento.id) {
+                            <option [value]="'BASE-' + entrenamiento.id">
+                                {{ entrenamiento.nombre }} - {{ entrenamiento.nivel }} - {{
+                                entrenamiento.duracionEnMinutos }} min
+                            </option>
+                            }
+                        </optgroup>
 
-                    <optgroup label="Mis entrenamientos">
-                        @for (entrenamiento of misEntrenamientos; track entrenamiento.id) {
-                        <option [value]="'MIS-' + entrenamiento.id">
-                            {{ entrenamiento.nombre }} - {{ entrenamiento.nivel }} - {{ entrenamiento.duracionEnMinutos
-                            }} min
-                        </option>
-                        }
-                    </optgroup>
-                </select>
-            </div>
+                        <optgroup label="Mis entrenamientos">
+                            @for (entrenamiento of misEntrenamientos; track entrenamiento.id) {
+                            <option [value]="'MIS-' + entrenamiento.id">
+                                {{ entrenamiento.nombre }} - {{ entrenamiento.nivel }} - {{
+                                entrenamiento.duracionEnMinutos }} min
+                            </option>
+                            }
+                        </optgroup>
+                    </select>
+                </div>
 
-            <div class="grupo-campo">
-                <label for="ubicacionSeleccionada">Ubicación</label>
-                <select id="ubicacionSeleccionada" name="ubicacionSeleccionada" [(ngModel)]="ubicacionSeleccionada">
-                    <option value="">Sin ubicación</option>
+                <div class="grupo-campo">
+                    <label for="ubicacionSeleccionada">Ubicación</label>
+                    <select id="ubicacionSeleccionada" name="ubicacionSeleccionada" [(ngModel)]="ubicacionSeleccionada">
+                        <option value="">Sin ubicación</option>
 
-                    <optgroup label="Lugares públicos base">
-                        @for (lugar of lugaresBase; track lugar.id) {
-                        <option [value]="'LPB-' + lugar.id">
-                            {{ lugar.nombre }} - {{ lugar.tipo }}
-                        </option>
-                        }
-                    </optgroup>
+                        <optgroup label="Lugares públicos base">
+                            @for (lugar of lugaresBase; track lugar.id) {
+                            <option [value]="'LPB-' + lugar.id">
+                                {{ lugar.nombre }} - {{ lugar.tipo }}
+                            </option>
+                            }
+                        </optgroup>
 
-                    <optgroup label="Mis lugares">
-                        @for (lugar of misLugares; track lugar.id) {
-                        <option [value]="'LPU-' + lugar.id">
-                            {{ lugar.nombre }} - {{ lugar.tipo }}
-                        </option>
-                        }
-                    </optgroup>
+                        <optgroup label="Mis lugares">
+                            @for (lugar of misLugares; track lugar.id) {
+                            <option [value]="'LPU-' + lugar.id">
+                                {{ lugar.nombre }} - {{ lugar.tipo }}
+                            </option>
+                            }
+                        </optgroup>
 
-                    <optgroup label="Centros privados base">
-                        @for (centro of centrosBase; track centro.id) {
-                        <option [value]="'CPB-' + centro.id">
-                            {{ centro.nombre }} - {{ centro.direccion }}
-                        </option>
-                        }
-                    </optgroup>
+                        <optgroup label="Centros privados base">
+                            @for (centro of centrosBase; track centro.id) {
+                            <option [value]="'CPB-' + centro.id">
+                                {{ centro.nombre }} - {{ centro.direccion }}
+                            </option>
+                            }
+                        </optgroup>
 
-                    <optgroup label="Mis centros">
-                        @for (centro of misCentros; track centro.id) {
-                        <option [value]="'CPU-' + centro.id">
-                            {{ centro.nombre }} - {{ centro.direccion }}
-                        </option>
-                        }
-                    </optgroup>
-                </select>
-            </div>
+                        <optgroup label="Mis centros">
+                            @for (centro of misCentros; track centro.id) {
+                            <option [value]="'CPU-' + centro.id">
+                                {{ centro.nombre }} - {{ centro.direccion }}
+                            </option>
+                            }
+                        </optgroup>
+                    </select>
+                </div>
 
-            <div class="grupo-campo">
-                <label for="fecha">Fecha y hora</label>
-                <input type="datetime-local" id="fecha" name="fecha" [(ngModel)]="fecha" required>
-            </div>
+                <div class="grupo-campo">
+                    <label for="fecha">Fecha y hora</label>
+                    <input type="datetime-local" id="fecha" name="fecha" [(ngModel)]="fecha" required>
+                </div>
 
-            <div class="grupo-campo">
-                <label for="duracionEnMinutos">Duración (minutos)</label>
-                <input type="number" id="duracionEnMinutos" name="duracionEnMinutos" [(ngModel)]="duracionEnMinutos"
-                    required>
+                <div class="grupo-campo">
+                    <label for="duracionEnMinutos">Duración (minutos)</label>
+                    <input type="number" id="duracionEnMinutos" name="duracionEnMinutos" [(ngModel)]="duracionEnMinutos"
+                        required>
+                </div>
             </div>
 
             <div class="grupo-campo">
@@ -95,28 +106,34 @@
                 <textarea id="notas" name="notas" rows="4" [(ngModel)]="notas"></textarea>
             </div>
 
-            <button type="submit" class="boton-guardar">
-                Guardar registro
-            </button>
-
-            @if (mensajeExito) {
-            <p class="mensaje-exito">{{ mensajeExito }}</p>
-            }
-
-            @if (mensajeError) {
-            <p class="mensaje-error">{{ mensajeError }}</p>
-            }
+            <div class="acciones-formulario">
+                <button type="submit" class="boton-guardar">
+                    Guardar registro
+                </button>
+            </div>
 
         </form>
     </section>
 
     <section class="bloque-listado">
         <div class="cabecera-listado">
-            <h2>Mi historial</h2>
+            <div>
+                <h2>Mi historial</h2>
+                <p class="texto-secundario">{{ historialFiltrado.length }} registro(s)</p>
+            </div>
 
-            <div class="grupo-busqueda">
-                <input type="text" placeholder="Buscar por entrenamiento, ubicación, tipo, fecha o notas..."
-                    [(ngModel)]="busqueda" (input)="aplicarFiltroBusqueda()">
+            <div class="barra-busqueda">
+                <select name="tipoBusqueda" [(ngModel)]="tipoBusqueda" (ngModelChange)="alCambiarBusqueda()">
+                    <option value="general">Búsqueda general</option>
+                    <option value="entrenamiento">Entrenamiento</option>
+                    <option value="ubicacion">Ubicación</option>
+                    <option value="fecha">Fecha</option>
+                    <option value="notas">Notas</option>
+                </select>
+
+                <input type="text" placeholder="Escribe aquí..." [(ngModel)]="busqueda" (input)="alCambiarBusqueda()">
+
+                <button type="button" class="boton-limpiar" (click)="limpiarBusqueda()">Limpiar</button>
             </div>
         </div>
 

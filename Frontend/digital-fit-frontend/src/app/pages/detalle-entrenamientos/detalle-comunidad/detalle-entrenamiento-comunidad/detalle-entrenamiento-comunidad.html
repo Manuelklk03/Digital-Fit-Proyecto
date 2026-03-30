@@ -18,6 +18,7 @@
     </section>
 
     <section class="bloque-detalle">
+
         <div class="dato-detalle">
             <span class="etiqueta">Nombre</span>
             <span>{{ entrenamiento.nombre }}</span>
@@ -50,16 +51,23 @@
 
         <div class="descripcion-detalle">
             <h2>Descripción</h2>
-            <p>{{ entrenamiento.descripcion || 'Sin descripción' }}</p>
+            <p>{{ entrenamiento.descripcion }}</p>
         </div>
 
         <div class="acciones-detalle">
             <a class="boton-volver" routerLink="/entrenamientos-comunidad">Volver</a>
 
+            @if (esMio()) {
+            <button class="boton-borrar" type="button" (click)="borrarEntrenamiento()">
+                Borrar entrenamiento
+            </button>
+            } @else {
             <button class="boton-anadir" type="button" (click)="anadirAMisEntrenamientos()">
                 Añadir a mis entrenamientos
             </button>
+            }
         </div>
+
     </section>
     } @else {
     <p class="mensaje-cargando">Cargando detalle...</p>

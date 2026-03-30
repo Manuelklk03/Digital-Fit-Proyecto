@@ -16,8 +16,54 @@
     background: linear-gradient(180deg, var(--color-azul-fondo), #dceeff);
 }
 
+.popup-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.28);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 110px;
+    z-index: 2500;
+}
+
+.popup-mensaje {
+    width: min(420px, calc(100% - 40px));
+    background-color: #1f7a37;
+    color: white;
+    border-radius: 16px;
+    padding: 20px 22px;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.22);
+    animation: fadeUp 0.25s ease;
+    text-align: center;
+}
+
+.popup-mensaje p {
+    margin: 0 0 14px 0;
+    font-weight: bold;
+    line-height: 1.5;
+}
+
+.popup-mensaje button {
+    border: none;
+    background-color: white;
+    color: #1f7a37;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.popup-error {
+    background-color: #c62828;
+}
+
+.popup-error button {
+    color: #c62828;
+}
+
 .cabecera-pagina {
-    max-width: 1000px;
+    max-width: 1100px;
     margin: 0 auto 30px auto;
     text-align: center;
     animation: fadeUp 0.7s ease;
@@ -36,11 +82,11 @@
 
 .bloque-formulario,
 .bloque-listado {
-    max-width: 1000px;
-    margin: 0 auto 35px auto;
+    max-width: 1100px;
+    margin: 0 auto 25px auto;
     background-color: var(--color-azul-caja);
     border-radius: 22px;
-    padding: 30px;
+    padding: 24px 30px;
     box-shadow: 0px 10px 24px rgba(0, 0, 0, 0.12);
     animation: fadeUp 0.9s ease;
 }
@@ -48,6 +94,12 @@
 .formulario-historial {
     display: flex;
     flex-direction: column;
+    gap: 18px;
+}
+
+.grid-formulario {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 18px;
 }
 
@@ -64,7 +116,9 @@
 
 .grupo-campo input,
 .grupo-campo textarea,
-.grupo-campo select {
+.grupo-campo select,
+.barra-busqueda input,
+.barra-busqueda select {
     padding: 14px;
     border: 1px solid #aac5eb;
     border-radius: 12px;
@@ -76,75 +130,43 @@
 
 .grupo-campo input:focus,
 .grupo-campo textarea:focus,
-.grupo-campo select:focus {
+.grupo-campo select:focus,
+.barra-busqueda input:focus,
+.barra-busqueda select:focus {
     outline: none;
     border-color: var(--color-azul);
     box-shadow: 0 0 0 3px rgba(60, 145, 230, 0.15);
 }
 
+.acciones-formulario {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
 .cabecera-listado {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    gap: 18px;
+    align-items: flex-end;
+    gap: 20px;
     flex-wrap: wrap;
-    margin-bottom: 20px;
+    margin-bottom: 22px;
 }
 
-.grupo-busqueda {
-    flex: 1;
-    min-width: 280px;
+.texto-secundario {
+    margin: 6px 0 0 0;
+    color: #4b5d73;
 }
 
-.grupo-busqueda input {
-    width: 100%;
-    padding: 14px;
-    border: 1px solid #aac5eb;
-    border-radius: 12px;
-    font-size: 15px;
-    background-color: white;
+.barra-busqueda {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
 }
 
-.boton-guardar,
-.boton-detalle,
-.boton-borrar {
-    padding: 12px 18px;
-    border: none;
-    border-radius: 10px;
-    font-weight: bold;
-    cursor: pointer;
-    text-decoration: none;
-    transition: 0.3s ease;
-    display: inline-block;
-}
-
-.boton-guardar,
-.boton-detalle {
-    background-color: var(--color-azul-oscuro);
-    color: white;
-}
-
-.boton-borrar {
-    background-color: #c62828;
-    color: white;
-}
-
-.boton-guardar:hover,
-.boton-detalle:hover,
-.boton-borrar:hover {
-    transform: translateY(-2px);
-}
-
-.mensaje-exito {
-    margin: 0;
-    font-weight: bold;
-    color: #1f7a37;
-}
-
-.mensaje-error {
-    margin: 0;
-    font-weight: bold;
-    color: #c62828;
+.barra-busqueda input {
+    min-width: 240px;
 }
 
 .grid-historial {
@@ -171,6 +193,76 @@
     flex-wrap: wrap;
 }
 
+.boton-guardar,
+.boton-detalle,
+.boton-borrar,
+.boton-limpiar {
+    padding: 12px 18px;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    transition: 0.3s ease;
+    display: inline-block;
+}
+
+.boton-guardar,
+.boton-detalle {
+    background-color: var(--color-azul-oscuro);
+    color: white;
+}
+
+.boton-borrar {
+    background-color: #c62828;
+    color: white;
+}
+
+.boton-limpiar {
+    background-color: #f0a500;
+    color: white;
+}
+
+.boton-guardar:hover,
+.boton-detalle:hover,
+.boton-borrar:hover,
+.boton-limpiar:hover {
+    transform: translateY(-2px);
+}
+
 .sin-datos {
     font-weight: bold;
+}
+
+@media (max-width: 800px) {
+    .grid-formulario {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .cabecera-pagina h1 {
+        font-size: 30px;
+    }
+
+    .bloque-formulario,
+    .bloque-listado {
+        padding: 22px;
+    }
+
+    .barra-busqueda {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .barra-busqueda input,
+    .barra-busqueda select,
+    .boton-limpiar,
+    .boton-guardar {
+        width: 100%;
+    }
+
+    .popup-overlay {
+        padding-top: 90px;
+    }
 }

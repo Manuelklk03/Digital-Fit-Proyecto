@@ -3,43 +3,51 @@
 <main class="detalle-historial">
 
     @if (registro) {
-    <div class="grid-detalle">
+    <section class="cabecera-detalle">
+        <h1>{{ registro.entrenamiento }}</h1>
+        <p>Consulta toda la información del registro de historial.</p>
+    </section>
 
-        <div class="columna-imagen">
-            <div class="imagen-wrapper">
-                <img src="img/LOGOFINAL-removebg.png" alt="Historial entrenamiento">
-                <span class="badge">Historial</span>
-            </div>
+    <section class="bloque-detalle">
+        <div class="dato-detalle">
+            <span class="etiqueta">Entrenamiento</span>
+            <span>{{ registro.entrenamiento }}</span>
         </div>
 
-        <div class="columna-info">
-
-            <h1>{{ registro.entrenamiento }}</h1>
-
-            <div class="info-grid">
-                <div class="info-item">
-                    <span class="label">Lugar:</span>
-                    <span>{{ registro.lugar }}</span>
-                </div>
-
-                <div class="info-item">
-                    <span class="label">Fecha:</span>
-                    <span>{{ registro.fecha }}</span>
-                </div>
-
-                <div class="info-item">
-                    <span class="label">Duración:</span>
-                    <span>{{ registro.duracionEnMinutos }} min</span>
-                </div>
-            </div>
-
-            <details class="bloque-detalles">
-                <summary>Notas</summary>
-                <p>{{ registro.notas }}</p>
-            </details>
-
+        <div class="dato-detalle">
+            <span class="etiqueta">Tipo de entrenamiento</span>
+            <span>{{ mostrarTipoEntrenamiento(registro.tipoEntrenamiento) }}</span>
         </div>
-    </div>
+
+        <div class="dato-detalle">
+            <span class="etiqueta">Ubicación</span>
+            <span>{{ registro.ubicacion || 'Sin ubicación' }}</span>
+        </div>
+
+        <div class="dato-detalle">
+            <span class="etiqueta">Tipo de ubicación</span>
+            <span>{{ mostrarTipoUbicacion(registro.tipoUbicacion) }}</span>
+        </div>
+
+        <div class="dato-detalle">
+            <span class="etiqueta">Fecha</span>
+            <span>{{ registro.fecha }}</span>
+        </div>
+
+        <div class="dato-detalle">
+            <span class="etiqueta">Duración</span>
+            <span>{{ registro.duracionEnMinutos }} min</span>
+        </div>
+
+        <div class="descripcion-detalle">
+            <h2>Notas</h2>
+            <p>{{ registro.notas || 'Sin notas' }}</p>
+        </div>
+
+        <div class="acciones-detalle">
+            <a class="boton-volver" routerLink="/historial-entrenamientos">Volver</a>
+        </div>
+    </section>
     } @else {
     <p class="mensaje-cargando">Cargando detalle...</p>
     }
