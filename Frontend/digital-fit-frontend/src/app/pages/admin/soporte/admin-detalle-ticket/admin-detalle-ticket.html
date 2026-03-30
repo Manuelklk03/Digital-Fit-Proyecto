@@ -1,6 +1,15 @@
 <app-header></app-header>
 
-<main class="detalle-ticket">
+<main class="detalle-ticket-admin">
+
+  @if (mostrarPopup) {
+    <div class="popup-overlay">
+      <div class="popup-mensaje" [class.popup-error]="tipoPopup === 'error'">
+        <p>{{ textoPopup }}</p>
+        <button type="button" (click)="cerrarPopup()">Cerrar</button>
+      </div>
+    </div>
+  }
 
   @if (ticket) {
     <div class="contenedor-detalle">
@@ -13,7 +22,7 @@
 
       <div class="info-item">
         <span class="label">Estado:</span>
-        <span>{{ ticket.estado }}</span>
+        <span>{{ mostrarEstado(ticket.estado) }}</span>
       </div>
 
       <details class="bloque-detalles" open>
@@ -22,19 +31,11 @@
       </details>
 
       <div class="acciones-ticket">
-        <button class="boton-estado" (click)="cambiarEstado('ABIERTO')">ABIERTO</button>
-        <button class="boton-estado" (click)="cambiarEstado('EN_PROCESO')">EN_PROCESO</button>
-        <button class="boton-estado" (click)="cambiarEstado('CERRADO')">CERRADO</button>
+        <button class="boton-estado" (click)="cambiarEstado('ABIERTO')">Abierto</button>
+        <button class="boton-estado" (click)="cambiarEstado('EN_PROCESO')">En proceso</button>
+        <button class="boton-estado" (click)="cambiarEstado('CERRADO')">Cerrado</button>
         <button class="boton-borrar" (click)="borrarTicket()">Borrar</button>
       </div>
-
-      @if (mensajeExito) {
-        <p class="mensaje-exito">{{ mensajeExito }}</p>
-      }
-
-      @if (mensajeError) {
-        <p class="mensaje-error">{{ mensajeError }}</p>
-      }
     </div>
   } @else {
     <p class="mensaje-cargando">Cargando detalle...</p>

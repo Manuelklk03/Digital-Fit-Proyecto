@@ -29,14 +29,13 @@ public class AuthService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    // Registrar usuario:
     @Transactional
     public void registrar(UsuarioDTO usuarioDTO) {
 
         log.info("Registrando usuario: {}", usuarioDTO.getUsername());
 
         if (usuarioRepository.findByUsername(usuarioDTO.getUsername()).isPresent()) {
-            log.warn("Usuario no creado,username ya existente {}", usuarioDTO.getUsername());
+            log.warn("Usuario no creado, username ya existente {}", usuarioDTO.getUsername());
             throw new UsernameYaExiste("Nombre de usuario ya existe");
         }
 
@@ -56,23 +55,24 @@ public class AuthService {
         log.info("Usuario registrado exitosamente {}", usuario.getUsername());
     }
 
-    // Registrar admin:
     @Transactional
     public void registrarAdmin(CrearAdmin crearAdmin) {
 
-        log.info("Creacion de administrador {}", crearAdmin.getUsername());
+        log.info("Creación de administrador {}", crearAdmin.getUsername());
 
         if (usuarioRepository.findByUsername(crearAdmin.getUsername()).isPresent()) {
-            log.warn("Admin no creado,username ya existente {}", crearAdmin.getUsername());
-
+            log.warn("Admin no creado, username ya existente {}", crearAdmin.getUsername());
             throw new UsernameYaExiste("Nombre de usuario ya existe");
         }
 
-        Usuario admin = new Usuario();
+        if (usuarioRepository.findByEmail(crearAdmin.getEmail()).isPresent()) {
+            throw new EmailYaExisteException("Email ya existe");
+        }
 
+        Usuario admin = new Usuario();
         admin.setUsername(crearAdmin.getUsername());
         admin.setPassword(passwordEncoder.encode(crearAdmin.getPassword()));
-        admin.setEmail(crearAdmin.getUsername());
+        admin.setEmail(crearAdmin.getEmail());
         admin.setRol(Rol.ADMIN);
 
         usuarioRepository.save(admin);
@@ -80,12 +80,10 @@ public class AuthService {
         log.info("Admin creado exitosamente {}", admin.getUsername());
     }
 
-    // Metodo que obtiene sesion (Admin o user)
     public UsuarioSesionDTO obtenerSesion(String username) {
-        Usuario usuario = usuarioRepository.findByUsername(username).orElseThrow(
-                () -> new RecursoNoEncontradoException("No se encuentra el usuario"));
+        Usuario usuario = usuarioRepository.findByUsername(username)
+                .orElseThrow(() -> new RecursoNoEncontradoException("No se encuentra el usuario"));
 
         return new UsuarioSesionDTO(usuario.getUsername(), usuario.getEmail(), usuario.getRol());
     }
-
 }

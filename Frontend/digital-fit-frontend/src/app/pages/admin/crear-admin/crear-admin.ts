@@ -22,12 +22,14 @@ export class CrearAdminComponent {
   email = '';
   password = '';
 
-  mensajeExito = '';
-  mensajeError = '';
+  mostrarPopup = false;
+  textoPopup = '';
+  tipoPopup: 'exito' | 'error' = 'exito';
+  private popupTimeout: any;
 
   ngOnInit(): void {
     this.authService.me().subscribe({
-      next: (usuario) => {
+      next: (usuario: any) => {
         if (usuario?.rol !== 'ADMIN') {
           this.router.navigate(['/inicio']);
         }
@@ -39,11 +41,8 @@ export class CrearAdminComponent {
   }
 
   crearAdmin(): void {
-    this.mensajeExito = '';
-    this.mensajeError = '';
-
     if (!this.username.trim() || !this.email.trim() || !this.password.trim()) {
-      this.mensajeError = 'Debes completar todos los campos.';
+      this.abrirPopup('Debes completar todos los campos.', 'error');
       return;
     }
 
@@ -54,15 +53,33 @@ export class CrearAdminComponent {
     };
 
     this.adminService.crearAdmin(nuevoAdmin).subscribe({
-      next: (respuesta) => {
-        this.mensajeExito = respuesta;
+      next: (respuesta: string) => {
+        this.abrirPopup(respuesta || 'Admin creado correctamente.', 'exito');
         this.username = '';
         this.email = '';
         this.password = '';
       },
       error: () => {
-        this.mensajeError = 'No se pudo crear el admin.';
+        this.abrirPopup('No se pudo crear el admin.', 'error');
       }
     });
+  }
+
+  abrirPopup(texto: string, tipo: 'exito' | 'error'): void {
+    this.textoPopup = texto;
+    this.tipoPopup = tipo;
+    this.mostrarPopup = true;
+
+    if (this.popupTimeout) {
+      clearTimeout(this.popupTimeout);
+    }
+
+    this.popupTimeout = setTimeout(() => {
+      this.mostrarPopup = false;
+    }, 3000);
+  }
+
+  cerrarPopup(): void {
+    this.mostrarPopup = false;
   }
 }

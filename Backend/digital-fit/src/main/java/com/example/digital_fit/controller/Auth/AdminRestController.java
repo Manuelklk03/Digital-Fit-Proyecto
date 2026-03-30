@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.example.digital_fit.dto.Admin.CrearAdmin;
 import com.example.digital_fit.service.Auth.AuthService;
 
@@ -28,6 +27,6 @@ public class AdminRestController {
         authService.registrarAdmin(crearAdmin);
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body("Admin: " + crearAdmin.getUsername() + " creado exitosamente");
+                .body("Admin " + crearAdmin.getUsername() + " creado correctamente.");
     }
 }

@@ -33,6 +33,22 @@
     line-height: 1.7;
 }
 
+.bloque-destacado,
+.bloque-estado {
+    max-width: 1100px;
+    margin: 0 auto 24px auto;
+    background-color: var(--color-azul-caja);
+    border-radius: 20px;
+    padding: 24px 28px;
+    box-shadow: 0px 10px 24px rgba(0, 0, 0, 0.12);
+    animation: fadeUp 0.85s ease;
+}
+
+.bloque-destacado h2 {
+    margin-top: 0;
+    color: var(--color-azul-oscuro);
+}
+
 .grid-estadisticas {
     max-width: 1100px;
     margin: 0 auto;
@@ -60,12 +76,19 @@
 .valor {
     font-size: 36px;
     font-weight: bold;
-    margin: 0;
+    margin: 0 0 12px 0;
     color: var(--color-negro);
 }
 
 .valor.texto {
     font-size: 24px;
+    line-height: 1.4;
+}
+
+.descripcion {
+    margin: 0;
+    color: #4b5d73;
+    line-height: 1.6;
 }
 
 .tarjeta-destacada {
@@ -75,7 +98,14 @@
 .mensaje-cargando {
     text-align: center;
     font-weight: bold;
-    margin-top: 40px;
+    margin: 0;
+}
+
+.mensaje-error {
+    text-align: center;
+    font-weight: bold;
+    color: #c62828;
+    margin: 0;
 }
 
 @media (max-width: 900px) {
@@ -99,5 +129,19 @@
 
     .cabecera-pagina h1 {
         font-size: 30px;
+    }
+
+    .bloque-destacado,
+    .bloque-estado,
+    .tarjeta-estadistica {
+        padding: 22px;
+    }
+
+    .valor {
+        font-size: 30px;
+    }
+
+    .valor.texto {
+        font-size: 21px;
     }
 }

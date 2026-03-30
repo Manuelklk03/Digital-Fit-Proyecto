@@ -20,8 +20,11 @@ export class AdminDetalleTicketComponent {
   private cdr = inject(ChangeDetectorRef);
 
   ticket: any = null;
-  mensajeError = '';
-  mensajeExito = '';
+
+  mostrarPopup = false;
+  textoPopup = '';
+  tipoPopup: 'exito' | 'error' = 'exito';
+  private popupTimeout: any;
 
   ngOnInit(): void {
     this.authService.me().subscribe({
@@ -40,6 +43,7 @@ export class AdminDetalleTicketComponent {
           },
           error: (err: any) => {
             console.error('ERROR DETALLE TICKET ADMIN:', err);
+            this.abrirPopup('No se pudo cargar el ticket.', 'error');
           }
         });
       },
@@ -54,17 +58,14 @@ export class AdminDetalleTicketComponent {
       return;
     }
 
-    this.mensajeError = '';
-    this.mensajeExito = '';
-
     this.adminSoporteService.cambiarEstado(this.ticket.id, estado).subscribe({
       next: (data: any) => {
         this.ticket = data;
-        this.mensajeExito = 'Estado actualizado correctamente.';
+        this.abrirPopup('Estado actualizado correctamente.', 'exito');
         this.cdr.detectChanges();
       },
       error: () => {
-        this.mensajeError = 'No se pudo actualizar el estado.';
+        this.abrirPopup('No se pudo actualizar el estado.', 'error');
       }
     });
   }
@@ -74,16 +75,50 @@ export class AdminDetalleTicketComponent {
       return;
     }
 
-    this.mensajeError = '';
-    this.mensajeExito = '';
-
     this.adminSoporteService.borrarTicketCerrado(this.ticket.id).subscribe({
       next: () => {
-        this.router.navigate(['/admin/soporte']);
+        this.abrirPopup('Ticket borrado correctamente.', 'error');
+        setTimeout(() => {
+          this.router.navigate(['/admin/soporte']);
+        }, 900);
       },
       error: () => {
-        this.mensajeError = 'Solo se pueden borrar tickets cerrados.';
+        this.abrirPopup('Solo se pueden borrar tickets cerrados.', 'error');
       }
     });
+  }
+
+  mostrarEstado(estado: string): string {
+    switch (estado) {
+      case 'ABIERTO':
+        return 'Abierto';
+      case 'EN_PROCESO':
+        return 'En proceso';
+      case 'CERRADO':
+        return 'Cerrado';
+      default:
+        return estado;
+    }
+  }
+
+  abrirPopup(texto: string, tipo: 'exito' | 'error'): void {
+    this.textoPopup = texto;
+    this.tipoPopup = tipo;
+    this.mostrarPopup = true;
+    this.cdr.detectChanges();
+
+    if (this.popupTimeout) {
+      clearTimeout(this.popupTimeout);
+    }
+
+    this.popupTimeout = setTimeout(() => {
+      this.mostrarPopup = false;
+      this.cdr.detectChanges();
+    }, 3000);
+  }
+
+  cerrarPopup(): void {
+    this.mostrarPopup = false;
+    this.cdr.detectChanges();
   }
 }
