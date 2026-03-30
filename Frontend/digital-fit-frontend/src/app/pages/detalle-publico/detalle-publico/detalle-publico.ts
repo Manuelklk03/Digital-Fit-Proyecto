@@ -27,8 +27,10 @@ export class DetallePublicoComponent {
   lugar: any = null;
   usuarioActual: any = null;
 
-  mensajeExito = '';
-  mensajeError = '';
+  mostrarPopup = false;
+  textoPopup = '';
+  tipoPopup: 'exito' | 'error' = 'exito';
+  private popupTimeout: any;
 
   ngOnInit(): void {
     this.authService.me().subscribe({
@@ -52,7 +54,7 @@ export class DetallePublicoComponent {
       },
       error: (err: any) => {
         console.error('ERROR DETALLE LUGAR PUBLICO:', err);
-        this.mensajeError = 'No se pudo cargar el detalle del lugar.';
+        this.abrirPopup('No se pudo cargar el detalle del lugar.', 'error');
       }
     });
   }
@@ -62,27 +64,21 @@ export class DetallePublicoComponent {
   }
 
   anadirAMisLugares(): void {
-    this.mensajeExito = '';
-    this.mensajeError = '';
-
     if (!this.lugar?.id) {
       return;
     }
 
     this.misLugaresService.anadirLugarDesdeBase(this.lugar.id).subscribe({
       next: () => {
-        this.mensajeExito = 'Lugar añadido a mis lugares.';
+        this.abrirPopup('Lugar añadido a mis lugares.', 'exito');
       },
       error: () => {
-        this.mensajeError = 'No se pudo añadir a mis lugares.';
+        this.abrirPopup('No se pudo añadir a mis lugares.', 'error');
       }
     });
   }
 
   borrarLugarBase(): void {
-    this.mensajeExito = '';
-    this.mensajeError = '';
-
     if (!this.lugar?.id) {
       return;
     }
@@ -92,7 +88,7 @@ export class DetallePublicoComponent {
         this.router.navigate(['/publicos']);
       },
       error: () => {
-        this.mensajeError = 'No se pudo borrar el lugar público base.';
+        this.abrirPopup('No se pudo borrar el lugar público base.', 'error');
       }
     });
   }
@@ -103,11 +99,27 @@ export class DetallePublicoComponent {
     }
 
     return tipo.replaceAll('_', ' ').toLowerCase()
-      .replace(/\b\w/g, (letra) => letra.toUpperCase());
+      .replace(/\b\w/g, letra => letra.toUpperCase());
   }
 
-  hayCoordenadas(): boolean {
-    return this.lugar?.latitud !== null && this.lugar?.latitud !== undefined
-      && this.lugar?.longitud !== null && this.lugar?.longitud !== undefined;
+  abrirPopup(texto: string, tipo: 'exito' | 'error'): void {
+    this.textoPopup = texto;
+    this.tipoPopup = tipo;
+    this.mostrarPopup = true;
+    this.cdr.detectChanges();
+
+    if (this.popupTimeout) {
+      clearTimeout(this.popupTimeout);
+    }
+
+    this.popupTimeout = setTimeout(() => {
+      this.mostrarPopup = false;
+      this.cdr.detectChanges();
+    }, 3000);
+  }
+
+  cerrarPopup(): void {
+    this.mostrarPopup = false;
+    this.cdr.detectChanges();
   }
 }

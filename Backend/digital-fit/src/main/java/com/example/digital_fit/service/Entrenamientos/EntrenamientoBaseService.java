@@ -26,7 +26,6 @@ public class EntrenamientoBaseService {
 
     private static final Logger log = LoggerFactory.getLogger(EntrenamientoBaseService.class);
 
-    // Listar o filtrar:
     public List<EntrenamientoBaseDTO> listarOFiltrar(CategoriaEntrenamientoComunidad categoria,
             NivelEntrenamiento nivel, Integer duracionEnMinutos, String nombre) {
 
@@ -87,7 +86,6 @@ public class EntrenamientoBaseService {
         return entrenamientoBase;
     }
 
-    // Metodos panel admin:
     @Transactional
     public EntrenamientoBaseDTO crearEntrenamientoBase(CrearEntrenamientoBaseDTO dto) {
 
@@ -105,7 +103,6 @@ public class EntrenamientoBaseService {
         log.info("Entrenamiento base {} creado", dto.getNombre());
 
         return entityToDto(entrenamientoBaseGuardado);
-
     }
 
     @Transactional

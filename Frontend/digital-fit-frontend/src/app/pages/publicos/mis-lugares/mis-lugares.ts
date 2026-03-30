@@ -21,13 +21,10 @@ export class MisLugaresComponent {
   tipoBusqueda = 'nombre';
   valorBusqueda = '';
 
-  mensajeExito = '';
-  mensajeError = '';
-
-  mostrarToast = false;
-  textoToast = '';
-  tipoToast: 'exito' | 'error' = 'exito';
-  private toastTimeout: any;
+  mostrarPopup = false;
+  textoPopup = '';
+  tipoPopup: 'exito' | 'error' = 'exito';
+  private popupTimeout: any;
 
   ngOnInit(): void {
     this.cargarMisLugares();
@@ -35,14 +32,13 @@ export class MisLugaresComponent {
 
   cargarMisLugares(): void {
     this.misLugaresService.getMisLugares().subscribe({
-      next: (data) => {
+      next: (data: any[]) => {
         this.lugares = data;
         this.cdr.detectChanges();
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('ERROR MIS LUGARES:', err);
-        this.mensajeError = 'No se pudieron cargar tus lugares.';
-        this.mostrarToastMensaje('No se pudieron cargar tus lugares.', 'error');
+        this.abrirPopup('No se pudieron cargar tus lugares.', 'error');
       }
     });
   }
@@ -55,42 +51,34 @@ export class MisLugaresComponent {
       return;
     }
 
-    if (this.tipoBusqueda === 'tipo') {
-      this.misLugaresService.getMisLugaresFiltrados(undefined, undefined, texto).subscribe({
-        next: (data) => {
+    if (this.tipoBusqueda === 'direccion') {
+      this.misLugaresService.getMisLugaresFiltrados(undefined, texto, undefined).subscribe({
+        next: (data: any[]) => {
           this.lugares = data;
           this.cdr.detectChanges();
         },
-        error: (err) => {
-          console.error('ERROR FILTRO TIPO MIS LUGARES:', err);
-        }
+        error: (err: any) => console.error('ERROR FILTRO DIRECCION MIS LUGARES:', err)
       });
-
       return;
     }
 
-    if (this.tipoBusqueda === 'direccion') {
-      this.misLugaresService.getMisLugaresFiltrados(undefined, texto, undefined).subscribe({
-        next: (data) => {
+    if (this.tipoBusqueda === 'tipo') {
+      this.misLugaresService.getMisLugaresFiltrados(undefined, undefined, texto).subscribe({
+        next: (data: any[]) => {
           this.lugares = data;
           this.cdr.detectChanges();
         },
-        error: (err) => {
-          console.error('ERROR FILTRO DIRECCION MIS LUGARES:', err);
-        }
+        error: (err: any) => console.error('ERROR FILTRO TIPO MIS LUGARES:', err)
       });
-
       return;
     }
 
     this.misLugaresService.getMisLugaresFiltrados(texto, undefined, undefined).subscribe({
-      next: (data) => {
+      next: (data: any[]) => {
         this.lugares = data;
         this.cdr.detectChanges();
       },
-      error: (err) => {
-        console.error('ERROR FILTRO NOMBRE MIS LUGARES:', err);
-      }
+      error: (err: any) => console.error('ERROR FILTRO NOMBRE MIS LUGARES:', err)
     });
   }
 
@@ -105,25 +93,15 @@ export class MisLugaresComponent {
   }
 
   borrarLugar(id: number): void {
-    this.mensajeExito = '';
-    this.mensajeError = '';
-
     this.misLugaresService.borrarLugar(id).subscribe({
       next: () => {
-        this.mensajeExito = 'Lugar borrado correctamente.';
-        this.mostrarToastMensaje('Lugar borrado correctamente.', 'exito');
+        this.abrirPopup('Lugar borrado correctamente.', 'exito');
         this.cargarMisLugares();
       },
       error: () => {
-        this.mensajeError = 'No se pudo borrar el lugar.';
-        this.mostrarToastMensaje('No se pudo borrar el lugar.', 'error');
+        this.abrirPopup('No se pudo borrar el lugar.', 'error');
       }
     });
-  }
-
-  hayCoordenadas(lugar: any): boolean {
-    return lugar?.latitud !== null && lugar?.latitud !== undefined
-      && lugar?.longitud !== null && lugar?.longitud !== undefined;
   }
 
   mostrarTipoLegible(tipo: string): string {
@@ -132,24 +110,27 @@ export class MisLugaresComponent {
     }
 
     return tipo.replaceAll('_', ' ').toLowerCase()
-      .replace(/\b\w/g, (letra) => letra.toUpperCase());
+      .replace(/\b\w/g, letra => letra.toUpperCase());
   }
 
-  mostrarToastMensaje(texto: string, tipo: 'exito' | 'error'): void {
-    this.textoToast = texto;
-    this.tipoToast = tipo;
-    this.mostrarToast = true;
+  abrirPopup(texto: string, tipo: 'exito' | 'error'): void {
+    this.textoPopup = texto;
+    this.tipoPopup = tipo;
+    this.mostrarPopup = true;
+    this.cdr.detectChanges();
 
-    if (this.toastTimeout) {
-      clearTimeout(this.toastTimeout);
+    if (this.popupTimeout) {
+      clearTimeout(this.popupTimeout);
     }
 
-    this.toastTimeout = setTimeout(() => {
-      this.mostrarToast = false;
+    this.popupTimeout = setTimeout(() => {
+      this.mostrarPopup = false;
+      this.cdr.detectChanges();
     }, 3000);
   }
 
-  cerrarToast(): void {
-    this.mostrarToast = false;
+  cerrarPopup(): void {
+    this.mostrarPopup = false;
+    this.cdr.detectChanges();
   }
 }

@@ -39,17 +39,14 @@ export class PublicosComponent {
   tipoBusqueda = 'nombre';
   valorBusqueda = '';
 
-  mensajeExito = '';
-  mensajeError = '';
-
-  mostrarToast = false;
-  textoToast = '';
-  tipoToast: 'exito' | 'error' = 'exito';
-  private toastTimeout: any;
+  mostrarPopup = false;
+  textoPopup = '';
+  tipoPopup: 'exito' | 'error' = 'exito';
+  private popupTimeout: any;
 
   ngOnInit(): void {
     this.authService.me().subscribe({
-      next: (usuario) => {
+      next: (usuario: any) => {
         this.usuarioActual = usuario;
         this.cargarLugares();
       },
@@ -61,16 +58,19 @@ export class PublicosComponent {
 
   cargarLugares(): void {
     this.publicosService.getLugaresPublicos().subscribe({
-      next: (data) => {
+      next: (data: any[]) => {
         this.lugares = data;
         this.cdr.detectChanges();
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('ERROR LUGARES PUBLICOS BASE:', err);
-        this.mensajeError = 'No se pudieron cargar los lugares públicos.';
-        this.mostrarToastMensaje('No se pudieron cargar los lugares públicos.', 'error');
+        this.abrirPopup('No se pudieron cargar los lugares públicos base.', 'error');
       }
     });
+  }
+
+  esAdmin(): boolean {
+    return this.usuarioActual?.rol === 'ADMIN';
   }
 
   buscarLugares(): void {
@@ -81,42 +81,34 @@ export class PublicosComponent {
       return;
     }
 
-    if (this.tipoBusqueda === 'tipo') {
-      this.publicosService.getLugaresPublicosFiltrados(undefined, undefined, texto).subscribe({
-        next: (data) => {
+    if (this.tipoBusqueda === 'direccion') {
+      this.publicosService.getLugaresPublicosFiltrados(undefined, texto, undefined).subscribe({
+        next: (data: any[]) => {
           this.lugares = data;
           this.cdr.detectChanges();
         },
-        error: (err) => {
-          console.error('ERROR FILTRO TIPO LUGARES:', err);
-        }
+        error: (err: any) => console.error('ERROR FILTRO DIRECCION LUGARES BASE:', err)
       });
-
       return;
     }
 
-    if (this.tipoBusqueda === 'direccion') {
-      this.publicosService.getLugaresPublicosFiltrados(undefined, texto, undefined).subscribe({
-        next: (data) => {
+    if (this.tipoBusqueda === 'tipo') {
+      this.publicosService.getLugaresPublicosFiltrados(undefined, undefined, texto).subscribe({
+        next: (data: any[]) => {
           this.lugares = data;
           this.cdr.detectChanges();
         },
-        error: (err) => {
-          console.error('ERROR FILTRO DIRECCION LUGARES:', err);
-        }
+        error: (err: any) => console.error('ERROR FILTRO TIPO LUGARES BASE:', err)
       });
-
       return;
     }
 
     this.publicosService.getLugaresPublicosFiltrados(texto, undefined, undefined).subscribe({
-      next: (data) => {
+      next: (data: any[]) => {
         this.lugares = data;
         this.cdr.detectChanges();
       },
-      error: (err) => {
-        console.error('ERROR FILTRO NOMBRE LUGARES:', err);
-      }
+      error: (err: any) => console.error('ERROR FILTRO NOMBRE LUGARES BASE:', err)
     });
   }
 
@@ -130,14 +122,7 @@ export class PublicosComponent {
     this.cargarLugares();
   }
 
-  esAdmin(): boolean {
-    return this.usuarioActual?.rol === 'ADMIN';
-  }
-
   guardarLugarBase(): void {
-    this.mensajeExito = '';
-    this.mensajeError = '';
-
     const payload = {
       nombre: this.nombre,
       direccion: this.direccion,
@@ -152,27 +137,23 @@ export class PublicosComponent {
     if (this.editandoId !== null) {
       this.adminLugaresPublicosBaseService.actualizarLugarPublicoBase(this.editandoId, payload).subscribe({
         next: () => {
-          this.mensajeExito = 'Lugar público base actualizado correctamente.';
-          this.mostrarToastMensaje('Lugar público base actualizado correctamente.', 'exito');
+          this.abrirPopup('Lugar público base actualizado correctamente.', 'exito');
           this.limpiarFormulario();
           this.cargarLugares();
         },
         error: () => {
-          this.mensajeError = 'No se pudo actualizar el lugar público base.';
-          this.mostrarToastMensaje('No se pudo actualizar el lugar público base.', 'error');
+          this.abrirPopup('No se pudo actualizar el lugar público base.', 'error');
         }
       });
     } else {
       this.adminLugaresPublicosBaseService.crearLugarPublicoBase(payload).subscribe({
         next: () => {
-          this.mensajeExito = 'Lugar público base creado correctamente.';
-          this.mostrarToastMensaje('Lugar público base creado correctamente.', 'exito');
+          this.abrirPopup('Lugar público base creado correctamente.', 'exito');
           this.limpiarFormulario();
           this.cargarLugares();
         },
         error: () => {
-          this.mensajeError = 'No se pudo crear el lugar público base.';
-          this.mostrarToastMensaje('No se pudo crear el lugar público base.', 'error');
+          this.abrirPopup('No se pudo crear el lugar público base.', 'error');
         }
       });
     }
@@ -188,40 +169,27 @@ export class PublicosComponent {
     this.latitud = lugar.latitud ?? 0;
     this.longitud = lugar.longitud ?? 0;
     this.tipo = lugar.tipo;
-
-    this.mensajeExito = '';
-    this.mensajeError = '';
   }
 
   borrarLugarBase(id: number): void {
-    this.mensajeExito = '';
-    this.mensajeError = '';
-
     this.adminLugaresPublicosBaseService.borrarLugarPublicoBase(id).subscribe({
       next: () => {
-        this.mensajeExito = 'Lugar público base borrado correctamente.';
-        this.mostrarToastMensaje('Lugar público base borrado correctamente.', 'exito');
+        this.abrirPopup('Lugar público base borrado correctamente.', 'exito');
         this.cargarLugares();
       },
       error: () => {
-        this.mensajeError = 'No se pudo borrar el lugar público base.';
-        this.mostrarToastMensaje('No se pudo borrar el lugar público base.', 'error');
+        this.abrirPopup('No se pudo borrar el lugar público base.', 'error');
       }
     });
   }
 
   anadirAMisLugares(id: number): void {
-    this.mensajeExito = '';
-    this.mensajeError = '';
-
     this.misLugaresService.anadirLugarDesdeBase(id).subscribe({
       next: () => {
-        this.mensajeExito = 'Lugar añadido a mis lugares.';
-        this.mostrarToastMensaje('Lugar añadido a mis lugares.', 'exito');
+        this.abrirPopup('Lugar añadido a mis lugares.', 'exito');
       },
       error: () => {
-        this.mensajeError = 'No se pudo añadir a mis lugares.';
-        this.mostrarToastMensaje('No se pudo añadir a mis lugares.', 'error');
+        this.abrirPopup('No se pudo añadir a mis lugares.', 'error');
       }
     });
   }
@@ -242,35 +210,33 @@ export class PublicosComponent {
     this.tipo = 'PARQUE_PUBLICO';
   }
 
-  hayCoordenadas(lugar: any): boolean {
-    return lugar?.latitud !== null && lugar?.latitud !== undefined
-      && lugar?.longitud !== null && lugar?.longitud !== undefined;
-  }
-
   mostrarTipoLegible(tipo: string): string {
     if (!tipo) {
       return 'Sin tipo';
     }
 
     return tipo.replaceAll('_', ' ').toLowerCase()
-      .replace(/\b\w/g, (letra) => letra.toUpperCase());
+      .replace(/\b\w/g, letra => letra.toUpperCase());
   }
 
-  mostrarToastMensaje(texto: string, tipo: 'exito' | 'error'): void {
-    this.textoToast = texto;
-    this.tipoToast = tipo;
-    this.mostrarToast = true;
+  abrirPopup(texto: string, tipo: 'exito' | 'error'): void {
+    this.textoPopup = texto;
+    this.tipoPopup = tipo;
+    this.mostrarPopup = true;
+    this.cdr.detectChanges();
 
-    if (this.toastTimeout) {
-      clearTimeout(this.toastTimeout);
+    if (this.popupTimeout) {
+      clearTimeout(this.popupTimeout);
     }
 
-    this.toastTimeout = setTimeout(() => {
-      this.mostrarToast = false;
+    this.popupTimeout = setTimeout(() => {
+      this.mostrarPopup = false;
+      this.cdr.detectChanges();
     }, 3000);
   }
 
-  cerrarToast(): void {
-    this.mostrarToast = false;
+  cerrarPopup(): void {
+    this.mostrarPopup = false;
+    this.cdr.detectChanges();
   }
 }

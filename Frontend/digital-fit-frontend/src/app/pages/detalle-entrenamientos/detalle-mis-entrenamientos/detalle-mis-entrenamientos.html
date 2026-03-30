@@ -2,50 +2,57 @@
 
 <main class="detalle-mi-entrenamiento">
 
-  @if (entrenamiento) {
-    <div class="grid-detalle">
-
-      <div class="columna-imagen">
-        <div class="imagen-wrapper">
-          <img src="img/LOGOFINAL-removebg.png" alt="Mi entrenamiento">
-          <span class="badge">Mi entrenamiento</span>
-        </div>
-      </div>
-
-      <div class="columna-info">
-
-        <h1>{{ entrenamiento.nombre }}</h1>
-
-        <div class="info-grid">
-          <div class="info-item">
-            <span class="label">Categoría:</span>
-            <span>{{ entrenamiento.categoria }}</span>
-          </div>
-
-          <div class="info-item">
-            <span class="label">Nivel:</span>
-            <span>{{ entrenamiento.nivel }}</span>
-          </div>
-
-          <div class="info-item">
-            <span class="label">Duración:</span>
-            <span>{{ entrenamiento.duracionEnMinutos }} min</span>
-          </div>
-        </div>
-
-        <details class="bloque-detalles">
-          <summary>Descripción</summary>
-          <p>{{ entrenamiento.descripcion }}</p>
-        </details>
-
-        <button class="boton-accion">
-          Marcar como realizado
-        </button>
-
-      </div>
+  @if (mostrarPopup) {
+  <div class="popup-overlay">
+    <div class="popup-mensaje" [class.popup-error]="tipoPopup === 'error'">
+      <p>{{ textoPopup }}</p>
+      <button type="button" (click)="cerrarPopup()">Cerrar</button>
     </div>
+  </div>
+  }
+
+  @if (entrenamiento) {
+  <section class="cabecera-detalle">
+    <h1>{{ entrenamiento.nombre }}</h1>
+    <p>Consulta toda la información de tu entrenamiento personalizado.</p>
+  </section>
+
+  <section class="bloque-detalle">
+    <div class="dato-detalle">
+      <span class="etiqueta">Nombre</span>
+      <span>{{ entrenamiento.nombre }}</span>
+    </div>
+
+    <div class="dato-detalle">
+      <span class="etiqueta">Categoría</span>
+      <span>{{ mostrarCategoriaLegible(entrenamiento.categoria) }}</span>
+    </div>
+
+    <div class="dato-detalle">
+      <span class="etiqueta">Nivel</span>
+      <span>{{ mostrarNivelLegible(entrenamiento.nivel) }}</span>
+    </div>
+
+    <div class="dato-detalle">
+      <span class="etiqueta">Duración</span>
+      <span>{{ entrenamiento.duracionEnMinutos }} min</span>
+    </div>
+
+    <div class="descripcion-detalle">
+      <h2>Descripción</h2>
+      <p>{{ entrenamiento.descripcion || 'Sin descripción' }}</p>
+    </div>
+
+    <div class="acciones-detalle">
+      <a class="boton-volver" routerLink="/mis-entrenamientos">Volver</a>
+
+      <button class="boton-borrar" type="button" (click)="borrarEntrenamiento()">
+        Borrar entrenamiento
+      </button>
+    </div>
+  </section>
   } @else {
-    <p class="mensaje-cargando">Cargando detalle...</p>
+  <p class="mensaje-cargando">Cargando detalle...</p>
   }
 
 </main>

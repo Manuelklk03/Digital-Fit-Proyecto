@@ -39,17 +39,14 @@ export class PrivadosComponent {
   tipoBusqueda = 'nombre';
   valorBusqueda = '';
 
-  mensajeExito = '';
-  mensajeError = '';
-
-  mostrarToast = false;
-  textoToast = '';
-  tipoToast: 'exito' | 'error' = 'exito';
-  private toastTimeout: any;
+  mostrarPopup = false;
+  textoPopup = '';
+  tipoPopup: 'exito' | 'error' = 'exito';
+  private popupTimeout: any;
 
   ngOnInit(): void {
     this.authService.me().subscribe({
-      next: (usuario) => {
+      next: (usuario: any) => {
         this.usuarioActual = usuario;
         this.cargarCentros();
       },
@@ -61,16 +58,19 @@ export class PrivadosComponent {
 
   cargarCentros(): void {
     this.privadosService.getCentrosPrivados().subscribe({
-      next: (data) => {
+      next: (data: any[]) => {
         this.centros = data;
         this.cdr.detectChanges();
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('ERROR CENTROS PRIVADOS BASE:', err);
-        this.mensajeError = 'No se pudieron cargar los centros privados.';
-        this.mostrarToastMensaje('No se pudieron cargar los centros privados.', 'error');
+        this.abrirPopup('No se pudieron cargar los centros privados base.', 'error');
       }
     });
+  }
+
+  esAdmin(): boolean {
+    return this.usuarioActual?.rol === 'ADMIN';
   }
 
   buscarCentros(): void {
@@ -78,6 +78,17 @@ export class PrivadosComponent {
 
     if (!texto) {
       this.cargarCentros();
+      return;
+    }
+
+    if (this.tipoBusqueda === 'direccion') {
+      this.privadosService.getCentrosPrivadosFiltrados(undefined, texto, undefined).subscribe({
+        next: (data: any[]) => {
+          this.centros = data;
+          this.cdr.detectChanges();
+        },
+        error: (err: any) => console.error('ERROR FILTRO DIRECCION CENTROS BASE:', err)
+      });
       return;
     }
 
@@ -90,40 +101,21 @@ export class PrivadosComponent {
       }
 
       this.privadosService.getCentrosPrivadosFiltrados(undefined, undefined, precio).subscribe({
-        next: (data) => {
+        next: (data: any[]) => {
           this.centros = data;
           this.cdr.detectChanges();
         },
-        error: (err) => {
-          console.error('ERROR FILTRO PRECIO CENTROS:', err);
-        }
+        error: (err: any) => console.error('ERROR FILTRO PRECIO CENTROS BASE:', err)
       });
-
-      return;
-    }
-
-    if (this.tipoBusqueda === 'direccion') {
-      this.privadosService.getCentrosPrivadosFiltrados(undefined, texto, undefined).subscribe({
-        next: (data) => {
-          this.centros = data;
-          this.cdr.detectChanges();
-        },
-        error: (err) => {
-          console.error('ERROR FILTRO DIRECCION CENTROS:', err);
-        }
-      });
-
       return;
     }
 
     this.privadosService.getCentrosPrivadosFiltrados(texto, undefined, undefined).subscribe({
-      next: (data) => {
+      next: (data: any[]) => {
         this.centros = data;
         this.cdr.detectChanges();
       },
-      error: (err) => {
-        console.error('ERROR FILTRO NOMBRE CENTROS:', err);
-      }
+      error: (err: any) => console.error('ERROR FILTRO NOMBRE CENTROS BASE:', err)
     });
   }
 
@@ -137,14 +129,7 @@ export class PrivadosComponent {
     this.cargarCentros();
   }
 
-  esAdmin(): boolean {
-    return this.usuarioActual?.rol === 'ADMIN';
-  }
-
   guardarCentroBase(): void {
-    this.mensajeExito = '';
-    this.mensajeError = '';
-
     const payload = {
       nombre: this.nombre,
       direccion: this.direccion,
@@ -159,27 +144,23 @@ export class PrivadosComponent {
     if (this.editandoId !== null) {
       this.adminCentrosPrivadosBaseService.actualizarCentroPrivadoBase(this.editandoId, payload).subscribe({
         next: () => {
-          this.mensajeExito = 'Centro privado base actualizado correctamente.';
-          this.mostrarToastMensaje('Centro privado base actualizado correctamente.', 'exito');
+          this.abrirPopup('Centro privado base actualizado correctamente.', 'exito');
           this.limpiarFormulario();
           this.cargarCentros();
         },
         error: () => {
-          this.mensajeError = 'No se pudo actualizar el centro privado base.';
-          this.mostrarToastMensaje('No se pudo actualizar el centro privado base.', 'error');
+          this.abrirPopup('No se pudo actualizar el centro privado base.', 'error');
         }
       });
     } else {
       this.adminCentrosPrivadosBaseService.crearCentroPrivadoBase(payload).subscribe({
         next: () => {
-          this.mensajeExito = 'Centro privado base creado correctamente.';
-          this.mostrarToastMensaje('Centro privado base creado correctamente.', 'exito');
+          this.abrirPopup('Centro privado base creado correctamente.', 'exito');
           this.limpiarFormulario();
           this.cargarCentros();
         },
         error: () => {
-          this.mensajeError = 'No se pudo crear el centro privado base.';
-          this.mostrarToastMensaje('No se pudo crear el centro privado base.', 'error');
+          this.abrirPopup('No se pudo crear el centro privado base.', 'error');
         }
       });
     }
@@ -195,40 +176,27 @@ export class PrivadosComponent {
     this.descripcion = centro.descripcion;
     this.latitud = centro.latitud ?? 0;
     this.longitud = centro.longitud ?? 0;
-
-    this.mensajeExito = '';
-    this.mensajeError = '';
   }
 
   borrarCentroBase(id: number): void {
-    this.mensajeExito = '';
-    this.mensajeError = '';
-
     this.adminCentrosPrivadosBaseService.borrarCentroPrivadoBase(id).subscribe({
       next: () => {
-        this.mensajeExito = 'Centro privado base borrado correctamente.';
-        this.mostrarToastMensaje('Centro privado base borrado correctamente.', 'exito');
+        this.abrirPopup('Centro privado base borrado correctamente.', 'exito');
         this.cargarCentros();
       },
       error: () => {
-        this.mensajeError = 'No se pudo borrar el centro privado base.';
-        this.mostrarToastMensaje('No se pudo borrar el centro privado base.', 'error');
+        this.abrirPopup('No se pudo borrar el centro privado base.', 'error');
       }
     });
   }
 
   anadirAMisCentros(id: number): void {
-    this.mensajeExito = '';
-    this.mensajeError = '';
-
     this.misCentrosService.anadirCentroDesdeApp(id).subscribe({
       next: () => {
-        this.mensajeExito = 'Centro añadido a mis centros.';
-        this.mostrarToastMensaje('Centro añadido a mis centros.', 'exito');
+        this.abrirPopup('Centro añadido a mis centros.', 'exito');
       },
       error: () => {
-        this.mensajeError = 'No se pudo añadir a mis centros.';
-        this.mostrarToastMensaje('No se pudo añadir a mis centros.', 'error');
+        this.abrirPopup('No se pudo añadir a mis centros.', 'error');
       }
     });
   }
@@ -249,26 +217,24 @@ export class PrivadosComponent {
     this.longitud = 0;
   }
 
-  hayCoordenadas(centro: any): boolean {
-    return centro?.latitud !== null && centro?.latitud !== undefined
-      && centro?.longitud !== null && centro?.longitud !== undefined;
-  }
+  abrirPopup(texto: string, tipo: 'exito' | 'error'): void {
+    this.textoPopup = texto;
+    this.tipoPopup = tipo;
+    this.mostrarPopup = true;
+    this.cdr.detectChanges();
 
-  mostrarToastMensaje(texto: string, tipo: 'exito' | 'error'): void {
-    this.textoToast = texto;
-    this.tipoToast = tipo;
-    this.mostrarToast = true;
-
-    if (this.toastTimeout) {
-      clearTimeout(this.toastTimeout);
+    if (this.popupTimeout) {
+      clearTimeout(this.popupTimeout);
     }
 
-    this.toastTimeout = setTimeout(() => {
-      this.mostrarToast = false;
+    this.popupTimeout = setTimeout(() => {
+      this.mostrarPopup = false;
+      this.cdr.detectChanges();
     }, 3000);
   }
 
-  cerrarToast(): void {
-    this.mostrarToast = false;
+  cerrarPopup(): void {
+    this.mostrarPopup = false;
+    this.cdr.detectChanges();
   }
 }

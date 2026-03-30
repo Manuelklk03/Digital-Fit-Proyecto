@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -12,6 +12,36 @@ export class EntrenamientosComunidadService {
 
   getEntrenamientosComunidad(): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrl, {
+      withCredentials: true
+    });
+  }
+
+  getEntrenamientosComunidadFiltrados(
+    categoria?: string,
+    nivel?: string,
+    duracionEnMinutos?: number,
+    nombre?: string
+  ): Observable<any[]> {
+    let params = new HttpParams();
+
+    if (categoria) {
+      params = params.set('categoria', categoria.toUpperCase().replaceAll(' ', '_'));
+    }
+
+    if (nivel) {
+      params = params.set('nivel', nivel.toUpperCase().replaceAll(' ', '_'));
+    }
+
+    if (duracionEnMinutos !== undefined) {
+      params = params.set('duracionEnMinutos', duracionEnMinutos.toString());
+    }
+
+    if (nombre) {
+      params = params.set('nombre', nombre);
+    }
+
+    return this.http.get<any[]>(this.apiUrl, {
+      params,
       withCredentials: true
     });
   }

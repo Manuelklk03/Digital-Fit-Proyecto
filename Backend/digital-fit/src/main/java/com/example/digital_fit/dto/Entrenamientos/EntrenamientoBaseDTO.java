@@ -20,14 +20,9 @@ import lombok.NoArgsConstructor;
 public class EntrenamientoBaseDTO {
 
     private Long id;
-
     private String nombre;
-
     private String descripcion;
-
     private CategoriaEntrenamientoComunidad categoria;
-
     private NivelEntrenamiento nivel;
-
     private Integer duracionEnMinutos;
 }

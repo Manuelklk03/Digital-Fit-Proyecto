@@ -32,7 +32,7 @@ export class PrivadosService {
     }
 
     if (precioMensual !== undefined) {
-      params = params.set('precioMensual', precioMensual);
+      params = params.set('precioMensual', precioMensual.toString());
     }
 
     return this.http.get<any[]>(this.apiUrl, {

@@ -2,6 +2,15 @@
 
 <main class="pagina-entrenamientos">
 
+  @if (mostrarPopup) {
+  <div class="popup-overlay">
+    <div class="popup-mensaje" [class.popup-error]="tipoPopup === 'error'">
+      <p>{{ textoPopup }}</p>
+      <button type="button" (click)="cerrarPopup()">Cerrar</button>
+    </div>
+  </div>
+  }
+
   <section class="cabecera-pagina">
     <h1>Entrenamientos base</h1>
     <p>
@@ -21,9 +30,57 @@
 
     <form class="formulario-entrenamiento" (ngSubmit)="guardarEntrenamientoBase()">
 
-      <div class="grupo-campo">
-        <label for="nombre">Nombre</label>
-        <input type="text" id="nombre" name="nombre" [(ngModel)]="nombre" required>
+      <div class="grid-formulario">
+        <div class="grupo-campo">
+          <label for="nombre">Nombre</label>
+          <input type="text" id="nombre" name="nombre" [(ngModel)]="nombre" required>
+        </div>
+
+        <div class="grupo-campo">
+          <label for="categoria">Categoría</label>
+          <select id="categoria" name="categoria" [(ngModel)]="categoria">
+            <option value="FUERZA_TOTAL">Fuerza Total</option>
+            <option value="FUERZA_TREN_SUPERIOR">Fuerza Tren Superior</option>
+            <option value="FUERZA_TREN_INFERIOR">Fuerza Tren Inferior</option>
+            <option value="FUERZA_CORE">Fuerza Core</option>
+            <option value="CARDIO_SUAVE">Cardio Suave</option>
+            <option value="CARDIO_INTENSO">Cardio Intenso</option>
+            <option value="HIIT">HIIT</option>
+            <option value="RESISTENCIA">Resistencia</option>
+            <option value="CALISTENIA_BASICA">Calistenia Básica</option>
+            <option value="CALISTENIA_AVANZADA">Calistenia Avanzada</option>
+            <option value="CALISTENIA_FULL_BODY">Calistenia Full Body</option>
+            <option value="ENTRENAMIENTO_FUNCIONAL">Entrenamiento Funcional</option>
+            <option value="CIRCUITO_FUNCIONAL">Circuito Funcional</option>
+            <option value="MOVILIDAD">Movilidad</option>
+            <option value="FLEXIBILIDAD">Flexibilidad</option>
+            <option value="ESTIRAMIENTOS">Estiramientos</option>
+            <option value="RUNNING">Running</option>
+            <option value="TRAIL_RUNNING">Trail Running</option>
+            <option value="CICLISMO">Ciclismo</option>
+            <option value="BOXEO">Boxeo</option>
+            <option value="ARTES_MARCIALES">Artes Marciales</option>
+            <option value="CROSSFIT">Crossfit</option>
+            <option value="EQUILIBRIO">Equilibrio</option>
+            <option value="COORDINACION">Coordinación</option>
+            <option value="RECUPERACION">Recuperación</option>
+          </select>
+        </div>
+
+        <div class="grupo-campo">
+          <label for="nivel">Nivel</label>
+          <select id="nivel" name="nivel" [(ngModel)]="nivel">
+            <option value="PRINCIPIANTE">Principiante</option>
+            <option value="INTERMEDIO">Intermedio</option>
+            <option value="AVANZADO">Avanzado</option>
+            <option value="EXPERTO">Experto</option>
+          </select>
+        </div>
+
+        <div class="grupo-campo">
+          <label for="duracionEnMinutos">Duración (minutos)</label>
+          <input type="number" id="duracionEnMinutos" name="duracionEnMinutos" [(ngModel)]="duracionEnMinutos" required>
+        </div>
       </div>
 
       <div class="grupo-campo">
@@ -31,80 +88,46 @@
         <textarea id="descripcion" name="descripcion" rows="4" [(ngModel)]="descripcion" required></textarea>
       </div>
 
-      <div class="grupo-campo">
-        <label for="categoria">Categoría</label>
-        <select id="categoria" name="categoria" [(ngModel)]="categoria">
-          <option value="FUERZA_TOTAL">FUERZA_TOTAL</option>
-          <option value="FUERZA_TREN_SUPERIOR">FUERZA_TREN_SUPERIOR</option>
-          <option value="FUERZA_TREN_INFERIOR">FUERZA_TREN_INFERIOR</option>
-          <option value="FUERZA_CORE">FUERZA_CORE</option>
-          <option value="CARDIO_SUAVE">CARDIO_SUAVE</option>
-          <option value="CARDIO_INTENSO">CARDIO_INTENSO</option>
-          <option value="HIIT">HIIT</option>
-          <option value="RESISTENCIA">RESISTENCIA</option>
-          <option value="CALISTENIA_BASICA">CALISTENIA_BASICA</option>
-          <option value="CALISTENIA_AVANZADA">CALISTENIA_AVANZADA</option>
-          <option value="CALISTENIA_FULL_BODY">CALISTENIA_FULL_BODY</option>
-          <option value="ENTRENAMIENTO_FUNCIONAL">ENTRENAMIENTO_FUNCIONAL</option>
-          <option value="CIRCUITO_FUNCIONAL">CIRCUITO_FUNCIONAL</option>
-          <option value="MOVILIDAD">MOVILIDAD</option>
-          <option value="FLEXIBILIDAD">FLEXIBILIDAD</option>
-          <option value="ESTIRAMIENTOS">ESTIRAMIENTOS</option>
-          <option value="RUNNING">RUNNING</option>
-          <option value="TRAIL_RUNNING">TRAIL_RUNNING</option>
-          <option value="CICLISMO">CICLISMO</option>
-          <option value="BOXEO">BOXEO</option>
-          <option value="ARTES_MARCIALES">ARTES_MARCIALES</option>
-          <option value="CROSSFIT">CROSSFIT</option>
-          <option value="EQUILIBRIO">EQUILIBRIO</option>
-          <option value="COORDINACION">COORDINACION</option>
-          <option value="RECUPERACION">RECUPERACION</option>
-        </select>
-      </div>
+      <div class="acciones-formulario">
+        <button type="submit" class="boton-guardar">
+          @if (editandoId !== null) {
+          Guardar cambios
+          } @else {
+          Crear entrenamiento
+          }
+        </button>
 
-      <div class="grupo-campo">
-        <label for="nivel">Nivel</label>
-        <select id="nivel" name="nivel" [(ngModel)]="nivel">
-          <option value="PRINCIPIANTE">PRINCIPIANTE</option>
-          <option value="INTERMEDIO">INTERMEDIO</option>
-          <option value="AVANZADO">AVANZADO</option>
-          <option value="EXPERTO">EXPERTO</option>
-        </select>
-      </div>
-
-      <div class="grupo-campo">
-        <label for="duracionEnMinutos">Duración (minutos)</label>
-        <input type="number" id="duracionEnMinutos" name="duracionEnMinutos" [(ngModel)]="duracionEnMinutos" required>
-      </div>
-
-      <button type="submit" class="boton-guardar">
         @if (editandoId !== null) {
-        Guardar cambios
-        } @else {
-        Crear entrenamiento
+        <button type="button" class="boton-cancelar" (click)="cancelarEdicion()">
+          Cancelar edición
+        </button>
         }
-      </button>
-
-      @if (editandoId !== null) {
-      <button type="button" class="boton-cancelar" (click)="cancelarEdicion()">
-        Cancelar edición
-      </button>
-      }
-
-      @if (mensajeExito) {
-      <p class="mensaje-exito">{{ mensajeExito }}</p>
-      }
-
-      @if (mensajeError) {
-      <p class="mensaje-error">{{ mensajeError }}</p>
-      }
-
+      </div>
     </form>
   </section>
   }
 
   <section class="bloque-listado">
-    <h2>Listado de entrenamientos base</h2>
+    <div class="cabecera-listado">
+      <div>
+        <h2>Listado de entrenamientos base</h2>
+        <p class="texto-secundario">{{ entrenamientos.length }} entrenamiento(s)</p>
+      </div>
+
+      <div class="barra-busqueda">
+        <select name="tipoBusqueda" [(ngModel)]="tipoBusqueda" (ngModelChange)="alCambiarBusqueda()">
+          <option value="nombre">Buscar por nombre</option>
+          <option value="categoria">Buscar por categoría</option>
+          <option value="nivel">Buscar por nivel</option>
+          <option value="duracionEnMinutos">Buscar por duración máxima</option>
+        </select>
+
+        <input type="text" name="valorBusqueda" [(ngModel)]="valorBusqueda" (input)="alCambiarBusqueda()"
+          placeholder="Escribe aquí...">
+
+        <button type="button" class="boton-limpiar" (click)="limpiarBusqueda()">Limpiar</button>
+      </div>
+    </div>
 
     @if (entrenamientos.length > 0) {
     <div class="grid-entrenamientos">
@@ -113,10 +136,10 @@
       <article class="tarjeta-entrenamiento">
         <h3>{{ entrenamiento.nombre }}</h3>
 
-        <p><strong>Categoría:</strong> {{ entrenamiento.categoria }}</p>
-        <p><strong>Nivel:</strong> {{ entrenamiento.nivel }}</p>
+        <p><strong>Categoría:</strong> {{ mostrarCategoriaLegible(entrenamiento.categoria) }}</p>
+        <p><strong>Nivel:</strong> {{ mostrarNivelLegible(entrenamiento.nivel) }}</p>
         <p><strong>Duración:</strong> {{ entrenamiento.duracionEnMinutos }} min</p>
-        <p>{{ entrenamiento.descripcion }}</p>
+        <p><strong>Descripción:</strong> {{ entrenamiento.descripcion || 'Sin descripción' }}</p>
 
         <div class="acciones-entrenamiento">
           <a class="boton-detalle" [routerLink]="['/entrenamientos', entrenamiento.id]">
@@ -142,7 +165,7 @@
 
     </div>
     } @else {
-    <p class="sin-datos">No hay entrenamientos base disponibles.</p>
+    <p class="sin-datos">No hay entrenamientos base disponibles o no coinciden con la búsqueda.</p>
     }
   </section>
 

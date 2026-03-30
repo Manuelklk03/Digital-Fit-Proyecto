@@ -1,12 +1,13 @@
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { EntrenamientosComunidadService } from '../../../../services/entrenamientos/entrenamiento-comunidad-service';
 import { HeaderComponent } from '../../../../components/header/header';
 import { Footer } from '../../../../components/footer/footer';
+import { MisEntrenamientosService } from '../../../../services/entrenamientos/mis-entrenamientos-service';
 
 @Component({
   selector: 'app-detalle-entrenamiento-comunidad',
-  imports: [HeaderComponent, Footer],
+  imports: [HeaderComponent, Footer, RouterLink],
   templateUrl: './detalle-entrenamiento-comunidad.html',
   styleUrl: './detalle-entrenamiento-comunidad.css'
 })
@@ -14,22 +15,82 @@ export class DetalleEntrenamientoComunidadComponent {
 
   private route = inject(ActivatedRoute);
   private entrenamientosComunidadService = inject(EntrenamientosComunidadService);
+  private misEntrenamientosService = inject(MisEntrenamientosService);
   private cdr = inject(ChangeDetectorRef);
 
   entrenamiento: any = null;
+
+  mostrarPopup = false;
+  textoPopup = '';
+  tipoPopup: 'exito' | 'error' = 'exito';
+  private popupTimeout: any;
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
 
     this.entrenamientosComunidadService.getEntrenamientoComunidadById(id).subscribe({
       next: (data) => {
-        console.log('DETALLE ENTRENAMIENTO COMUNIDAD:', data);
         this.entrenamiento = data;
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('ERROR DETALLE ENTRENAMIENTO COMUNIDAD:', err);
+        this.abrirPopup('No se pudo cargar el detalle del entrenamiento.', 'error');
       }
     });
+  }
+
+  anadirAMisEntrenamientos(): void {
+    if (!this.entrenamiento?.id) {
+      return;
+    }
+
+    this.misEntrenamientosService.anadirDesdeComunidad(this.entrenamiento.id).subscribe({
+      next: () => {
+        this.abrirPopup('Entrenamiento añadido a mis entrenamientos.', 'exito');
+      },
+      error: () => {
+        this.abrirPopup('No se pudo añadir a mis entrenamientos.', 'error');
+      }
+    });
+  }
+
+  mostrarCategoriaLegible(categoria: string): string {
+    if (!categoria) {
+      return 'Sin categoría';
+    }
+
+    return categoria.replaceAll('_', ' ').toLowerCase()
+      .replace(/\b\w/g, (letra) => letra.toUpperCase());
+  }
+
+  mostrarNivelLegible(nivel: string): string {
+    if (!nivel) {
+      return 'Sin nivel';
+    }
+
+    return nivel.replaceAll('_', ' ').toLowerCase()
+      .replace(/\b\w/g, (letra) => letra.toUpperCase());
+  }
+
+  abrirPopup(texto: string, tipo: 'exito' | 'error'): void {
+    this.textoPopup = texto;
+    this.tipoPopup = tipo;
+    this.mostrarPopup = true;
+    this.cdr.detectChanges();
+
+    if (this.popupTimeout) {
+      clearTimeout(this.popupTimeout);
+    }
+
+    this.popupTimeout = setTimeout(() => {
+      this.mostrarPopup = false;
+      this.cdr.detectChanges();
+    }, 3000);
+  }
+
+  cerrarPopup(): void {
+    this.mostrarPopup = false;
+    this.cdr.detectChanges();
   }
 }

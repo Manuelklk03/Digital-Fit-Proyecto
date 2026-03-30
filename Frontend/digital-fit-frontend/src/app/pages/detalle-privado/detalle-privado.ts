@@ -27,8 +27,10 @@ export class DetallePrivadoComponent {
   centro: any = null;
   usuarioActual: any = null;
 
-  mensajeExito = '';
-  mensajeError = '';
+  mostrarPopup = false;
+  textoPopup = '';
+  tipoPopup: 'exito' | 'error' = 'exito';
+  private popupTimeout: any;
 
   ngOnInit(): void {
     this.authService.me().subscribe({
@@ -52,7 +54,7 @@ export class DetallePrivadoComponent {
       },
       error: (err: any) => {
         console.error('ERROR DETALLE CENTRO PRIVADO:', err);
-        this.mensajeError = 'No se pudo cargar el detalle del centro.';
+        this.abrirPopup('No se pudo cargar el detalle del centro.', 'error');
       }
     });
   }
@@ -62,27 +64,21 @@ export class DetallePrivadoComponent {
   }
 
   anadirAMisCentros(): void {
-    this.mensajeExito = '';
-    this.mensajeError = '';
-
     if (!this.centro?.id) {
       return;
     }
 
     this.misCentrosService.anadirCentroDesdeApp(this.centro.id).subscribe({
       next: () => {
-        this.mensajeExito = 'Centro añadido a mis centros.';
+        this.abrirPopup('Centro añadido a mis centros.', 'exito');
       },
       error: () => {
-        this.mensajeError = 'No se pudo añadir a mis centros.';
+        this.abrirPopup('No se pudo añadir a mis centros.', 'error');
       }
     });
   }
 
   borrarCentroBase(): void {
-    this.mensajeExito = '';
-    this.mensajeError = '';
-
     if (!this.centro?.id) {
       return;
     }
@@ -92,13 +88,29 @@ export class DetallePrivadoComponent {
         this.router.navigate(['/privados']);
       },
       error: () => {
-        this.mensajeError = 'No se pudo borrar el centro privado base.';
+        this.abrirPopup('No se pudo borrar el centro privado base.', 'error');
       }
     });
   }
 
-  hayCoordenadas(): boolean {
-    return this.centro?.latitud !== null && this.centro?.latitud !== undefined
-      && this.centro?.longitud !== null && this.centro?.longitud !== undefined;
+  abrirPopup(texto: string, tipo: 'exito' | 'error'): void {
+    this.textoPopup = texto;
+    this.tipoPopup = tipo;
+    this.mostrarPopup = true;
+    this.cdr.detectChanges();
+
+    if (this.popupTimeout) {
+      clearTimeout(this.popupTimeout);
+    }
+
+    this.popupTimeout = setTimeout(() => {
+      this.mostrarPopup = false;
+      this.cdr.detectChanges();
+    }, 3000);
+  }
+
+  cerrarPopup(): void {
+    this.mostrarPopup = false;
+    this.cdr.detectChanges();
   }
 }

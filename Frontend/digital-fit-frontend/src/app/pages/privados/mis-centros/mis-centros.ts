@@ -21,13 +21,10 @@ export class MisCentrosComponent {
   tipoBusqueda = 'nombre';
   valorBusqueda = '';
 
-  mensajeExito = '';
-  mensajeError = '';
-
-  mostrarToast = false;
-  textoToast = '';
-  tipoToast: 'exito' | 'error' = 'exito';
-  private toastTimeout: any;
+  mostrarPopup = false;
+  textoPopup = '';
+  tipoPopup: 'exito' | 'error' = 'exito';
+  private popupTimeout: any;
 
   ngOnInit(): void {
     this.cargarMisCentros();
@@ -35,14 +32,13 @@ export class MisCentrosComponent {
 
   cargarMisCentros(): void {
     this.misCentrosService.getMisCentros().subscribe({
-      next: (data) => {
+      next: (data: any[]) => {
         this.centros = data;
         this.cdr.detectChanges();
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('ERROR MIS CENTROS:', err);
-        this.mensajeError = 'No se pudieron cargar tus centros.';
-        this.mostrarToastMensaje('No se pudieron cargar tus centros.', 'error');
+        this.abrirPopup('No se pudieron cargar tus centros.', 'error');
       }
     });
   }
@@ -55,6 +51,17 @@ export class MisCentrosComponent {
       return;
     }
 
+    if (this.tipoBusqueda === 'direccion') {
+      this.misCentrosService.getMisCentrosFiltrados(undefined, texto, undefined).subscribe({
+        next: (data: any[]) => {
+          this.centros = data;
+          this.cdr.detectChanges();
+        },
+        error: (err: any) => console.error('ERROR FILTRO DIRECCION MIS CENTROS:', err)
+      });
+      return;
+    }
+
     if (this.tipoBusqueda === 'precioMensual') {
       const precio = Number(texto);
 
@@ -64,40 +71,21 @@ export class MisCentrosComponent {
       }
 
       this.misCentrosService.getMisCentrosFiltrados(undefined, undefined, precio).subscribe({
-        next: (data) => {
+        next: (data: any[]) => {
           this.centros = data;
           this.cdr.detectChanges();
         },
-        error: (err) => {
-          console.error('ERROR FILTRO PRECIO MIS CENTROS:', err);
-        }
+        error: (err: any) => console.error('ERROR FILTRO PRECIO MIS CENTROS:', err)
       });
-
-      return;
-    }
-
-    if (this.tipoBusqueda === 'direccion') {
-      this.misCentrosService.getMisCentrosFiltrados(undefined, texto, undefined).subscribe({
-        next: (data) => {
-          this.centros = data;
-          this.cdr.detectChanges();
-        },
-        error: (err) => {
-          console.error('ERROR FILTRO DIRECCION MIS CENTROS:', err);
-        }
-      });
-
       return;
     }
 
     this.misCentrosService.getMisCentrosFiltrados(texto, undefined, undefined).subscribe({
-      next: (data) => {
+      next: (data: any[]) => {
         this.centros = data;
         this.cdr.detectChanges();
       },
-      error: (err) => {
-        console.error('ERROR FILTRO NOMBRE MIS CENTROS:', err);
-      }
+      error: (err: any) => console.error('ERROR FILTRO NOMBRE MIS CENTROS:', err)
     });
   }
 
@@ -112,42 +100,35 @@ export class MisCentrosComponent {
   }
 
   borrarCentro(id: number): void {
-    this.mensajeExito = '';
-    this.mensajeError = '';
-
     this.misCentrosService.borrarCentro(id).subscribe({
       next: () => {
-        this.mensajeExito = 'Centro borrado correctamente.';
-        this.mostrarToastMensaje('Centro borrado correctamente.', 'exito');
+        this.abrirPopup('Centro borrado correctamente.', 'exito');
         this.cargarMisCentros();
       },
       error: () => {
-        this.mensajeError = 'No se pudo borrar el centro.';
-        this.mostrarToastMensaje('No se pudo borrar el centro.', 'error');
+        this.abrirPopup('No se pudo borrar el centro.', 'error');
       }
     });
   }
 
-  hayCoordenadas(centro: any): boolean {
-    return centro?.latitud !== null && centro?.latitud !== undefined
-      && centro?.longitud !== null && centro?.longitud !== undefined;
-  }
+  abrirPopup(texto: string, tipo: 'exito' | 'error'): void {
+    this.textoPopup = texto;
+    this.tipoPopup = tipo;
+    this.mostrarPopup = true;
+    this.cdr.detectChanges();
 
-  mostrarToastMensaje(texto: string, tipo: 'exito' | 'error'): void {
-    this.textoToast = texto;
-    this.tipoToast = tipo;
-    this.mostrarToast = true;
-
-    if (this.toastTimeout) {
-      clearTimeout(this.toastTimeout);
+    if (this.popupTimeout) {
+      clearTimeout(this.popupTimeout);
     }
 
-    this.toastTimeout = setTimeout(() => {
-      this.mostrarToast = false;
+    this.popupTimeout = setTimeout(() => {
+      this.mostrarPopup = false;
+      this.cdr.detectChanges();
     }, 3000);
   }
 
-  cerrarToast(): void {
-    this.mostrarToast = false;
+  cerrarPopup(): void {
+    this.mostrarPopup = false;
+    this.cdr.detectChanges();
   }
 }

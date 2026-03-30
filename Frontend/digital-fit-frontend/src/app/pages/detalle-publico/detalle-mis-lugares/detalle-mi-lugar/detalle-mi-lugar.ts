@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../../../components/header/header';
 import { Footer } from '../../../../components/footer/footer';
 import { MisLugaresService } from '../../../../services/publicos/mis-lugares';
@@ -13,23 +13,43 @@ import { MisLugaresService } from '../../../../services/publicos/mis-lugares';
 export class DetalleMiLugarComponent {
 
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
   private misLugaresService = inject(MisLugaresService);
   private cdr = inject(ChangeDetectorRef);
 
   lugar: any = null;
-  mensajeError = '';
+
+  mostrarPopup = false;
+  textoPopup = '';
+  tipoPopup: 'exito' | 'error' = 'exito';
+  private popupTimeout: any;
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
 
     this.misLugaresService.getMiLugarById(id).subscribe({
-      next: (data) => {
+      next: (data: any) => {
         this.lugar = data;
         this.cdr.detectChanges();
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('ERROR DETALLE MI LUGAR:', err);
-        this.mensajeError = 'No se pudo cargar el detalle del lugar.';
+        this.abrirPopup('No se pudo cargar el detalle del lugar.', 'error');
+      }
+    });
+  }
+
+  borrarLugar(): void {
+    if (!this.lugar?.id) {
+      return;
+    }
+
+    this.misLugaresService.borrarLugar(this.lugar.id).subscribe({
+      next: () => {
+        this.router.navigate(['/mis-lugares']);
+      },
+      error: () => {
+        this.abrirPopup('No se pudo borrar el lugar.', 'error');
       }
     });
   }
@@ -40,11 +60,27 @@ export class DetalleMiLugarComponent {
     }
 
     return tipo.replaceAll('_', ' ').toLowerCase()
-      .replace(/\b\w/g, (letra) => letra.toUpperCase());
+      .replace(/\b\w/g, letra => letra.toUpperCase());
   }
 
-  hayCoordenadas(): boolean {
-    return this.lugar?.latitud !== null && this.lugar?.latitud !== undefined
-      && this.lugar?.longitud !== null && this.lugar?.longitud !== undefined;
+  abrirPopup(texto: string, tipo: 'exito' | 'error'): void {
+    this.textoPopup = texto;
+    this.tipoPopup = tipo;
+    this.mostrarPopup = true;
+    this.cdr.detectChanges();
+
+    if (this.popupTimeout) {
+      clearTimeout(this.popupTimeout);
+    }
+
+    this.popupTimeout = setTimeout(() => {
+      this.mostrarPopup = false;
+      this.cdr.detectChanges();
+    }, 3000);
+  }
+
+  cerrarPopup(): void {
+    this.mostrarPopup = false;
+    this.cdr.detectChanges();
   }
 }
