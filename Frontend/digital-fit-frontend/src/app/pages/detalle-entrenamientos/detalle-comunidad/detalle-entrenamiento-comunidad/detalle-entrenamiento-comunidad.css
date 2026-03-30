@@ -11,96 +11,163 @@
 }
 
 .detalle-entrenamiento-comunidad {
+    min-height: 100vh;
     padding: 60px 20px 80px;
-    display: grid;
+    background: linear-gradient(180deg, var(--color-azul-fondo), #dceeff);
 }
 
-.grid-detalle {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 50px;
-    animation: fadeUp 0.8s ease;
-    max-width: 1200px;
-    margin: 0 auto;
+.popup-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.28);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 110px;
+    z-index: 2500;
 }
 
-@media (max-width: 900px) {
-    .grid-detalle {
-        grid-template-columns: 1fr;
-    }
-}
-
-.imagen-wrapper {
-    position: relative;
-    overflow: hidden;
-    border-radius: 20px;
-    background-color: var(--color-azul-caja);
-    padding: 20px;
-}
-
-.imagen-wrapper img {
-    width: 100%;
-    display: block;
-}
-
-.badge {
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    background-color: var(--color-azul-oscuro);
+.popup-mensaje {
+    width: min(420px, calc(100% - 40px));
+    background-color: #1f7a37;
     color: white;
-    padding: 6px 12px;
+    border-radius: 16px;
+    padding: 20px 22px;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.22);
+    animation: fadeUp 0.25s ease;
+    text-align: center;
+}
+
+.popup-mensaje p {
+    margin: 0 0 14px 0;
+    font-weight: bold;
+    line-height: 1.5;
+}
+
+.popup-mensaje button {
+    border: none;
+    background-color: white;
+    color: #1f7a37;
+    padding: 10px 18px;
     border-radius: 10px;
     font-weight: bold;
+    cursor: pointer;
 }
 
-.columna-info {
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
+.popup-error {
+    background-color: #c62828;
 }
 
-.columna-info h1 {
-    margin: 0;
+.popup-error button {
+    color: #c62828;
+}
+
+.cabecera-detalle {
+    max-width: 900px;
+    margin: 0 auto 30px auto;
+    text-align: center;
+    animation: fadeUp 0.7s ease;
+}
+
+.cabecera-detalle h1 {
+    font-size: 38px;
+    margin-bottom: 12px;
     color: var(--color-azul-oscuro);
 }
 
-.info-grid {
-    display: grid;
-    gap: 12px;
+.cabecera-detalle p {
+    font-size: 17px;
+    line-height: 1.7;
 }
 
-.info-item {
+.bloque-detalle {
+    max-width: 900px;
+    margin: 0 auto 25px auto;
+    background-color: var(--color-azul-caja);
+    border-radius: 22px;
+    padding: 24px 30px;
+    box-shadow: 0px 10px 24px rgba(0, 0, 0, 0.12);
+    animation: fadeUp 0.9s ease;
+}
+
+.dato-detalle {
     display: flex;
     justify-content: space-between;
-    background-color: var(--color-azul-caja);
-    padding: 12px 18px;
-    border-radius: 10px;
-    gap: 15px;
-}
-
-.label {
-    font-weight: bold;
-}
-
-.bloque-detalles summary {
-    cursor: pointer;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.boton-anadir {
-    padding: 14px 28px;
+    gap: 12px;
+    padding: 14px 16px;
+    margin-bottom: 14px;
+    background-color: #eef6ff;
     border-radius: 12px;
+}
+
+.etiqueta {
+    font-weight: bold;
+    color: var(--color-azul-oscuro);
+}
+
+.descripcion-detalle {
+    margin-top: 24px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 16px;
+}
+
+.descripcion-detalle h2 {
+    margin-top: 0;
+    color: var(--color-azul-oscuro);
+}
+
+.acciones-detalle {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 24px;
+}
+
+.boton-volver,
+.boton-anadir {
+    padding: 12px 18px;
     border: none;
-    background-color: var(--color-azul);
-    color: white;
+    border-radius: 10px;
     font-weight: bold;
     cursor: pointer;
-    width: fit-content;
+    text-decoration: none;
+    transition: 0.3s ease;
+    display: inline-block;
+    background-color: var(--color-azul-oscuro);
+    color: white;
+}
+
+.boton-volver:hover,
+.boton-anadir:hover {
+    transform: translateY(-2px);
 }
 
 .mensaje-cargando {
     text-align: center;
     font-weight: bold;
+}
+
+@media (max-width: 600px) {
+    .cabecera-detalle h1 {
+        font-size: 30px;
+    }
+
+    .bloque-detalle {
+        padding: 22px;
+    }
+
+    .dato-detalle {
+        flex-direction: column;
+    }
+
+    .boton-volver,
+    .boton-anadir {
+        width: 100%;
+        text-align: center;
+    }
+
+    .popup-overlay {
+        padding-top: 90px;
+    }
 }

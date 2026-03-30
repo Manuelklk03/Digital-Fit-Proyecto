@@ -2,135 +2,123 @@
 
 <main class="pagina-publicos">
 
-  @if (mostrarToast) {
-    <div class="toast-notificacion" [class.toast-error]="tipoToast === 'error'">
-      <span>{{ textoToast }}</span>
-      <button type="button" (click)="cerrarToast()">×</button>
+  @if (mostrarPopup) {
+  <div class="popup-overlay">
+    <div class="popup-mensaje" [class.popup-error]="tipoPopup === 'error'">
+      <p>{{ textoPopup }}</p>
+      <button type="button" (click)="cerrarPopup()">Cerrar</button>
     </div>
+  </div>
   }
 
   <section class="cabecera-pagina">
     <h1>Lugares públicos base</h1>
     <p>
-      Consulta los lugares públicos disponibles en la aplicación y revisa su detalle.
+      Aquí puedes consultar los lugares públicos base disponibles en la aplicación.
     </p>
   </section>
 
-  @if (mensajeExito) {
-    <section class="bloque-mensaje bloque-mensaje-exito">
-      <p>{{ mensajeExito }}</p>
-    </section>
-  }
-
-  @if (mensajeError) {
-    <section class="bloque-mensaje bloque-mensaje-error">
-      <p>{{ mensajeError }}</p>
-    </section>
-  }
-
   @if (esAdmin()) {
-    <section class="bloque-formulario">
-      <h2>
-        @if (editandoId !== null) {
-          Editar lugar público base
-        } @else {
-          Crear lugar público base
-        }
-      </h2>
+  <section class="bloque-formulario">
+    <h2>
+      @if (editandoId !== null) {
+      Editar lugar público base
+      } @else {
+      Crear lugar público base
+      }
+    </h2>
 
-      <form class="formulario-lugar" (ngSubmit)="guardarLugarBase()">
+    <form class="formulario-lugar" (ngSubmit)="guardarLugarBase()">
 
-        <div class="grid-formulario">
-          <div class="grupo-campo">
-            <label for="nombre">Nombre</label>
-            <input type="text" id="nombre" name="nombre" [(ngModel)]="nombre" required>
-          </div>
-
-          <div class="grupo-campo">
-            <label for="direccion">Dirección</label>
-            <input type="text" id="direccion" name="direccion" [(ngModel)]="direccion" required>
-          </div>
-
-          <div class="grupo-campo">
-            <label for="telefono">Teléfono</label>
-            <input type="text" id="telefono" name="telefono" [(ngModel)]="telefono">
-          </div>
-
-          <div class="grupo-campo">
-            <label for="horario">Horario</label>
-            <input type="text" id="horario" name="horario" [(ngModel)]="horario">
-          </div>
-
-          <div class="grupo-campo">
-            <label for="latitud">Latitud</label>
-            <input type="number" id="latitud" name="latitud" [(ngModel)]="latitud">
-          </div>
-
-          <div class="grupo-campo">
-            <label for="longitud">Longitud</label>
-            <input type="number" id="longitud" name="longitud" [(ngModel)]="longitud">
-          </div>
-
-          <div class="grupo-campo">
-            <label for="tipo">Tipo</label>
-            <select id="tipo" name="tipo" [(ngModel)]="tipo">
-              <option value="PISTA_PADEL">Pista Pádel</option>
-              <option value="PISTA_TENIS">Pista Tenis</option>
-              <option value="PISTA_FRONTON">Pista Frontón</option>
-              <option value="PISTA_FUTBOL">Pista Fútbol</option>
-              <option value="PISTA_BALONCESTO">Pista Baloncesto</option>
-              <option value="PISTA_VOLEIBOL">Pista Voleibol</option>
-              <option value="CAMPO_RUGBY">Campo Rugby</option>
-              <option value="RUTA_RUNNING">Ruta Running</option>
-              <option value="CIRCUITO_CICLISMO">Circuito Ciclismo</option>
-              <option value="CARRIL_BICI">Carril Bici</option>
-              <option value="PARQUE_CALISTENIA">Parque Calistenia</option>
-              <option value="ZONA_BARRAS">Zona Barras</option>
-              <option value="CIRCUITO_BIOSALUDABLE">Circuito Biosaludable</option>
-              <option value="RUTA_SENDERISMO">Ruta Senderismo</option>
-              <option value="ZONA_MONTAÑA">Zona Montaña</option>
-              <option value="RUTA_FLUVIAL">Ruta Fluvial</option>
-              <option value="PLAYA_DEPORTIVA">Playa Deportiva</option>
-              <option value="ZONA_VOLEY_PLAYA">Zona Voley Playa</option>
-              <option value="ZONA_MULTIDEPORTE">Zona Multideporte</option>
-              <option value="PARQUE_PUBLICO">Parque Público</option>
-              <option value="PISCINA_PUBLICA">Piscina Pública</option>
-              <option value="ZONA_REMAR">Zona Remar</option>
-            </select>
-          </div>
+      <div class="grid-formulario">
+        <div class="grupo-campo">
+          <label for="nombre">Nombre</label>
+          <input type="text" id="nombre" name="nombre" [(ngModel)]="nombre" required>
         </div>
 
         <div class="grupo-campo">
-          <label for="descripcion">Descripción</label>
-          <textarea id="descripcion" name="descripcion" rows="4" [(ngModel)]="descripcion"></textarea>
+          <label for="direccion">Dirección</label>
+          <input type="text" id="direccion" name="direccion" [(ngModel)]="direccion" required>
         </div>
 
-        <div class="acciones-formulario">
-          <button type="submit" class="boton-guardar">
-            @if (editandoId !== null) {
-              Guardar cambios
-            } @else {
-              Crear lugar
-            }
-          </button>
+        <div class="grupo-campo">
+          <label for="telefono">Teléfono</label>
+          <input type="text" id="telefono" name="telefono" [(ngModel)]="telefono">
+        </div>
 
+        <div class="grupo-campo">
+          <label for="horario">Horario</label>
+          <input type="text" id="horario" name="horario" [(ngModel)]="horario">
+        </div>
+
+        <div class="grupo-campo">
+          <label for="latitud">Latitud</label>
+          <input type="number" id="latitud" name="latitud" [(ngModel)]="latitud">
+        </div>
+
+        <div class="grupo-campo">
+          <label for="longitud">Longitud</label>
+          <input type="number" id="longitud" name="longitud" [(ngModel)]="longitud">
+        </div>
+
+        <div class="grupo-campo">
+          <label for="tipo">Tipo</label>
+          <select id="tipo" name="tipo" [(ngModel)]="tipo">
+            <option value="PISTA_PADEL">Pista Pádel</option>
+            <option value="PISTA_TENIS">Pista Tenis</option>
+            <option value="PISTA_FRONTON">Pista Frontón</option>
+            <option value="PISTA_FUTBOL">Pista Fútbol</option>
+            <option value="PISTA_BALONCESTO">Pista Baloncesto</option>
+            <option value="PISTA_VOLEIBOL">Pista Voleibol</option>
+            <option value="CAMPO_RUGBY">Campo Rugby</option>
+            <option value="RUTA_RUNNING">Ruta Running</option>
+            <option value="CIRCUITO_CICLISMO">Circuito Ciclismo</option>
+            <option value="CARRIL_BICI">Carril Bici</option>
+            <option value="PARQUE_CALISTENIA">Parque Calistenia</option>
+            <option value="ZONA_BARRAS">Zona Barras</option>
+            <option value="CIRCUITO_BIOSALUDABLE">Circuito Biosaludable</option>
+            <option value="RUTA_SENDERISMO">Ruta Senderismo</option>
+            <option value="ZONA_MONTAÑA">Zona Montaña</option>
+            <option value="RUTA_FLUVIAL">Ruta Fluvial</option>
+            <option value="PLAYA_DEPORTIVA">Playa Deportiva</option>
+            <option value="ZONA_VOLEY_PLAYA">Zona Voley Playa</option>
+            <option value="ZONA_MULTIDEPORTE">Zona Multideporte</option>
+            <option value="PARQUE_PUBLICO">Parque Público</option>
+            <option value="PISCINA_PUBLICA">Piscina Pública</option>
+            <option value="ZONA_REMAR">Zona Remar</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grupo-campo">
+        <label for="descripcion">Descripción</label>
+        <textarea id="descripcion" name="descripcion" rows="4" [(ngModel)]="descripcion"></textarea>
+      </div>
+
+      <div class="acciones-formulario">
+        <button type="submit" class="boton-guardar">
           @if (editandoId !== null) {
-            <button type="button" class="boton-cancelar" (click)="cancelarEdicion()">
-              Cancelar edición
-            </button>
+          Guardar cambios
+          } @else {
+          Crear lugar
           }
-        </div>
-      </form>
-    </section>
+        </button>
+
+        @if (editandoId !== null) {
+        <button type="button" class="boton-cancelar" (click)="cancelarEdicion()">
+          Cancelar edición
+        </button>
+        }
+      </div>
+    </form>
+  </section>
   }
 
   <section class="bloque-listado">
     <div class="cabecera-listado">
       <div>
         <h2>Listado de lugares públicos base</h2>
-        <p class="texto-secundario">
-          {{ lugares.length }} lugar(es) mostrado(s)
-        </p>
+        <p class="texto-secundario">{{ lugares.length }} lugar(es)</p>
       </div>
 
       <div class="barra-busqueda">
@@ -140,64 +128,49 @@
           <option value="tipo">Buscar por tipo</option>
         </select>
 
-        <input
-          type="text"
-          name="valorBusqueda"
-          [(ngModel)]="valorBusqueda"
-          (input)="alCambiarBusqueda()"
-          placeholder="Escribe aquí..."
-        >
+        <input type="text" name="valorBusqueda" [(ngModel)]="valorBusqueda" (input)="alCambiarBusqueda()"
+          placeholder="Escribe aquí...">
 
         <button type="button" class="boton-limpiar" (click)="limpiarBusqueda()">Limpiar</button>
       </div>
     </div>
 
     @if (lugares.length > 0) {
-      <div class="grid-lugares">
+    <div class="grid-lugares">
+      @for (lugar of lugares; track lugar.id) {
+      <article class="tarjeta-lugar">
+        <h3>{{ lugar.nombre }}</h3>
 
-        @for (lugar of lugares; track lugar.id) {
-          <article class="tarjeta-lugar">
-            <div class="tarjeta-cabecera">
-              <h3>{{ lugar.nombre }}</h3>
+        <p><strong>Dirección:</strong> {{ lugar.direccion }}</p>
+        <p><strong>Tipo:</strong> {{ mostrarTipoLegible(lugar.tipo) }}</p>
+        <p><strong>Teléfono:</strong> {{ lugar.telefono || 'No disponible' }}</p>
+        <p><strong>Horario:</strong> {{ lugar.horario || 'No disponible' }}</p>
+        <p><strong>Descripción:</strong> {{ lugar.descripcion || 'Sin descripción' }}</p>
 
-              @if (hayCoordenadas(lugar)) {
-                <span class="insignia-mapa">Con ubicación</span>
-              } @else {
-                <span class="insignia-mapa insignia-mapa-vacia">Sin ubicación</span>
-              }
-            </div>
+        <div class="acciones-lugar">
+          <a class="boton-detalle" [routerLink]="['/publicos', lugar.id]">
+            Ver detalle
+          </a>
 
-            <p><strong>Dirección:</strong> {{ lugar.direccion }}</p>
-            <p><strong>Tipo:</strong> {{ mostrarTipoLegible(lugar.tipo) }}</p>
-            <p><strong>Teléfono:</strong> {{ lugar.telefono || 'No disponible' }}</p>
-            <p><strong>Horario:</strong> {{ lugar.horario || 'No disponible' }}</p>
-            <p><strong>Descripción:</strong> {{ lugar.descripcion || 'Sin descripción' }}</p>
+          @if (esAdmin()) {
+          <button class="boton-editar" type="button" (click)="editarLugarBase(lugar)">
+            Editar
+          </button>
 
-            <div class="acciones-lugar">
-              <a class="boton-detalle" [routerLink]="['/publicos', lugar.id]">
-                Ver detalle
-              </a>
-
-              @if (esAdmin()) {
-                <button class="boton-editar" type="button" (click)="editarLugarBase(lugar)">
-                  Editar
-                </button>
-
-                <button class="boton-borrar" type="button" (click)="borrarLugarBase(lugar.id)">
-                  Borrar
-                </button>
-              } @else {
-                <button class="boton-anadir" type="button" (click)="anadirAMisLugares(lugar.id)">
-                  Añadir a mis lugares
-                </button>
-              }
-            </div>
-          </article>
-        }
-
-      </div>
+          <button class="boton-borrar" type="button" (click)="borrarLugarBase(lugar.id)">
+            Borrar
+          </button>
+          } @else {
+          <button class="boton-anadir" type="button" (click)="anadirAMisLugares(lugar.id)">
+            Añadir a mis lugares
+          </button>
+          }
+        </div>
+      </article>
+      }
+    </div>
     } @else {
-      <p class="sin-datos">No hay lugares públicos base disponibles con ese filtro.</p>
+    <p class="sin-datos">No hay lugares públicos base disponibles o no coinciden con la búsqueda.</p>
     }
   </section>
 

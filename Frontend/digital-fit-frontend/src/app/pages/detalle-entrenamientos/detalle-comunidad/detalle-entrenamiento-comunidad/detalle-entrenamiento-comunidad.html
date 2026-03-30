@@ -2,58 +2,65 @@
 
 <main class="detalle-entrenamiento-comunidad">
 
-    @if (entrenamiento) {
-    <div class="grid-detalle">
-
-        <div class="columna-imagen">
-            <div class="imagen-wrapper">
-                <img src="img/LOGOFINAL-removebg.png" alt="Entrenamiento comunidad">
-                <span class="badge">Comunidad</span>
-            </div>
-        </div>
-
-        <div class="columna-info">
-
-            <h1>{{ entrenamiento.nombre }}</h1>
-
-            <div class="info-grid">
-                <div class="info-item">
-                    <span class="label">Categoría:</span>
-                    <span>{{ entrenamiento.categoria }}</span>
-                </div>
-
-                <div class="info-item">
-                    <span class="label">Nivel:</span>
-                    <span>{{ entrenamiento.nivel }}</span>
-                </div>
-
-                <div class="info-item">
-                    <span class="label">Duración:</span>
-                    <span>{{ entrenamiento.duracionEnMinutos }} min</span>
-                </div>
-
-                <div class="info-item">
-                    <span class="label">Usuario:</span>
-                    <span>{{ entrenamiento.usuario }}</span>
-                </div>
-
-                <div class="info-item">
-                    <span class="label">Fecha publicación:</span>
-                    <span>{{ entrenamiento.fechaPublicacion }}</span>
-                </div>
-            </div>
-
-            <details class="bloque-detalles">
-                <summary>Descripción</summary>
-                <p>{{ entrenamiento.descripcion }}</p>
-            </details>
-
-            <button class="boton-anadir">
-                Añadir a mis entrenamientos
-            </button>
-
+    @if (mostrarPopup) {
+    <div class="popup-overlay">
+        <div class="popup-mensaje" [class.popup-error]="tipoPopup === 'error'">
+            <p>{{ textoPopup }}</p>
+            <button type="button" (click)="cerrarPopup()">Cerrar</button>
         </div>
     </div>
+    }
+
+    @if (entrenamiento) {
+    <section class="cabecera-detalle">
+        <h1>{{ entrenamiento.nombre }}</h1>
+        <p>Consulta toda la información del entrenamiento compartido por la comunidad.</p>
+    </section>
+
+    <section class="bloque-detalle">
+        <div class="dato-detalle">
+            <span class="etiqueta">Nombre</span>
+            <span>{{ entrenamiento.nombre }}</span>
+        </div>
+
+        <div class="dato-detalle">
+            <span class="etiqueta">Categoría</span>
+            <span>{{ mostrarCategoriaLegible(entrenamiento.categoria) }}</span>
+        </div>
+
+        <div class="dato-detalle">
+            <span class="etiqueta">Nivel</span>
+            <span>{{ mostrarNivelLegible(entrenamiento.nivel) }}</span>
+        </div>
+
+        <div class="dato-detalle">
+            <span class="etiqueta">Duración</span>
+            <span>{{ entrenamiento.duracionEnMinutos }} min</span>
+        </div>
+
+        <div class="dato-detalle">
+            <span class="etiqueta">Usuario</span>
+            <span>{{ entrenamiento.usuario }}</span>
+        </div>
+
+        <div class="dato-detalle">
+            <span class="etiqueta">Fecha publicación</span>
+            <span>{{ entrenamiento.fechaPublicacion }}</span>
+        </div>
+
+        <div class="descripcion-detalle">
+            <h2>Descripción</h2>
+            <p>{{ entrenamiento.descripcion || 'Sin descripción' }}</p>
+        </div>
+
+        <div class="acciones-detalle">
+            <a class="boton-volver" routerLink="/entrenamientos-comunidad">Volver</a>
+
+            <button class="boton-anadir" type="button" (click)="anadirAMisEntrenamientos()">
+                Añadir a mis entrenamientos
+            </button>
+        </div>
+    </section>
     } @else {
     <p class="mensaje-cargando">Cargando detalle...</p>
     }

@@ -27,8 +27,10 @@ export class DetalleEntrenamientoComponent {
   entrenamiento: any = null;
   usuarioActual: any = null;
 
-  mensajeExito = '';
-  mensajeError = '';
+  mostrarPopup = false;
+  textoPopup = '';
+  tipoPopup: 'exito' | 'error' = 'exito';
+  private popupTimeout: any;
 
   ngOnInit(): void {
     this.authService.me().subscribe({
@@ -52,7 +54,7 @@ export class DetalleEntrenamientoComponent {
       },
       error: (err: any) => {
         console.error('ERROR DETALLE ENTRENAMIENTO BASE:', err);
-        this.mensajeError = 'No se pudo cargar el detalle del entrenamiento.';
+        this.abrirPopup('No se pudo cargar el detalle del entrenamiento.', 'error');
       }
     });
   }
@@ -62,27 +64,21 @@ export class DetalleEntrenamientoComponent {
   }
 
   anadirAMisEntrenamientos(): void {
-    this.mensajeExito = '';
-    this.mensajeError = '';
-
     if (!this.entrenamiento?.id) {
       return;
     }
 
     this.misEntrenamientosService.anadirDesdeBase(this.entrenamiento.id).subscribe({
       next: () => {
-        this.mensajeExito = 'Entrenamiento añadido a mis entrenamientos.';
+        this.abrirPopup('Entrenamiento añadido a mis entrenamientos.', 'exito');
       },
       error: () => {
-        this.mensajeError = 'No se pudo añadir a mis entrenamientos.';
+        this.abrirPopup('No se pudo añadir a mis entrenamientos.', 'error');
       }
     });
   }
 
   borrarEntrenamientoBase(): void {
-    this.mensajeExito = '';
-    this.mensajeError = '';
-
     if (!this.entrenamiento?.id) {
       return;
     }
@@ -92,8 +88,47 @@ export class DetalleEntrenamientoComponent {
         this.router.navigate(['/entrenamientos']);
       },
       error: () => {
-        this.mensajeError = 'No se pudo borrar el entrenamiento base.';
+        this.abrirPopup('No se pudo borrar el entrenamiento base.', 'error');
       }
     });
+  }
+
+  mostrarCategoriaLegible(categoria: string): string {
+    if (!categoria) {
+      return 'Sin categoría';
+    }
+
+    return categoria.replaceAll('_', ' ').toLowerCase()
+      .replace(/\b\w/g, letra => letra.toUpperCase());
+  }
+
+  mostrarNivelLegible(nivel: string): string {
+    if (!nivel) {
+      return 'Sin nivel';
+    }
+
+    return nivel.replaceAll('_', ' ').toLowerCase()
+      .replace(/\b\w/g, letra => letra.toUpperCase());
+  }
+
+  abrirPopup(texto: string, tipo: 'exito' | 'error'): void {
+    this.textoPopup = texto;
+    this.tipoPopup = tipo;
+    this.mostrarPopup = true;
+    this.cdr.detectChanges();
+
+    if (this.popupTimeout) {
+      clearTimeout(this.popupTimeout);
+    }
+
+    this.popupTimeout = setTimeout(() => {
+      this.mostrarPopup = false;
+      this.cdr.detectChanges();
+    }, 3000);
+  }
+
+  cerrarPopup(): void {
+    this.mostrarPopup = false;
+    this.cdr.detectChanges();
   }
 }

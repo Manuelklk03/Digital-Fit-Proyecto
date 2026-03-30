@@ -1,28 +1,29 @@
+import { HeaderComponent } from '../../components/header/header';
+import { Footer } from '../../components/footer/footer';
+import { AuthService } from '../../services/auth-service';
+import { EntrenamientosComunidadService } from '../../services/entrenamientos/entrenamiento-comunidad-service';
+import { MisEntrenamientosService } from '../../services/entrenamientos/mis-entrenamientos-service';
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { HeaderComponent } from '../../components/header/header';
-import { Footer } from '../../components/footer/footer';
-import { EntrenamientosService } from '../../services/entrenamientos/entrenamientos-service';
-import { MisEntrenamientosService } from '../../services/entrenamientos/mis-entrenamientos-service';
-import { AdminEntrenamientosBaseService } from '../../services/admin/admin-entrenamiento-base';
-import { AuthService } from '../../services/auth-service';
 
 @Component({
-  selector: 'app-entrenamientos',
+  selector: 'app-entrenamientos-comunidad',
   imports: [HeaderComponent, Footer, FormsModule, RouterLink],
-  templateUrl: './entrenamientos.html',
-  styleUrl: './entrenamientos.css'
+  templateUrl: './entrenamientos-comunidad.html',
+  styleUrl: './entrenamientos-comunidad.css'
 })
-export class EntrenamientosComponent {
+export class EntrenamientosComunidadComponent {
 
-  private entrenamientosService = inject(EntrenamientosService);
+  private entrenamientosComunidadService = inject(EntrenamientosComunidadService);
   private misEntrenamientosService = inject(MisEntrenamientosService);
-  private adminEntrenamientosBaseService = inject(AdminEntrenamientosBaseService);
   private authService = inject(AuthService);
   private cdr = inject(ChangeDetectorRef);
 
   entrenamientos: any[] = [];
+  misEntrenamientosSubidos: any[] = [];
+  entrenamientosRestoComunidad: any[] = [];
+
   usuarioActual: any = null;
 
   nombre = '';
@@ -33,42 +34,135 @@ export class EntrenamientosComponent {
 
   editandoId: number | null = null;
 
-  mensajeExito = '';
-  mensajeError = '';
+  tipoBusqueda = 'nombre';
+  valorBusqueda = '';
+
+  mostrarPopup = false;
+  textoPopup = '';
+  tipoPopup: 'exito' | 'error' = 'exito';
+  private popupTimeout: any;
 
   ngOnInit(): void {
     this.authService.me().subscribe({
-      next: (usuario) => {
+      next: (usuario: any) => {
         this.usuarioActual = usuario;
-        this.cargarEntrenamientos();
+        this.cargarEntrenamientosComunidad();
       },
       error: () => {
-        this.cargarEntrenamientos();
+        this.cargarEntrenamientosComunidad();
       }
     });
   }
 
-  cargarEntrenamientos(): void {
-    this.entrenamientosService.getEntrenamientos().subscribe({
-      next: (data) => {
-        console.log('ENTRENAMIENTOS BASE:', data);
+  cargarEntrenamientosComunidad(): void {
+    this.entrenamientosComunidadService.getEntrenamientosComunidad().subscribe({
+      next: (data: any[]) => {
         this.entrenamientos = data;
+        this.separarEntrenamientos();
         this.cdr.detectChanges();
       },
-      error: (err) => {
-        console.error('ERROR ENTRENAMIENTOS BASE:', err);
+      error: (err: any) => {
+        console.error('ERROR ENTRENAMIENTOS COMUNIDAD:', err);
+        this.abrirPopup('No se pudieron cargar los entrenamientos de comunidad.', 'error');
       }
     });
   }
 
-  esAdmin(): boolean {
-    return this.usuarioActual?.rol === 'ADMIN';
+  separarEntrenamientos(): void {
+    this.misEntrenamientosSubidos = this.entrenamientos.filter(
+      (entrenamiento: any) => this.esMio(entrenamiento)
+    );
+
+    this.entrenamientosRestoComunidad = this.entrenamientos.filter(
+      (entrenamiento: any) => !this.esMio(entrenamiento)
+    );
   }
 
-  guardarEntrenamientoBase(): void {
-    this.mensajeExito = '';
-    this.mensajeError = '';
+  buscarEntrenamientos(): void {
+    const texto = this.valorBusqueda.trim();
 
+    if (!texto) {
+      this.cargarEntrenamientosComunidad();
+      return;
+    }
+
+    if (this.tipoBusqueda === 'categoria') {
+      this.entrenamientosComunidadService
+        .getEntrenamientosComunidadFiltrados(texto, undefined, undefined, undefined)
+        .subscribe({
+          next: (data: any[]) => {
+            this.entrenamientos = data;
+            this.separarEntrenamientos();
+            this.cdr.detectChanges();
+          },
+          error: (err: any) => console.error('ERROR FILTRO CATEGORIA COMUNIDAD:', err)
+        });
+      return;
+    }
+
+    if (this.tipoBusqueda === 'nivel') {
+      this.entrenamientosComunidadService
+        .getEntrenamientosComunidadFiltrados(undefined, texto, undefined, undefined)
+        .subscribe({
+          next: (data: any[]) => {
+            this.entrenamientos = data;
+            this.separarEntrenamientos();
+            this.cdr.detectChanges();
+          },
+          error: (err: any) => console.error('ERROR FILTRO NIVEL COMUNIDAD:', err)
+        });
+      return;
+    }
+
+    if (this.tipoBusqueda === 'duracionEnMinutos') {
+      const duracion = Number(texto);
+
+      if (isNaN(duracion)) {
+        this.entrenamientos = [];
+        this.separarEntrenamientos();
+        return;
+      }
+
+      this.entrenamientosComunidadService
+        .getEntrenamientosComunidadFiltrados(undefined, undefined, duracion, undefined)
+        .subscribe({
+          next: (data: any[]) => {
+            this.entrenamientos = data;
+            this.separarEntrenamientos();
+            this.cdr.detectChanges();
+          },
+          error: (err: any) => console.error('ERROR FILTRO DURACION COMUNIDAD:', err)
+        });
+      return;
+    }
+
+    this.entrenamientosComunidadService
+      .getEntrenamientosComunidadFiltrados(undefined, undefined, undefined, texto)
+      .subscribe({
+        next: (data: any[]) => {
+          this.entrenamientos = data;
+          this.separarEntrenamientos();
+          this.cdr.detectChanges();
+        },
+        error: (err: any) => console.error('ERROR FILTRO NOMBRE COMUNIDAD:', err)
+      });
+  }
+
+  alCambiarBusqueda(): void {
+    this.buscarEntrenamientos();
+  }
+
+  limpiarBusqueda(): void {
+    this.tipoBusqueda = 'nombre';
+    this.valorBusqueda = '';
+    this.cargarEntrenamientosComunidad();
+  }
+
+  esMio(entrenamiento: any): boolean {
+    return this.usuarioActual?.username === entrenamiento.usuario;
+  }
+
+  guardarEntrenamiento(): void {
     const payload = {
       nombre: this.nombre,
       descripcion: this.descripcion,
@@ -78,31 +172,31 @@ export class EntrenamientosComponent {
     };
 
     if (this.editandoId !== null) {
-      this.adminEntrenamientosBaseService.actualizarEntrenamientoBase(this.editandoId, payload).subscribe({
+      this.entrenamientosComunidadService.actualizarEntrenamientoComunidad(this.editandoId, payload).subscribe({
         next: () => {
-          this.mensajeExito = 'Entrenamiento base actualizado correctamente.';
+          this.abrirPopup('Entrenamiento actualizado correctamente.', 'exito');
           this.limpiarFormulario();
-          this.cargarEntrenamientos();
+          this.cargarEntrenamientosComunidad();
         },
         error: () => {
-          this.mensajeError = 'No se pudo actualizar el entrenamiento base.';
+          this.abrirPopup('No se pudo actualizar el entrenamiento.', 'error');
         }
       });
     } else {
-      this.adminEntrenamientosBaseService.crearEntrenamientoBase(payload).subscribe({
+      this.entrenamientosComunidadService.crearEntrenamientoComunidad(payload).subscribe({
         next: () => {
-          this.mensajeExito = 'Entrenamiento base creado correctamente.';
+          this.abrirPopup('Entrenamiento de comunidad creado correctamente.', 'exito');
           this.limpiarFormulario();
-          this.cargarEntrenamientos();
+          this.cargarEntrenamientosComunidad();
         },
         error: () => {
-          this.mensajeError = 'No se pudo crear el entrenamiento base.';
+          this.abrirPopup('No se pudo crear el entrenamiento de comunidad.', 'error');
         }
       });
     }
   }
 
-  editarEntrenamientoBase(entrenamiento: any): void {
+  editarEntrenamiento(entrenamiento: any): void {
     this.editandoId = entrenamiento.id;
     this.nombre = entrenamiento.nombre;
     this.descripcion = entrenamiento.descripcion;
@@ -111,31 +205,25 @@ export class EntrenamientosComponent {
     this.duracionEnMinutos = entrenamiento.duracionEnMinutos;
   }
 
-  borrarEntrenamientoBase(id: number): void {
-    this.mensajeExito = '';
-    this.mensajeError = '';
-
-    this.adminEntrenamientosBaseService.borrarEntrenamientoBase(id).subscribe({
+  borrarEntrenamiento(id: number): void {
+    this.entrenamientosComunidadService.borrarEntrenamientoComunidad(id).subscribe({
       next: () => {
-        this.mensajeExito = 'Entrenamiento base borrado correctamente.';
-        this.cargarEntrenamientos();
+        this.abrirPopup('Entrenamiento borrado correctamente.', 'exito');
+        this.cargarEntrenamientosComunidad();
       },
       error: () => {
-        this.mensajeError = 'No se pudo borrar el entrenamiento base.';
+        this.abrirPopup('No se pudo borrar el entrenamiento.', 'error');
       }
     });
   }
 
   anadirAMisEntrenamientos(id: number): void {
-    this.mensajeExito = '';
-    this.mensajeError = '';
-
-    this.misEntrenamientosService.anadirDesdeBase(id).subscribe({
+    this.misEntrenamientosService.anadirDesdeComunidad(id).subscribe({
       next: () => {
-        this.mensajeExito = 'Entrenamiento añadido a mis entrenamientos.';
+        this.abrirPopup('Entrenamiento añadido a mis entrenamientos.', 'exito');
       },
       error: () => {
-        this.mensajeError = 'No se pudo añadir a mis entrenamientos.';
+        this.abrirPopup('No se pudo añadir a mis entrenamientos.', 'error');
       }
     });
   }
@@ -151,5 +239,44 @@ export class EntrenamientosComponent {
     this.categoria = 'FUERZA_TOTAL';
     this.nivel = 'PRINCIPIANTE';
     this.duracionEnMinutos = 30;
+  }
+
+  mostrarCategoriaLegible(categoria: string): string {
+    if (!categoria) {
+      return 'Sin categoría';
+    }
+
+    return categoria.replaceAll('_', ' ').toLowerCase()
+      .replace(/\b\w/g, (letra) => letra.toUpperCase());
+  }
+
+  mostrarNivelLegible(nivel: string): string {
+    if (!nivel) {
+      return 'Sin nivel';
+    }
+
+    return nivel.replaceAll('_', ' ').toLowerCase()
+      .replace(/\b\w/g, (letra) => letra.toUpperCase());
+  }
+
+  abrirPopup(texto: string, tipo: 'exito' | 'error'): void {
+    this.textoPopup = texto;
+    this.tipoPopup = tipo;
+    this.mostrarPopup = true;
+    this.cdr.detectChanges();
+
+    if (this.popupTimeout) {
+      clearTimeout(this.popupTimeout);
+    }
+
+    this.popupTimeout = setTimeout(() => {
+      this.mostrarPopup = false;
+      this.cdr.detectChanges();
+    }, 3000);
+  }
+
+  cerrarPopup(): void {
+    this.mostrarPopup = false;
+    this.cdr.detectChanges();
   }
 }
