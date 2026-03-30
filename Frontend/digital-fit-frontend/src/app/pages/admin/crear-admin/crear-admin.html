@@ -2,6 +2,15 @@
 
 <main class="pagina-crear-admin">
 
+  @if (mostrarPopup) {
+    <div class="popup-overlay">
+      <div class="popup-mensaje" [class.popup-error]="tipoPopup === 'error'">
+        <p>{{ textoPopup }}</p>
+        <button type="button" (click)="cerrarPopup()">Cerrar</button>
+      </div>
+    </div>
+  }
+
   <section class="cabecera-pagina">
     <h1>Crear admin</h1>
     <p>
@@ -48,14 +57,6 @@
       <button type="submit" class="boton-guardar">
         Crear admin
       </button>
-
-      @if (mensajeExito) {
-        <p class="mensaje-exito">{{ mensajeExito }}</p>
-      }
-
-      @if (mensajeError) {
-        <p class="mensaje-error">{{ mensajeError }}</p>
-      }
 
     </form>
   </section>

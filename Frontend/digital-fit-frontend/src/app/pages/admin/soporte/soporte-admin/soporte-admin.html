@@ -2,6 +2,15 @@
 
 <main class="pagina-admin-soporte">
 
+  @if (mostrarPopup) {
+    <div class="popup-overlay">
+      <div class="popup-mensaje" [class.popup-error]="tipoPopup === 'error'">
+        <p>{{ textoPopup }}</p>
+        <button type="button" (click)="cerrarPopup()">Cerrar</button>
+      </div>
+    </div>
+  }
+
   <section class="cabecera-pagina">
     <h1>Panel admin - Soporte</h1>
     <p>
@@ -9,40 +18,66 @@
     </p>
   </section>
 
-  @if (mensajeExito) {
-    <p class="mensaje-exito">{{ mensajeExito }}</p>
-  }
-
-  @if (mensajeError) {
-    <p class="mensaje-error">{{ mensajeError }}</p>
-  }
-
   <section class="bloque-listado">
-    <h2>Listado de tickets</h2>
+    <div class="cabecera-listado">
+      <div>
+        <h2>Listado de tickets</h2>
+        <p class="texto-secundario">{{ ticketsFiltrados.length }} ticket(s)</p>
+      </div>
 
-    @if (tickets.length > 0) {
+      <div class="barra-busqueda">
+        <select
+          name="tipoBusqueda"
+          [(ngModel)]="tipoBusqueda"
+          (ngModelChange)="alCambiarBusqueda()"
+        >
+          <option value="general">Búsqueda general</option>
+          <option value="asunto">Asunto</option>
+          <option value="mensaje">Mensaje</option>
+          <option value="fecha">Fecha</option>
+          <option value="estado">Estado</option>
+        </select>
+
+        <input
+          type="text"
+          placeholder="Escribe aquí..."
+          [(ngModel)]="valorBusqueda"
+          (input)="alCambiarBusqueda()"
+        >
+
+        <button type="button" class="boton-limpiar" (click)="limpiarBusqueda()">
+          Limpiar
+        </button>
+      </div>
+    </div>
+
+    @if (ticketsFiltrados.length > 0) {
       <div class="grid-tickets">
 
-        @for (ticket of tickets; track ticket.id) {
+        @for (ticket of ticketsFiltrados; track ticket.id) {
           <article class="tarjeta-ticket">
 
             <h3>{{ ticket.asunto }}</h3>
 
             <p><strong>Mensaje:</strong> {{ ticket.mensaje }}</p>
             <p><strong>Fecha:</strong> {{ ticket.fecha }}</p>
-            <p><strong>Estado:</strong> {{ ticket.estado }}</p>
+            <p><strong>Estado:</strong> {{ mostrarEstado(ticket.estado) }}</p>
 
             <div class="acciones-ticket">
+              <a class="boton-detalle" [routerLink]="['/admin/soporte', ticket.id]">
+                Ver detalle
+              </a>
+
               <button class="boton-estado" (click)="cambiarEstado(ticket.id, 'ABIERTO')">
-                ABIERTO
+                Abierto
               </button>
 
               <button class="boton-estado" (click)="cambiarEstado(ticket.id, 'EN_PROCESO')">
-                EN_PROCESO
+                En proceso
               </button>
 
               <button class="boton-estado" (click)="cambiarEstado(ticket.id, 'CERRADO')">
-                CERRADO
+                Cerrado
               </button>
 
               <button class="boton-borrar" (click)="borrarTicket(ticket.id)">
@@ -55,7 +90,7 @@
 
       </div>
     } @else {
-      <p class="sin-datos">No hay tickets disponibles.</p>
+      <p class="sin-datos">No hay tickets disponibles o no coinciden con la búsqueda.</p>
     }
   </section>
 

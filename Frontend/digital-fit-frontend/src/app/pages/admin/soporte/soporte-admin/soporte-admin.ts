@@ -4,11 +4,11 @@ import { Footer } from './../../../../components/footer/footer';
 import { HeaderComponent } from './../../../../components/header/header';
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-admin-soporte',
-  imports: [HeaderComponent, Footer, FormsModule],
+  imports: [HeaderComponent, Footer, FormsModule, RouterLink],
   templateUrl: './soporte-admin.html',
   styleUrl: './soporte-admin.css'
 })
@@ -20,12 +20,19 @@ export class AdminSoporteComponent {
   private cdr = inject(ChangeDetectorRef);
 
   tickets: any[] = [];
-  mensajeError = '';
-  mensajeExito = '';
+  ticketsFiltrados: any[] = [];
+
+  tipoBusqueda = 'general';
+  valorBusqueda = '';
+
+  mostrarPopup = false;
+  textoPopup = '';
+  tipoPopup: 'exito' | 'error' = 'exito';
+  private popupTimeout: any;
 
   ngOnInit(): void {
     this.authService.me().subscribe({
-      next: (usuario) => {
+      next: (usuario: any) => {
         if (usuario?.rol !== 'ADMIN') {
           this.router.navigate(['/soporte']);
           return;
@@ -41,45 +48,120 @@ export class AdminSoporteComponent {
 
   cargarTickets(): void {
     this.adminSoporteService.getTicketsAdmin().subscribe({
-      next: (data) => {
-        console.log('TICKETS ADMIN:', data);
+      next: (data: any[]) => {
         this.tickets = data;
+        this.aplicarBusqueda();
         this.cdr.detectChanges();
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('ERROR TICKETS ADMIN:', err);
-        this.mensajeError = 'No se pudieron cargar los tickets.';
+        this.abrirPopup('No se pudieron cargar los tickets.', 'error');
       }
     });
   }
 
   cambiarEstado(id: number, estado: string): void {
-    this.mensajeError = '';
-    this.mensajeExito = '';
-
     this.adminSoporteService.cambiarEstado(id, estado).subscribe({
       next: () => {
-        this.mensajeExito = 'Estado actualizado correctamente.';
+        this.abrirPopup('Estado actualizado correctamente.', 'exito');
         this.cargarTickets();
       },
       error: () => {
-        this.mensajeError = 'No se pudo actualizar el estado.';
+        this.abrirPopup('No se pudo actualizar el estado.', 'error');
       }
     });
   }
 
   borrarTicket(id: number): void {
-    this.mensajeError = '';
-    this.mensajeExito = '';
-
     this.adminSoporteService.borrarTicketCerrado(id).subscribe({
       next: () => {
-        this.mensajeExito = 'Ticket borrado correctamente.';
+        this.abrirPopup('Ticket borrado correctamente.', 'error');
         this.cargarTickets();
       },
       error: () => {
-        this.mensajeError = 'Solo se pueden borrar tickets cerrados.';
+        this.abrirPopup('Solo se pueden borrar tickets cerrados.', 'error');
       }
     });
+  }
+
+  aplicarBusqueda(): void {
+    const texto = this.valorBusqueda.trim().toLowerCase();
+
+    if (!texto) {
+      this.ticketsFiltrados = [...this.tickets];
+      return;
+    }
+
+    this.ticketsFiltrados = this.tickets.filter((ticket: any) => {
+      const asunto = (ticket.asunto || '').toLowerCase();
+      const mensaje = (ticket.mensaje || '').toLowerCase();
+      const fecha = (ticket.fecha || '').toLowerCase();
+      const estado = this.mostrarEstado(ticket.estado).toLowerCase();
+
+      if (this.tipoBusqueda === 'asunto') {
+        return asunto.includes(texto);
+      }
+
+      if (this.tipoBusqueda === 'mensaje') {
+        return mensaje.includes(texto);
+      }
+
+      if (this.tipoBusqueda === 'fecha') {
+        return fecha.includes(texto);
+      }
+
+      if (this.tipoBusqueda === 'estado') {
+        return estado.includes(texto);
+      }
+
+      return asunto.includes(texto)
+        || mensaje.includes(texto)
+        || fecha.includes(texto)
+        || estado.includes(texto);
+    });
+  }
+
+  alCambiarBusqueda(): void {
+    this.aplicarBusqueda();
+  }
+
+  limpiarBusqueda(): void {
+    this.tipoBusqueda = 'general';
+    this.valorBusqueda = '';
+    this.aplicarBusqueda();
+  }
+
+  mostrarEstado(estado: string): string {
+    switch (estado) {
+      case 'ABIERTO':
+        return 'Abierto';
+      case 'EN_PROCESO':
+        return 'En proceso';
+      case 'CERRADO':
+        return 'Cerrado';
+      default:
+        return estado;
+    }
+  }
+
+  abrirPopup(texto: string, tipo: 'exito' | 'error'): void {
+    this.textoPopup = texto;
+    this.tipoPopup = tipo;
+    this.mostrarPopup = true;
+    this.cdr.detectChanges();
+
+    if (this.popupTimeout) {
+      clearTimeout(this.popupTimeout);
+    }
+
+    this.popupTimeout = setTimeout(() => {
+      this.mostrarPopup = false;
+      this.cdr.detectChanges();
+    }, 3000);
+  }
+
+  cerrarPopup(): void {
+    this.mostrarPopup = false;
+    this.cdr.detectChanges();
   }
 }
