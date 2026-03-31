@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../components/header/header';
@@ -15,33 +15,69 @@ export class LoginComponent {
 
   private authService = inject(AuthService);
   private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
 
   username = '';
   password = '';
-  mensajeError = '';
+
+  cargando = false;
+
+  mostrarPopup = false;
+  textoPopup = '';
+  tipoPopup: 'exito' | 'error' = 'exito';
+  private popupTimeout: any;
 
   iniciarSesion(): void {
-    this.mensajeError = '';
-
     if (!this.username.trim() || !this.password.trim()) {
-      this.mensajeError = 'Debes completar todos los campos.';
+      this.abrirPopup('Debes completar todos los campos.', 'error');
       return;
     }
+
+    this.cargando = true;
 
     this.authService.login(this.username, this.password).subscribe({
       next: () => {
         this.authService.me().subscribe({
           next: () => {
-            this.router.navigate(['/inicio']);
+            this.abrirPopup('Sesión iniciada correctamente.', 'exito');
+            this.cargando = false;
+            this.cdr.detectChanges();
+
+            setTimeout(() => {
+              this.router.navigate(['/inicio']);
+            }, 700);
           },
           error: () => {
-            this.mensajeError = 'Error al recuperar sesión.';
+            this.cargando = false;
+            this.abrirPopup('Error al recuperar la sesión.', 'error');
           }
         });
       },
       error: () => {
-        this.mensajeError = 'Usuario o contraseña incorrectos.';
+        this.cargando = false;
+        this.abrirPopup('Usuario o contraseña incorrectos.', 'error');
       }
     });
+  }
+
+  abrirPopup(texto: string, tipo: 'exito' | 'error'): void {
+    this.textoPopup = texto;
+    this.tipoPopup = tipo;
+    this.mostrarPopup = true;
+    this.cdr.detectChanges();
+
+    if (this.popupTimeout) {
+      clearTimeout(this.popupTimeout);
+    }
+
+    this.popupTimeout = setTimeout(() => {
+      this.mostrarPopup = false;
+      this.cdr.detectChanges();
+    }, 3000);
+  }
+
+  cerrarPopup(): void {
+    this.mostrarPopup = false;
+    this.cdr.detectChanges();
   }
 }

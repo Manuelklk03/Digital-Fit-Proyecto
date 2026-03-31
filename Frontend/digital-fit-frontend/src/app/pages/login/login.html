@@ -2,40 +2,43 @@
 
 <main class="zona-login">
 
-  <div class="caja-login">
+  @if (mostrarPopup) {
+  <div class="popup-mensaje" [class.popup-error]="tipoPopup === 'error'" [class.popup-exito]="tipoPopup === 'exito'">
+    <span>{{ textoPopup }}</span>
+    <button type="button" class="boton-cerrar-popup" (click)="cerrarPopup()">×</button>
+  </div>
+  }
 
-    <img src="img/usuario.png" alt="Icono de usuario" class="icono-usuario">
+  <section class="caja-login">
 
-    <h1 class="titulo-login">Iniciar sesión</h1>
+    <div class="bloque-superior">
+      <img src="img/usuario.png" alt="Icono de usuario" class="icono-usuario">
+      <h1 class="titulo-login">Iniciar sesión</h1>
+      <p class="texto-secundario">
+        Accede a tu cuenta para entrar en tu panel de Digital-FIT.
+      </p>
+    </div>
 
-    <form (ngSubmit)="iniciarSesion()">
+    <form class="formulario-login" (ngSubmit)="iniciarSesion()">
 
-      <label class="texto-etiqueta" for="usuario">Nombre de usuario</label>
-      <input
-        class="campo-texto"
-        type="text"
-        id="usuario"
-        name="usuario"
-        [(ngModel)]="username"
-        required
-      >
+      <div class="grupo-campo">
+        <label class="texto-etiqueta" for="usuario">Nombre de usuario</label>
+        <input class="campo-texto" type="text" id="usuario" name="usuario" [(ngModel)]="username" required
+          placeholder="Introduce tu nombre de usuario">
+      </div>
 
-      <label class="texto-etiqueta" for="contrasena">Contraseña</label>
-      <input
-        class="campo-texto"
-        type="password"
-        id="contrasena"
-        name="contrasena"
-        [(ngModel)]="password"
-        required
-      >
+      <div class="grupo-campo">
+        <label class="texto-etiqueta" for="contrasena">Contraseña</label>
+        <input class="campo-texto" type="password" id="contrasena" name="contrasena" [(ngModel)]="password" required
+          placeholder="Introduce tu contraseña">
+      </div>
 
-      @if (mensajeError) {
-        <p class="mensaje-error">{{ mensajeError }}</p>
-      }
-
-      <button class="boton-acceder" type="submit">
-        INICIAR SESIÓN
+      <button class="boton-acceder" type="submit" [disabled]="cargando">
+        @if (cargando) {
+        Entrando...
+        } @else {
+        Iniciar sesión
+        }
       </button>
 
       <p class="texto-registro">
@@ -44,7 +47,7 @@
       </p>
     </form>
 
-  </div>
+  </section>
 </main>
 
 <app-footer></app-footer>

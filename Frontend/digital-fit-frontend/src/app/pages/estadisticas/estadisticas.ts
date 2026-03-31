@@ -1,7 +1,7 @@
-import { EstadisticasService } from './../../services/estadisticas/estadisticas-service';
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { HeaderComponent } from '../../components/header/header';
 import { Footer } from '../../components/footer/footer';
+import { EstadisticasService } from '../../services/estadisticas/estadisticas-service';
 
 @Component({
   selector: 'app-estadisticas',
@@ -15,6 +15,7 @@ export class EstadisticasComponent {
   private cdr = inject(ChangeDetectorRef);
 
   estadisticas: any = null;
+
   cargando = true;
   mensajeError = '';
 
@@ -41,19 +42,19 @@ export class EstadisticasComponent {
     });
   }
 
-  getPromedioFormateado(): string {
-    if (!this.estadisticas || this.estadisticas.promedioMinutosEntrenamiento == null) {
-      return '0';
+  formatearPromedio(valor: number | null | undefined): string {
+    if (valor === null || valor === undefined || isNaN(valor)) {
+      return '0 min';
     }
 
-    return Number(this.estadisticas.promedioMinutosEntrenamiento).toFixed(1);
+    return `${valor.toFixed(1)} min`;
   }
 
-  getEntrenamientoMasRealizado(): string {
-    if (!this.estadisticas?.entrenamientoMasRealizado || this.estadisticas.entrenamientoMasRealizado === 'N/A') {
-      return 'Todavía no hay suficiente información';
+  mostrarTexto(valor: string | null | undefined): string {
+    if (!valor || !valor.trim() || valor === 'N/A') {
+      return 'Todavía no disponible';
     }
 
-    return this.estadisticas.entrenamientoMasRealizado;
+    return valor;
   }
 }
