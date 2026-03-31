@@ -4,95 +4,169 @@
 
   @if (cargando) {
   <section class="hero-inicio">
-    <h1>Bienvenido a Digital-FIT</h1>
-    <p>Cargando panel...</p>
+    <div class="hero-contenido">
+      <img src="img/LOGOFINAL-removebg.png" alt="Logo Digital-FIT" class="logo-inicio">
+      <h1>Bienvenido a Digital-FIT</h1>
+      <p>Cargando panel principal...</p>
+    </div>
   </section>
   } @else if (esAdmin()) {
 
   <section class="hero-inicio hero-admin">
-    <img src="img/LOGOFINAL-removebg.png" alt="Logo Digital-FIT" class="logo-inicio">
-    <h1>Panel de administración</h1>
-    <p>
-      Bienvenido, <strong>{{ usuarioActual.username }}</strong>.
-      Desde aquí puedes gestionar el contenido principal de la aplicación.
-    </p>
+    <div class="hero-contenido">
+      <img src="img/LOGOFINAL-removebg.png" alt="Logo Digital-FIT" class="logo-inicio">
+      <span class="insignia-rol admin">Administrador</span>
+      <h1>Panel de administración</h1>
+      <p>
+        Bienvenido, <strong>{{ usuarioActual.username }}</strong>.
+        Desde aquí puedes gestionar el contenido base, revisar soporte y controlar la estructura principal de la
+        aplicación.
+      </p>
+    </div>
   </section>
 
-  <section class="bloque-accesos">
-    <h2>Accesos de administración</h2>
+  <section class="bloque-seccion">
+    <div class="titulo-seccion">
+      <h2>Gestión general</h2>
+      <p>Accesos principales para administración y revisión del sistema.</p>
+    </div>
 
     <div class="grid-accesos">
+      <a class="tarjeta-acceso admin" routerLink="/admin/soporte">
+        <span class="etiqueta-tarjeta">Soporte</span>
+        <h3>Panel de soporte</h3>
+        <p>Revisa tickets, cambia estados y controla incidencias de usuarios.</p>
+      </a>
+
+      <a class="tarjeta-acceso admin" routerLink="/admin/crear-admin">
+        <span class="etiqueta-tarjeta">Administración</span>
+        <h3>Crear admin</h3>
+        <p>Da de alta nuevos administradores para la aplicación.</p>
+      </a>
+    </div>
+  </section>
+
+  <section class="bloque-seccion">
+    <div class="titulo-seccion">
+      <h2>Contenido base de la app</h2>
+      <p>Desde estos apartados puedes crear, editar y borrar el contenido principal visible para los usuarios.</p>
+    </div>
+
+    <div class="grid-accesos">
+      <a class="tarjeta-acceso admin" routerLink="/entrenamientos">
+        <span class="etiqueta-tarjeta">Base</span>
+        <h3>Entrenamientos base</h3>
+        <p>Gestiona los entrenamientos generales que ofrece la aplicación.</p>
+      </a>
+
       <a class="tarjeta-acceso admin" routerLink="/privados">
+        <span class="etiqueta-tarjeta">Base</span>
         <h3>Centros privados base</h3>
-        <p>Revisar y gestionar los centros privados base de la app.</p>
+        <p>Gestiona gimnasios y centros privados base disponibles en la app.</p>
       </a>
 
       <a class="tarjeta-acceso admin" routerLink="/publicos">
+        <span class="etiqueta-tarjeta">Base</span>
         <h3>Lugares públicos base</h3>
-        <p>Revisar y gestionar los lugares públicos base de la app.</p>
+        <p>Gestiona espacios públicos deportivos visibles para los usuarios.</p>
       </a>
-
-      <a class="tarjeta-acceso admin" routerLink="/entrenamientos">
-        <h3>Entrenamientos base</h3>
-        <p>Revisar y gestionar los entrenamientos base de la app.</p>
-      </a>
-
     </div>
   </section>
 
   } @else {
 
   <section class="hero-inicio hero-user">
-    <img src="img/LOGOFINAL-removebg.png" alt="Logo Digital-FIT" class="logo-inicio">
-    <h1>Bienvenido a Digital-FIT</h1>
-    <p>
-      Hola, <strong>{{ usuarioActual.username }}</strong>.
-      Explora recursos, registra tu actividad y gestiona tus espacios y entrenamientos.
-    </p>
+    <div class="hero-contenido">
+      <img src="img/LOGOFINAL-removebg.png" alt="Logo Digital-FIT" class="logo-inicio">
+      <span class="insignia-rol user">Usuario</span>
+      <h1>Bienvenido a Digital-FIT</h1>
+      <p>
+        Hola, <strong>{{ usuarioActual.username }}</strong>.
+        Desde aquí puedes moverte por la app, registrar tu actividad y acceder rápido a los apartados más importantes.
+      </p>
+    </div>
   </section>
 
-  <section class="bloque-accesos">
-    <h2>Explorar la app</h2>
+  <section class="bloque-seccion">
+    <div class="titulo-seccion">
+      <h2>Mi espacio personal</h2>
+      <p>Accesos rápidos a tus apartados principales como usuario.</p>
+    </div>
 
     <div class="grid-accesos">
-      <a class="tarjeta-acceso user" routerLink="/privados">
-        <h3>Centros privados base</h3>
-        <p>Consulta los centros privados que ofrece la app.</p>
+      <a class="tarjeta-acceso user destacada" routerLink="/mis-entrenamientos">
+        <span class="etiqueta-tarjeta">Personal</span>
+        <h3>Mis entrenamientos</h3>
+        <p>Consulta tus entrenamientos guardados y gestiona tus propios entrenamientos personalizados.</p>
       </a>
 
-      <a class="tarjeta-acceso user" routerLink="/publicos">
-        <h3>Lugares públicos base</h3>
-        <p>Consulta lugares públicos y espacios deportivos.</p>
+      <a class="tarjeta-acceso user destacada" routerLink="/mis-centros">
+        <span class="etiqueta-tarjeta">Personal</span>
+        <h3>Mis centros</h3>
+        <p>Consulta los centros que has guardado en tu espacio personal.</p>
       </a>
 
-      <a class="tarjeta-acceso user" routerLink="/entrenamientos">
-        <h3>Entrenamientos base</h3>
-        <p>Consulta entrenamientos base de la aplicación.</p>
-      </a>
-
-      <a class="tarjeta-acceso user" routerLink="/entrenamientos-comunidad">
-        <h3>Entrenamientos comunidad</h3>
-        <p>Descubre entrenamientos compartidos por otros usuarios.</p>
+      <a class="tarjeta-acceso user destacada" routerLink="/mis-lugares">
+        <span class="etiqueta-tarjeta">Personal</span>
+        <h3>Mis lugares</h3>
+        <p>Consulta tus lugares guardados y prepárate para la parte de mapa más adelante.</p>
       </a>
 
       <a class="tarjeta-acceso user" routerLink="/historial-entrenamientos">
+        <span class="etiqueta-tarjeta">Actividad</span>
         <h3>Historial</h3>
-        <p>Consulta y registra tu historial de entrenamientos.</p>
+        <p>Registra entrenamientos realizados y revisa tus sesiones anteriores.</p>
       </a>
 
       <a class="tarjeta-acceso user" routerLink="/estadisticas">
+        <span class="etiqueta-tarjeta">Actividad</span>
         <h3>Estadísticas</h3>
-        <p>Consulta tus estadísticas automáticas de actividad.</p>
-      </a>
-
-      <a class="tarjeta-acceso user" routerLink="/soporte">
-        <h3>Soporte</h3>
-        <p>Contacta con soporte y revisa tus tickets.</p>
+        <p>Consulta el resumen automático de tu actividad dentro de la aplicación.</p>
       </a>
 
       <a class="tarjeta-acceso user" routerLink="/valoraciones">
+        <span class="etiqueta-tarjeta">Opiniones</span>
         <h3>Valoraciones</h3>
-        <p>Consulta y gestiona valoraciones de contenidos.</p>
+        <p>Crea valoraciones y consulta las que ya has hecho sobre contenidos de la app.</p>
+      </a>
+    </div>
+  </section>
+
+  <section class="bloque-seccion">
+    <div class="titulo-seccion">
+      <h2>Explorar contenidos</h2>
+      <p>Descubre recursos base y entrenamientos compartidos por la comunidad.</p>
+    </div>
+
+    <div class="grid-accesos">
+      <a class="tarjeta-acceso user" routerLink="/entrenamientos">
+        <span class="etiqueta-tarjeta">Explorar</span>
+        <h3>Entrenamientos base</h3>
+        <p>Consulta entrenamientos generales y añádelos a tu zona personal.</p>
+      </a>
+
+      <a class="tarjeta-acceso user" routerLink="/entrenamientos-comunidad">
+        <span class="etiqueta-tarjeta">Comunidad</span>
+        <h3>Entrenamientos comunidad</h3>
+        <p>Descubre entrenamientos compartidos por otros usuarios y publica los tuyos.</p>
+      </a>
+
+      <a class="tarjeta-acceso user" routerLink="/privados">
+        <span class="etiqueta-tarjeta">Explorar</span>
+        <h3>Centros privados base</h3>
+        <p>Consulta los centros privados base disponibles en la aplicación.</p>
+      </a>
+
+      <a class="tarjeta-acceso user" routerLink="/publicos">
+        <span class="etiqueta-tarjeta">Explorar</span>
+        <h3>Lugares públicos base</h3>
+        <p>Consulta espacios deportivos públicos y lugares base de la app.</p>
+      </a>
+
+      <a class="tarjeta-acceso user" routerLink="/soporte">
+        <span class="etiqueta-tarjeta">Ayuda</span>
+        <h3>Soporte</h3>
+        <p>Envía tickets de soporte y revisa el estado de tus consultas.</p>
       </a>
     </div>
   </section>

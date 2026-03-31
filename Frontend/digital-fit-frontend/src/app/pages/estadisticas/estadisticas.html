@@ -5,26 +5,28 @@
   <section class="cabecera-pagina">
     <h1>Estadísticas</h1>
     <p>
-      Aquí puedes consultar un resumen automático de tu actividad dentro de Digital-FIT.
+      Aquí puedes consultar un resumen de tu actividad dentro de Digital-FIT.
     </p>
   </section>
 
   @if (cargando) {
-    <section class="bloque-estado">
+    <section class="estado-carga">
       <p class="mensaje-cargando">Cargando estadísticas...</p>
     </section>
   } @else if (mensajeError) {
-    <section class="bloque-estado">
+    <section class="estado-carga">
       <p class="mensaje-error">{{ mensajeError }}</p>
     </section>
   } @else if (estadisticas) {
-
-    <section class="bloque-destacado">
-      <h2>Resumen general</h2>
-      <p>
-        Estas estadísticas se calculan a partir de tu historial de entrenamientos y de los lugares o centros
-        asociados a tus registros.
-      </p>
+    <section class="resumen-superior">
+      <article class="tarjeta-resumen tarjeta-destacada">
+        <span class="etiqueta-resumen">Resumen general</span>
+        <h2>{{ estadisticas.entrenamientosRealizados }} entrenamientos registrados</h2>
+        <p>
+          Has acumulado {{ estadisticas.minutosEntrenados }} minutos y tu promedio actual es de
+          {{ formatearPromedio(estadisticas.promedioMinutosEntrenamiento) }} por registro.
+        </p>
+      </article>
     </section>
 
     <section class="grid-estadisticas">
@@ -32,37 +34,51 @@
       <article class="tarjeta-estadistica">
         <h2>Entrenamientos realizados</h2>
         <p class="valor">{{ estadisticas.entrenamientosRealizados }}</p>
-        <p class="descripcion">Total de registros guardados en tu historial.</p>
+        <p class="descripcion">
+          Total de registros guardados en tu historial.
+        </p>
       </article>
 
       <article class="tarjeta-estadistica">
         <h2>Minutos entrenados</h2>
         <p class="valor">{{ estadisticas.minutosEntrenados }}</p>
-        <p class="descripcion">Suma total de minutos registrados.</p>
+        <p class="descripcion">
+          Suma total del tiempo entrenado.
+        </p>
       </article>
 
       <article class="tarjeta-estadistica">
         <h2>Promedio por entrenamiento</h2>
-        <p class="valor">{{ getPromedioFormateado() }}</p>
-        <p class="descripcion">Media de minutos por cada registro del historial.</p>
+        <p class="valor valor-texto">{{ formatearPromedio(estadisticas.promedioMinutosEntrenamiento) }}</p>
+        <p class="descripcion">
+          Media de duración por registro del historial.
+        </p>
       </article>
 
       <article class="tarjeta-estadistica">
         <h2>Centros privados visitados</h2>
         <p class="valor">{{ estadisticas.centrosPrivadosVisitados }}</p>
-        <p class="descripcion">Centros privados distintos registrados en tu historial.</p>
+        <p class="descripcion">
+          Centros distintos registrados en tu historial.
+        </p>
       </article>
 
       <article class="tarjeta-estadistica">
         <h2>Lugares públicos visitados</h2>
         <p class="valor">{{ estadisticas.lugaresPublicosVisitados }}</p>
-        <p class="descripcion">Lugares públicos distintos registrados en tu historial.</p>
+        <p class="descripcion">
+          Lugares distintos registrados en tu historial.
+        </p>
       </article>
 
-      <article class="tarjeta-estadistica tarjeta-destacada">
+      <article class="tarjeta-estadistica tarjeta-destacada-secundaria">
         <h2>Entrenamiento más realizado</h2>
-        <p class="valor texto">{{ getEntrenamientoMasRealizado() }}</p>
-        <p class="descripcion">Es el entrenamiento que más veces aparece en tu historial.</p>
+        <p class="valor valor-texto-largo">
+          {{ mostrarTexto(estadisticas.entrenamientoMasRealizado) }}
+        </p>
+        <p class="descripcion">
+          Es el entrenamiento que más veces aparece en tu historial.
+        </p>
       </article>
 
     </section>
