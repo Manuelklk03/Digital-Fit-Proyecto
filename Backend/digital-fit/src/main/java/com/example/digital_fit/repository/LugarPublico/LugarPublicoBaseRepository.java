@@ -17,4 +17,16 @@ public interface LugarPublicoBaseRepository extends JpaRepository<LugarPublicoBa
 
     List<LugarPublicoBase> findByTipo(TipoLugarPublico tipoLugarPublico);
 
+    boolean existsByNombreIgnoreCaseAndDireccionIgnoreCaseAndTipo(
+            String nombre,
+            String direccion,
+            TipoLugarPublico tipo
+    );
+
+    boolean existsByNombreIgnoreCaseAndDireccionIgnoreCaseAndTipoAndIdNot(
+            String nombre,
+            String direccion,
+            TipoLugarPublico tipo,
+            Long id
+    );
 }
