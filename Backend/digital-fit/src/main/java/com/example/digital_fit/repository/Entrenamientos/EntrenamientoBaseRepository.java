@@ -19,4 +19,17 @@ public interface EntrenamientoBaseRepository extends JpaRepository<Entrenamiento
     List<EntrenamientoBase> findByDuracionEnMinutosLessThanEqual(Integer duracionEnMinutos);
 
     List<EntrenamientoBase> findByNombreContainingIgnoreCase(String nombre);
+
+    boolean existsByNombreIgnoreCaseAndCategoriaAndNivelAndDuracionEnMinutos(
+            String nombre,
+            CategoriaEntrenamientoComunidad categoria,
+            NivelEntrenamiento nivel,
+            Integer duracionEnMinutos);
+
+    boolean existsByNombreIgnoreCaseAndCategoriaAndNivelAndDuracionEnMinutosAndIdNot(
+            String nombre,
+            CategoriaEntrenamientoComunidad categoria,
+            NivelEntrenamiento nivel,
+            Integer duracionEnMinutos,
+            Long id);
 }

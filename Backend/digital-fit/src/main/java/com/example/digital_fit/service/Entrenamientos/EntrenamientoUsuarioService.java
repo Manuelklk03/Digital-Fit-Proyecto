@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.digital_fit.dto.Entrenamientos.CrearEntrenamientoUsuario;
 import com.example.digital_fit.dto.Entrenamientos.EntrenamientoUsuarioDTO;
+import com.example.digital_fit.exception.ErrorArgumentoException;
 import com.example.digital_fit.exception.OperacionNoPermitida;
 import com.example.digital_fit.exception.RecursoNoEncontradoException;
 import com.example.digital_fit.model.Auth.Usuario;
@@ -61,8 +62,7 @@ public class EntrenamientoUsuarioService {
             entrenamientos = entrenamientoUsuarioRepository.findByUsuarioAndNivel(usuario, nivel);
         } else if (duracionEnMinutos != null) {
             entrenamientos = entrenamientoUsuarioRepository.findByUsuarioAndDuracionEnMinutosLessThanEqual(
-                    usuario,
-                    duracionEnMinutos);
+                    usuario, duracionEnMinutos);
         } else if (nombre != null) {
             entrenamientos = entrenamientoUsuarioRepository.findByUsuarioAndNombreContainingIgnoreCase(usuario, nombre);
         } else {
@@ -85,6 +85,18 @@ public class EntrenamientoUsuarioService {
 
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
+
+        boolean repetido = entrenamientoUsuarioRepository
+                .existsByUsuarioAndNombreIgnoreCaseAndCategoriaAndNivelAndDuracionEnMinutos(
+                        usuario,
+                        dto.getNombre(),
+                        dto.getCategoria(),
+                        dto.getNivel(),
+                        dto.getDuracionEnMinutos());
+
+        if (repetido) {
+            throw new ErrorArgumentoException("Ya tienes un entrenamiento igual en mis entrenamientos");
+        }
 
         EntrenamientoUsuario entrenamientoUsuario = new EntrenamientoUsuario();
         entrenamientoUsuario.setNombre(dto.getNombre());
@@ -112,6 +124,18 @@ public class EntrenamientoUsuarioService {
         EntrenamientoBase entrenamientoBase = entrenamientoBaseRepository.findById(idBase)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Entrenamiento base no encontrado"));
 
+        boolean repetido = entrenamientoUsuarioRepository
+                .existsByUsuarioAndNombreIgnoreCaseAndCategoriaAndNivelAndDuracionEnMinutos(
+                        usuario,
+                        entrenamientoBase.getNombre(),
+                        entrenamientoBase.getCategoria(),
+                        entrenamientoBase.getNivel(),
+                        entrenamientoBase.getDuracionEnMinutos());
+
+        if (repetido) {
+            throw new ErrorArgumentoException("Ya tienes este entrenamiento en mis entrenamientos");
+        }
+
         EntrenamientoUsuario entrenamientoUsuario = new EntrenamientoUsuario();
         entrenamientoUsuario.setNombre(entrenamientoBase.getNombre());
         entrenamientoUsuario.setDescripcion(entrenamientoBase.getDescripcion());
@@ -137,6 +161,18 @@ public class EntrenamientoUsuarioService {
 
         EntrenamientoComunidad entrenamientoComunidad = entrenamientoComunidadRepository.findById(idComunidad)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Entrenamiento comunidad no encontrado"));
+
+        boolean repetido = entrenamientoUsuarioRepository
+                .existsByUsuarioAndNombreIgnoreCaseAndCategoriaAndNivelAndDuracionEnMinutos(
+                        usuario,
+                        entrenamientoComunidad.getNombre(),
+                        entrenamientoComunidad.getCategoria(),
+                        entrenamientoComunidad.getNivel(),
+                        entrenamientoComunidad.getDuracionEnMinutos());
+
+        if (repetido) {
+            throw new ErrorArgumentoException("Ya tienes este entrenamiento en mis entrenamientos");
+        }
 
         EntrenamientoUsuario entrenamientoUsuario = new EntrenamientoUsuario();
         entrenamientoUsuario.setNombre(entrenamientoComunidad.getNombre());
@@ -198,7 +234,6 @@ public class EntrenamientoUsuarioService {
         entrenamientoUsuarioDTO.setCategoria(entrenamientoUsuario.getCategoria());
         entrenamientoUsuarioDTO.setNivel(entrenamientoUsuario.getNivel());
         entrenamientoUsuarioDTO.setDuracionEnMinutos(entrenamientoUsuario.getDuracionEnMinutos());
-
         return entrenamientoUsuarioDTO;
     }
 
@@ -210,7 +245,6 @@ public class EntrenamientoUsuarioService {
         entrenamientoUsuario.setCategoria(dto.getCategoria());
         entrenamientoUsuario.setNivel(dto.getNivel());
         entrenamientoUsuario.setDuracionEnMinutos(dto.getDuracionEnMinutos());
-
         return entrenamientoUsuario;
     }
 }

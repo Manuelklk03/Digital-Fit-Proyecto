@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.digital_fit.dto.LugarPublico.CrearLugarPublicoDTO;
 import com.example.digital_fit.dto.LugarPublico.LugarPublicoUsuarioDTO;
+import com.example.digital_fit.exception.ErrorArgumentoException;
 import com.example.digital_fit.exception.OperacionNoPermitida;
 import com.example.digital_fit.exception.RecursoNoEncontradoException;
 import com.example.digital_fit.model.Auth.Usuario;
@@ -36,7 +37,6 @@ public class LugarPublicoUsuarioService {
 
     private static final Logger log = LoggerFactory.getLogger(LugarPublicoUsuarioService.class);
 
-    // Listar o filtrar mis lugares:
     public List<LugarPublicoUsuarioDTO> listarOFiltrar(String username, String nombre, String direccion,
             TipoLugarPublico tipo) {
 
@@ -48,22 +48,12 @@ public class LugarPublicoUsuarioService {
         List<LugarPublicoUsuario> lugares = new ArrayList<>();
 
         if (nombre != null) {
-
-            lugares = lugarPublicoUsuarioRepository
-                    .findByUsuarioAndNombreContainingIgnoreCase(usuario, nombre);
-
+            lugares = lugarPublicoUsuarioRepository.findByUsuarioAndNombreContainingIgnoreCase(usuario, nombre);
         } else if (direccion != null) {
-
-            lugares = lugarPublicoUsuarioRepository
-                    .findByUsuarioAndDireccionContainingIgnoreCase(usuario, direccion);
-
+            lugares = lugarPublicoUsuarioRepository.findByUsuarioAndDireccionContainingIgnoreCase(usuario, direccion);
         } else if (tipo != null) {
-
-            lugares = lugarPublicoUsuarioRepository
-                    .findByUsuarioAndTipo(usuario, tipo);
-
+            lugares = lugarPublicoUsuarioRepository.findByUsuarioAndTipo(usuario, tipo);
         } else {
-
             lugares = lugarPublicoUsuarioRepository.findByUsuario(usuario);
         }
 
@@ -76,7 +66,6 @@ public class LugarPublicoUsuarioService {
         return lugaresDTO;
     }
 
-    // Ver detalles de un lugar:
     public LugarPublicoUsuarioDTO verDetalle(Long id, String username) {
 
         log.debug("Buscando lugar con id: {}", id);
@@ -90,10 +79,10 @@ public class LugarPublicoUsuarioService {
         if (!lugar.getUsuario().getId().equals(usuario.getId())) {
             throw new OperacionNoPermitida("No tienes permiso para ver este lugar.");
         }
+
         return entityToDto(lugar);
     }
 
-    // Borrar un lugar:
     public void borrarLugar(Long id) {
 
         log.info("Borrando lugar con id: {}", id);
@@ -101,12 +90,9 @@ public class LugarPublicoUsuarioService {
         LugarPublicoUsuario lugar = lugarPublicoUsuarioRepository.findById(id)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Lugar con id: " + id + " No encontrado."));
 
-        log.info("Borrando lugar con id: {}", id);
-
         lugarPublicoUsuarioRepository.delete(lugar);
     }
 
-    // Guardar desde base:
     @Transactional
     public LugarPublicoUsuarioDTO guardarDesdeBase(Long lugarId, String username) {
 
@@ -116,11 +102,20 @@ public class LugarPublicoUsuarioService {
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
 
         LugarPublicoBase lugarBase = lugarPublicoBaseRepository.findById(lugarId)
-                .orElseThrow(
-                        () -> new RecursoNoEncontradoException("Lugar base con id: " + lugarId + " No encontrado."));
+                .orElseThrow(() -> new RecursoNoEncontradoException("Lugar base con id: " + lugarId + " No encontrado."));
+
+        boolean repetido = lugarPublicoUsuarioRepository
+                .existsByUsuarioAndNombreIgnoreCaseAndDireccionIgnoreCaseAndTipo(
+                        usuario,
+                        lugarBase.getNombre(),
+                        lugarBase.getDireccion(),
+                        lugarBase.getTipo());
+
+        if (repetido) {
+            throw new ErrorArgumentoException("Ya tienes este lugar en mis lugares");
+        }
 
         LugarPublicoUsuario lugar = new LugarPublicoUsuario();
-
         lugar.setUsuario(usuario);
         lugar.setNombre(lugarBase.getNombre());
         lugar.setDireccion(lugarBase.getDireccion());
@@ -138,7 +133,6 @@ public class LugarPublicoUsuarioService {
         return entityToDto(lugarGuardado);
     }
 
-    // Guardar desde maps:
     @Transactional
     public LugarPublicoUsuarioDTO guardarDesdeMaps(CrearLugarPublicoDTO dto, String username) {
 
@@ -147,8 +141,18 @@ public class LugarPublicoUsuarioService {
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
 
-        LugarPublicoUsuario lugar = new LugarPublicoUsuario();
+        boolean repetido = lugarPublicoUsuarioRepository
+                .existsByUsuarioAndNombreIgnoreCaseAndDireccionIgnoreCaseAndTipo(
+                        usuario,
+                        dto.getNombre(),
+                        dto.getDireccion(),
+                        dto.getTipo());
 
+        if (repetido) {
+            throw new ErrorArgumentoException("Ya tienes este lugar en mis lugares");
+        }
+
+        LugarPublicoUsuario lugar = new LugarPublicoUsuario();
         lugar.setUsuario(usuario);
         lugar.setNombre(dto.getNombre());
         lugar.setDireccion(dto.getDireccion());
@@ -166,10 +170,8 @@ public class LugarPublicoUsuarioService {
         return entityToDto(lugarGuardado);
     }
 
-    // MAPPERS:
     public LugarPublicoUsuario dtoToEntity(LugarPublicoUsuarioDTO dto) {
         LugarPublicoUsuario lugar = new LugarPublicoUsuario();
-
         lugar.setId(dto.getId());
         lugar.setNombre(dto.getNombre());
         lugar.setDireccion(dto.getDireccion());
@@ -179,13 +181,11 @@ public class LugarPublicoUsuarioService {
         lugar.setLatitud(dto.getLatitud());
         lugar.setLongitud(dto.getLongitud());
         lugar.setTipo(dto.getTipo());
-
         return lugar;
     }
 
     public LugarPublicoUsuarioDTO entityToDto(LugarPublicoUsuario lugar) {
         LugarPublicoUsuarioDTO dto = new LugarPublicoUsuarioDTO();
-
         dto.setId(lugar.getId());
         dto.setNombre(lugar.getNombre());
         dto.setDireccion(lugar.getDireccion());
@@ -195,7 +195,6 @@ public class LugarPublicoUsuarioService {
         dto.setLatitud(lugar.getLatitud());
         dto.setLongitud(lugar.getLongitud());
         dto.setTipo(lugar.getTipo());
-
         return dto;
     }
 }

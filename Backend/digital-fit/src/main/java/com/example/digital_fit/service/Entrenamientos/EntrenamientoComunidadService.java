@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.digital_fit.dto.Entrenamientos.CrearEntrenamientoComunidadDTO;
 import com.example.digital_fit.dto.Entrenamientos.EntrenamientoComunidadDTO;
+import com.example.digital_fit.exception.ErrorArgumentoException;
 import com.example.digital_fit.exception.OperacionNoPermitida;
 import com.example.digital_fit.exception.RecursoNoEncontradoException;
 import com.example.digital_fit.model.Auth.Usuario;
@@ -25,172 +26,181 @@ import jakarta.transaction.Transactional;
 @Service
 public class EntrenamientoComunidadService {
 
-    @Autowired
-    private EntrenamientoComunidadRepository entrenamientoComunidadRepository;
+        @Autowired
+        private EntrenamientoComunidadRepository entrenamientoComunidadRepository;
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+        @Autowired
+        private UsuarioRepository usuarioRepository;
 
-    private static final Logger log = LoggerFactory.getLogger(EntrenamientoComunidadService.class);
+        private static final Logger log = LoggerFactory.getLogger(EntrenamientoComunidadService.class);
 
-    // Listar o filtrar entrenamientos de la comunidad
-    public List<EntrenamientoComunidadDTO> listarOFiltrar(CategoriaEntrenamientoComunidad categoria,
-            NivelEntrenamiento nivel, Integer duracionEnMinutos, String nombre) {
+        public List<EntrenamientoComunidadDTO> listarOFiltrar(CategoriaEntrenamientoComunidad categoria,
+                        NivelEntrenamiento nivel, Integer duracionEnMinutos, String nombre) {
 
-        log.debug("Listando entrenamientos comunidad");
+                log.debug("Listando entrenamientos comunidad");
 
-        List<EntrenamientoComunidad> entrenamientosComunidad = new ArrayList<>();
+                List<EntrenamientoComunidad> entrenamientosComunidad = new ArrayList<>();
 
-        if (categoria != null) {
+                if (categoria != null) {
+                        entrenamientosComunidad = entrenamientoComunidadRepository.findByCategoria(categoria);
+                } else if (nivel != null) {
+                        entrenamientosComunidad = entrenamientoComunidadRepository.findByNivel(nivel);
+                } else if (duracionEnMinutos != null) {
+                        entrenamientosComunidad = entrenamientoComunidadRepository
+                                        .findByDuracionEnMinutosLessThanEqual(duracionEnMinutos);
+                } else if (nombre != null) {
+                        entrenamientosComunidad = entrenamientoComunidadRepository
+                                        .findByNombreContainingIgnoreCase(nombre);
+                } else {
+                        entrenamientosComunidad = entrenamientoComunidadRepository
+                                        .findAllByOrderByFechaPublicacionDesc();
+                }
 
-            entrenamientosComunidad = entrenamientoComunidadRepository.findByCategoria(categoria);
+                List<EntrenamientoComunidadDTO> entrenamientosComunidadDTO = new ArrayList<>();
 
-        } else if (nivel != null) {
+                for (EntrenamientoComunidad entrenamientoComunidad : entrenamientosComunidad) {
+                        entrenamientosComunidadDTO.add(entityToDto(entrenamientoComunidad));
+                }
 
-            entrenamientosComunidad = entrenamientoComunidadRepository.findByNivel(nivel);
-
-        } else if (duracionEnMinutos != null) {
-
-            entrenamientosComunidad = entrenamientoComunidadRepository
-                    .findByDuracionEnMinutosLessThanEqual(duracionEnMinutos);
-
-        } else if (nombre != null) {
-
-            entrenamientosComunidad = entrenamientoComunidadRepository.findByNombreContainingIgnoreCase(nombre);
-
-        } else {
-
-            entrenamientosComunidad = entrenamientoComunidadRepository.findAllByOrderByFechaPublicacionDesc();
+                return entrenamientosComunidadDTO;
         }
 
-        List<EntrenamientoComunidadDTO> entrenamientosComunidadDTO = new ArrayList<>();
+        public EntrenamientoComunidadDTO verDetalles(Long id) {
 
-        for (EntrenamientoComunidad entrenamientoComunidad : entrenamientosComunidad) {
-            entrenamientosComunidadDTO.add(entityToDto(entrenamientoComunidad));
+                log.debug("Buscando entrenamiento con id: {}", id);
+
+                EntrenamientoComunidad entrenamiento = entrenamientoComunidadRepository.findById(id)
+                                .orElseThrow(() -> new RecursoNoEncontradoException("Entrenamiento no encontrado"));
+
+                return entityToDto(entrenamiento);
         }
 
-        return entrenamientosComunidadDTO;
+        @Transactional
+        public EntrenamientoComunidadDTO crearEntrenamiento(CrearEntrenamientoComunidadDTO dto, String username) {
 
-    }
+                log.info("Usuario {} crea entrenamiento de la comunidad", username);
 
-    // VER DETALLES:
-    public EntrenamientoComunidadDTO verDetalles(Long id) {
+                Usuario usuario = usuarioRepository.findByUsername(username)
+                                .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
 
-        log.debug("Buscando entrenamiento con id: {}", id);
+                boolean repetido = entrenamientoComunidadRepository
+                                .existsByUsuarioAndNombreIgnoreCaseAndCategoriaAndNivelAndDuracionEnMinutos(
+                                                usuario,
+                                                dto.getNombre(),
+                                                dto.getCategoria(),
+                                                dto.getNivel(),
+                                                dto.getDuracionEnMinutos());
 
-        EntrenamientoComunidad entrenamiento = entrenamientoComunidadRepository.findById(id)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Entrenamiento no encontrado"));
+                if (repetido) {
+                        throw new ErrorArgumentoException("Ya has publicado un entrenamiento de comunidad igual");
+                }
 
-        return entityToDto(entrenamiento);
-    }
+                EntrenamientoComunidad entrenamiento = new EntrenamientoComunidad();
+                entrenamiento.setNombre(dto.getNombre());
+                entrenamiento.setDescripcion(dto.getDescripcion());
+                entrenamiento.setCategoria(dto.getCategoria());
+                entrenamiento.setNivel(dto.getNivel());
+                entrenamiento.setDuracionEnMinutos(dto.getDuracionEnMinutos());
+                entrenamiento.setUsuario(usuario);
+                entrenamiento.setFechaPublicacion(LocalDateTime.now());
 
-    // Crear entrenamiento de la comunidad
-    @Transactional
-    public EntrenamientoComunidadDTO crearEntrenamiento(CrearEntrenamientoComunidadDTO dto, String username) {
+                EntrenamientoComunidad entrenamientoGuardado = entrenamientoComunidadRepository.save(entrenamiento);
 
-        log.info("Usuario {} crea entrenamiento de la comunidad", username);
+                log.info("Entrenamiento {} creado para usuario {}", dto.getNombre(), username);
 
-        Usuario usuario = usuarioRepository.findByUsername(username)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
-
-        EntrenamientoComunidad entrenamiento = new EntrenamientoComunidad();
-
-        entrenamiento.setNombre(dto.getNombre());
-        entrenamiento.setDescripcion(dto.getDescripcion());
-        entrenamiento.setCategoria(dto.getCategoria());
-        entrenamiento.setNivel(dto.getNivel());
-        entrenamiento.setDuracionEnMinutos(dto.getDuracionEnMinutos());
-        entrenamiento.setUsuario(usuario);
-        entrenamiento.setFechaPublicacion(LocalDateTime.now());
-
-        EntrenamientoComunidad entrenamientoGuardado = entrenamientoComunidadRepository.save(entrenamiento);
-
-        log.info("Entrenamiento {} creado para usuario {}", dto.getNombre(), username);
-
-        return entityToDto(entrenamientoGuardado);
-    }
-
-    // Borrar entrenamiento de la comunidad
-    @Transactional
-    public void borrarEntrenamiento(Long id, String username) {
-
-        log.info("Usuario {} borra entrenamiento {}", username, id);
-
-        Usuario usuario = usuarioRepository.findByUsername(username)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
-
-        EntrenamientoComunidad entrenamiento = entrenamientoComunidadRepository.findById(id)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Entrenamiento no encontrado"));
-
-        if (!entrenamiento.getUsuario().getId().equals(usuario.getId())) {
-            throw new OperacionNoPermitida("No tienes permiso para borrar este entrenamiento");
+                return entityToDto(entrenamientoGuardado);
         }
 
-        entrenamientoComunidadRepository.delete(entrenamiento);
+        @Transactional
+        public void borrarEntrenamiento(Long id, String username) {
 
-        log.info("Entrenamiento {} borrado para usuario {}", id, username);
-    }
+                log.info("Usuario {} borra entrenamiento {}", username, id);
 
-    // Actualizar entrenamiento de la comunidad
-    @Transactional
-    public EntrenamientoComunidadDTO actualizarEntrenamiento(Long id, CrearEntrenamientoComunidadDTO dto,
-            String username) {
+                Usuario usuario = usuarioRepository.findByUsername(username)
+                                .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
 
-        log.info("Usuario {} actualiza entrenamiento {}", username, id);
+                EntrenamientoComunidad entrenamiento = entrenamientoComunidadRepository.findById(id)
+                                .orElseThrow(() -> new RecursoNoEncontradoException("Entrenamiento no encontrado"));
 
-        Usuario usuario = usuarioRepository.findByUsername(username)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
+                if (!entrenamiento.getUsuario().getId().equals(usuario.getId())) {
+                        throw new OperacionNoPermitida("No tienes permiso para borrar este entrenamiento");
+                }
 
-        EntrenamientoComunidad entrenamiento = entrenamientoComunidadRepository.findById(id)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Entrenamiento no encontrado"));
+                entrenamientoComunidadRepository.delete(entrenamiento);
 
-        if (!entrenamiento.getUsuario().getId().equals(usuario.getId())) {
-            throw new OperacionNoPermitida("No tienes permiso para actualizar este entrenamiento");
+                log.info("Entrenamiento {} borrado para usuario {}", id, username);
         }
 
-        entrenamiento.setNombre(dto.getNombre());
-        entrenamiento.setDescripcion(dto.getDescripcion());
-        entrenamiento.setCategoria(dto.getCategoria());
-        entrenamiento.setNivel(dto.getNivel());
-        entrenamiento.setDuracionEnMinutos(dto.getDuracionEnMinutos());
+        @Transactional
+        public EntrenamientoComunidadDTO actualizarEntrenamiento(Long id, CrearEntrenamientoComunidadDTO dto,
+                        String username) {
 
-        EntrenamientoComunidad entrenamientoGuardado = entrenamientoComunidadRepository.save(entrenamiento);
+                log.info("Usuario {} actualiza entrenamiento {}", username, id);
 
-        log.info("Entrenamiento {} actualizado para usuario {}", id, username);
+                Usuario usuario = usuarioRepository.findByUsername(username)
+                                .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
 
-        return entityToDto(entrenamientoGuardado);
-    }
+                EntrenamientoComunidad entrenamiento = entrenamientoComunidadRepository.findById(id)
+                                .orElseThrow(() -> new RecursoNoEncontradoException("Entrenamiento no encontrado"));
 
-    // Mappers:
-    private EntrenamientoComunidadDTO entityToDto(EntrenamientoComunidad entrenamiento) {
-        EntrenamientoComunidadDTO dto = new EntrenamientoComunidadDTO();
+                if (!entrenamiento.getUsuario().getId().equals(usuario.getId())) {
+                        throw new OperacionNoPermitida("No tienes permiso para actualizar este entrenamiento");
+                }
 
-        dto.setId(entrenamiento.getId());
-        dto.setNombre(entrenamiento.getNombre());
-        dto.setDescripcion(entrenamiento.getDescripcion());
-        dto.setCategoria(entrenamiento.getCategoria());
-        dto.setNivel(entrenamiento.getNivel());
-        dto.setDuracionEnMinutos(entrenamiento.getDuracionEnMinutos());
-        dto.setFechaPublicacion(entrenamiento.getFechaPublicacion());
-        dto.setUsuario(entrenamiento.getUsuario().getUsername());
+                boolean repetido = entrenamientoComunidadRepository
+                                .existsByUsuarioAndNombreIgnoreCaseAndCategoriaAndNivelAndDuracionEnMinutosAndIdNot(
+                                                usuario,
+                                                dto.getNombre(),
+                                                dto.getCategoria(),
+                                                dto.getNivel(),
+                                                dto.getDuracionEnMinutos(),
+                                                id);
 
-        return dto;
-    }
+                if (repetido) {
+                        throw new ErrorArgumentoException("Ya tienes otro entrenamiento de comunidad igual");
+                }
 
-    private EntrenamientoComunidad dtoToEntity(EntrenamientoComunidadDTO dto) {
-        EntrenamientoComunidad entrenamiento = new EntrenamientoComunidad();
+                entrenamiento.setNombre(dto.getNombre());
+                entrenamiento.setDescripcion(dto.getDescripcion());
+                entrenamiento.setCategoria(dto.getCategoria());
+                entrenamiento.setNivel(dto.getNivel());
+                entrenamiento.setDuracionEnMinutos(dto.getDuracionEnMinutos());
 
-        entrenamiento.setNombre(dto.getNombre());
-        entrenamiento.setDescripcion(dto.getDescripcion());
-        entrenamiento.setCategoria(dto.getCategoria());
-        entrenamiento.setNivel(dto.getNivel());
-        entrenamiento.setDuracionEnMinutos(dto.getDuracionEnMinutos());
+                EntrenamientoComunidad entrenamientoGuardado = entrenamientoComunidadRepository.save(entrenamiento);
 
-        // Asignar el usuario (asumiendo que el DTO tiene el username)
-        if (dto.getUsuario() != null) {
-            entrenamiento.setUsuario(usuarioRepository.findByUsername(dto.getUsuario()).orElse(null));
+                log.info("Entrenamiento {} actualizado para usuario {}", id, username);
+
+                return entityToDto(entrenamientoGuardado);
         }
 
-        return entrenamiento;
-    }
+        private EntrenamientoComunidadDTO entityToDto(EntrenamientoComunidad entrenamiento) {
+                EntrenamientoComunidadDTO dto = new EntrenamientoComunidadDTO();
+
+                dto.setId(entrenamiento.getId());
+                dto.setNombre(entrenamiento.getNombre());
+                dto.setDescripcion(entrenamiento.getDescripcion());
+                dto.setCategoria(entrenamiento.getCategoria());
+                dto.setNivel(entrenamiento.getNivel());
+                dto.setDuracionEnMinutos(entrenamiento.getDuracionEnMinutos());
+                dto.setFechaPublicacion(entrenamiento.getFechaPublicacion());
+                dto.setUsuario(entrenamiento.getUsuario().getUsername());
+
+                return dto;
+        }
+
+        private EntrenamientoComunidad dtoToEntity(EntrenamientoComunidadDTO dto) {
+                EntrenamientoComunidad entrenamiento = new EntrenamientoComunidad();
+
+                entrenamiento.setNombre(dto.getNombre());
+                entrenamiento.setDescripcion(dto.getDescripcion());
+                entrenamiento.setCategoria(dto.getCategoria());
+                entrenamiento.setNivel(dto.getNivel());
+                entrenamiento.setDuracionEnMinutos(dto.getDuracionEnMinutos());
+
+                if (dto.getUsuario() != null) {
+                        entrenamiento.setUsuario(usuarioRepository.findByUsername(dto.getUsuario()).orElse(null));
+                }
+
+                return entrenamiento;
+        }
 }

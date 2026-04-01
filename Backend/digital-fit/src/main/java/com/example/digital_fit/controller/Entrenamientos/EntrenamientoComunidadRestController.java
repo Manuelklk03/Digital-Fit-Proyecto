@@ -35,14 +35,17 @@ public class EntrenamientoComunidadRestController {
     public ResponseEntity<List<EntrenamientoComunidadDTO>> listarOFiltrar(
             @RequestParam(required = false) CategoriaEntrenamientoComunidad categoria,
             @RequestParam(required = false) NivelEntrenamiento nivel,
-            @RequestParam(required = false) Integer duracionEnMinutos, @RequestParam(required = false) String nombre) {
+            @RequestParam(required = false) Integer duracionEnMinutos,
+            @RequestParam(required = false) String nombre) {
+
         return ResponseEntity.status(HttpStatus.OK)
                 .body(entrenamientoComunidadService.listarOFiltrar(categoria, nivel, duracionEnMinutos, nombre));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<EntrenamientoComunidadDTO> verDetalles(@PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(entrenamientoComunidadService.verDetalles(id));
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(entrenamientoComunidadService.verDetalles(id));
     }
 
     @PostMapping
@@ -51,16 +54,22 @@ public class EntrenamientoComunidadRestController {
             Authentication authentication) {
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(entrenamientoComunidadService.crearEntrenamiento(entrenamientoComunidadDTO,
+                .body(entrenamientoComunidadService.crearEntrenamiento(
+                        entrenamientoComunidadDTO,
                         authentication.getName()));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EntrenamientoComunidadDTO> actualizarEntrenamiento(@PathVariable Long id,
+    public ResponseEntity<EntrenamientoComunidadDTO> actualizarEntrenamiento(
+            @PathVariable Long id,
             @Valid @RequestBody CrearEntrenamientoComunidadDTO entrenamientoComunidadDTO,
             Authentication authentication) {
-        return ResponseEntity.status(HttpStatus.OK).body(entrenamientoComunidadService.actualizarEntrenamiento(id,
-                entrenamientoComunidadDTO, authentication.getName()));
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(entrenamientoComunidadService.actualizarEntrenamiento(
+                        id,
+                        entrenamientoComunidadDTO,
+                        authentication.getName()));
     }
 
     @DeleteMapping("/{id}")
@@ -68,5 +77,4 @@ public class EntrenamientoComunidadRestController {
         entrenamientoComunidadService.borrarEntrenamiento(id, authentication.getName());
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
-
 }
