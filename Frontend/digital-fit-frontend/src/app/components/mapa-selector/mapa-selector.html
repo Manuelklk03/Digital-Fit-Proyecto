@@ -1,6 +1,6 @@
-<div class="mapa-contenedor">
-  @if (!soloVista) {
-    <p class="texto-ayuda">{{ textoAyuda }}</p>
+<div class="mapa-bloque">
+  @if (textoAyuda) {
+    <p class="texto-ayuda-mapa">{{ textoAyuda }}</p>
   }
 
   <div #mapContainer class="mapa-leaflet"></div>

@@ -5,12 +5,10 @@ import {
   EventEmitter,
   Input,
   Output,
-  ViewChild,
-  OnChanges,
-  SimpleChanges,
-  OnDestroy
+  ViewChild
 } from '@angular/core';
 import * as L from 'leaflet';
+import 'leaflet-control-geocoder';
 
 @Component({
   selector: 'app-mapa-selector',
@@ -18,7 +16,7 @@ import * as L from 'leaflet';
   templateUrl: './mapa-selector.html',
   styleUrl: './mapa-selector.css'
 })
-export class MapaSelectorComponent implements AfterViewInit, OnChanges, OnDestroy {
+export class MapaSelectorComponent implements AfterViewInit {
 
   @ViewChild('mapContainer', { static: true }) mapContainer!: ElementRef<HTMLDivElement>;
 
@@ -26,113 +24,150 @@ export class MapaSelectorComponent implements AfterViewInit, OnChanges, OnDestro
   @Input() longitud: number | null = null;
   @Input() soloVista = false;
 
-  // libre = cualquiera
-  // centro = para centros privados
-  // lugar = para lugares públicos
-  @Input() tipoSeleccion: 'libre' | 'centro' | 'lugar' = 'libre';
-
-  @Input() textoAyuda = 'Pulsa sobre el mapa para seleccionar una ubicación.';
+  @Input() tipoSeleccion: 'centro' | 'lugar' = 'lugar';
+  @Input() textoAyuda = '';
 
   @Output() ubicacionSeleccionada = new EventEmitter<{ latitud: number, longitud: number }>();
 
   private map!: L.Map;
-  private marker: L.CircleMarker | null = null;
-  private mapaInicializado = false;
+  private marker: L.Marker | null = null;
+
+  // Centro inicial: Valencia
+  private readonly latitudValencia = 39.4699;
+  private readonly longitudValencia = -0.3763;
 
   ngAfterViewInit(): void {
     this.inicializarMapa();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (!this.mapaInicializado) {
-      return;
-    }
-
-    if (changes['latitud'] || changes['longitud']) {
-      this.actualizarVistaDesdeInputs();
-    }
-
-    if (changes['soloVista']) {
-      this.actualizarModoInteraccion();
-    }
-  }
-
-  ngOnDestroy(): void {
-    if (this.map) {
-      this.map.remove();
-    }
-  }
-
   private inicializarMapa(): void {
-    const lat = this.latitud ?? 36.834;
-    const lng = this.longitud ?? -2.463;
-    const zoom = (this.latitud !== null && this.longitud !== null) ? 15 : 13;
+    const lat = this.latitud ?? this.latitudValencia;
+    const lng = this.longitud ?? this.longitudValencia;
+    const zoom = (this.latitud !== null && this.longitud !== null) ? 16 : 13;
 
-    this.map = L.map(this.mapContainer.nativeElement, {
-      center: [lat, lng],
-      zoom: zoom
-    });
+    this.map = L.map(this.mapContainer.nativeElement).setView([lat, lng], zoom);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors',
-      maxZoom: 19
+      attribution: '&copy; OpenStreetMap contributors'
     }).addTo(this.map);
+
+    this.configurarBuscador();
 
     if (this.latitud !== null && this.longitud !== null) {
       this.colocarMarker(this.latitud, this.longitud);
     }
 
-    this.actualizarModoInteraccion();
+    if (!this.soloVista) {
+      this.map.on('click', (e: L.LeafletMouseEvent) => {
+        const nuevaLat = Number(e.latlng.lat.toFixed(6));
+        const nuevaLng = Number(e.latlng.lng.toFixed(6));
 
-    this.map.on('click', (e: L.LeafletMouseEvent) => {
-      if (this.soloVista) {
-        return;
-      }
-
-      const nuevaLat = Number(e.latlng.lat.toFixed(6));
-      const nuevaLng = Number(e.latlng.lng.toFixed(6));
-
-      this.colocarMarker(nuevaLat, nuevaLng);
-
-      this.ubicacionSeleccionada.emit({
-        latitud: nuevaLat,
-        longitud: nuevaLng
+        this.colocarMarker(nuevaLat, nuevaLng);
+        this.ubicacionSeleccionada.emit({
+          latitud: nuevaLat,
+          longitud: nuevaLng
+        });
       });
-    });
+    }
 
-    this.mapaInicializado = true;
+    this.crearBotonVolverValencia();
+    this.crearBotonVolverMarcador();
 
     setTimeout(() => {
       this.map.invalidateSize();
     }, 200);
   }
 
-  private actualizarVistaDesdeInputs(): void {
-    if (this.latitud == null || this.longitud == null) {
+  private configurarBuscador(): void {
+    const geocoderConstructor = (L.Control as any).Geocoder;
+
+    if (!geocoderConstructor) {
       return;
     }
 
-    this.colocarMarker(this.latitud, this.longitud);
-    this.map.setView([this.latitud, this.longitud], 15);
+    const geocoder = geocoderConstructor.nominatim();
 
-    setTimeout(() => {
-      this.map.invalidateSize();
-    }, 100);
+    const control = geocoderConstructor.geocoder({
+      defaultMarkGeocode: false,
+      placeholder: this.tipoSeleccion === 'centro'
+        ? 'Buscar dirección de centro en Valencia...'
+        : 'Buscar dirección de lugar en Valencia...',
+      errorMessage: 'Dirección no encontrada',
+      geocoder
+    }).addTo(this.map);
+
+    control.on('markgeocode', (e: any) => {
+      const center = e.geocode.center;
+      const nuevaLat = Number(center.lat.toFixed(6));
+      const nuevaLng = Number(center.lng.toFixed(6));
+
+      this.map.setView([nuevaLat, nuevaLng], 16);
+      this.colocarMarker(nuevaLat, nuevaLng);
+
+      if (!this.soloVista) {
+        this.ubicacionSeleccionada.emit({
+          latitud: nuevaLat,
+          longitud: nuevaLng
+        });
+      }
+    });
   }
 
-  private actualizarModoInteraccion(): void {
-    if (!this.map) {
-      return;
-    }
+  private crearBotonVolverValencia(): void {
+    const BotonValencia = L.Control.extend({
+      options: { position: 'topleft' },
 
-    if (this.soloVista) {
-      this.map.dragging.enable();
-      this.map.touchZoom.enable();
-      this.map.doubleClickZoom.enable();
-      this.map.scrollWheelZoom.enable();
-      this.map.boxZoom.enable();
-      this.map.keyboard.enable();
-    }
+      onAdd: () => {
+        const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+        const button = L.DomUtil.create('a', 'boton-mapa-control', container);
+
+        button.innerHTML = 'VLC';
+        button.href = '#';
+        button.title = 'Volver a Valencia';
+
+        L.DomEvent.disableClickPropagation(container);
+
+        L.DomEvent.on(button, 'click', L.DomEvent.stop);
+        L.DomEvent.on(button, 'click', () => {
+          this.map.setView([this.latitudValencia, this.longitudValencia], 13);
+        });
+
+        return container;
+      }
+    });
+
+    this.map.addControl(new BotonValencia());
+  }
+
+  private crearBotonVolverMarcador(): void {
+    const BotonMarcador = L.Control.extend({
+      options: { position: 'topleft' },
+
+      onAdd: () => {
+        const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+        const button = L.DomUtil.create('a', 'boton-mapa-control', container);
+
+        button.innerHTML = '📍';
+        button.href = '#';
+        button.title = 'Volver a la ubicación marcada';
+
+        L.DomEvent.disableClickPropagation(container);
+
+        L.DomEvent.on(button, 'click', L.DomEvent.stop);
+        L.DomEvent.on(button, 'click', () => {
+          const lat = this.marker ? this.marker.getLatLng().lat : this.latitud;
+          const lng = this.marker ? this.marker.getLatLng().lng : this.longitud;
+
+          if (lat != null && lng != null) {
+            this.map.setView([lat, lng], 16);
+          }
+        });
+
+        return container;
+      }
+    });
+
+    this.map.addControl(new BotonMarcador());
   }
 
   private colocarMarker(lat: number, lng: number): void {
@@ -140,27 +175,6 @@ export class MapaSelectorComponent implements AfterViewInit, OnChanges, OnDestro
       this.marker.remove();
     }
 
-    this.marker = L.circleMarker([lat, lng], {
-      radius: 10,
-      weight: 3,
-      color: '#1a4f87',
-      fillColor: '#3C91E6',
-      fillOpacity: 0.9
-    }).addTo(this.map);
-
-    const textoPopup = this.obtenerTextoPopup();
-    this.marker.bindPopup(`${textoPopup}<br>${lat}, ${lng}`);
-  }
-
-  private obtenerTextoPopup(): string {
-    if (this.tipoSeleccion === 'centro') {
-      return 'Ubicación seleccionada para centro privado';
-    }
-
-    if (this.tipoSeleccion === 'lugar') {
-      return 'Ubicación seleccionada para lugar público';
-    }
-
-    return 'Ubicación seleccionada';
+    this.marker = L.marker([lat, lng]).addTo(this.map);
   }
 }
