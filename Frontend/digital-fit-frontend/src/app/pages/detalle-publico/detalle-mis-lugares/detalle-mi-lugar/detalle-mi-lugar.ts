@@ -3,10 +3,11 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../../../components/header/header';
 import { Footer } from '../../../../components/footer/footer';
 import { MisLugaresService } from '../../../../services/publicos/mis-lugares';
+import { MapaSelectorComponent } from '../../../../components/mapa-selector/mapa-selector';
 
 @Component({
   selector: 'app-detalle-mi-lugar',
-  imports: [HeaderComponent, Footer, RouterLink],
+  imports: [HeaderComponent, Footer, RouterLink, MapaSelectorComponent],
   templateUrl: './detalle-mi-lugar.html',
   styleUrl: './detalle-mi-lugar.css'
 })
@@ -65,6 +66,14 @@ export class DetalleMiLugarComponent {
 
     return tipo.replaceAll('_', ' ').toLowerCase()
       .replace(/\b\w/g, letra => letra.toUpperCase());
+  }
+
+  formatearUbicacion(latitud: number, longitud: number): string {
+    if (latitud == null || longitud == null) {
+      return 'Sin ubicación';
+    }
+
+    return `${latitud}, ${longitud}`;
   }
 
   abrirPopup(texto: string, tipo: 'exito' | 'error'): void {

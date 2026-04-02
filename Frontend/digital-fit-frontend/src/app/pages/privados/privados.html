@@ -116,6 +116,11 @@
     <div class="grid-centros">
       @for (centro of centros; track centro.id) {
       <article class="tarjeta-centro">
+
+        <div class="ubicacion-tarjeta">
+          <strong>Ubicación:</strong> {{ formatearUbicacion(centro.latitud, centro.longitud) }}
+        </div>
+
         <h3>{{ centro.nombre }}</h3>
 
         <p><strong>Dirección:</strong> {{ centro.direccion }}</p>

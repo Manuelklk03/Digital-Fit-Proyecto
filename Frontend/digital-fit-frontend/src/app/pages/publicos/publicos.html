@@ -139,6 +139,11 @@
     <div class="grid-lugares">
       @for (lugar of lugares; track lugar.id) {
       <article class="tarjeta-lugar">
+
+        <div class="ubicacion-tarjeta">
+          <strong>Ubicación:</strong> {{ formatearUbicacion(lugar.latitud, lugar.longitud) }}
+        </div>
+
         <h3>{{ lugar.nombre }}</h3>
 
         <p><strong>Dirección:</strong> {{ lugar.direccion }}</p>

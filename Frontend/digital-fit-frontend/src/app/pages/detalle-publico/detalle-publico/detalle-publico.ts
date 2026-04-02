@@ -6,10 +6,11 @@ import { PublicosService } from '../../../services/publicos/publicos-service';
 import { MisLugaresService } from '../../../services/publicos/mis-lugares';
 import { AdminLugaresPublicosBaseService } from '../../../services/admin/admin-lugarespublicos-base';
 import { AuthService } from '../../../services/auth-service';
+import { MapaSelectorComponent } from '../../../components/mapa-selector/mapa-selector';
 
 @Component({
   selector: 'app-detalle-publico',
-  imports: [HeaderComponent, Footer, RouterLink],
+  imports: [HeaderComponent, Footer, RouterLink, MapaSelectorComponent],
   templateUrl: './detalle-publico.html',
   styleUrl: './detalle-publico.css'
 })
@@ -104,6 +105,14 @@ export class DetallePublicoComponent {
 
     return tipo.replaceAll('_', ' ').toLowerCase()
       .replace(/\b\w/g, letra => letra.toUpperCase());
+  }
+
+  formatearUbicacion(latitud: number, longitud: number): string {
+    if (latitud == null || longitud == null) {
+      return 'Sin ubicación';
+    }
+
+    return `${latitud}, ${longitud}`;
   }
 
   abrirPopup(texto: string, tipo: 'exito' | 'error'): void {

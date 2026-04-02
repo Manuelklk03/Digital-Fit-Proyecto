@@ -102,13 +102,21 @@ export class MisCentrosComponent {
   borrarCentro(id: number): void {
     this.misCentrosService.borrarCentro(id).subscribe({
       next: () => {
-        this.abrirPopup('Centro borrado correctamente.', 'exito');
+        this.abrirPopup('Centro borrado correctamente.', 'error');
         this.cargarMisCentros();
       },
       error: () => {
         this.abrirPopup('No se pudo borrar el centro.', 'error');
       }
     });
+  }
+
+  formatearUbicacion(latitud: number, longitud: number): string {
+    if (latitud == null || longitud == null) {
+      return 'Sin ubicación';
+    }
+
+    return `${latitud}, ${longitud}`;
   }
 
   abrirPopup(texto: string, tipo: 'exito' | 'error'): void {

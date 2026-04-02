@@ -174,7 +174,7 @@ export class PublicosComponent {
   borrarLugarBase(id: number): void {
     this.adminLugaresPublicosBaseService.borrarLugarPublicoBase(id).subscribe({
       next: () => {
-        this.abrirPopup('Lugar público base borrado correctamente.', 'exito');
+        this.abrirPopup('Lugar público base borrado correctamente.', 'error');
         this.cargarLugares();
       },
       error: () => {
@@ -217,6 +217,14 @@ export class PublicosComponent {
 
     return tipo.replaceAll('_', ' ').toLowerCase()
       .replace(/\b\w/g, letra => letra.toUpperCase());
+  }
+
+  formatearUbicacion(latitud: number, longitud: number): string {
+    if (latitud == null || longitud == null) {
+      return 'Sin ubicación';
+    }
+
+    return `${latitud}, ${longitud}`;
   }
 
   abrirPopup(texto: string, tipo: 'exito' | 'error'): void {
