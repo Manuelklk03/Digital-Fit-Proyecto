@@ -3,27 +3,48 @@
     width: 100%;
 }
 
-.mapa-contenedor {
-    width: 100%;
+.mapa-bloque {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
-.texto-ayuda {
-    margin: 0 0 12px 0;
-    font-weight: bold;
+.texto-ayuda-mapa {
+    margin: 0;
+    font-size: 14px;
     color: var(--color-azul-oscuro);
+    font-weight: bold;
 }
 
 .mapa-leaflet {
     width: 100%;
-    height: 380px;
-    border-radius: 18px;
+    height: 420px;
+    border-radius: 16px;
     overflow: hidden;
     border: 2px solid #aac5eb;
     box-shadow: 0px 8px 18px rgba(0, 0, 0, 0.10);
 }
 
-@media (max-width: 600px) {
-    .mapa-leaflet {
-        height: 300px;
-    }
+:host ::ng-deep .boton-mapa-control {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    font-size: 15px;
+    font-weight: bold;
+    color: var(--color-azul-oscuro) !important;
+    background-color: white !important;
+    text-decoration: none;
+}
+
+:host ::ng-deep .leaflet-control-geocoder {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0px 6px 14px rgba(0, 0, 0, 0.12);
+}
+
+:host ::ng-deep .leaflet-control-geocoder-form input {
+    font-size: 14px;
+    padding: 8px 10px;
 }
