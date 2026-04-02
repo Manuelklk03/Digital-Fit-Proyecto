@@ -4,10 +4,11 @@ import { HeaderComponent } from './../../../components/header/header';
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { MapaSelectorComponent } from '../../../components/mapa-selector/mapa-selector';
 
 @Component({
   selector: 'app-mis-centros',
-  imports: [HeaderComponent, Footer, FormsModule, RouterLink],
+  imports: [HeaderComponent, Footer, FormsModule, RouterLink, MapaSelectorComponent],
   templateUrl: './mis-centros.html',
   styleUrl: './mis-centros.css'
 })
@@ -17,6 +18,15 @@ export class MisCentrosComponent {
   private cdr = inject(ChangeDetectorRef);
 
   centros: any[] = [];
+
+  nombre = '';
+  direccion = '';
+  telefono = '';
+  horario = '';
+  precioMensual = 30;
+  descripcion = '';
+  latitud: number | null = null;
+  longitud: number | null = null;
 
   tipoBusqueda = 'nombre';
   valorBusqueda = '';
@@ -99,16 +109,66 @@ export class MisCentrosComponent {
     this.cargarMisCentros();
   }
 
+  actualizarUbicacionMapa(evento: { latitud: number; longitud: number }): void {
+    this.latitud = evento.latitud;
+    this.longitud = evento.longitud;
+  }
+
+  crearCentroDesdeMapa(): void {
+    if (!this.nombre.trim() || !this.direccion.trim()) {
+      this.abrirPopup('Debes completar al menos nombre y dirección.', 'error');
+      return;
+    }
+
+    if (this.latitud == null || this.longitud == null) {
+      this.abrirPopup('Debes seleccionar la ubicación en el mapa.', 'error');
+      return;
+    }
+
+    const payload = {
+      nombre: this.nombre,
+      direccion: this.direccion,
+      telefono: this.telefono,
+      horario: this.horario,
+      precioMensual: this.precioMensual,
+      descripcion: this.descripcion,
+      latitud: this.latitud,
+      longitud: this.longitud
+    };
+
+    this.misCentrosService.crearCentroDesdeMaps(payload).subscribe({
+      next: () => {
+        this.abrirPopup('Centro guardado correctamente desde el mapa.', 'exito');
+        this.limpiarFormulario();
+        this.cargarMisCentros();
+      },
+      error: () => {
+        this.abrirPopup('No se pudo guardar el centro desde el mapa.', 'error');
+      }
+    });
+  }
+
   borrarCentro(id: number): void {
     this.misCentrosService.borrarCentro(id).subscribe({
       next: () => {
-        this.abrirPopup('Centro borrado correctamente.', 'error');
+        this.abrirPopup('Centro borrado correctamente.', 'exito');
         this.cargarMisCentros();
       },
       error: () => {
         this.abrirPopup('No se pudo borrar el centro.', 'error');
       }
     });
+  }
+
+  limpiarFormulario(): void {
+    this.nombre = '';
+    this.direccion = '';
+    this.telefono = '';
+    this.horario = '';
+    this.precioMensual = 30;
+    this.descripcion = '';
+    this.latitud = null;
+    this.longitud = null;
   }
 
   formatearUbicacion(latitud: number, longitud: number): string {

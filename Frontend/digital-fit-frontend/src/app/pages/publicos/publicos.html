@@ -52,16 +52,6 @@
         </div>
 
         <div class="grupo-campo">
-          <label for="latitud">Latitud</label>
-          <input type="number" id="latitud" name="latitud" [(ngModel)]="latitud">
-        </div>
-
-        <div class="grupo-campo">
-          <label for="longitud">Longitud</label>
-          <input type="number" id="longitud" name="longitud" [(ngModel)]="longitud">
-        </div>
-
-        <div class="grupo-campo">
           <label for="tipo">Tipo</label>
           <select id="tipo" name="tipo" [(ngModel)]="tipo">
             <option value="PISTA_PADEL">Pista Pádel</option>
@@ -93,6 +83,24 @@
       <div class="grupo-campo">
         <label for="descripcion">Descripción</label>
         <textarea id="descripcion" name="descripcion" rows="4" [(ngModel)]="descripcion"></textarea>
+      </div>
+
+      <div class="bloque-mapa">
+        <h3>Seleccionar ubicación en el mapa</h3>
+
+        <app-mapa-selector
+          [latitud]="latitud"
+          [longitud]="longitud"
+          [soloVista]="false"
+          tipoSeleccion="lugar"
+          textoAyuda="Pulsa en el mapa para seleccionar la ubicación del lugar público."
+          (ubicacionSeleccionada)="actualizarUbicacionMapa($event)">
+        </app-mapa-selector>
+
+        <p class="texto-ubicacion-seleccionada">
+          <strong>Ubicación seleccionada:</strong>
+          {{ formatearUbicacion(latitud!, longitud!) }}
+        </p>
       </div>
 
       <div class="acciones-formulario">

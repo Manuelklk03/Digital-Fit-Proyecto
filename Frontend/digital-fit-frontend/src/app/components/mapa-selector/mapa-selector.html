@@ -1,3 +1,7 @@
 <div class="mapa-contenedor">
+  @if (!soloVista) {
+    <p class="texto-ayuda">{{ textoAyuda }}</p>
+  }
+
   <div #mapContainer class="mapa-leaflet"></div>
 </div>

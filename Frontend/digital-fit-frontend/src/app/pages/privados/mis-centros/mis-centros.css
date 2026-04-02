@@ -80,6 +80,7 @@
     line-height: 1.7;
 }
 
+.bloque-formulario,
 .bloque-listado {
     max-width: 1100px;
     margin: 0 auto 25px auto;
@@ -88,6 +89,69 @@
     padding: 24px 30px;
     box-shadow: 0px 10px 24px rgba(0, 0, 0, 0.12);
     animation: fadeUp 0.9s ease;
+}
+
+.formulario-centro {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.grid-formulario {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.grupo-campo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.grupo-campo label {
+    font-weight: bold;
+    color: var(--color-azul-oscuro);
+}
+
+.grupo-campo input,
+.grupo-campo textarea,
+.barra-busqueda input,
+.barra-busqueda select {
+    padding: 14px;
+    border: 1px solid #aac5eb;
+    border-radius: 12px;
+    font-size: 15px;
+    background-color: white;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.bloque-mapa {
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.bloque-mapa h3 {
+    margin: 0;
+    color: var(--color-azul-oscuro);
+}
+
+.texto-ubicacion-seleccionada {
+    margin: 0;
+    padding: 12px 14px;
+    background-color: #eef6ff;
+    border-radius: 12px;
+    font-size: 14px;
+    word-break: break-word;
+}
+
+.acciones-formulario,
+.acciones-centro {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
 }
 
 .cabecera-listado {
@@ -109,15 +173,6 @@
     gap: 12px;
     flex-wrap: wrap;
     align-items: center;
-}
-
-.barra-busqueda input,
-.barra-busqueda select {
-    padding: 14px;
-    border: 1px solid #aac5eb;
-    border-radius: 12px;
-    font-size: 15px;
-    background-color: white;
 }
 
 .barra-busqueda input {
@@ -146,16 +201,21 @@
     margin: 8px 0;
 }
 
-.acciones-centro {
-    display: flex;
-    gap: 12px;
-    margin-top: 14px;
-    flex-wrap: wrap;
+.ubicacion-tarjeta {
+    margin-bottom: 14px;
+    padding: 10px 12px;
+    background-color: #dbeafe;
+    border-left: 4px solid var(--color-azul-oscuro);
+    border-radius: 10px;
+    font-size: 14px;
+    word-break: break-word;
 }
 
 .boton-detalle,
 .boton-borrar,
-.boton-limpiar {
+.boton-limpiar,
+.boton-guardar,
+.boton-limpiar-formulario {
     padding: 12px 18px;
     border: none;
     border-radius: 10px;
@@ -166,7 +226,8 @@
     display: inline-block;
 }
 
-.boton-detalle {
+.boton-detalle,
+.boton-guardar {
     background-color: var(--color-azul-oscuro);
     color: white;
 }
@@ -176,14 +237,17 @@
     color: white;
 }
 
-.boton-limpiar {
+.boton-limpiar,
+.boton-limpiar-formulario {
     background-color: #f0a500;
     color: white;
 }
 
 .boton-detalle:hover,
 .boton-borrar:hover,
-.boton-limpiar:hover {
+.boton-limpiar:hover,
+.boton-guardar:hover,
+.boton-limpiar-formulario:hover {
     transform: translateY(-2px);
 }
 
@@ -191,37 +255,40 @@
     font-weight: bold;
 }
 
+@media (max-width: 800px) {
+    .grid-formulario {
+        grid-template-columns: 1fr;
+    }
+}
+
 @media (max-width: 600px) {
     .cabecera-pagina h1 {
         font-size: 30px;
     }
 
+    .bloque-formulario,
     .bloque-listado {
         padding: 22px;
     }
 
-    .barra-busqueda {
+    .barra-busqueda,
+    .acciones-formulario,
+    .acciones-centro {
         flex-direction: column;
         align-items: stretch;
     }
 
     .barra-busqueda input,
     .barra-busqueda select,
-    .boton-limpiar {
+    .boton-limpiar,
+    .boton-guardar,
+    .boton-limpiar-formulario,
+    .boton-detalle,
+    .boton-borrar {
         width: 100%;
     }
 
     .popup-overlay {
         padding-top: 90px;
     }
-}
-
-.ubicacion-tarjeta {
-    margin-bottom: 14px;
-    padding: 10px 12px;
-    background-color: #dbeafe;
-    border-left: 4px solid var(--color-azul-oscuro);
-    border-radius: 10px;
-    font-size: 14px;
-    word-break: break-word;
 }
