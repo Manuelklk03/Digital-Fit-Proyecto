@@ -3,10 +3,11 @@ import { Footer } from './../../../components/footer/footer';
 import { HeaderComponent } from './../../../components/header/header';
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { MapaSelectorComponent } from '../../../components/mapa-selector/mapa-selector';
 
 @Component({
   selector: 'app-detalle-mi-centro',
-  imports: [HeaderComponent, Footer, RouterLink],
+  imports: [HeaderComponent, Footer, RouterLink, MapaSelectorComponent],
   templateUrl: './detalle-mi-centro.html',
   styleUrl: './detalle-mi-centro.css'
 })
@@ -56,6 +57,14 @@ export class DetalleMiCentroComponent {
         this.abrirPopup('No se pudo borrar el centro.', 'error');
       }
     });
+  }
+
+  formatearUbicacion(latitud: number, longitud: number): string {
+    if (latitud == null || longitud == null) {
+      return 'Sin ubicación';
+    }
+
+    return `${latitud}, ${longitud}`;
   }
 
   abrirPopup(texto: string, tipo: 'exito' | 'error'): void {

@@ -6,10 +6,11 @@ import { PrivadosService } from '../../services/centros/privados-service';
 import { MisCentrosService } from '../../services/centros/mis-centros-service';
 import { AdminCentrosPrivadosBaseService } from '../../services/admin/admin-centro-base';
 import { AuthService } from '../../services/auth-service';
+import { MapaSelectorComponent } from '../../components/mapa-selector/mapa-selector';
 
 @Component({
   selector: 'app-detalle-privado',
-  imports: [HeaderComponent, Footer, RouterLink],
+  imports: [HeaderComponent, Footer, RouterLink, MapaSelectorComponent],
   templateUrl: './detalle-privado.html',
   styleUrl: './detalle-privado.css'
 })
@@ -61,6 +62,14 @@ export class DetallePrivadoComponent {
 
   esAdmin(): boolean {
     return this.usuarioActual?.rol === 'ADMIN';
+  }
+
+  formatearUbicacion(latitud: number, longitud: number): string {
+    if (latitud == null || longitud == null) {
+      return 'Sin ubicación';
+    }
+
+    return `${latitud}, ${longitud}`;
   }
 
   anadirAMisCentros(): void {

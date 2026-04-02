@@ -181,7 +181,7 @@ export class PrivadosComponent {
   borrarCentroBase(id: number): void {
     this.adminCentrosPrivadosBaseService.borrarCentroPrivadoBase(id).subscribe({
       next: () => {
-        this.abrirPopup('Centro privado base borrado correctamente.', 'exito');
+        this.abrirPopup('Centro privado base borrado correctamente.', 'error');
         this.cargarCentros();
       },
       error: () => {
@@ -215,6 +215,14 @@ export class PrivadosComponent {
     this.descripcion = '';
     this.latitud = 0;
     this.longitud = 0;
+  }
+
+  formatearUbicacion(latitud: number, longitud: number): string {
+    if (latitud == null || longitud == null) {
+      return 'Sin ubicación';
+    }
+
+    return `${latitud}, ${longitud}`;
   }
 
   abrirPopup(texto: string, tipo: 'exito' | 'error'): void {

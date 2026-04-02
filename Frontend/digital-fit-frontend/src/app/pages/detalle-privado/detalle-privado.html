@@ -17,6 +17,18 @@
     <p>Consulta toda la información del centro privado base.</p>
   </section>
 
+  <section class="bloque-mapa">
+    <h2>Ubicación en el mapa</h2>
+    <app-mapa-selector
+      [latitud]="centro.latitud"
+      [longitud]="centro.longitud"
+      [soloVista]="true">
+    </app-mapa-selector>
+    <p class="texto-ubicacion">
+      Ubicación: {{ formatearUbicacion(centro.latitud, centro.longitud) }}
+    </p>
+  </section>
+
   <section class="bloque-detalle">
     <div class="dato-detalle">
       <span class="etiqueta">Nombre</span>
@@ -26,6 +38,11 @@
     <div class="dato-detalle">
       <span class="etiqueta">Dirección</span>
       <span>{{ centro.direccion }}</span>
+    </div>
+
+    <div class="dato-detalle">
+      <span class="etiqueta">Ubicación</span>
+      <span>{{ formatearUbicacion(centro.latitud, centro.longitud) }}</span>
     </div>
 
     <div class="dato-detalle">

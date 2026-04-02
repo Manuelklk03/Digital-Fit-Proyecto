@@ -95,7 +95,7 @@ export class MisLugaresComponent {
   borrarLugar(id: number): void {
     this.misLugaresService.borrarLugar(id).subscribe({
       next: () => {
-        this.abrirPopup('Lugar borrado correctamente.', 'exito');
+        this.abrirPopup('Lugar borrado correctamente.', 'error');
         this.cargarMisLugares();
       },
       error: () => {
@@ -111,6 +111,14 @@ export class MisLugaresComponent {
 
     return tipo.replaceAll('_', ' ').toLowerCase()
       .replace(/\b\w/g, letra => letra.toUpperCase());
+  }
+
+  formatearUbicacion(latitud: number, longitud: number): string {
+    if (latitud == null || longitud == null) {
+      return 'Sin ubicación';
+    }
+
+    return `${latitud}, ${longitud}`;
   }
 
   abrirPopup(texto: string, tipo: 'exito' | 'error'): void {
