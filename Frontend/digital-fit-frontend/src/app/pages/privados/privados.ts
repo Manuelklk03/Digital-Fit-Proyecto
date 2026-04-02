@@ -7,10 +7,11 @@ import { PrivadosService } from '../../services/centros/privados-service';
 import { MisCentrosService } from '../../services/centros/mis-centros-service';
 import { AdminCentrosPrivadosBaseService } from '../../services/admin/admin-centro-base';
 import { AuthService } from '../../services/auth-service';
+import { MapaSelectorComponent } from '../../components/mapa-selector/mapa-selector';
 
 @Component({
   selector: 'app-privados',
-  imports: [HeaderComponent, Footer, FormsModule, RouterLink],
+  imports: [HeaderComponent, Footer, FormsModule, RouterLink, MapaSelectorComponent],
   templateUrl: './privados.html',
   styleUrl: './privados.css'
 })
@@ -31,8 +32,8 @@ export class PrivadosComponent {
   horario = '';
   precioMensual = 30;
   descripcion = '';
-  latitud = 0;
-  longitud = 0;
+  latitud: number | null = null;
+  longitud: number | null = null;
 
   editandoId: number | null = null;
 
@@ -129,7 +130,17 @@ export class PrivadosComponent {
     this.cargarCentros();
   }
 
+  actualizarUbicacionMapa(evento: { latitud: number; longitud: number }): void {
+    this.latitud = evento.latitud;
+    this.longitud = evento.longitud;
+  }
+
   guardarCentroBase(): void {
+    if (this.latitud == null || this.longitud == null) {
+      this.abrirPopup('Debes seleccionar la ubicación del centro en el mapa.', 'error');
+      return;
+    }
+
     const payload = {
       nombre: this.nombre,
       direccion: this.direccion,
@@ -174,14 +185,19 @@ export class PrivadosComponent {
     this.horario = centro.horario;
     this.precioMensual = centro.precioMensual;
     this.descripcion = centro.descripcion;
-    this.latitud = centro.latitud ?? 0;
-    this.longitud = centro.longitud ?? 0;
+    this.latitud = centro.latitud ?? null;
+    this.longitud = centro.longitud ?? null;
+
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
   }
 
   borrarCentroBase(id: number): void {
     this.adminCentrosPrivadosBaseService.borrarCentroPrivadoBase(id).subscribe({
       next: () => {
-        this.abrirPopup('Centro privado base borrado correctamente.', 'error');
+        this.abrirPopup('Centro privado base borrado correctamente.', 'exito');
         this.cargarCentros();
       },
       error: () => {
@@ -213,8 +229,8 @@ export class PrivadosComponent {
     this.horario = '';
     this.precioMensual = 30;
     this.descripcion = '';
-    this.latitud = 0;
-    this.longitud = 0;
+    this.latitud = null;
+    this.longitud = null;
   }
 
   formatearUbicacion(latitud: number, longitud: number): string {

@@ -4,10 +4,11 @@ import { RouterLink } from '@angular/router';
 import { MisLugaresService } from '../../../services/publicos/mis-lugares';
 import { Footer } from '../../../components/footer/footer';
 import { HeaderComponent } from '../../../components/header/header';
+import { MapaSelectorComponent } from '../../../components/mapa-selector/mapa-selector';
 
 @Component({
   selector: 'app-mis-lugares',
-  imports: [HeaderComponent, Footer, FormsModule, RouterLink],
+  imports: [HeaderComponent, Footer, FormsModule, RouterLink, MapaSelectorComponent],
   templateUrl: './mis-lugares.html',
   styleUrl: './mis-lugares.css'
 })
@@ -17,6 +18,15 @@ export class MisLugaresComponent {
   private cdr = inject(ChangeDetectorRef);
 
   lugares: any[] = [];
+
+  nombre = '';
+  direccion = '';
+  descripcion = '';
+  telefono = '';
+  horario = '';
+  latitud: number | null = null;
+  longitud: number | null = null;
+  tipo = 'PARQUE_PUBLICO';
 
   tipoBusqueda = 'nombre';
   valorBusqueda = '';
@@ -92,16 +102,66 @@ export class MisLugaresComponent {
     this.cargarMisLugares();
   }
 
+  actualizarUbicacionMapa(evento: { latitud: number; longitud: number }): void {
+    this.latitud = evento.latitud;
+    this.longitud = evento.longitud;
+  }
+
+  crearLugarDesdeMapa(): void {
+    if (!this.nombre.trim() || !this.direccion.trim()) {
+      this.abrirPopup('Debes completar al menos nombre y dirección.', 'error');
+      return;
+    }
+
+    if (this.latitud == null || this.longitud == null) {
+      this.abrirPopup('Debes seleccionar la ubicación en el mapa.', 'error');
+      return;
+    }
+
+    const payload = {
+      nombre: this.nombre,
+      direccion: this.direccion,
+      descripcion: this.descripcion,
+      telefono: this.telefono,
+      horario: this.horario,
+      latitud: this.latitud,
+      longitud: this.longitud,
+      tipo: this.tipo
+    };
+
+    this.misLugaresService.crearLugarDesdeMaps(payload).subscribe({
+      next: () => {
+        this.abrirPopup('Lugar guardado correctamente desde el mapa.', 'exito');
+        this.limpiarFormulario();
+        this.cargarMisLugares();
+      },
+      error: () => {
+        this.abrirPopup('No se pudo guardar el lugar desde el mapa.', 'error');
+      }
+    });
+  }
+
   borrarLugar(id: number): void {
     this.misLugaresService.borrarLugar(id).subscribe({
       next: () => {
-        this.abrirPopup('Lugar borrado correctamente.', 'error');
+        this.abrirPopup('Lugar borrado correctamente.', 'exito');
         this.cargarMisLugares();
       },
       error: () => {
         this.abrirPopup('No se pudo borrar el lugar.', 'error');
       }
     });
+  }
+
+  limpiarFormulario(): void {
+    this.nombre = '';
+    this.direccion = '';
+    this.descripcion = '';
+    this.telefono = '';
+    this.horario = '';
+    this.latitud = null;
+    this.longitud = null;
+    this.tipo = 'PARQUE_PUBLICO';
   }
 
   mostrarTipoLegible(tipo: string): string {

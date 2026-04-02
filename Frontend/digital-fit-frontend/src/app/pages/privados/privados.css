@@ -136,6 +136,27 @@
     box-shadow: 0 0 0 3px rgba(60, 145, 230, 0.15);
 }
 
+.bloque-mapa {
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.bloque-mapa h3 {
+    margin: 0;
+    color: var(--color-azul-oscuro);
+}
+
+.texto-ubicacion-seleccionada {
+    margin: 0;
+    padding: 12px 14px;
+    background-color: #eef6ff;
+    border-radius: 12px;
+    font-size: 14px;
+    word-break: break-word;
+}
+
 .acciones-formulario {
     display: flex;
     gap: 12px;
@@ -187,6 +208,16 @@
 
 .tarjeta-centro p {
     margin: 8px 0;
+}
+
+.ubicacion-tarjeta {
+    margin-bottom: 14px;
+    padding: 10px 12px;
+    background-color: #dbeafe;
+    border-left: 4px solid var(--color-azul-oscuro);
+    border-radius: 10px;
+    font-size: 14px;
+    word-break: break-word;
 }
 
 .acciones-centro {

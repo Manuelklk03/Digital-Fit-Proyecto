@@ -14,8 +14,75 @@
   <section class="cabecera-pagina">
     <h1>Mis centros</h1>
     <p>
-      Aquí puedes ver tus centros guardados. Más adelante podrás añadir nuevos desde el mapa.
+      Aquí puedes ver tus centros guardados y añadir nuevos desde el mapa.
     </p>
+  </section>
+
+  <section class="bloque-formulario">
+    <h2>Añadir centro desde mapa</h2>
+
+    <form class="formulario-centro" (ngSubmit)="crearCentroDesdeMapa()">
+
+      <div class="grid-formulario">
+        <div class="grupo-campo">
+          <label for="nombre">Nombre</label>
+          <input type="text" id="nombre" name="nombre" [(ngModel)]="nombre" required>
+        </div>
+
+        <div class="grupo-campo">
+          <label for="direccion">Dirección</label>
+          <input type="text" id="direccion" name="direccion" [(ngModel)]="direccion" required>
+        </div>
+
+        <div class="grupo-campo">
+          <label for="telefono">Teléfono</label>
+          <input type="text" id="telefono" name="telefono" [(ngModel)]="telefono">
+        </div>
+
+        <div class="grupo-campo">
+          <label for="horario">Horario</label>
+          <input type="text" id="horario" name="horario" [(ngModel)]="horario">
+        </div>
+
+        <div class="grupo-campo">
+          <label for="precioMensual">Precio mensual</label>
+          <input type="number" id="precioMensual" name="precioMensual" [(ngModel)]="precioMensual">
+        </div>
+      </div>
+
+      <div class="grupo-campo">
+        <label for="descripcion">Descripción</label>
+        <textarea id="descripcion" name="descripcion" rows="4" [(ngModel)]="descripcion"></textarea>
+      </div>
+
+      <div class="bloque-mapa">
+        <h3>Seleccionar ubicación del centro</h3>
+
+        <app-mapa-selector
+          [latitud]="latitud"
+          [longitud]="longitud"
+          [soloVista]="false"
+          tipoSeleccion="centro"
+          textoAyuda="Pulsa en el mapa para seleccionar la ubicación de tu centro."
+          (ubicacionSeleccionada)="actualizarUbicacionMapa($event)">
+        </app-mapa-selector>
+
+        <p class="texto-ubicacion-seleccionada">
+          <strong>Ubicación seleccionada:</strong>
+          {{ formatearUbicacion(latitud!, longitud!) }}
+        </p>
+      </div>
+
+      <div class="acciones-formulario">
+        <button type="submit" class="boton-guardar">
+          Guardar centro
+        </button>
+
+        <button type="button" class="boton-limpiar-formulario" (click)="limpiarFormulario()">
+          Limpiar formulario
+        </button>
+      </div>
+    </form>
   </section>
 
   <section class="bloque-listado">

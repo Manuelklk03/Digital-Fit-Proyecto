@@ -7,10 +7,11 @@ import { Footer } from '../../components/footer/footer';
 import { PublicosService } from '../../services/publicos/publicos-service';
 import { AdminLugaresPublicosBaseService } from '../../services/admin/admin-lugarespublicos-base';
 import { AuthService } from '../../services/auth-service';
+import { MapaSelectorComponent } from '../../components/mapa-selector/mapa-selector';
 
 @Component({
   selector: 'app-publicos',
-  imports: [HeaderComponent, Footer, FormsModule, RouterLink],
+  imports: [HeaderComponent, Footer, FormsModule, RouterLink, MapaSelectorComponent],
   templateUrl: './publicos.html',
   styleUrl: './publicos.css'
 })
@@ -30,8 +31,8 @@ export class PublicosComponent {
   descripcion = '';
   telefono = '';
   horario = '';
-  latitud = 0;
-  longitud = 0;
+  latitud: number | null = null;
+  longitud: number | null = null;
   tipo = 'PARQUE_PUBLICO';
 
   editandoId: number | null = null;
@@ -122,7 +123,17 @@ export class PublicosComponent {
     this.cargarLugares();
   }
 
+  actualizarUbicacionMapa(evento: { latitud: number; longitud: number }): void {
+    this.latitud = evento.latitud;
+    this.longitud = evento.longitud;
+  }
+
   guardarLugarBase(): void {
+    if (this.latitud == null || this.longitud == null) {
+      this.abrirPopup('Debes seleccionar la ubicación del lugar en el mapa.', 'error');
+      return;
+    }
+
     const payload = {
       nombre: this.nombre,
       direccion: this.direccion,
@@ -166,15 +177,20 @@ export class PublicosComponent {
     this.descripcion = lugar.descripcion;
     this.telefono = lugar.telefono;
     this.horario = lugar.horario;
-    this.latitud = lugar.latitud ?? 0;
-    this.longitud = lugar.longitud ?? 0;
+    this.latitud = lugar.latitud ?? null;
+    this.longitud = lugar.longitud ?? null;
     this.tipo = lugar.tipo;
+
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
   }
 
   borrarLugarBase(id: number): void {
     this.adminLugaresPublicosBaseService.borrarLugarPublicoBase(id).subscribe({
       next: () => {
-        this.abrirPopup('Lugar público base borrado correctamente.', 'error');
+        this.abrirPopup('Lugar público base borrado correctamente.', 'exito');
         this.cargarLugares();
       },
       error: () => {
@@ -205,8 +221,8 @@ export class PublicosComponent {
     this.descripcion = '';
     this.telefono = '';
     this.horario = '';
-    this.latitud = 0;
-    this.longitud = 0;
+    this.latitud = null;
+    this.longitud = null;
     this.tipo = 'PARQUE_PUBLICO';
   }
 

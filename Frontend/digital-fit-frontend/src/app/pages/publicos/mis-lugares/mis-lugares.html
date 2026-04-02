@@ -14,8 +14,98 @@
   <section class="cabecera-pagina">
     <h1>Mis lugares</h1>
     <p>
-      Aquí puedes ver tus lugares guardados. Más adelante podrás añadir nuevos desde el mapa.
+      Aquí puedes ver tus lugares guardados y añadir nuevos desde el mapa.
     </p>
+  </section>
+
+  <section class="bloque-formulario">
+    <h2>Añadir lugar desde mapa</h2>
+
+    <form class="formulario-lugar" (ngSubmit)="crearLugarDesdeMapa()">
+
+      <div class="grid-formulario">
+        <div class="grupo-campo">
+          <label for="nombre">Nombre</label>
+          <input type="text" id="nombre" name="nombre" [(ngModel)]="nombre" required>
+        </div>
+
+        <div class="grupo-campo">
+          <label for="direccion">Dirección</label>
+          <input type="text" id="direccion" name="direccion" [(ngModel)]="direccion" required>
+        </div>
+
+        <div class="grupo-campo">
+          <label for="telefono">Teléfono</label>
+          <input type="text" id="telefono" name="telefono" [(ngModel)]="telefono">
+        </div>
+
+        <div class="grupo-campo">
+          <label for="horario">Horario</label>
+          <input type="text" id="horario" name="horario" [(ngModel)]="horario">
+        </div>
+
+        <div class="grupo-campo">
+          <label for="tipo">Tipo</label>
+          <select id="tipo" name="tipo" [(ngModel)]="tipo">
+            <option value="PISTA_PADEL">Pista Pádel</option>
+            <option value="PISTA_TENIS">Pista Tenis</option>
+            <option value="PISTA_FRONTON">Pista Frontón</option>
+            <option value="PISTA_FUTBOL">Pista Fútbol</option>
+            <option value="PISTA_BALONCESTO">Pista Baloncesto</option>
+            <option value="PISTA_VOLEIBOL">Pista Voleibol</option>
+            <option value="CAMPO_RUGBY">Campo Rugby</option>
+            <option value="RUTA_RUNNING">Ruta Running</option>
+            <option value="CIRCUITO_CICLISMO">Circuito Ciclismo</option>
+            <option value="CARRIL_BICI">Carril Bici</option>
+            <option value="PARQUE_CALISTENIA">Parque Calistenia</option>
+            <option value="ZONA_BARRAS">Zona Barras</option>
+            <option value="CIRCUITO_BIOSALUDABLE">Circuito Biosaludable</option>
+            <option value="RUTA_SENDERISMO">Ruta Senderismo</option>
+            <option value="ZONA_MONTAÑA">Zona Montaña</option>
+            <option value="RUTA_FLUVIAL">Ruta Fluvial</option>
+            <option value="PLAYA_DEPORTIVA">Playa Deportiva</option>
+            <option value="ZONA_VOLEY_PLAYA">Zona Voley Playa</option>
+            <option value="ZONA_MULTIDEPORTE">Zona Multideporte</option>
+            <option value="PARQUE_PUBLICO">Parque Público</option>
+            <option value="PISCINA_PUBLICA">Piscina Pública</option>
+            <option value="ZONA_REMAR">Zona Remar</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grupo-campo">
+        <label for="descripcion">Descripción</label>
+        <textarea id="descripcion" name="descripcion" rows="4" [(ngModel)]="descripcion"></textarea>
+      </div>
+
+      <div class="bloque-mapa">
+        <h3>Seleccionar ubicación del lugar</h3>
+
+        <app-mapa-selector
+          [latitud]="latitud"
+          [longitud]="longitud"
+          [soloVista]="false"
+          tipoSeleccion="lugar"
+          textoAyuda="Pulsa en el mapa para seleccionar la ubicación de tu lugar."
+          (ubicacionSeleccionada)="actualizarUbicacionMapa($event)">
+        </app-mapa-selector>
+
+        <p class="texto-ubicacion-seleccionada">
+          <strong>Ubicación seleccionada:</strong>
+          {{ formatearUbicacion(latitud!, longitud!) }}
+        </p>
+      </div>
+
+      <div class="acciones-formulario">
+        <button type="submit" class="boton-guardar">
+          Guardar lugar
+        </button>
+
+        <button type="button" class="boton-limpiar-formulario" (click)="limpiarFormulario()">
+          Limpiar formulario
+        </button>
+      </div>
+    </form>
   </section>
 
   <section class="bloque-listado">
