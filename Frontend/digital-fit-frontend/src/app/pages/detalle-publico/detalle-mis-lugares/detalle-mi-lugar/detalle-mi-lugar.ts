@@ -46,7 +46,11 @@ export class DetalleMiLugarComponent {
 
     this.misLugaresService.borrarLugar(this.lugar.id).subscribe({
       next: () => {
-        this.router.navigate(['/mis-lugares']);
+        this.abrirPopup('Lugar borrado correctamente.', 'error');
+
+        setTimeout(() => {
+          this.router.navigate(['/mis-lugares']);
+        }, 1200);
       },
       error: () => {
         this.abrirPopup('No se pudo borrar el lugar.', 'error');

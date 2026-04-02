@@ -85,7 +85,11 @@ export class DetallePrivadoComponent {
 
     this.adminCentrosPrivadosBaseService.borrarCentroPrivadoBase(this.centro.id).subscribe({
       next: () => {
-        this.router.navigate(['/privados']);
+        this.abrirPopup('Centro privado base borrado correctamente.', 'error');
+
+        setTimeout(() => {
+          this.router.navigate(['/privados']);
+        }, 1200);
       },
       error: () => {
         this.abrirPopup('No se pudo borrar el centro privado base.', 'error');

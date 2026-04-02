@@ -1,6 +1,7 @@
 package com.example.digital_fit.repository.Entrenamientos;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -23,18 +24,5 @@ public interface EntrenamientoComunidadRepository extends JpaRepository<Entrenam
 
     List<EntrenamientoComunidad> findAllByOrderByFechaPublicacionDesc();
 
-    boolean existsByUsuarioAndNombreIgnoreCaseAndCategoriaAndNivelAndDuracionEnMinutos(
-            Usuario usuario,
-            String nombre,
-            CategoriaEntrenamientoComunidad categoria,
-            NivelEntrenamiento nivel,
-            Integer duracionEnMinutos);
-
-    boolean existsByUsuarioAndNombreIgnoreCaseAndCategoriaAndNivelAndDuracionEnMinutosAndIdNot(
-            Usuario usuario,
-            String nombre,
-            CategoriaEntrenamientoComunidad categoria,
-            NivelEntrenamiento nivel,
-            Integer duracionEnMinutos,
-            Long id);
+    Optional<EntrenamientoComunidad> findByUsuarioAndNombreIgnoreCase(Usuario usuario, String nombre);
 }
