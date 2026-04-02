@@ -28,6 +28,33 @@ export class HistorialEntrenamientosService {
     });
   }
 
+  crearRegistroDesdeMiEntrenamiento(entrenamiento: any): Observable<any> {
+    const ahora = new Date();
+
+    const anio = ahora.getFullYear();
+    const mes = String(ahora.getMonth() + 1).padStart(2, '0');
+    const dia = String(ahora.getDate()).padStart(2, '0');
+    const horas = String(ahora.getHours()).padStart(2, '0');
+    const minutos = String(ahora.getMinutes()).padStart(2, '0');
+    const segundos = String(ahora.getSeconds()).padStart(2, '0');
+
+    const payload = {
+      entrenamientoBaseId: null,
+      entrenamientoUsuarioId: entrenamiento.id,
+      lugarPublicoBaseId: null,
+      lugarPublicoUsuarioId: null,
+      centroPrivadoBaseId: null,
+      centroPrivadoUsuarioId: null,
+      fecha: `${anio}-${mes}-${dia} ${horas}:${minutos}:${segundos}`,
+      duracionEnMinutos: entrenamiento.duracionEnMinutos ?? 0,
+      notas: `Entrenamiento realizado desde el detalle de "Mis entrenamientos".`
+    };
+
+    return this.http.post<any>(this.apiUrl, payload, {
+      withCredentials: true
+    });
+  }
+
   borrarRegistro(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`, {
       withCredentials: true

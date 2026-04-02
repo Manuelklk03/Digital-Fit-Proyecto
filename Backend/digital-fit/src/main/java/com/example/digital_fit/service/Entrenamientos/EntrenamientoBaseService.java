@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.digital_fit.dto.Entrenamientos.CrearEntrenamientoBaseDTO;
 import com.example.digital_fit.dto.Entrenamientos.EntrenamientoBaseDTO;
-import com.example.digital_fit.exception.ErrorArgumentoException;
+import com.example.digital_fit.exception.OperacionNoPermitida;
 import com.example.digital_fit.exception.RecursoNoEncontradoException;
 import com.example.digital_fit.model.Entrenamientos.EntrenamientoBase;
 import com.example.digital_fit.model.Enums.CategoriaEntrenamientoComunidad;
@@ -92,15 +92,8 @@ public class EntrenamientoBaseService {
 
         log.info("Creando entrenamiento base {}", dto.getNombre());
 
-        boolean repetido = entrenamientoBaseRepository
-                .existsByNombreIgnoreCaseAndCategoriaAndNivelAndDuracionEnMinutos(
-                        dto.getNombre(),
-                        dto.getCategoria(),
-                        dto.getNivel(),
-                        dto.getDuracionEnMinutos());
-
-        if (repetido) {
-            throw new ErrorArgumentoException("Ya existe un entrenamiento base igual");
+        if (entrenamientoBaseRepository.findByNombreIgnoreCase(dto.getNombre()).isPresent()) {
+            throw new OperacionNoPermitida("Ya existe un entrenamiento base con ese nombre.");
         }
 
         EntrenamientoBase entrenamientoBase = new EntrenamientoBase();
@@ -125,17 +118,11 @@ public class EntrenamientoBaseService {
         EntrenamientoBase entrenamientoBase = entrenamientoBaseRepository.findById(id)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Entrenamiento base no encontrado con ID: " + id));
 
-        boolean repetido = entrenamientoBaseRepository
-                .existsByNombreIgnoreCaseAndCategoriaAndNivelAndDuracionEnMinutosAndIdNot(
-                        dto.getNombre(),
-                        dto.getCategoria(),
-                        dto.getNivel(),
-                        dto.getDuracionEnMinutos(),
-                        id);
-
-        if (repetido) {
-            throw new ErrorArgumentoException("Ya existe otro entrenamiento base igual");
-        }
+        entrenamientoBaseRepository.findByNombreIgnoreCase(dto.getNombre()).ifPresent(existente -> {
+            if (!existente.getId().equals(id)) {
+                throw new OperacionNoPermitida("Ya existe otro entrenamiento base con ese nombre.");
+            }
+        });
 
         entrenamientoBase.setNombre(dto.getNombre());
         entrenamientoBase.setDescripcion(dto.getDescripcion());

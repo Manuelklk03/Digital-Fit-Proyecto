@@ -1,14 +1,15 @@
 package com.example.digital_fit.repository.Entrenamientos;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.example.digital_fit.model.Auth.Usuario;
 import com.example.digital_fit.model.Entrenamientos.EntrenamientoUsuario;
 import com.example.digital_fit.model.Enums.CategoriaEntrenamientoComunidad;
 import com.example.digital_fit.model.Enums.NivelEntrenamiento;
+import com.example.digital_fit.model.Auth.Usuario;
 
 @Repository
 public interface EntrenamientoUsuarioRepository extends JpaRepository<EntrenamientoUsuario, Long> {
@@ -26,18 +27,5 @@ public interface EntrenamientoUsuarioRepository extends JpaRepository<Entrenamie
 
     List<EntrenamientoUsuario> findByUsuarioAndNombreContainingIgnoreCase(Usuario usuario, String nombre);
 
-    boolean existsByUsuarioAndNombreIgnoreCaseAndCategoriaAndNivelAndDuracionEnMinutos(
-            Usuario usuario,
-            String nombre,
-            CategoriaEntrenamientoComunidad categoria,
-            NivelEntrenamiento nivel,
-            Integer duracionEnMinutos);
-
-    boolean existsByUsuarioAndNombreIgnoreCaseAndCategoriaAndNivelAndDuracionEnMinutosAndIdNot(
-            Usuario usuario,
-            String nombre,
-            CategoriaEntrenamientoComunidad categoria,
-            NivelEntrenamiento nivel,
-            Integer duracionEnMinutos,
-            Long id);
+    Optional<EntrenamientoUsuario> findByUsuarioAndNombreIgnoreCase(Usuario usuario, String nombre);
 }

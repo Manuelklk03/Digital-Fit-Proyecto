@@ -85,7 +85,11 @@ export class DetallePublicoComponent {
 
     this.adminLugaresPublicosBaseService.borrarLugarPublicoBase(this.lugar.id).subscribe({
       next: () => {
-        this.router.navigate(['/publicos']);
+        this.abrirPopup('Lugar público base borrado correctamente.', 'error');
+
+        setTimeout(() => {
+          this.router.navigate(['/publicos']);
+        }, 1200);
       },
       error: () => {
         this.abrirPopup('No se pudo borrar el lugar público base.', 'error');

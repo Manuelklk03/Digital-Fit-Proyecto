@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.digital_fit.dto.CentroPrivado.CentroPrivadoBaseDTO;
 import com.example.digital_fit.dto.CentroPrivado.CrearCentroPrivadoDTO;
-import com.example.digital_fit.exception.ErrorArgumentoException;
+import com.example.digital_fit.exception.OperacionNoPermitida;
 import com.example.digital_fit.exception.RecursoNoEncontradoException;
 import com.example.digital_fit.model.CentroPrivado.CentroPrivadoBase;
 import com.example.digital_fit.repository.CentroPrivado.CentroPrivadoBaseRepository;
@@ -60,16 +60,15 @@ public class CentroPrivadoBaseService {
         return entityToDto(entidad);
     }
 
+    // METODOS ADMIN:
+
     @Transactional
     public CentroPrivadoBaseDTO crearCentroPrivado(CrearCentroPrivadoDTO dto) {
 
         log.info("Creando centro privado {}", dto.getNombre());
 
-        boolean repetido = centroPrivadoBaseRepository
-                .existsByNombreIgnoreCaseAndDireccionIgnoreCase(dto.getNombre(), dto.getDireccion());
-
-        if (repetido) {
-            throw new ErrorArgumentoException("Ya existe un centro privado base con ese nombre y dirección");
+        if (centroPrivadoBaseRepository.findByNombreIgnoreCase(dto.getNombre()).isPresent()) {
+            throw new OperacionNoPermitida("Ya existe un centro privado base con ese nombre.");
         }
 
         CentroPrivadoBase centroPrivadoBase = new CentroPrivadoBase();
@@ -95,15 +94,11 @@ public class CentroPrivadoBaseService {
         CentroPrivadoBase centroPrivadoBase = centroPrivadoBaseRepository.findById(id)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Centro con id: " + id + " No encontrado."));
 
-        boolean repetido = centroPrivadoBaseRepository
-                .existsByNombreIgnoreCaseAndDireccionIgnoreCaseAndIdNot(
-                        dto.getNombre(),
-                        dto.getDireccion(),
-                        id);
-
-        if (repetido) {
-            throw new ErrorArgumentoException("Ya existe otro centro privado base con ese nombre y dirección");
-        }
+        centroPrivadoBaseRepository.findByNombreIgnoreCase(dto.getNombre()).ifPresent(existente -> {
+            if (!existente.getId().equals(id)) {
+                throw new OperacionNoPermitida("Ya existe otro centro privado base con ese nombre.");
+            }
+        });
 
         centroPrivadoBase.setNombre(dto.getNombre());
         centroPrivadoBase.setDireccion(dto.getDireccion());

@@ -82,7 +82,11 @@ export class DetalleEntrenamientoComunidadComponent {
 
     this.entrenamientosComunidadService.borrarEntrenamientoComunidad(this.entrenamiento.id).subscribe({
       next: () => {
-        this.router.navigate(['/entrenamientos-comunidad']);
+        this.abrirPopup('Entrenamiento borrado correctamente.', 'error');
+
+        setTimeout(() => {
+          this.router.navigate(['/entrenamientos-comunidad']);
+        }, 1200);
       },
       error: () => {
         this.abrirPopup('No se pudo borrar el entrenamiento.', 'error');

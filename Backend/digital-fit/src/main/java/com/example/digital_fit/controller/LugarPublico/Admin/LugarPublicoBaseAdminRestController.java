@@ -26,24 +26,24 @@ public class LugarPublicoBaseAdminRestController {
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<LugarPublicoBaseDTO> crearLugarPublicoBase(@RequestBody CrearLugarPublicoDTO dto) {
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(lugarPublicoBaseService.crearLugarPublico(dto));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(lugarPublicoBaseService.crearLugarPublico(dto));
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<LugarPublicoBaseDTO> actualizarLugarPublicoBase(@PathVariable Long id,
+    public ResponseEntity<LugarPublicoBaseDTO> actualizarLugarPublicoBase(
+            @PathVariable Long id,
             @RequestBody CrearLugarPublicoDTO dto) {
 
-        return ResponseEntity.status(HttpStatus.OK).body(lugarPublicoBaseService.actualizarLugarPublico(id, dto));
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(lugarPublicoBaseService.actualizarLugarPublico(id, dto));
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> borrarLugarPublicoBase(@PathVariable Long id) {
-
         lugarPublicoBaseService.eliminarLugarPublico(id);
-
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

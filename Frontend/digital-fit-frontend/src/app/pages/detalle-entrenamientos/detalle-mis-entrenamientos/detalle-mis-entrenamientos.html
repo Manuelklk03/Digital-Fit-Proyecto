@@ -46,6 +46,19 @@
     <div class="acciones-detalle">
       <a class="boton-volver" routerLink="/mis-entrenamientos">Volver</a>
 
+      <button
+        class="boton-realizado"
+        type="button"
+        (click)="marcarComoRealizado()"
+        [disabled]="guardandoHistorial"
+      >
+        @if (guardandoHistorial) {
+          Guardando...
+        } @else {
+          Marcar como realizado
+        }
+      </button>
+
       <button class="boton-borrar" type="button" (click)="borrarEntrenamiento()">
         Borrar entrenamiento
       </button>

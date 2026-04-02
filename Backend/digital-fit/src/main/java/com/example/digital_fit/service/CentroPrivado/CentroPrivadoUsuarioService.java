@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.example.digital_fit.dto.CentroPrivado.CentroPrivadoUsuarioDTO;
 import com.example.digital_fit.dto.CentroPrivado.CrearCentroPrivadoDTO;
-import com.example.digital_fit.exception.ErrorArgumentoException;
 import com.example.digital_fit.exception.OperacionNoPermitida;
 import com.example.digital_fit.exception.RecursoNoEncontradoException;
 import com.example.digital_fit.model.Auth.Usuario;
@@ -48,10 +47,14 @@ public class CentroPrivadoUsuarioService {
 
         if (nombre != null) {
             centros = centroPrivadoUsuarioRepository.findByUsuarioAndNombreContainingIgnoreCase(usuario, nombre);
+
         } else if (direccion != null) {
-            centros = centroPrivadoUsuarioRepository.findByUsuarioAndDireccionContainingIgnoreCase(usuario, direccion);
+            centros = centroPrivadoUsuarioRepository
+                    .findByUsuarioAndDireccionContainingIgnoreCase(usuario, direccion);
+
         } else if (precioMensual != null) {
-            centros = centroPrivadoUsuarioRepository.findByUsuarioAndPrecioMensualLessThanEqual(usuario, precioMensual);
+            centros = centroPrivadoUsuarioRepository
+                    .findByUsuarioAndPrecioMensualLessThanEqual(usuario, precioMensual);
         } else {
             centros = centroPrivadoUsuarioRepository.findByUsuario(usuario);
         }
@@ -73,14 +76,8 @@ public class CentroPrivadoUsuarioService {
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
 
-        boolean repetido = centroPrivadoUsuarioRepository
-                .existsByUsuarioAndNombreIgnoreCaseAndDireccionIgnoreCase(
-                        usuario,
-                        dto.getNombre(),
-                        dto.getDireccion());
-
-        if (repetido) {
-            throw new ErrorArgumentoException("Ya tienes este centro en mis centros");
+        if (centroPrivadoUsuarioRepository.findByUsuarioAndNombreIgnoreCase(usuario, dto.getNombre()).isPresent()) {
+            throw new OperacionNoPermitida("Ya tienes un centro privado con ese nombre en mis centros.");
         }
 
         CentroPrivadoUsuario centro = new CentroPrivadoUsuario();
@@ -104,7 +101,7 @@ public class CentroPrivadoUsuarioService {
     @Transactional
     public CentroPrivadoUsuarioDTO AñadirPrivadoAMisCentros(Long idBase, String username) {
 
-        log.info("Usuario {} añade centro privado de la base {}", username, idBase);
+        log.info("Usuario {}añade centro privado de la base {}", username, idBase);
 
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
@@ -112,14 +109,8 @@ public class CentroPrivadoUsuarioService {
         CentroPrivadoBase centroBase = centroPrivadoBaseRepository.findById(idBase)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Centro base no encontrado en la lista."));
 
-        boolean repetido = centroPrivadoUsuarioRepository
-                .existsByUsuarioAndNombreIgnoreCaseAndDireccionIgnoreCase(
-                        usuario,
-                        centroBase.getNombre(),
-                        centroBase.getDireccion());
-
-        if (repetido) {
-            throw new ErrorArgumentoException("Ya tienes este centro en mis centros");
+        if (centroPrivadoUsuarioRepository.findByUsuarioAndNombreIgnoreCase(usuario, centroBase.getNombre()).isPresent()) {
+            throw new OperacionNoPermitida("Ya tienes añadido ese centro en mis centros.");
         }
 
         CentroPrivadoUsuario centro = new CentroPrivadoUsuario();

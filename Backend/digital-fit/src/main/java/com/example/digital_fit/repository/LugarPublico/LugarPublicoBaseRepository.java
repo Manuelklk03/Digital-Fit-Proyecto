@@ -1,6 +1,7 @@
 package com.example.digital_fit.repository.LugarPublico;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -17,16 +18,5 @@ public interface LugarPublicoBaseRepository extends JpaRepository<LugarPublicoBa
 
     List<LugarPublicoBase> findByTipo(TipoLugarPublico tipoLugarPublico);
 
-    boolean existsByNombreIgnoreCaseAndDireccionIgnoreCaseAndTipo(
-            String nombre,
-            String direccion,
-            TipoLugarPublico tipo
-    );
-
-    boolean existsByNombreIgnoreCaseAndDireccionIgnoreCaseAndTipoAndIdNot(
-            String nombre,
-            String direccion,
-            TipoLugarPublico tipo,
-            Long id
-    );
+    Optional<LugarPublicoBase> findByNombreIgnoreCase(String nombre);
 }

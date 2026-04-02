@@ -1,6 +1,7 @@
 package com.example.digital_fit.repository.CentroPrivado;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -16,7 +17,5 @@ public interface CentroPrivadoBaseRepository extends JpaRepository<CentroPrivado
 
     List<CentroPrivadoBase> findByPrecioMensualLessThanEqual(Double precioMensual);
 
-    boolean existsByNombreIgnoreCaseAndDireccionIgnoreCase(String nombre, String direccion);
-
-    boolean existsByNombreIgnoreCaseAndDireccionIgnoreCaseAndIdNot(String nombre, String direccion, Long id);
+    Optional<CentroPrivadoBase> findByNombreIgnoreCase(String nombre);
 }

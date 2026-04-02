@@ -46,7 +46,11 @@ export class DetalleMiCentroComponent {
 
     this.misCentrosService.borrarCentro(this.centro.id).subscribe({
       next: () => {
-        this.router.navigate(['/mis-centros']);
+        this.abrirPopup('Centro borrado correctamente.', 'error');
+
+        setTimeout(() => {
+          this.router.navigate(['/mis-centros']);
+        }, 1200);
       },
       error: () => {
         this.abrirPopup('No se pudo borrar el centro.', 'error');
