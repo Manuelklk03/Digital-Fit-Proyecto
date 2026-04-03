@@ -105,14 +105,16 @@
     color: var(--color-azul-oscuro);
 }
 
-.descripcion-detalle {
+.descripcion-detalle,
+.bloque-mapa-detalle {
     margin-top: 24px;
     padding: 20px;
     background-color: white;
     border-radius: 16px;
 }
 
-.descripcion-detalle h2 {
+.descripcion-detalle h2,
+.bloque-mapa-detalle h2 {
     margin-top: 0;
     color: var(--color-azul-oscuro);
 }

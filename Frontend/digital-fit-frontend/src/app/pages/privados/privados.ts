@@ -32,8 +32,8 @@ export class PrivadosComponent {
   horario = '';
   precioMensual = 30;
   descripcion = '';
-  latitud: number | null = null;
-  longitud: number | null = null;
+  latitud = 39.4699;
+  longitud = -0.3763;
 
   editandoId: number | null = null;
 
@@ -130,17 +130,13 @@ export class PrivadosComponent {
     this.cargarCentros();
   }
 
-  actualizarUbicacionMapa(evento: { latitud: number; longitud: number }): void {
+  actualizarUbicacionMapa(evento: { latitud: number, longitud: number }): void {
     this.latitud = evento.latitud;
     this.longitud = evento.longitud;
+    this.cdr.detectChanges();
   }
 
   guardarCentroBase(): void {
-    if (this.latitud == null || this.longitud == null) {
-      this.abrirPopup('Debes seleccionar la ubicación del centro en el mapa.', 'error');
-      return;
-    }
-
     const payload = {
       nombre: this.nombre,
       direccion: this.direccion,
@@ -185,13 +181,8 @@ export class PrivadosComponent {
     this.horario = centro.horario;
     this.precioMensual = centro.precioMensual;
     this.descripcion = centro.descripcion;
-    this.latitud = centro.latitud ?? null;
-    this.longitud = centro.longitud ?? null;
-
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
+    this.latitud = centro.latitud ?? 39.4699;
+    this.longitud = centro.longitud ?? -0.3763;
   }
 
   borrarCentroBase(id: number): void {
@@ -229,8 +220,8 @@ export class PrivadosComponent {
     this.horario = '';
     this.precioMensual = 30;
     this.descripcion = '';
-    this.latitud = null;
-    this.longitud = null;
+    this.latitud = 39.4699;
+    this.longitud = -0.3763;
   }
 
   formatearUbicacion(latitud: number, longitud: number): string {
