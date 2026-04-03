@@ -64,6 +64,23 @@ export class DetallePublicoComponent {
     return this.usuarioActual?.rol === 'ADMIN';
   }
 
+  mostrarTipoLegible(tipo: string): string {
+    if (!tipo) {
+      return 'Sin tipo';
+    }
+
+    return tipo.replaceAll('_', ' ').toLowerCase()
+      .replace(/\b\w/g, letra => letra.toUpperCase());
+  }
+
+  formatearUbicacion(latitud: number, longitud: number): string {
+    if (latitud == null || longitud == null) {
+      return 'Sin ubicación';
+    }
+
+    return `${latitud}, ${longitud}`;
+  }
+
   anadirAMisLugares(): void {
     if (!this.lugar?.id) {
       return;
@@ -86,7 +103,7 @@ export class DetallePublicoComponent {
 
     this.adminLugaresPublicosBaseService.borrarLugarPublicoBase(this.lugar.id).subscribe({
       next: () => {
-        this.abrirPopup('Lugar público base borrado correctamente.', 'error');
+        this.abrirPopup('Lugar público base borrado correctamente.', 'exito');
 
         setTimeout(() => {
           this.router.navigate(['/publicos']);
@@ -96,23 +113,6 @@ export class DetallePublicoComponent {
         this.abrirPopup('No se pudo borrar el lugar público base.', 'error');
       }
     });
-  }
-
-  mostrarTipoLegible(tipo: string): string {
-    if (!tipo) {
-      return 'Sin tipo';
-    }
-
-    return tipo.replaceAll('_', ' ').toLowerCase()
-      .replace(/\b\w/g, letra => letra.toUpperCase());
-  }
-
-  formatearUbicacion(latitud: number, longitud: number): string {
-    if (latitud == null || longitud == null) {
-      return 'Sin ubicación';
-    }
-
-    return `${latitud}, ${longitud}`;
   }
 
   abrirPopup(texto: string, tipo: 'exito' | 'error'): void {

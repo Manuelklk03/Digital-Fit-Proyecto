@@ -31,8 +31,8 @@ export class PublicosComponent {
   descripcion = '';
   telefono = '';
   horario = '';
-  latitud: number | null = null;
-  longitud: number | null = null;
+  latitud = 39.4699;
+  longitud = -0.3763;
   tipo = 'PARQUE_PUBLICO';
 
   editandoId: number | null = null;
@@ -123,17 +123,13 @@ export class PublicosComponent {
     this.cargarLugares();
   }
 
-  actualizarUbicacionMapa(evento: { latitud: number; longitud: number }): void {
+  actualizarUbicacionMapa(evento: { latitud: number, longitud: number }): void {
     this.latitud = evento.latitud;
     this.longitud = evento.longitud;
+    this.cdr.detectChanges();
   }
 
   guardarLugarBase(): void {
-    if (this.latitud == null || this.longitud == null) {
-      this.abrirPopup('Debes seleccionar la ubicación del lugar en el mapa.', 'error');
-      return;
-    }
-
     const payload = {
       nombre: this.nombre,
       direccion: this.direccion,
@@ -177,14 +173,9 @@ export class PublicosComponent {
     this.descripcion = lugar.descripcion;
     this.telefono = lugar.telefono;
     this.horario = lugar.horario;
-    this.latitud = lugar.latitud ?? null;
-    this.longitud = lugar.longitud ?? null;
+    this.latitud = lugar.latitud ?? 39.4699;
+    this.longitud = lugar.longitud ?? -0.3763;
     this.tipo = lugar.tipo;
-
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
   }
 
   borrarLugarBase(id: number): void {
@@ -221,8 +212,8 @@ export class PublicosComponent {
     this.descripcion = '';
     this.telefono = '';
     this.horario = '';
-    this.latitud = null;
-    this.longitud = null;
+    this.latitud = 39.4699;
+    this.longitud = -0.3763;
     this.tipo = 'PARQUE_PUBLICO';
   }
 

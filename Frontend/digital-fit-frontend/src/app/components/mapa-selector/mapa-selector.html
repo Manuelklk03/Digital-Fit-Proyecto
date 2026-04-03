@@ -1,7 +1,28 @@
 <div class="mapa-bloque">
-  @if (textoAyuda) {
-    <p class="texto-ayuda-mapa">{{ textoAyuda }}</p>
-  }
 
-  <div #mapContainer class="mapa-leaflet"></div>
+  <div class="barra-superior-mapa">
+    <input
+      type="text"
+      [(ngModel)]="textoBusqueda"
+      placeholder="Buscar dirección en la Comunidad Valenciana"
+      class="input-busqueda-mapa"
+    >
+
+    <button type="button" class="boton-mapa" (click)="buscarDireccion()">
+      Buscar
+    </button>
+
+    <button type="button" class="boton-mapa secundario" (click)="volverAValencia()">
+      Volver a Valencia
+    </button>
+
+    <button type="button" class="boton-mapa secundario" (click)="volverAUbicacionMarcada()">
+      Ir a ubicación marcada
+    </button>
+  </div>
+
+  <div class="mapa-contenedor">
+    <div #mapContainer class="mapa-leaflet"></div>
+  </div>
+
 </div>
