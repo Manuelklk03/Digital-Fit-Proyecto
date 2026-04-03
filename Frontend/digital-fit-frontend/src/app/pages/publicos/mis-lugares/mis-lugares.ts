@@ -24,12 +24,14 @@ export class MisLugaresComponent {
   descripcion = '';
   telefono = '';
   horario = '';
-  latitud: number | null = null;
-  longitud: number | null = null;
+  latitud = 39.4699;
+  longitud = -0.3763;
   tipo = 'PARQUE_PUBLICO';
 
   tipoBusqueda = 'nombre';
   valorBusqueda = '';
+
+  mostrarFormularioMapa = false;
 
   mostrarPopup = false;
   textoPopup = '';
@@ -102,22 +104,24 @@ export class MisLugaresComponent {
     this.cargarMisLugares();
   }
 
-  actualizarUbicacionMapa(evento: { latitud: number; longitud: number }): void {
+  abrirFormularioMapa(): void {
+    this.nombre = '';
+    this.direccion = '';
+    this.descripcion = '';
+    this.telefono = '';
+    this.horario = '';
+    this.latitud = 39.4699;
+    this.longitud = -0.3763;
+    this.tipo = 'PARQUE_PUBLICO';
+    this.mostrarFormularioMapa = true;
+  }
+
+  actualizarUbicacion(evento: { latitud: number, longitud: number }): void {
     this.latitud = evento.latitud;
     this.longitud = evento.longitud;
   }
 
-  crearLugarDesdeMapa(): void {
-    if (!this.nombre.trim() || !this.direccion.trim()) {
-      this.abrirPopup('Debes completar al menos nombre y dirección.', 'error');
-      return;
-    }
-
-    if (this.latitud == null || this.longitud == null) {
-      this.abrirPopup('Debes seleccionar la ubicación en el mapa.', 'error');
-      return;
-    }
-
+  guardarLugarDesdeMapa(): void {
     const payload = {
       nombre: this.nombre,
       direccion: this.direccion,
@@ -131,14 +135,18 @@ export class MisLugaresComponent {
 
     this.misLugaresService.crearLugarDesdeMaps(payload).subscribe({
       next: () => {
-        this.abrirPopup('Lugar guardado correctamente desde el mapa.', 'exito');
-        this.limpiarFormulario();
+        this.abrirPopup('Lugar guardado correctamente.', 'exito');
+        this.mostrarFormularioMapa = false;
         this.cargarMisLugares();
       },
       error: () => {
-        this.abrirPopup('No se pudo guardar el lugar desde el mapa.', 'error');
+        this.abrirPopup('No se pudo guardar el lugar.', 'error');
       }
     });
+  }
+
+  cancelarFormularioMapa(): void {
+    this.mostrarFormularioMapa = false;
   }
 
   borrarLugar(id: number): void {
@@ -151,17 +159,6 @@ export class MisLugaresComponent {
         this.abrirPopup('No se pudo borrar el lugar.', 'error');
       }
     });
-  }
-
-  limpiarFormulario(): void {
-    this.nombre = '';
-    this.direccion = '';
-    this.descripcion = '';
-    this.telefono = '';
-    this.horario = '';
-    this.latitud = null;
-    this.longitud = null;
-    this.tipo = 'PARQUE_PUBLICO';
   }
 
   mostrarTipoLegible(tipo: string): string {

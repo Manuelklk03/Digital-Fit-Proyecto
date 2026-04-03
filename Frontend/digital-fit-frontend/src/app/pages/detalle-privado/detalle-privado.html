@@ -19,11 +19,6 @@
 
   <section class="bloque-detalle">
     <div class="dato-detalle">
-      <span class="etiqueta">Ubicación</span>
-      <span>{{ formatearUbicacion(centro.latitud, centro.longitud) }}</span>
-    </div>
-
-    <div class="dato-detalle">
       <span class="etiqueta">Nombre</span>
       <span>{{ centro.nombre }}</span>
     </div>
@@ -48,20 +43,24 @@
       <span>{{ centro.precioMensual }} €</span>
     </div>
 
+    <div class="dato-detalle">
+      <span class="etiqueta">Ubicación</span>
+      <span>{{ centro.latitud }}, {{ centro.longitud }}</span>
+    </div>
+
     <div class="descripcion-detalle">
       <h2>Descripción</h2>
       <p>{{ centro.descripcion || 'Sin descripción' }}</p>
     </div>
 
-    <section class="bloque-mapa-detalle">
+    <div class="mapa-detalle">
       <h2>Ubicación en el mapa</h2>
-
       <app-mapa-selector
         [latitud]="centro.latitud"
         [longitud]="centro.longitud"
         [soloVista]="true">
       </app-mapa-selector>
-    </section>
+    </div>
 
     <div class="acciones-detalle">
       <a class="boton-volver" routerLink="/privados">Volver</a>

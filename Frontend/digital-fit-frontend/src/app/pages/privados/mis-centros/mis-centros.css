@@ -80,7 +80,6 @@
     line-height: 1.7;
 }
 
-.bloque-formulario,
 .bloque-listado {
     max-width: 1100px;
     margin: 0 auto 25px auto;
@@ -91,10 +90,18 @@
     animation: fadeUp 0.9s ease;
 }
 
+.bloque-formulario-mapa {
+    margin-bottom: 24px;
+    padding: 20px;
+    border-radius: 18px;
+    background-color: #eef6ff;
+}
+
 .formulario-centro {
     display: flex;
     flex-direction: column;
     gap: 18px;
+    margin-top: 18px;
 }
 
 .grid-formulario {
@@ -123,35 +130,6 @@
     border-radius: 12px;
     font-size: 15px;
     background-color: white;
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-.bloque-mapa {
-    margin-top: 8px;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-}
-
-.bloque-mapa h3 {
-    margin: 0;
-    color: var(--color-azul-oscuro);
-}
-
-.texto-ubicacion-seleccionada {
-    margin: 0;
-    padding: 12px 14px;
-    background-color: #eef6ff;
-    border-radius: 12px;
-    font-size: 14px;
-    word-break: break-word;
-}
-
-.acciones-formulario,
-.acciones-centro {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
 }
 
 .cabecera-listado {
@@ -192,15 +170,6 @@
     box-shadow: 0px 8px 18px rgba(0, 0, 0, 0.08);
 }
 
-.tarjeta-centro h3 {
-    margin-top: 0;
-    color: var(--color-azul-oscuro);
-}
-
-.tarjeta-centro p {
-    margin: 8px 0;
-}
-
 .ubicacion-tarjeta {
     margin-bottom: 14px;
     padding: 10px 12px;
@@ -211,11 +180,25 @@
     word-break: break-word;
 }
 
+.tarjeta-centro h3 {
+    margin-top: 0;
+    color: var(--color-azul-oscuro);
+}
+
+.tarjeta-centro p {
+    margin: 8px 0;
+}
+
+.acciones-centro {
+    display: flex;
+    gap: 12px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+}
+
 .boton-detalle,
 .boton-borrar,
-.boton-limpiar,
-.boton-guardar,
-.boton-limpiar-formulario {
+.boton-limpiar {
     padding: 12px 18px;
     border: none;
     border-radius: 10px;
@@ -226,8 +209,7 @@
     display: inline-block;
 }
 
-.boton-detalle,
-.boton-guardar {
+.boton-detalle {
     background-color: var(--color-azul-oscuro);
     color: white;
 }
@@ -237,17 +219,14 @@
     color: white;
 }
 
-.boton-limpiar,
-.boton-limpiar-formulario {
+.boton-limpiar {
     background-color: #f0a500;
     color: white;
 }
 
 .boton-detalle:hover,
 .boton-borrar:hover,
-.boton-limpiar:hover,
-.boton-guardar:hover,
-.boton-limpiar-formulario:hover {
+.boton-limpiar:hover {
     transform: translateY(-2px);
 }
 
@@ -266,14 +245,11 @@
         font-size: 30px;
     }
 
-    .bloque-formulario,
     .bloque-listado {
         padding: 22px;
     }
 
-    .barra-busqueda,
-    .acciones-formulario,
-    .acciones-centro {
+    .barra-busqueda {
         flex-direction: column;
         align-items: stretch;
     }
@@ -281,10 +257,7 @@
     .barra-busqueda input,
     .barra-busqueda select,
     .boton-limpiar,
-    .boton-guardar,
-    .boton-limpiar-formulario,
-    .boton-detalle,
-    .boton-borrar {
+    .boton-detalle {
         width: 100%;
     }
 

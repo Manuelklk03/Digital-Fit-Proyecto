@@ -1,28 +1,26 @@
-<div class="mapa-bloque">
+<div class="mapa-contenedor">
 
-  <div class="barra-superior-mapa">
-    <input
-      type="text"
-      [(ngModel)]="textoBusqueda"
-      placeholder="Buscar dirección en la Comunidad Valenciana"
-      class="input-busqueda-mapa"
-    >
+  @if (!soloVista) {
+    <div class="barra-superior-mapa">
+      <input
+        type="text"
+        [(ngModel)]="textoBusqueda"
+        placeholder="Buscar dirección en Comunidad Valenciana"
+      >
 
-    <button type="button" class="boton-mapa" (click)="buscarDireccion()">
-      Buscar
-    </button>
+      <button type="button" (click)="buscarDireccion()">
+        Buscar
+      </button>
 
-    <button type="button" class="boton-mapa secundario" (click)="volverAValencia()">
-      Volver a Valencia
-    </button>
+      <button type="button" (click)="volverAValencia()">
+        Volver a Valencia
+      </button>
 
-    <button type="button" class="boton-mapa secundario" (click)="volverAUbicacionMarcada()">
-      Ir a ubicación marcada
-    </button>
-  </div>
+      <button type="button" (click)="volverAMarcador()">
+        Ir a ubicación marcada
+      </button>
+    </div>
+  }
 
-  <div class="mapa-contenedor">
-    <div #mapContainer class="mapa-leaflet"></div>
-  </div>
-
+  <div #mapContainer class="mapa-leaflet"></div>
 </div>

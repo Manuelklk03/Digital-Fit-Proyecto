@@ -31,8 +31,10 @@ export class PublicosComponent {
   descripcion = '';
   telefono = '';
   horario = '';
+
   latitud = 39.4699;
   longitud = -0.3763;
+
   tipo = 'PARQUE_PUBLICO';
 
   editandoId: number | null = null;
@@ -123,10 +125,9 @@ export class PublicosComponent {
     this.cargarLugares();
   }
 
-  actualizarUbicacionMapa(evento: { latitud: number, longitud: number }): void {
+  actualizarUbicacion(evento: { latitud: number, longitud: number }): void {
     this.latitud = evento.latitud;
     this.longitud = evento.longitud;
-    this.cdr.detectChanges();
   }
 
   guardarLugarBase(): void {
