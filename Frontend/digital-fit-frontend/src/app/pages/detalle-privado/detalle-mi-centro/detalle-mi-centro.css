@@ -201,3 +201,16 @@
     font-weight: bold;
     color: var(--color-azul-oscuro);
 }
+
+.mapa-detalle {
+    margin-top: 24px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 16px;
+}
+
+.mapa-detalle h2 {
+    margin-top: 0;
+    margin-bottom: 14px;
+    color: var(--color-azul-oscuro);
+}

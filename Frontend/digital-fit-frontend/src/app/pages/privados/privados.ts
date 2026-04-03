@@ -130,10 +130,9 @@ export class PrivadosComponent {
     this.cargarCentros();
   }
 
-  actualizarUbicacionMapa(evento: { latitud: number, longitud: number }): void {
+  actualizarUbicacion(evento: { latitud: number, longitud: number }): void {
     this.latitud = evento.latitud;
     this.longitud = evento.longitud;
-    this.cdr.detectChanges();
   }
 
   guardarCentroBase(): void {

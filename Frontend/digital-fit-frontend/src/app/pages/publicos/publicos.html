@@ -53,12 +53,12 @@
 
         <div class="grupo-campo">
           <label for="latitud">Latitud</label>
-          <input type="number" id="latitud" name="latitud" [(ngModel)]="latitud" step="0.000001">
+          <input type="number" id="latitud" name="latitud" [(ngModel)]="latitud">
         </div>
 
         <div class="grupo-campo">
           <label for="longitud">Longitud</label>
-          <input type="number" id="longitud" name="longitud" [(ngModel)]="longitud" step="0.000001">
+          <input type="number" id="longitud" name="longitud" [(ngModel)]="longitud">
         </div>
 
         <div class="grupo-campo">
@@ -90,20 +90,20 @@
         </div>
       </div>
 
-      <section class="bloque-mapa-formulario">
-        <h3>Seleccionar ubicación en el mapa</h3>
+      <div class="grupo-campo">
+        <label for="descripcion">Descripción</label>
+        <textarea id="descripcion" name="descripcion" rows="4" [(ngModel)]="descripcion"></textarea>
+      </div>
+
+      <div class="grupo-campo">
+        <label>Seleccionar ubicación en el mapa</label>
 
         <app-mapa-selector
           [latitud]="latitud"
           [longitud]="longitud"
           [soloVista]="false"
-          (ubicacionSeleccionada)="actualizarUbicacionMapa($event)">
+          (ubicacionSeleccionada)="actualizarUbicacion($event)">
         </app-mapa-selector>
-      </section>
-
-      <div class="grupo-campo">
-        <label for="descripcion">Descripción</label>
-        <textarea id="descripcion" name="descripcion" rows="4" [(ngModel)]="descripcion"></textarea>
       </div>
 
       <div class="acciones-formulario">
@@ -113,6 +113,10 @@
           } @else {
           Crear lugar
           }
+        </button>
+
+        <button type="button" class="boton-cancelar" (click)="limpiarFormulario()">
+          Limpiar formulario
         </button>
 
         @if (editandoId !== null) {

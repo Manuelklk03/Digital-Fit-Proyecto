@@ -91,10 +91,26 @@
     animation: fadeUp 0.9s ease;
 }
 
+.cabecera-bloque-mapa {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+}
+
+.acciones-superiores {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
 .formulario-lugar {
     display: flex;
     flex-direction: column;
     gap: 18px;
+    margin-top: 18px;
 }
 
 .grid-formulario {
@@ -136,17 +152,6 @@
     outline: none;
     border-color: var(--color-azul);
     box-shadow: 0 0 0 3px rgba(60, 145, 230, 0.15);
-}
-
-.bloque-mapa-formulario {
-    padding: 18px;
-    background-color: white;
-    border-radius: 16px;
-}
-
-.bloque-mapa-formulario h3 {
-    margin-top: 0;
-    color: var(--color-azul-oscuro);
 }
 
 .acciones-formulario {
@@ -193,15 +198,6 @@
     box-shadow: 0px 8px 18px rgba(0, 0, 0, 0.08);
 }
 
-.tarjeta-lugar h3 {
-    margin-top: 0;
-    color: var(--color-azul-oscuro);
-}
-
-.tarjeta-lugar p {
-    margin: 8px 0;
-}
-
 .ubicacion-tarjeta {
     margin-bottom: 14px;
     padding: 10px 12px;
@@ -210,6 +206,15 @@
     border-radius: 10px;
     font-size: 14px;
     word-break: break-word;
+}
+
+.tarjeta-lugar h3 {
+    margin-top: 0;
+    color: var(--color-azul-oscuro);
+}
+
+.tarjeta-lugar p {
+    margin: 8px 0;
 }
 
 .acciones-lugar {

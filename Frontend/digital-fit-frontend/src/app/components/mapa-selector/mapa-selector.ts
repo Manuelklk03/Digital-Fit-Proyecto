@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import * as L from 'leaflet';
+import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-mapa-selector',
@@ -24,46 +25,52 @@ export class MapaSelectorComponent implements AfterViewInit {
 
   textoBusqueda = '';
 
-  private readonly latitudValencia = 39.4699;
-  private readonly longitudValencia = -0.3763;
+  private readonly valenciaCentro: L.LatLngExpression = [39.4699, -0.3763];
+  private readonly zoomValencia = 12;
+  private readonly zoomDetalle = 17;
 
   private readonly limitesComunidadValenciana = L.latLngBounds(
-    L.latLng(37.80, -1.95),
-    L.latLng(40.92, 0.95)
+    L.latLng(37.84, -1.58),
+    L.latLng(40.79, 0.85)
   );
 
-  private ubicacionMarcadaLat: number | null = null;
-  private ubicacionMarcadaLng: number | null = null;
+  constructor(private http: HttpClient) {}
 
   ngAfterViewInit(): void {
-    this.inicializarMapa();
+    setTimeout(() => {
+      this.inicializarMapa();
+    }, 100);
   }
 
   private inicializarMapa(): void {
-    const latInicial = this.latitud ?? this.latitudValencia;
-    const lngInicial = this.longitud ?? this.longitudValencia;
+    const tieneUbicacion = this.latitud !== null && this.longitud !== null;
 
-    let zoomInicial = 10;
+    const centroInicial: L.LatLngExpression = tieneUbicacion
+      ? [this.latitud!, this.longitud!]
+      : this.valenciaCentro;
 
-    if (this.latitud !== null && this.longitud !== null) {
-      zoomInicial = this.soloVista ? 17 : 15;
-    }
+    const zoomInicial = tieneUbicacion ? this.zoomDetalle : this.zoomValencia;
 
     this.map = L.map(this.mapContainer.nativeElement, {
+      center: centroInicial,
+      zoom: zoomInicial,
       maxBounds: this.limitesComunidadValenciana,
-      maxBoundsViscosity: 1.0
-    }).setView([latInicial, lngInicial], zoomInicial);
+      maxBoundsViscosity: 1.0,
+      zoomControl: true,
+      dragging: !this.soloVista,
+      scrollWheelZoom: !this.soloVista,
+      doubleClickZoom: !this.soloVista,
+      boxZoom: !this.soloVista,
+      keyboard: !this.soloVista,
+      touchZoom: !this.soloVista
+    });
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors',
-      minZoom: 8,
-      maxZoom: 19
+      attribution: '&copy; OpenStreetMap contributors'
     }).addTo(this.map);
 
-    if (this.latitud !== null && this.longitud !== null) {
-      this.colocarMarker(this.latitud, this.longitud);
-      this.ubicacionMarcadaLat = this.latitud;
-      this.ubicacionMarcadaLng = this.longitud;
+    if (tieneUbicacion) {
+      this.colocarMarker(this.latitud!, this.longitud!);
     }
 
     if (!this.soloVista) {
@@ -76,9 +83,6 @@ export class MapaSelectorComponent implements AfterViewInit {
         }
 
         this.colocarMarker(nuevaLat, nuevaLng);
-        this.ubicacionMarcadaLat = nuevaLat;
-        this.ubicacionMarcadaLng = nuevaLng;
-
         this.ubicacionSeleccionada.emit({
           latitud: nuevaLat,
           longitud: nuevaLng
@@ -88,26 +92,26 @@ export class MapaSelectorComponent implements AfterViewInit {
 
     setTimeout(() => {
       this.map.invalidateSize();
-    }, 250);
+      this.map.setView(centroInicial, zoomInicial);
+    }, 300);
   }
 
   buscarDireccion(): void {
     const texto = this.textoBusqueda.trim();
 
-    if (!texto) {
+    if (!texto || this.soloVista) {
       return;
     }
 
-    const consulta = encodeURIComponent(`${texto}, Comunidad Valenciana, España`);
+    const url = `https://nominatim.openstreetmap.org/search?format=json&limit=5&countrycodes=es&q=${encodeURIComponent(texto + ', Comunidad Valenciana, España')}`;
 
-    fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=es&q=${consulta}`)
-      .then(response => response.json())
-      .then(data => {
-        if (!data || data.length === 0) {
+    this.http.get<any[]>(url).subscribe({
+      next: (resultados) => {
+        if (!resultados || resultados.length === 0) {
           return;
         }
 
-        const resultado = data[0];
+        const resultado = resultados[0];
         const lat = Number(Number(resultado.lat).toFixed(6));
         const lng = Number(Number(resultado.lon).toFixed(6));
 
@@ -115,37 +119,34 @@ export class MapaSelectorComponent implements AfterViewInit {
           return;
         }
 
-        this.map.setView([lat, lng], this.soloVista ? 17 : 16);
+        this.map.setView([lat, lng], 16);
         this.colocarMarker(lat, lng);
-
-        this.ubicacionMarcadaLat = lat;
-        this.ubicacionMarcadaLng = lng;
-
-        if (!this.soloVista) {
-          this.ubicacionSeleccionada.emit({
-            latitud: lat,
-            longitud: lng
-          });
-        }
-      })
-      .catch(error => {
-        console.error('ERROR BUSQUEDA DIRECCION MAPA:', error);
-      });
+        this.ubicacionSeleccionada.emit({
+          latitud: lat,
+          longitud: lng
+        });
+      },
+      error: (err) => {
+        console.error('ERROR BUSQUEDA DIRECCION:', err);
+      }
+    });
   }
 
   volverAValencia(): void {
-    this.map.setView([this.latitudValencia, this.longitudValencia], 10);
-  }
-
-  volverAUbicacionMarcada(): void {
-    if (this.ubicacionMarcadaLat == null || this.ubicacionMarcadaLng == null) {
+    if (this.soloVista) {
       return;
     }
 
-    this.map.setView(
-      [this.ubicacionMarcadaLat, this.ubicacionMarcadaLng],
-      this.soloVista ? 17 : 16
-    );
+    this.map.setView(this.valenciaCentro, this.zoomValencia);
+  }
+
+  volverAMarcador(): void {
+    if (this.soloVista || !this.marker) {
+      return;
+    }
+
+    const posicion = this.marker.getLatLng();
+    this.map.setView([posicion.lat, posicion.lng], 16);
   }
 
   private colocarMarker(lat: number, lng: number): void {

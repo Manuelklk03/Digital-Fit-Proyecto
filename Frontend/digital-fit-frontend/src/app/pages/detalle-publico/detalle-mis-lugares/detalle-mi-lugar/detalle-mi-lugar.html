@@ -17,18 +17,6 @@
     <p>Consulta toda la información de tu lugar guardado.</p>
   </section>
 
-  <section class="bloque-mapa">
-    <h2>Ubicación en el mapa</h2>
-    <app-mapa-selector
-      [latitud]="lugar.latitud"
-      [longitud]="lugar.longitud"
-      [soloVista]="true">
-    </app-mapa-selector>
-    <p class="texto-ubicacion">
-      Ubicación: {{ formatearUbicacion(lugar.latitud, lugar.longitud) }}
-    </p>
-  </section>
-
   <section class="bloque-detalle">
     <div class="dato-detalle">
       <span class="etiqueta">Nombre</span>
@@ -38,11 +26,6 @@
     <div class="dato-detalle">
       <span class="etiqueta">Dirección</span>
       <span>{{ lugar.direccion }}</span>
-    </div>
-
-    <div class="dato-detalle">
-      <span class="etiqueta">Ubicación</span>
-      <span>{{ formatearUbicacion(lugar.latitud, lugar.longitud) }}</span>
     </div>
 
     <div class="dato-detalle">
@@ -60,9 +43,23 @@
       <span>{{ mostrarTipoLegible(lugar.tipo) }}</span>
     </div>
 
+    <div class="dato-detalle">
+      <span class="etiqueta">Ubicación</span>
+      <span>{{ lugar.latitud }}, {{ lugar.longitud }}</span>
+    </div>
+
     <div class="descripcion-detalle">
       <h2>Descripción</h2>
       <p>{{ lugar.descripcion || 'Sin descripción' }}</p>
+    </div>
+
+    <div class="mapa-detalle">
+      <h2>Ubicación en el mapa</h2>
+      <app-mapa-selector
+        [latitud]="lugar.latitud"
+        [longitud]="lugar.longitud"
+        [soloVista]="true">
+      </app-mapa-selector>
     </div>
 
     <div class="acciones-detalle">
