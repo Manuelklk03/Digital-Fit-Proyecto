@@ -5,7 +5,8 @@
       <input
         type="text"
         [(ngModel)]="textoBusqueda"
-        placeholder="Buscar dirección en Comunidad Valenciana"
+        placeholder="Buscar calle, zona o sitio en Comunidad Valenciana"
+        (keyup.enter)="buscarDireccion()"
       >
 
       <button type="button" (click)="buscarDireccion()">
@@ -19,6 +20,13 @@
       <button type="button" (click)="volverAMarcador()">
         Ir a ubicación marcada
       </button>
+    </div>
+  }
+
+  @if (mostrarMensajeBusqueda && !soloVista) {
+    <div class="mensaje-busqueda">
+      <span>{{ mensajeBusqueda }}</span>
+      <button type="button" (click)="cerrarMensaje()">Cerrar</button>
     </div>
   }
 
