@@ -24,6 +24,9 @@ export class MapaSelectorComponent implements AfterViewInit {
   private marker: L.Marker | null = null;
 
   textoBusqueda = '';
+  mensajeBusqueda = '';
+  mostrarMensajeBusqueda = false;
+  private timeoutMensaje: any;
 
   private readonly valenciaCentro: L.LatLngExpression = [39.4699, -0.3763];
   private readonly zoomValencia = 12;
@@ -31,29 +34,25 @@ export class MapaSelectorComponent implements AfterViewInit {
 
   private readonly limitesComunidadValenciana = L.latLngBounds(
     L.latLng(37.84, -1.58),
-    L.latLng(40.79, 0.85)
+    L.latLng(40.79, 0.56)
   );
 
   constructor(private http: HttpClient) {}
 
   ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.inicializarMapa();
-    }, 100);
+    this.inicializarMapa();
   }
 
   private inicializarMapa(): void {
     const tieneUbicacion = this.latitud !== null && this.longitud !== null;
 
-    const centroInicial: L.LatLngExpression = tieneUbicacion
-      ? [this.latitud!, this.longitud!]
-      : this.valenciaCentro;
-
-    const zoomInicial = tieneUbicacion ? this.zoomDetalle : this.zoomValencia;
+    const lat = this.latitud ?? 39.4699;
+    const lng = this.longitud ?? -0.3763;
+    const zoom = tieneUbicacion ? this.zoomDetalle : this.zoomValencia;
 
     this.map = L.map(this.mapContainer.nativeElement, {
-      center: centroInicial,
-      zoom: zoomInicial,
+      center: [lat, lng],
+      zoom,
       maxBounds: this.limitesComunidadValenciana,
       maxBoundsViscosity: 1.0,
       zoomControl: true,
@@ -78,10 +77,6 @@ export class MapaSelectorComponent implements AfterViewInit {
         const nuevaLat = Number(e.latlng.lat.toFixed(6));
         const nuevaLng = Number(e.latlng.lng.toFixed(6));
 
-        if (!this.limitesComunidadValenciana.contains(L.latLng(nuevaLat, nuevaLng))) {
-          return;
-        }
-
         this.colocarMarker(nuevaLat, nuevaLng);
         this.ubicacionSeleccionada.emit({
           latitud: nuevaLat,
@@ -92,42 +87,81 @@ export class MapaSelectorComponent implements AfterViewInit {
 
     setTimeout(() => {
       this.map.invalidateSize();
-      this.map.setView(centroInicial, zoomInicial);
-    }, 300);
+    }, 200);
   }
 
   buscarDireccion(): void {
     const texto = this.textoBusqueda.trim();
 
     if (!texto || this.soloVista) {
+      this.mostrarMensaje('Escribe una dirección, calle, zona o nombre de sitio.');
       return;
     }
 
-    const url = `https://nominatim.openstreetmap.org/search?format=json&limit=5&countrycodes=es&q=${encodeURIComponent(texto + ', Comunidad Valenciana, España')}`;
+    const consultas = [
+      texto,
+      `${texto}, Valencia`,
+      `${texto}, València`,
+      `${texto}, Comunidad Valenciana`,
+      `${texto}, Comunitat Valenciana`,
+      `${texto}, Valencia, España`,
+      `${texto}, Comunidad Valenciana, España`
+    ];
+
+    this.buscarConFallback(consultas, 0);
+  }
+
+  private buscarConFallback(consultas: string[], indice: number): void {
+    if (indice >= consultas.length) {
+      this.mostrarMensaje('No se ha encontrado la ubicación. Prueba con una calle, zona o dirección más concreta.');
+      return;
+    }
+
+    const consulta = consultas[indice];
+
+    const url =
+      `https://nominatim.openstreetmap.org/search` +
+      `?format=json` +
+      `&limit=5` +
+      `&countrycodes=es` +
+      `&bounded=1` +
+      `&viewbox=-1.58,40.79,0.56,37.84` +
+      `&q=${encodeURIComponent(consulta)}`;
 
     this.http.get<any[]>(url).subscribe({
       next: (resultados) => {
         if (!resultados || resultados.length === 0) {
+          this.buscarConFallback(consultas, indice + 1);
           return;
         }
 
-        const resultado = resultados[0];
-        const lat = Number(Number(resultado.lat).toFixed(6));
-        const lng = Number(Number(resultado.lon).toFixed(6));
+        const resultadoValido = resultados.find((resultado) => {
+          const lat = Number(resultado.lat);
+          const lng = Number(resultado.lon);
+          return this.limitesComunidadValenciana.contains(L.latLng(lat, lng));
+        });
 
-        if (!this.limitesComunidadValenciana.contains(L.latLng(lat, lng))) {
+        if (!resultadoValido) {
+          this.buscarConFallback(consultas, indice + 1);
           return;
         }
+
+        const lat = Number(Number(resultadoValido.lat).toFixed(6));
+        const lng = Number(Number(resultadoValido.lon).toFixed(6));
 
         this.map.setView([lat, lng], 16);
         this.colocarMarker(lat, lng);
+
         this.ubicacionSeleccionada.emit({
           latitud: lat,
           longitud: lng
         });
+
+        this.ocultarMensaje();
       },
       error: (err) => {
         console.error('ERROR BUSQUEDA DIRECCION:', err);
+        this.buscarConFallback(consultas, indice + 1);
       }
     });
   }
@@ -155,5 +189,26 @@ export class MapaSelectorComponent implements AfterViewInit {
     }
 
     this.marker = L.marker([lat, lng]).addTo(this.map);
+  }
+
+  private mostrarMensaje(texto: string): void {
+    this.mensajeBusqueda = texto;
+    this.mostrarMensajeBusqueda = true;
+
+    if (this.timeoutMensaje) {
+      clearTimeout(this.timeoutMensaje);
+    }
+
+    this.timeoutMensaje = setTimeout(() => {
+      this.mostrarMensajeBusqueda = false;
+    }, 3500);
+  }
+
+  cerrarMensaje(): void {
+    this.mostrarMensajeBusqueda = false;
+  }
+
+  private ocultarMensaje(): void {
+    this.mostrarMensajeBusqueda = false;
   }
 }
