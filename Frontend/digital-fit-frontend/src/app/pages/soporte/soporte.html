@@ -12,6 +12,7 @@
   }
 
   <section class="cabecera-soporte">
+    <div class="cabecera-badge">Centro de ayuda</div>
     <h1>Soporte</h1>
     <p>
       Si tienes alguna duda, problema o sugerencia sobre Digital-FIT,
@@ -20,18 +21,26 @@
   </section>
 
   <section class="bloque-formulario">
-    <h2>Enviar ticket</h2>
+    <div class="cabecera-bloque">
+      <div>
+        <span class="mini-etiqueta">Asistencia</span>
+        <h2>Enviar ticket</h2>
+      </div>
+
+      <div class="icono-bloque">🎧</div>
+    </div>
 
     <form class="formulario-soporte" (ngSubmit)="enviarFormulario()">
 
       <div class="grupo-campo">
         <label for="asunto">Asunto</label>
-        <input type="text" id="asunto" name="asunto" [(ngModel)]="asunto" required>
+        <input type="text" id="asunto" name="asunto" [(ngModel)]="asunto" required placeholder="Ej: No puedo guardar un entrenamiento">
       </div>
 
       <div class="grupo-campo">
         <label for="mensaje">Mensaje</label>
-        <textarea id="mensaje" name="mensaje" rows="6" [(ngModel)]="mensaje" required></textarea>
+        <textarea id="mensaje" name="mensaje" rows="6" [(ngModel)]="mensaje" required
+          placeholder="Explica aquí el problema o la sugerencia con el mayor detalle posible."></textarea>
       </div>
 
       <div class="acciones-formulario">
@@ -46,6 +55,7 @@
   <section class="bloque-listado">
     <div class="cabecera-listado">
       <div>
+        <span class="mini-etiqueta">Seguimiento</span>
         <h2>Mis tickets</h2>
         <p class="texto-secundario">{{ ticketsFiltrados.length }} ticket(s)</p>
       </div>
@@ -70,10 +80,24 @@
 
       @for (ticket of ticketsFiltrados; track ticket.id) {
       <article class="ticket-card">
-        <h3>{{ ticket.asunto }}</h3>
-        <p>{{ ticket.mensaje }}</p>
-        <p><strong>Fecha:</strong> {{ ticket.fecha }}</p>
-        <p><strong>Estado:</strong> {{ mostrarEstado(ticket.estado) }}</p>
+
+        <div class="ticket-superior">
+          <div>
+            <h3>{{ ticket.asunto }}</h3>
+            <p class="ticket-fecha"><strong>Fecha:</strong> {{ ticket.fecha }}</p>
+          </div>
+
+          <span class="estado-ticket"
+            [class.estado-abierto]="ticket.estado === 'ABIERTO'"
+            [class.estado-proceso]="ticket.estado === 'EN_PROCESO'"
+            [class.estado-cerrado]="ticket.estado === 'CERRADO'">
+            {{ mostrarEstado(ticket.estado) }}
+          </span>
+        </div>
+
+        <div class="ticket-contenido">
+          <p>{{ ticket.mensaje }}</p>
+        </div>
 
         <div class="acciones-ticket">
           <a class="boton-detalle" [routerLink]="['/soporte', ticket.id]">
@@ -89,7 +113,10 @@
 
     </div>
     } @else {
-    <p class="sin-tickets">No tienes tickets todavía o no coinciden con la búsqueda.</p>
+    <div class="sin-datos-bloque">
+      <div class="sin-datos-icono">📭</div>
+      <p class="sin-tickets">No tienes tickets todavía o no coinciden con la búsqueda.</p>
+    </div>
     }
   </section>
 

@@ -52,14 +52,25 @@
       </div>
 
       <div class="grupo-campo">
-        <label for="puntuacion">Puntuación</label>
-        <select id="puntuacion" name="puntuacion" [(ngModel)]="puntuacion">
-          <option [value]="1">1 - Muy mala</option>
-          <option [value]="2">2 - Mala</option>
-          <option [value]="3">3 - Normal</option>
-          <option [value]="4">4 - Buena</option>
-          <option [value]="5">5 - Muy buena</option>
-        </select>
+        <label>Puntuación</label>
+
+        <div class="selector-estrellas" (mouseleave)="quitarHoverEstrella()">
+          @for (estrella of estrellas; track estrella) {
+          <button
+            type="button"
+            class="estrella"
+            [class.estrella-activa]="estrellaActiva(estrella)"
+            (click)="seleccionarEstrella(estrella)"
+            (mouseenter)="activarHoverEstrella(estrella)"
+            [attr.aria-label]="'Puntuar con ' + estrella + ' estrellas'">
+            ★
+          </button>
+          }
+        </div>
+
+        <p class="texto-puntuacion">
+          {{ puntuacion }}/5 - {{ getTextoPuntuacion() }}
+        </p>
       </div>
 
       <div class="grupo-campo">
