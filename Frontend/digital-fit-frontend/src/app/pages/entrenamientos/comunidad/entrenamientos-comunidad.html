@@ -11,21 +11,29 @@
   </div>
   }
 
-  <section class="cabecera-pagina">
-    <h1>Entrenamientos comunidad</h1>
-    <p>
-      Aquí puedes publicar entrenamientos, gestionar los tuyos y ver los del resto de usuarios.
-    </p>
+  <section class="hero-pagina">
+    <div class="hero-contenido">
+      <span class="etiqueta-seccion">Zona comunidad</span>
+      <h1>Entrenamientos comunidad</h1>
+      <p>
+        Publica entrenamientos, gestiona los tuyos y descubre los compartidos por otros usuarios.
+      </p>
+    </div>
   </section>
 
   <section class="bloque-formulario">
-    <h2>
-      @if (editandoId !== null) {
-      Editar entrenamiento de comunidad
-      } @else {
-      Crear entrenamiento de comunidad
-      }
-    </h2>
+    <div class="titulo-bloque">
+      <div>
+        <span class="mini-etiqueta">Publicación</span>
+        <h2>
+          @if (editandoId !== null) {
+          Editar entrenamiento de comunidad
+          } @else {
+          Crear entrenamiento de comunidad
+          }
+        </h2>
+      </div>
+    </div>
 
     <form class="formulario-entrenamiento" (ngSubmit)="guardarEntrenamiento()">
 
@@ -82,7 +90,7 @@
         </div>
       </div>
 
-      <div class="grupo-campo">
+      <div class="grupo-campo grupo-campo-completo">
         <label for="descripcion">Descripción</label>
         <textarea id="descripcion" name="descripcion" rows="4" [(ngModel)]="descripcion" required></textarea>
       </div>
@@ -107,7 +115,8 @@
 
   <section class="bloque-listado">
     <div class="cabecera-listado">
-      <div>
+      <div class="resumen-listado">
+        <span class="mini-etiqueta">Tus publicaciones</span>
         <h2>Mis entrenamientos subidos</h2>
         <p class="texto-secundario">{{ misEntrenamientosSubidos.length }} entrenamiento(s)</p>
       </div>
@@ -131,13 +140,18 @@
     <div class="grid-entrenamientos">
       @for (entrenamiento of misEntrenamientosSubidos; track entrenamiento.id) {
       <article class="tarjeta-entrenamiento">
+        <div class="cabecera-tarjeta">
+          <span class="badge-categoria">{{ mostrarCategoriaLegible(entrenamiento.categoria) }}</span>
+          <span class="badge-nivel">{{ mostrarNivelLegible(entrenamiento.nivel) }}</span>
+        </div>
+
         <h3>{{ entrenamiento.nombre }}</h3>
 
-        <p><strong>Categoría:</strong> {{ mostrarCategoriaLegible(entrenamiento.categoria) }}</p>
-        <p><strong>Nivel:</strong> {{ mostrarNivelLegible(entrenamiento.nivel) }}</p>
-        <p><strong>Duración:</strong> {{ entrenamiento.duracionEnMinutos }} min</p>
-        <p><strong>Fecha:</strong> {{ entrenamiento.fechaPublicacion }}</p>
-        <p>{{ entrenamiento.descripcion }}</p>
+        <div class="detalle-resumen">
+          <p><strong>Duración:</strong> {{ entrenamiento.duracionEnMinutos }} min</p>
+          <p><strong>Fecha:</strong> {{ entrenamiento.fechaPublicacion }}</p>
+          <p>{{ entrenamiento.descripcion }}</p>
+        </div>
 
         <div class="acciones-entrenamiento">
           <a class="boton-detalle" [routerLink]="['/entrenamientos-comunidad', entrenamiento.id]">
@@ -156,13 +170,16 @@
       }
     </div>
     } @else {
-    <p class="sin-datos">No has subido entrenamientos todavía o no coinciden con la búsqueda.</p>
+    <div class="bloque-vacio">
+      <p class="sin-datos">No has subido entrenamientos todavía o no coinciden con la búsqueda.</p>
+    </div>
     }
   </section>
 
   <section class="bloque-listado">
     <div class="cabecera-listado">
-      <div>
+      <div class="resumen-listado">
+        <span class="mini-etiqueta">Comunidad</span>
         <h2>Entrenamientos de la comunidad</h2>
         <p class="texto-secundario">{{ entrenamientosRestoComunidad.length }} entrenamiento(s)</p>
       </div>
@@ -172,14 +189,19 @@
     <div class="grid-entrenamientos">
       @for (entrenamiento of entrenamientosRestoComunidad; track entrenamiento.id) {
       <article class="tarjeta-entrenamiento">
+        <div class="cabecera-tarjeta">
+          <span class="badge-categoria">{{ mostrarCategoriaLegible(entrenamiento.categoria) }}</span>
+          <span class="badge-nivel">{{ mostrarNivelLegible(entrenamiento.nivel) }}</span>
+        </div>
+
         <h3>{{ entrenamiento.nombre }}</h3>
 
-        <p><strong>Categoría:</strong> {{ mostrarCategoriaLegible(entrenamiento.categoria) }}</p>
-        <p><strong>Nivel:</strong> {{ mostrarNivelLegible(entrenamiento.nivel) }}</p>
-        <p><strong>Duración:</strong> {{ entrenamiento.duracionEnMinutos }} min</p>
-        <p><strong>Usuario:</strong> {{ entrenamiento.usuario }}</p>
-        <p><strong>Fecha:</strong> {{ entrenamiento.fechaPublicacion }}</p>
-        <p>{{ entrenamiento.descripcion }}</p>
+        <div class="detalle-resumen">
+          <p><strong>Duración:</strong> {{ entrenamiento.duracionEnMinutos }} min</p>
+          <p><strong>Usuario:</strong> {{ entrenamiento.usuario }}</p>
+          <p><strong>Fecha:</strong> {{ entrenamiento.fechaPublicacion }}</p>
+          <p>{{ entrenamiento.descripcion }}</p>
+        </div>
 
         <div class="acciones-entrenamiento">
           <a class="boton-detalle" [routerLink]="['/entrenamientos-comunidad', entrenamiento.id]">
@@ -194,7 +216,9 @@
       }
     </div>
     } @else {
-    <p class="sin-datos">No hay entrenamientos de otros usuarios o no coinciden con la búsqueda.</p>
+    <div class="bloque-vacio">
+      <p class="sin-datos">No hay entrenamientos de otros usuarios o no coinciden con la búsqueda.</p>
+    </div>
     }
   </section>
 

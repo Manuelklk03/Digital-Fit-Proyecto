@@ -12,30 +12,41 @@
   }
 
   @if (entrenamiento) {
-  <section class="cabecera-detalle">
-    <h1>{{ entrenamiento.nombre }}</h1>
-    <p>Consulta toda la información del entrenamiento base.</p>
+  <section class="hero-detalle">
+    <div class="hero-detalle-contenido">
+      <span class="mini-etiqueta">Detalle del entrenamiento</span>
+      <h1>{{ entrenamiento.nombre }}</h1>
+      <p>Consulta toda la información del entrenamiento base.</p>
+
+      <div class="hero-badges">
+        <span class="badge-categoria">{{ mostrarCategoriaLegible(entrenamiento.categoria) }}</span>
+        <span class="badge-nivel">{{ mostrarNivelLegible(entrenamiento.nivel) }}</span>
+        <span class="badge-duracion">{{ entrenamiento.duracionEnMinutos }} min</span>
+      </div>
+    </div>
   </section>
 
   <section class="bloque-detalle">
-    <div class="dato-detalle">
-      <span class="etiqueta">Nombre</span>
-      <span>{{ entrenamiento.nombre }}</span>
-    </div>
+    <div class="grid-datos">
+      <div class="dato-detalle">
+        <span class="etiqueta">Nombre</span>
+        <span>{{ entrenamiento.nombre }}</span>
+      </div>
 
-    <div class="dato-detalle">
-      <span class="etiqueta">Categoría</span>
-      <span>{{ mostrarCategoriaLegible(entrenamiento.categoria) }}</span>
-    </div>
+      <div class="dato-detalle">
+        <span class="etiqueta">Categoría</span>
+        <span>{{ mostrarCategoriaLegible(entrenamiento.categoria) }}</span>
+      </div>
 
-    <div class="dato-detalle">
-      <span class="etiqueta">Nivel</span>
-      <span>{{ mostrarNivelLegible(entrenamiento.nivel) }}</span>
-    </div>
+      <div class="dato-detalle">
+        <span class="etiqueta">Nivel</span>
+        <span>{{ mostrarNivelLegible(entrenamiento.nivel) }}</span>
+      </div>
 
-    <div class="dato-detalle">
-      <span class="etiqueta">Duración</span>
-      <span>{{ entrenamiento.duracionEnMinutos }} min</span>
+      <div class="dato-detalle">
+        <span class="etiqueta">Duración</span>
+        <span>{{ entrenamiento.duracionEnMinutos }} min</span>
+      </div>
     </div>
 
     <div class="descripcion-detalle">
@@ -58,9 +69,12 @@
     </div>
   </section>
   } @else {
-  <section class="cabecera-detalle">
-    <h1>Detalle de entrenamiento</h1>
-    <p>Cargando información...</p>
+  <section class="hero-detalle">
+    <div class="hero-detalle-contenido">
+      <span class="mini-etiqueta">Detalle del entrenamiento</span>
+      <h1>Detalle de entrenamiento</h1>
+      <p>Cargando información...</p>
+    </div>
   </section>
   }
 

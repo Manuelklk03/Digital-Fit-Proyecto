@@ -10,6 +10,20 @@
     }
 }
 
+@keyframes brilloEstrella {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.18);
+    }
+
+    100% {
+        transform: scale(1.08);
+    }
+}
+
 .pagina-valoraciones {
     min-height: 100vh;
     padding: 50px 20px 80px;
@@ -132,6 +146,46 @@
     box-shadow: 0 0 0 3px rgba(60, 145, 230, 0.15);
 }
 
+.selector-estrellas {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 14px 16px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #f8fbff, #e8f3ff);
+    border: 1px solid #c7ddf8;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.estrella {
+    border: none;
+    background: transparent;
+    font-size: 38px;
+    line-height: 1;
+    cursor: pointer;
+    color: #bfd1e7;
+    transition: transform 0.2s ease, color 0.2s ease, text-shadow 0.2s ease;
+    padding: 0;
+}
+
+.estrella:hover {
+    transform: scale(1.15) rotate(-4deg);
+}
+
+.estrella-activa {
+    color: #f7b500;
+    text-shadow: 0 0 12px rgba(247, 181, 0, 0.35);
+    animation: brilloEstrella 0.22s ease;
+}
+
+.texto-puntuacion {
+    margin: 4px 0 0 0;
+    font-weight: bold;
+    color: var(--color-azul-oscuro);
+    font-size: 15px;
+}
+
 .acciones-formulario {
     display: flex;
     gap: 12px;
@@ -245,6 +299,14 @@
     .boton-limpiar,
     .boton-guardar {
         width: 100%;
+    }
+
+    .selector-estrellas {
+        justify-content: center;
+    }
+
+    .estrella {
+        font-size: 34px;
     }
 
     .popup-overlay {
