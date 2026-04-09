@@ -12,6 +12,7 @@
   }
 
   <section class="cabecera-pagina">
+    <div class="cabecera-badge">Administración</div>
     <h1>Crear admin</h1>
     <p>
       Desde aquí puedes crear nuevos administradores de la aplicación.
@@ -19,6 +20,14 @@
   </section>
 
   <section class="bloque-formulario">
+    <div class="cabecera-formulario">
+      <div>
+        <span class="mini-etiqueta">Alta de usuario</span>
+        <h2>Nuevo administrador</h2>
+      </div>
+      <p class="texto-apoyo">Rellena los datos para registrar un nuevo perfil administrador.</p>
+    </div>
+
     <form class="formulario-admin" (ngSubmit)="crearAdmin()">
 
       <div class="grupo-campo">

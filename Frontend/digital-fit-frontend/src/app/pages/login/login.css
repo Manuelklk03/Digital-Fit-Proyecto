@@ -15,33 +15,49 @@
     display: flex;
     justify-content: center;
     padding: 60px 20px 80px;
-    background: linear-gradient(180deg, var(--color-azul-fondo), #dceeff);
+    background:
+        radial-gradient(circle at top left, rgba(255,255,255,0.5), transparent 28%),
+        linear-gradient(180deg, var(--color-azul-fondo), #dceeff);
 }
 
 .caja-login {
-    background-color: var(--color-azul-caja);
+    background: linear-gradient(180deg, rgba(255,255,255,0.80), rgba(217,234,255,0.95));
     padding: 40px;
-    border-radius: 22px;
+    border-radius: 28px;
     width: 100%;
-    max-width: 460px;
+    max-width: 470px;
     text-align: center;
-    box-shadow: 0px 10px 24px rgba(0, 0, 0, 0.14);
-    border: 1px solid #b7c9ef;
+    box-shadow: 0px 18px 36px rgba(0, 0, 0, 0.14);
+    border: 1px solid rgba(183, 201, 239, 0.9);
     animation: aparecerLogin 0.8s ease forwards;
     height: fit-content;
+    backdrop-filter: blur(6px);
 }
 
 .bloque-superior {
-    margin-bottom: 24px;
+    margin-bottom: 26px;
+}
+
+.insignia-login {
+    display: inline-block;
+    margin-bottom: 14px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #eef6ff, #ffffff);
+    color: var(--color-azul-oscuro);
+    font-weight: bold;
+    font-size: 12px;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.07);
 }
 
 .icono-usuario {
-    width: 120px;
+    width: 110px;
     margin: 0 auto 18px auto;
+    filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.12));
 }
 
 .titulo-login {
-    font-size: 32px;
+    font-size: 34px;
     margin-bottom: 10px;
     font-weight: bold;
     color: var(--color-azul-oscuro);
@@ -49,7 +65,8 @@
 
 .texto-secundario {
     margin: 0;
-    line-height: 1.6;
+    line-height: 1.7;
+    color: #455d76;
 }
 
 .formulario-login {
@@ -72,31 +89,32 @@
 
 .campo-texto {
     width: 100%;
-    padding: 13px;
-    border: 1px solid #aac5eb;
-    border-radius: 10px;
+    padding: 14px 15px;
+    border: 1px solid #b7d0f1;
+    border-radius: 14px;
     font-size: 15px;
-    transition: 0.3s ease;
+    transition: 0.25s ease;
     background-color: white;
 }
 
 .campo-texto:focus {
     border-color: var(--color-azul);
     outline: none;
-    box-shadow: 0 0 0 3px rgba(60, 145, 230, 0.15);
+    box-shadow: 0 0 0 4px rgba(60, 145, 230, 0.15);
 }
 
 .boton-acceder {
     width: 100%;
     padding: 14px;
-    background-color: var(--color-azul-oscuro);
+    background: linear-gradient(135deg, var(--color-azul-oscuro), #2f6cac);
     border: none;
-    border-radius: 10px;
+    border-radius: 14px;
     font-weight: bold;
     cursor: pointer;
     font-size: 15px;
     color: white;
-    transition: 0.3s ease;
+    transition: 0.25s ease;
+    box-shadow: 0 12px 20px rgba(26, 79, 135, 0.16);
 }
 
 .boton-acceder:hover:not(:disabled) {
@@ -110,6 +128,7 @@
 
 .texto-registro {
     margin: 4px 0 0 0;
+    line-height: 1.6;
 }
 
 .texto-registro a {
@@ -120,16 +139,16 @@
 
 .popup-mensaje {
     position: fixed;
-    top: 90px;
+    top: 92px;
     right: 20px;
     z-index: 9999;
     min-width: 280px;
     max-width: 360px;
     padding: 14px 16px;
-    border-radius: 12px;
+    border-radius: 14px;
     color: white;
     font-weight: bold;
-    box-shadow: 0px 10px 22px rgba(0, 0, 0, 0.18);
+    box-shadow: 0px 14px 24px rgba(0, 0, 0, 0.18);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -138,11 +157,11 @@
 }
 
 .popup-exito {
-    background-color: #1f7a37;
+    background: linear-gradient(135deg, #1f7a37, #2aa14c);
 }
 
 .popup-error {
-    background-color: #c62828;
+    background: linear-gradient(135deg, #c62828, #df4343);
 }
 
 .boton-cerrar-popup {

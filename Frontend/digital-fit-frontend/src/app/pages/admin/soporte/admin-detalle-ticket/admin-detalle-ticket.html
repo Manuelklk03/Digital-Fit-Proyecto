@@ -12,17 +12,23 @@
   }
 
   @if (ticket) {
-    <div class="contenedor-detalle">
+    <section class="cabecera-detalle">
+      <div class="cabecera-badge">Gestión de ticket</div>
       <h1>{{ ticket.asunto }}</h1>
+      <p>Consulta el ticket y actualiza su estado desde el panel de administración.</p>
+    </section>
 
+    <div class="contenedor-detalle">
       <div class="info-item">
-        <span class="label">Fecha:</span>
+        <span class="label">Fecha</span>
         <span>{{ ticket.fecha }}</span>
       </div>
 
       <div class="info-item">
-        <span class="label">Estado:</span>
-        <span>{{ mostrarEstado(ticket.estado) }}</span>
+        <span class="label">Estado</span>
+        <span class="estado-chip estado-{{ ticket.estado?.toLowerCase() }}">
+          {{ mostrarEstado(ticket.estado) }}
+        </span>
       </div>
 
       <details class="bloque-detalles" open>
