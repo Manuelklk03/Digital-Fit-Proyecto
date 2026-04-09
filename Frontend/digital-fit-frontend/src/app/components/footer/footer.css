@@ -1,6 +1,10 @@
 .pie-pagina {
     position: relative;
     overflow: hidden;
+    background: linear-gradient(135deg, rgba(26, 79, 135, 0.97), rgba(60, 145, 230, 0.95));
+    color: white;
+    border-top: 1px solid rgba(255,255,255,0.16);
+    box-shadow: 0 -10px 30px rgba(26, 79, 135, 0.10);
 }
 
 .pie-pagina::before {
@@ -11,7 +15,47 @@
     pointer-events: none;
 }
 
-.pie-pagina small {
+.pie-contenido {
     position: relative;
     z-index: 1;
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 24px 20px;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.pie-bloque {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.pie-bloque strong {
+    font-size: 18px;
+    letter-spacing: 0.3px;
+}
+
+.pie-bloque small {
+    font-size: 14px;
+    opacity: 0.94;
+    line-height: 1.6;
+}
+
+.pie-bloque-derecha {
+    text-align: right;
+}
+
+@media (max-width: 700px) {
+    .pie-contenido {
+        justify-content: center;
+        text-align: center;
+    }
+
+    .pie-bloque-derecha {
+        text-align: center;
+    }
 }

@@ -11,69 +11,116 @@
 }
 
 .zona-registro {
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 60px 20px;
+    padding: 60px 20px 80px;
+    background:
+        radial-gradient(circle at top right, rgba(255,255,255,0.45), transparent 28%),
+        linear-gradient(180deg, var(--color-azul-fondo), #dceeff);
 }
 
 .caja-registro {
-    background-color: var(--color-azul-caja);
+    background: linear-gradient(180deg, rgba(255,255,255,0.80), rgba(217,234,255,0.95));
     padding: 40px;
-    border-radius: 18px;
+    border-radius: 28px;
     width: 100%;
-    max-width: 450px;
-    box-shadow: 0px 0px 18px rgba(0, 0, 0, 0.18);
+    max-width: 470px;
+    box-shadow: 0px 18px 36px rgba(0, 0, 0, 0.14);
+    border: 1px solid rgba(183, 201, 239, 0.9);
     animation: aparecerFormulario 0.8s ease forwards;
+    backdrop-filter: blur(6px);
+}
+
+.bloque-superior {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.insignia-registro {
+    display: inline-block;
+    margin-bottom: 14px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #eef6ff, #ffffff);
+    color: var(--color-azul-oscuro);
+    font-weight: bold;
+    font-size: 12px;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.07);
 }
 
 .caja-registro h1 {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     text-align: center;
+    color: var(--color-azul-oscuro);
+    font-size: 32px;
 }
 
-form {
+.texto-secundario {
+    margin: 0;
+    line-height: 1.7;
+    color: #455d76;
+}
+
+.formulario-registro {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 16px;
 }
 
-input {
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid var(--color-negro);
-    transition: 0.3s ease;
+.grupo-campo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
-input:focus {
+.grupo-campo label {
+    font-weight: bold;
+    color: var(--color-azul-oscuro);
+}
+
+.grupo-campo input {
+    padding: 14px;
+    border-radius: 14px;
+    border: 1px solid #b7d0f1;
+    transition: 0.25s ease;
+    background: white;
+    font-size: 15px;
+}
+
+.grupo-campo input:focus {
     outline: none;
     border-color: var(--color-azul);
-    box-shadow: 0 0 5px var(--color-azul);
+    box-shadow: 0 0 0 4px rgba(60,145,230,0.15);
 }
 
 .boton-principal {
-    margin-top: 15px;
-    padding: 12px;
-    border-radius: 8px;
+    margin-top: 10px;
+    padding: 14px;
+    border-radius: 14px;
     border: none;
-    background-color: var(--color-azul);
+    background: linear-gradient(135deg, var(--color-azul-oscuro), #2f6cac);
     color: white;
     font-weight: bold;
     cursor: pointer;
+    transition: 0.25s ease;
+    box-shadow: 0 12px 20px rgba(26, 79, 135, 0.16);
 }
 
-.boton-principal:hover {
-    background-color: var(--color-azul-oscuro);
+.boton-principal:hover:not(:disabled) {
     transform: translateY(-2px);
 }
 
-.boton-principal:active {
-    transform: scale(0.96);
+.boton-principal:disabled {
+    opacity: 0.75;
+    cursor: not-allowed;
 }
 
 .texto-login {
-    margin-top: 15px;
+    margin-top: 16px;
     text-align: center;
+    line-height: 1.6;
 }
 
 .texto-login a {
@@ -82,12 +129,59 @@ input:focus {
     text-decoration: none;
 }
 
-.mensaje-ok {
-    color: #2e7d32;
+.popup-mensaje {
+    position: fixed;
+    top: 92px;
+    right: 20px;
+    z-index: 9999;
+    min-width: 280px;
+    max-width: 360px;
+    padding: 14px 16px;
+    border-radius: 14px;
+    color: white;
     font-weight: bold;
+    box-shadow: 0px 14px 24px rgba(0, 0, 0, 0.18);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+    animation: aparecerFormulario 0.3s ease;
 }
 
-.mensaje-error {
-    color: #c62828;
-    font-weight: bold;
+.popup-exito {
+    background: linear-gradient(135deg, #1f7a37, #2aa14c);
+}
+
+.popup-error {
+    background: linear-gradient(135deg, #c62828, #df4343);
+}
+
+.boton-cerrar-popup {
+    border: none;
+    background: transparent;
+    color: white;
+    font-size: 22px;
+    cursor: pointer;
+    line-height: 1;
+}
+
+@media (max-width: 600px) {
+    .zona-registro {
+        padding: 40px 16px 70px;
+    }
+
+    .caja-registro {
+        padding: 28px 22px;
+    }
+
+    .caja-registro h1 {
+        font-size: 28px;
+    }
+
+    .popup-mensaje {
+        left: 16px;
+        right: 16px;
+        min-width: auto;
+        max-width: none;
+    }
 }

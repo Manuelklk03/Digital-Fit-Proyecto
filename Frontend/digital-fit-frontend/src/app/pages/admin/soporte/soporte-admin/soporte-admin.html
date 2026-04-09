@@ -12,6 +12,7 @@
   }
 
   <section class="cabecera-pagina">
+    <div class="cabecera-badge">Panel de administración</div>
     <h1>Panel admin - Soporte</h1>
     <p>
       Aquí puedes consultar todos los tickets de soporte y gestionarlos.
@@ -21,6 +22,7 @@
   <section class="bloque-listado">
     <div class="cabecera-listado">
       <div>
+        <span class="mini-etiqueta">Incidencias</span>
         <h2>Listado de tickets</h2>
         <p class="texto-secundario">{{ ticketsFiltrados.length }} ticket(s)</p>
       </div>
@@ -57,11 +59,18 @@
         @for (ticket of ticketsFiltrados; track ticket.id) {
           <article class="tarjeta-ticket">
 
-            <h3>{{ ticket.asunto }}</h3>
+            <div class="cabecera-ticket">
+              <h3>{{ ticket.asunto }}</h3>
+              <span class="estado-chip estado-{{ ticket.estado?.toLowerCase() }}">
+                {{ mostrarEstado(ticket.estado) }}
+              </span>
+            </div>
 
-            <p><strong>Mensaje:</strong> {{ ticket.mensaje }}</p>
-            <p><strong>Fecha:</strong> {{ ticket.fecha }}</p>
-            <p><strong>Estado:</strong> {{ mostrarEstado(ticket.estado) }}</p>
+            <p class="ticket-mensaje"><strong>Mensaje:</strong> {{ ticket.mensaje }}</p>
+
+            <div class="meta-ticket">
+              <span><strong>Fecha:</strong> {{ ticket.fecha }}</span>
+            </div>
 
             <div class="acciones-ticket">
               <a class="boton-detalle" [routerLink]="['/admin/soporte', ticket.id]">
