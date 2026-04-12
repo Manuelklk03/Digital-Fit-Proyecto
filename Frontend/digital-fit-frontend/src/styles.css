@@ -66,6 +66,15 @@ body {
     animation: aparecerPagina 0.6s ease;
 }
 
+body,
+button,
+input,
+textarea,
+select {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
 main {
     width: 100%;
 }
@@ -90,6 +99,15 @@ h4 {
 
 p {
     line-height: 1.7;
+}
+
+strong {
+    color: var(--color-azul-oscuro);
+}
+
+::selection {
+    background-color: rgba(60, 145, 230, 0.22);
+    color: var(--color-negro);
 }
 
 /* ========================================= */
