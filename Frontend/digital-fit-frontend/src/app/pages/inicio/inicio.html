@@ -4,8 +4,11 @@
 
   @if (cargando) {
   <section class="hero-inicio">
-    <div class="hero-contenido">
-      <img src="img/LOGOFINAL-removebg.png" alt="Logo Digital-FIT" class="logo-inicio">
+    <div class="hero-contenido hero-cargando">
+      <div class="fondo-brillo fondo-brillo-1"></div>
+      <div class="fondo-brillo fondo-brillo-2"></div>
+
+      <img src="img/Logo 3D de DIGITAL-FIT con pulso.png" alt="Logo Digital-FIT" class="logo-inicio logo-inicio-animado">
       <h1>Bienvenido a Digital-FIT</h1>
       <p>Cargando panel principal...</p>
     </div>
@@ -20,16 +23,16 @@
       <div class="hero-grid">
         <div class="hero-texto">
           <span class="insignia-rol admin">Administrador</span>
+          <span class="hero-subtitulo">Control total del sistema</span>
           <h1>Panel de administración</h1>
           <p>
             Bienvenido, <strong>{{ usuarioActual.username }}</strong>.
-            Desde aquí puedes gestionar el contenido base, revisar soporte y controlar la estructura principal de la
-            aplicación.
+            Desde aquí puedes gestionar el contenido base, revisar soporte y controlar la estructura principal de la aplicación.
           </p>
         </div>
 
         <div class="hero-logo-panel">
-          <img src="img/LOGOFINAL-removebg.png" alt="Logo Digital-FIT" class="logo-inicio">
+          <img src="img/Logo 3D de DIGITAL-FIT con pulso.png" alt="Logo Digital-FIT" class="logo-inicio logo-inicio-animado">
         </div>
       </div>
     </div>
@@ -80,7 +83,7 @@
       <a class="tarjeta-acceso admin" routerLink="/publicos">
         <span class="etiqueta-tarjeta">Base</span>
         <h3>Lugares públicos base</h3>
-        <p>Gestiona espacios públicos deportivos visibles para los usuarios.</p>
+        <p>Gestiona espacios deportivos visibles para los usuarios.</p>
       </a>
     </div>
   </section>
@@ -95,6 +98,7 @@
       <div class="hero-grid">
         <div class="hero-texto">
           <span class="insignia-rol user">Usuario</span>
+          <span class="hero-subtitulo">Tu espacio deportivo personal</span>
           <h1>Bienvenido a Digital-FIT</h1>
           <p>
             Hola, <strong>{{ usuarioActual.username }}</strong>.
@@ -103,7 +107,7 @@
         </div>
 
         <div class="hero-logo-panel">
-          <img src="img/LOGOFINAL-removebg.png" alt="Logo Digital-FIT" class="logo-inicio">
+          <img src="img/Logo 3D de DIGITAL-FIT con pulso.png" alt="Logo Digital-FIT" class="logo-inicio logo-inicio-animado">
         </div>
       </div>
     </div>
