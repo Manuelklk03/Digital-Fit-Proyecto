@@ -90,3 +90,79 @@
 2026-04-14 09:41:03 - Exposing 1 endpoint beneath base path '/actuator'
 2026-04-14 09:41:04 - Tomcat started on port 8080 (http) with context path '/'
 2026-04-14 09:41:05 - Started DigitalFitApplication in 51.968 seconds (process running for 57.145)
+2026-04-14 10:16:51 - Starting DigitalFitApplication using Java 25.0.2 with PID 25420 (C:\Users\TiendaRoquetas\Desktop\MANU PRACTICAS\Digital-Fit-Proyecto\Backend\digital-fit\target\classes started by TiendaRoquetas in C:\Users\TiendaRoquetas\Desktop\MANU PRACTICAS\Digital-Fit-Proyecto\Backend\digital-fit)
+2026-04-14 10:16:51 - Running with Spring Boot v4.0.5, Spring v7.0.6
+2026-04-14 10:16:51 - No active profile set, falling back to 1 default profile: "default"
+2026-04-14 10:16:51 - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-04-14 10:16:51 - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-04-14 10:16:56 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-14 10:16:57 - Finished Spring Data repository scanning in 638 ms. Found 12 JPA repository interfaces.
+2026-04-14 10:17:00 - Tomcat initialized with port 8080 (http)
+2026-04-14 10:17:00 - Starting service [Tomcat]
+2026-04-14 10:17:00 - Starting Servlet engine: [Apache Tomcat/11.0.20]
+2026-04-14 10:17:01 - Root WebApplicationContext: initialization completed in 9862 ms
+2026-04-14 10:17:03 - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-14 10:17:03 - HHH000001: Hibernate ORM core version 7.2.7.Final
+2026-04-14 10:17:05 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-14 10:17:05 - HikariPool-1 - Starting...
+2026-04-14 10:17:06 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@5de73762
+2026-04-14 10:17:06 - HikariPool-1 - Start completed.
+2026-04-14 10:17:06 - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://localhost:3306/digital_fit]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.45
+	Default catalog/schema: digital_fit/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-14 10:17:09 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-14 10:17:09 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-14 10:17:09 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-14 10:17:13 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-14 10:17:13 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2026-04-14 10:17:15 - Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2026-04-14 10:17:16 - Exposing 1 endpoint beneath base path '/actuator'
+2026-04-14 10:17:16 - Tomcat started on port 8080 (http) with context path '/'
+2026-04-14 10:17:16 - Started DigitalFitApplication in 27.091 seconds (process running for 29.914)
+2026-04-14 10:17:16 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-14 10:17:16 - Initializing Servlet 'dispatcherServlet'
+2026-04-14 10:17:16 - Completed initialization in 5 ms
+2026-04-14 10:18:37 - Buscando usuario con login: usuario1
+2026-04-14 10:18:37 - Usuario encontrado: usuario1
+2026-04-14 10:18:47 - Listando entrenamientos de usuario usuario1
+2026-04-14 10:18:48 - Listando centros privados al usuario usuario1
+2026-04-14 10:20:25 - Listando centros privados al usuario usuario1
+2026-04-14 10:20:36 - Listando centros privados al usuario usuario1
+2026-04-14 10:21:00 - Usuario usuario1 añade centro privado desde maps YULYESKA
+2026-04-14 10:21:01 - Centro privado YULYESKA guardado para usuario usuario1
+2026-04-14 10:21:01 - Listando centros privados al usuario usuario1
+2026-04-14 10:21:11 - Usuario usuario1 borra centro privado 4
+2026-04-14 10:21:11 - Centro privado 4 borrado para usuario usuario1
+2026-04-14 10:21:11 - Listando centros privados al usuario usuario1
+2026-04-14 10:21:15 - Listando mis lugares publicos
+2026-04-14 10:21:40 - Listando entrenamientos de usuario usuario1
+2026-04-14 10:21:47 - Listando entrenamientos de usuario usuario1
+2026-04-14 10:21:53 - Listando centros privados al usuario usuario1
+2026-04-14 10:22:04 - Listando lugares publicos de la app
+2026-04-14 10:22:13 - Buscando usuario con login: admin1
+2026-04-14 10:22:13 - Usuario encontrado: admin1
+2026-04-14 10:22:19 - Listando centros privados
+2026-04-14 10:22:41 - Creando centro privado YULYESKA
+2026-04-14 10:22:41 - Listando centros privados
+2026-04-14 10:22:48 - Buscando usuario con login: usuario1
+2026-04-14 10:22:48 - Usuario encontrado: usuario1
+2026-04-14 10:22:53 - Listando centros privados
+2026-04-14 10:25:15 - Buscando usuario con login: usuario1
+2026-04-14 10:25:15 - Usuario encontrado: usuario1
+2026-04-14 10:25:18 - Listando mis lugares publicos
+2026-04-14 10:25:40 - Listando mis lugares publicos
+2026-04-14 10:25:42 - Listando mis lugares publicos
+2026-04-14 10:25:48 - Listando centros privados al usuario usuario1
+2026-04-14 10:30:04 - Listando centros privados al usuario usuario1
+2026-04-14 10:30:53 - Buscando usuario con login: usuario1
+2026-04-14 10:30:53 - Usuario encontrado: usuario1
+2026-04-14 10:30:57 - Listando centros privados al usuario usuario1
