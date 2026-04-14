@@ -1,33 +1,29 @@
 <div class="mapa-contenedor">
 
   @if (!soloVista) {
-    <div class="barra-superior-mapa">
-      <input
-        type="text"
-        [(ngModel)]="textoBusqueda"
-        placeholder="Buscar calle, zona o sitio en Comunidad Valenciana"
-        (keyup.enter)="buscarDireccion()"
-      >
+  <div class="barra-superior-mapa">
+    <input type="text" name="textoBusqueda" [(ngModel)]="textoBusqueda" placeholder="Buscar calle, zona o sitio"
+      (keyup.enter)="buscarDireccion()">
 
-      <button type="button" (click)="buscarDireccion()">
-        Buscar
-      </button>
+    <button type="button" (click)="buscarDireccion()" [disabled]="buscando">
+      {{ buscando ? 'Buscando...' : 'Buscar' }}
+    </button>
 
-      <button type="button" (click)="volverAValencia()">
-        Volver a Valencia
-      </button>
+    <button type="button" (click)="volverAValencia()">
+      Volver a Valencia
+    </button>
 
-      <button type="button" (click)="volverAMarcador()">
-        Ir a ubicación marcada
-      </button>
-    </div>
+    <button type="button" (click)="volverAMarcador()">
+      Ir a ubicación marcada
+    </button>
+  </div>
   }
 
   @if (mostrarMensajeBusqueda && !soloVista) {
-    <div class="mensaje-busqueda">
-      <span>{{ mensajeBusqueda }}</span>
-      <button type="button" (click)="cerrarMensaje()">Cerrar</button>
-    </div>
+  <div class="mensaje-busqueda">
+    <span>{{ mensajeBusqueda }}</span>
+    <button type="button" (click)="cerrarMensaje()">Cerrar</button>
+  </div>
   }
 
   <div #mapContainer class="mapa-leaflet"></div>
