@@ -89,6 +89,24 @@ public class ValoracionService {
         return dtos;
     }
 
+    // Listar valoraciones públicas por categoría general
+    public List<ValoracionDTO> listarValoracionesPublicas(String categoria) {
+
+        log.info("Listando valoraciones públicas. Categoría: {}", categoria);
+
+        List<TipoDeValoracion> tiposPermitidos = obtenerTiposSegunCategoria(categoria);
+
+        List<Valoracion> valoraciones = valoracionRepository.findByTipoDeValoracionInOrderByFechaDesc(tiposPermitidos);
+
+        List<ValoracionDTO> dtos = new ArrayList<>();
+
+        for (Valoracion v : valoraciones) {
+            dtos.add(entityToDto(v));
+        }
+
+        return dtos;
+    }
+
     // Listar mis valoraciones
     public List<ValoracionDTO> listarMisValoraciones(String username) {
 
@@ -213,6 +231,39 @@ public class ValoracionService {
 
             default -> throw new ErrorArgumentoException("Tipo de valoración no válido");
         }
+    }
+
+    private List<TipoDeValoracion> obtenerTiposSegunCategoria(String categoria) {
+
+        if (categoria == null || categoria.isBlank() || categoria.equalsIgnoreCase("TODOS")) {
+            return List.of(
+                    TipoDeValoracion.ENTRENAMIENTO_BASE,
+                    TipoDeValoracion.ENTRENAMIENTO_USUARIO,
+                    TipoDeValoracion.HISTORIAL_ENTRENAMIENTO,
+                    TipoDeValoracion.ENTRENAMIENTO_COMUNIDAD,
+                    TipoDeValoracion.CENTRO_PRIVADO_BASE,
+                    TipoDeValoracion.CENTRO_PRIVADO_USUARIO,
+                    TipoDeValoracion.LUGAR_PUBLICO_BASE,
+                    TipoDeValoracion.LUGAR_PUBLICO_USUARIO);
+        }
+
+        return switch (categoria.toUpperCase()) {
+            case "ENTRENAMIENTOS" -> List.of(
+                    TipoDeValoracion.ENTRENAMIENTO_BASE,
+                    TipoDeValoracion.ENTRENAMIENTO_USUARIO,
+                    TipoDeValoracion.HISTORIAL_ENTRENAMIENTO,
+                    TipoDeValoracion.ENTRENAMIENTO_COMUNIDAD);
+
+            case "CENTROS_PRIVADOS" -> List.of(
+                    TipoDeValoracion.CENTRO_PRIVADO_BASE,
+                    TipoDeValoracion.CENTRO_PRIVADO_USUARIO);
+
+            case "LUGARES_PUBLICOS" -> List.of(
+                    TipoDeValoracion.LUGAR_PUBLICO_BASE,
+                    TipoDeValoracion.LUGAR_PUBLICO_USUARIO);
+
+            default -> throw new ErrorArgumentoException("Categoría de valoraciones no válida");
+        };
     }
 
     private String obtenerNombreContenido(TipoDeValoracion tipo, Long contenidoId) {

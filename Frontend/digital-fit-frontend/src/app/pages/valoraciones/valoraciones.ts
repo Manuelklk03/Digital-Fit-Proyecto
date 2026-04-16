@@ -34,7 +34,7 @@ export class ValoracionesComponent {
 
   misValoraciones: any[] = [];
   misValoracionesFiltradas: any[] = [];
-  valoracionesContenido: any[] = [];
+  valoracionesPublicas: any[] = [];
 
   entrenamientosBase: any[] = [];
   misEntrenamientos: any[] = [];
@@ -50,6 +50,8 @@ export class ValoracionesComponent {
   categoriaContenido = 'ENTRENAMIENTOS';
   tipoContenidoReal = 'ENTRENAMIENTO_BASE';
   contenidoSeleccionadoId: number | null = null;
+
+  filtroValoracionesPublicas = 'TODOS';
 
   puntuacion = 5;
   comentario = '';
@@ -68,6 +70,7 @@ export class ValoracionesComponent {
   ngOnInit(): void {
     this.cargarMisValoraciones();
     this.cargarOpciones();
+    this.cargarValoracionesPublicas();
     this.sincronizarTipoReal();
   }
 
@@ -80,15 +83,37 @@ export class ValoracionesComponent {
       },
       error: (err: any) => {
         console.error('ERROR MIS VALORACIONES:', err);
-        this.abrirPopup('No se pudieron cargar tus valoraciones.', 'error');
+        this.abrirPopup(this.obtenerMensajeError(err, 'No se pudieron cargar tus valoraciones.'), 'error');
       }
     });
+  }
+
+  cargarValoracionesPublicas(): void {
+    const categoria = this.filtroValoracionesPublicas === 'TODOS'
+      ? null
+      : this.filtroValoracionesPublicas;
+
+    this.valoracionesService.getValoracionesPublicas(categoria).subscribe({
+      next: (data: any[]) => {
+        this.valoracionesPublicas = data;
+        this.cdr.detectChanges();
+      },
+      error: (err: any) => {
+        console.error('ERROR VALORACIONES PUBLICAS:', err);
+        this.valoracionesPublicas = [];
+      }
+    });
+  }
+
+  cambiarFiltroValoracionesPublicas(): void {
+    this.cargarValoracionesPublicas();
   }
 
   cargarOpciones(): void {
     this.entrenamientosService.getEntrenamientos().subscribe({
       next: (data: any[]) => {
         this.entrenamientosBase = data;
+        this.intentarSeleccionAutomatica();
         this.cdr.detectChanges();
       },
       error: (err: any) => console.error('ERROR ENTRENAMIENTOS BASE:', err)
@@ -97,6 +122,7 @@ export class ValoracionesComponent {
     this.misEntrenamientosService.getMisEntrenamientos().subscribe({
       next: (data: any[]) => {
         this.misEntrenamientos = data;
+        this.intentarSeleccionAutomatica();
         this.cdr.detectChanges();
       },
       error: (err: any) => console.error('ERROR MIS ENTRENAMIENTOS:', err)
@@ -105,6 +131,7 @@ export class ValoracionesComponent {
     this.historialEntrenamientosService.getHistorial().subscribe({
       next: (data: any[]) => {
         this.historialEntrenamientos = data;
+        this.intentarSeleccionAutomatica();
         this.cdr.detectChanges();
       },
       error: (err: any) => console.error('ERROR HISTORIAL:', err)
@@ -113,6 +140,7 @@ export class ValoracionesComponent {
     this.entrenamientosComunidadService.getEntrenamientosComunidad().subscribe({
       next: (data: any[]) => {
         this.entrenamientosComunidad = data;
+        this.intentarSeleccionAutomatica();
         this.cdr.detectChanges();
       },
       error: (err: any) => console.error('ERROR ENTRENAMIENTOS COMUNIDAD:', err)
@@ -121,6 +149,7 @@ export class ValoracionesComponent {
     this.privadosService.getCentrosPrivados().subscribe({
       next: (data: any[]) => {
         this.centrosBase = data;
+        this.intentarSeleccionAutomatica();
         this.cdr.detectChanges();
       },
       error: (err: any) => console.error('ERROR CENTROS BASE:', err)
@@ -129,6 +158,7 @@ export class ValoracionesComponent {
     this.misCentrosService.getMisCentros().subscribe({
       next: (data: any[]) => {
         this.misCentros = data;
+        this.intentarSeleccionAutomatica();
         this.cdr.detectChanges();
       },
       error: (err: any) => console.error('ERROR MIS CENTROS:', err)
@@ -137,6 +167,7 @@ export class ValoracionesComponent {
     this.publicosService.getLugaresPublicos().subscribe({
       next: (data: any[]) => {
         this.lugaresBase = data;
+        this.intentarSeleccionAutomatica();
         this.cdr.detectChanges();
       },
       error: (err: any) => console.error('ERROR LUGARES BASE:', err)
@@ -145,6 +176,7 @@ export class ValoracionesComponent {
     this.misLugaresService.getMisLugares().subscribe({
       next: (data: any[]) => {
         this.misLugares = data;
+        this.intentarSeleccionAutomatica();
         this.cdr.detectChanges();
       },
       error: (err: any) => console.error('ERROR MIS LUGARES:', err)
@@ -153,8 +185,8 @@ export class ValoracionesComponent {
 
   cambiarCategoriaContenido(): void {
     this.contenidoSeleccionadoId = null;
-    this.valoracionesContenido = [];
     this.sincronizarTipoReal();
+    this.seleccionarPrimerContenidoDisponible();
   }
 
   sincronizarTipoReal(): void {
@@ -194,7 +226,6 @@ export class ValoracionesComponent {
     if (!valor) {
       this.sincronizarTipoReal();
       this.contenidoSeleccionadoId = null;
-      this.valoracionesContenido = [];
       return;
     }
 
@@ -204,8 +235,6 @@ export class ValoracionesComponent {
 
     this.tipoContenidoReal = tipo;
     this.contenidoSeleccionadoId = id;
-
-    this.cargarValoracionesDelContenido();
   }
 
   getValorSeleccionadoContenido(): string {
@@ -214,24 +243,6 @@ export class ValoracionesComponent {
     }
 
     return `${this.tipoContenidoReal}|${this.contenidoSeleccionadoId}`;
-  }
-
-  cargarValoracionesDelContenido(): void {
-    if (!this.contenidoSeleccionadoId) {
-      this.valoracionesContenido = [];
-      return;
-    }
-
-    this.valoracionesService.getValoracionesPorContenido(this.tipoContenidoReal, this.contenidoSeleccionadoId).subscribe({
-      next: (data: any[]) => {
-        this.valoracionesContenido = data;
-        this.cdr.detectChanges();
-      },
-      error: (err: any) => {
-        console.error('ERROR VALORACIONES CONTENIDO:', err);
-        this.valoracionesContenido = [];
-      }
-    });
   }
 
   seleccionarEstrella(valor: number): void {
@@ -291,10 +302,11 @@ export class ValoracionesComponent {
           this.comentario = '';
           this.hoveredPuntuacion = 0;
           this.cargarMisValoraciones();
-          this.cargarValoracionesDelContenido();
+          this.cargarValoracionesPublicas();
         },
-        error: () => {
-          this.abrirPopup('No se pudo guardar la valoración.', 'error');
+        error: (err: any) => {
+          console.error('ERROR GUARDAR VALORACION:', err);
+          this.abrirPopup(this.obtenerMensajeError(err, 'No se pudo guardar la valoración.'), 'error');
         }
       });
   }
@@ -302,15 +314,13 @@ export class ValoracionesComponent {
   borrarValoracion(tipo: string, contenidoId: number): void {
     this.valoracionesService.borrarValoracion(tipo, contenidoId).subscribe({
       next: () => {
-        this.abrirPopup('Valoración borrada correctamente.', 'error');
+        this.abrirPopup('Valoración borrada correctamente.', 'exito');
         this.cargarMisValoraciones();
-
-        if (this.tipoContenidoReal === tipo && this.contenidoSeleccionadoId === contenidoId) {
-          this.cargarValoracionesDelContenido();
-        }
+        this.cargarValoracionesPublicas();
       },
-      error: () => {
-        this.abrirPopup('No se pudo borrar la valoración.', 'error');
+      error: (err: any) => {
+        console.error('ERROR BORRAR VALORACION:', err);
+        this.abrirPopup(this.obtenerMensajeError(err, 'No se pudo borrar la valoración.'), 'error');
       }
     });
   }
@@ -389,6 +399,22 @@ export class ValoracionesComponent {
     }
   }
 
+  mostrarCategoriaGeneral(tipo: string): string {
+    if (tipo.startsWith('ENTRENAMIENTO')) {
+      return 'Entrenamientos';
+    }
+
+    if (tipo.startsWith('CENTRO_PRIVADO')) {
+      return 'Centros privados';
+    }
+
+    if (tipo.startsWith('LUGAR_PUBLICO')) {
+      return 'Lugares públicos';
+    }
+
+    return tipo;
+  }
+
   getTextoOpcion(item: any, tipoReal: string): string {
     switch (tipoReal) {
       case 'ENTRENAMIENTO_BASE':
@@ -444,5 +470,55 @@ export class ValoracionesComponent {
   cerrarPopup(): void {
     this.mostrarPopup = false;
     this.cdr.detectChanges();
+  }
+
+  private obtenerPrimerContenidoDisponible(): string | null {
+    const grupos = this.getOpcionesActuales();
+
+    for (const grupo of grupos) {
+      if (grupo.items && grupo.items.length > 0) {
+        return `${grupo.tipoReal}|${grupo.items[0].id}`;
+      }
+    }
+
+    return null;
+  }
+
+  private seleccionarPrimerContenidoDisponible(): void {
+    const primerValor = this.obtenerPrimerContenidoDisponible();
+
+    if (!primerValor) {
+      this.contenidoSeleccionadoId = null;
+      return;
+    }
+
+    this.seleccionarContenido(primerValor);
+  }
+
+  private intentarSeleccionAutomatica(): void {
+    if (this.contenidoSeleccionadoId) {
+      return;
+    }
+
+    const primerValor = this.obtenerPrimerContenidoDisponible();
+
+    if (primerValor) {
+      this.seleccionarContenido(primerValor);
+    }
+  }
+
+  private obtenerMensajeError(err: any, mensajePorDefecto: string): string {
+    if (typeof err?.error === 'string' && err.error.trim() !== '') {
+      return err.error;
+    }
+
+    if (err?.error && typeof err.error === 'object') {
+      const primerValor = Object.values(err.error)[0];
+      if (typeof primerValor === 'string' && primerValor.trim() !== '') {
+        return primerValor;
+      }
+    }
+
+    return mensajePorDefecto;
   }
 }
