@@ -16,6 +16,18 @@ export class ValoracionesService {
     });
   }
 
+  getValoracionesPublicas(categoria?: string | null): Observable<any[]> {
+    let url = `${this.apiUrl}/publicas`;
+
+    if (categoria && categoria !== 'TODOS') {
+      url += `?categoria=${encodeURIComponent(categoria)}`;
+    }
+
+    return this.http.get<any[]>(url, {
+      withCredentials: true
+    });
+  }
+
   getValoracionesPorContenido(tipoContenido: string, idContenido: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/${tipoContenido}/${idContenido}`, {
       withCredentials: true
