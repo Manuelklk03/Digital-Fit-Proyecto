@@ -3184,3 +3184,279 @@ java.sql.SQLException: Data truncated for column 'tipo_valoracion' at row 1
 2026-04-16 13:30:42 - Listando mis valoraciones
 2026-04-16 13:30:42 - Listando valoraciones públicas. Categoría: null
 2026-04-16 13:31:49 - Listando valoraciones públicas. Categoría: LUGARES_PUBLICOS
+2026-04-17 16:48:34 - Starting DigitalFitApplication using Java 25 with PID 8196 (C:\Users\manue\Desktop\2 DAW\PROYECTO\Código\DIGITAL-FIT\Digital-Fit-Proyecto\Backend\digital-fit\target\classes started by manue in C:\Users\manue\Desktop\2 DAW\PROYECTO\Código\DIGITAL-FIT\Digital-Fit-Proyecto\Backend\digital-fit)
+2026-04-17 16:48:34 - Running with Spring Boot v4.0.5, Spring v7.0.6
+2026-04-17 16:48:34 - No active profile set, falling back to 1 default profile: "default"
+2026-04-17 16:48:34 - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-04-17 16:48:34 - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-04-17 16:48:35 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-17 16:48:35 - Finished Spring Data repository scanning in 64 ms. Found 12 JPA repository interfaces.
+2026-04-17 16:48:35 - Tomcat initialized with port 8080 (http)
+2026-04-17 16:48:35 - Starting service [Tomcat]
+2026-04-17 16:48:35 - Starting Servlet engine: [Apache Tomcat/11.0.20]
+2026-04-17 16:48:36 - Root WebApplicationContext: initialization completed in 1304 ms
+2026-04-17 16:48:36 - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-17 16:48:36 - HHH000001: Hibernate ORM core version 7.2.7.Final
+2026-04-17 16:48:36 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-17 16:48:36 - HikariPool-1 - Starting...
+2026-04-17 16:48:37 - HHH000247: ErrorCode: 1045, SQLState: 28000
+2026-04-17 16:48:37 - Access denied for user 'root'@'localhost' (using password: YES)
+2026-04-17 16:48:37 - HHH100046: Could not obtain connection to query JDBC database metadata
+org.hibernate.exception.AuthException: Unable to obtain isolated JDBC connection [Access denied for user 'root'@'localhost' (using password: YES)] [n/a]
+	at org.hibernate.exception.internal.SQLStateConversionDelegate.convert(SQLStateConversionDelegate.java:87)
+	at org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:34)
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:115)
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:101)
+	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcIsolationDelegate.delegateWork(JdbcIsolationDelegate.java:51)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironmentUsingJdbcMetadata(JdbcEnvironmentInitiator.java:366)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironment(JdbcEnvironmentInitiator.java:143)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:120)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:80)
+	at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.initiateService(StandardServiceRegistryImpl.java:133)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:260)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:235)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:212)
+	at org.hibernate.boot.model.relational.Database.<init>(Database.java:44)
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.getDatabase(InFlightMetadataCollectorImpl.java:251)
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.<init>(InFlightMetadataCollectorImpl.java:203)
+	at org.hibernate.boot.model.process.spi.MetadataBuildingProcess.complete(MetadataBuildingProcess.java:172)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.metadata(EntityManagerFactoryBuilderImpl.java:1392)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.populateSessionFactoryBuilder(EntityManagerFactoryBuilderImpl.java:1472)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1454)
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:93)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:443)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:436)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:411)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:419)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1864)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1813)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:603)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:201)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:977)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621)
+	at org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:143)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:756)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:445)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:321)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1365)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354)
+	at com.example.digital_fit.DigitalFitApplication.main(DigitalFitApplication.java:10)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:52)
+Caused by: java.sql.SQLException: Access denied for user 'root'@'localhost' (using password: YES)
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:114)
+	at com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:840)
+	at com.mysql.cj.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:416)
+	at com.mysql.cj.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:237)
+	at com.mysql.cj.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:180)
+	at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:144)
+	at com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:373)
+	at com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:210)
+	at com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:488)
+	at com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:576)
+	at com.zaxxer.hikari.pool.HikariPool.<init>(HikariPool.java:97)
+	at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:111)
+	at org.hibernate.engine.jdbc.connections.internal.DataSourceConnectionProvider.getConnection(DataSourceConnectionProvider.java:137)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess.obtainConnection(JdbcEnvironmentInitiator.java:508)
+	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcIsolationDelegate.delegateWork(JdbcIsolationDelegate.java:48)
+	... 40 common frames omitted
+2026-04-17 16:48:37 - Failed to initialize JPA EntityManagerFactory: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment] due to: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
+2026-04-17 16:48:37 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/hibernate/autoconfigure/HibernateJpaConfiguration.class]: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment] due to: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
+2026-04-17 16:48:37 - Stopping service [Tomcat]
+2026-04-17 16:48:37 - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-04-17 16:48:37 - Application run failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/hibernate/autoconfigure/HibernateJpaConfiguration.class]: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment] due to: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1817)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:603)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:201)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:977)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621)
+	at org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:143)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:756)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:445)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:321)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1365)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354)
+	at com.example.digital_fit.DigitalFitApplication.main(DigitalFitApplication.java:10)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:52)
+Caused by: org.hibernate.service.spi.ServiceException: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment] due to: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:273)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:235)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:212)
+	at org.hibernate.boot.model.relational.Database.<init>(Database.java:44)
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.getDatabase(InFlightMetadataCollectorImpl.java:251)
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.<init>(InFlightMetadataCollectorImpl.java:203)
+	at org.hibernate.boot.model.process.spi.MetadataBuildingProcess.complete(MetadataBuildingProcess.java:172)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.metadata(EntityManagerFactoryBuilderImpl.java:1392)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.populateSessionFactoryBuilder(EntityManagerFactoryBuilderImpl.java:1472)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1454)
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:93)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:443)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:436)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:411)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:419)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1864)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1813)
+	... 18 common frames omitted
+Caused by: org.hibernate.HibernateException: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
+	at org.hibernate.engine.jdbc.dialect.internal.DialectFactoryImpl.determineDialect(DialectFactoryImpl.java:190)
+	at org.hibernate.engine.jdbc.dialect.internal.DialectFactoryImpl.buildDialect(DialectFactoryImpl.java:86)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironmentWithDefaults(JdbcEnvironmentInitiator.java:200)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironmentUsingJdbcMetadata(JdbcEnvironmentInitiator.java:452)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironment(JdbcEnvironmentInitiator.java:143)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:120)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:80)
+	at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.initiateService(StandardServiceRegistryImpl.java:133)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:260)
+	... 34 common frames omitted
+2026-04-17 16:50:39 - Starting DigitalFitApplication using Java 25 with PID 24180 (C:\Users\manue\Desktop\2 DAW\PROYECTO\Código\DIGITAL-FIT\Digital-Fit-Proyecto\Backend\digital-fit\target\classes started by manue in C:\Users\manue\Desktop\2 DAW\PROYECTO\Código\DIGITAL-FIT\Digital-Fit-Proyecto\Backend\digital-fit)
+2026-04-17 16:50:39 - Running with Spring Boot v4.0.5, Spring v7.0.6
+2026-04-17 16:50:39 - No active profile set, falling back to 1 default profile: "default"
+2026-04-17 16:50:39 - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-04-17 16:50:39 - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-04-17 16:50:40 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-17 16:50:40 - Finished Spring Data repository scanning in 62 ms. Found 12 JPA repository interfaces.
+2026-04-17 16:50:41 - Tomcat initialized with port 8080 (http)
+2026-04-17 16:50:41 - Starting service [Tomcat]
+2026-04-17 16:50:41 - Starting Servlet engine: [Apache Tomcat/11.0.20]
+2026-04-17 16:50:41 - Root WebApplicationContext: initialization completed in 1249 ms
+2026-04-17 16:50:41 - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-17 16:50:41 - HHH000001: Hibernate ORM core version 7.2.7.Final
+2026-04-17 16:50:41 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-17 16:50:41 - HikariPool-1 - Starting...
+2026-04-17 16:50:41 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@269e5fc7
+2026-04-17 16:50:41 - HikariPool-1 - Start completed.
+2026-04-17 16:50:41 - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://localhost:3306/digital_fit]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.41
+	Default catalog/schema: digital_fit/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-17 16:50:42 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-17 16:50:42 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-17 16:50:42 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-17 16:50:43 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-17 16:50:43 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2026-04-17 16:50:43 - Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2026-04-17 16:50:43 - Exposing 1 endpoint beneath base path '/actuator'
+2026-04-17 16:50:43 - Tomcat started on port 8080 (http) with context path '/'
+2026-04-17 16:50:43 - Started DigitalFitApplication in 4.265 seconds (process running for 4.698)
+2026-04-17 16:50:45 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-17 16:50:45 - Initializing Servlet 'dispatcherServlet'
+2026-04-17 16:50:45 - Completed initialization in 1 ms
+2026-04-17 17:02:04 - Starting DigitalFitApplication using Java 25 with PID 25212 (C:\Users\manue\Desktop\2 DAW\PROYECTO\Código\DIGITAL-FIT\Digital-Fit-Proyecto\Backend\digital-fit\target\classes started by manue in C:\Users\manue\Desktop\2 DAW\PROYECTO\Código\DIGITAL-FIT\Digital-Fit-Proyecto\Backend\digital-fit)
+2026-04-17 17:02:04 - Running with Spring Boot v4.0.5, Spring v7.0.6
+2026-04-17 17:02:04 - No active profile set, falling back to 1 default profile: "default"
+2026-04-17 17:02:04 - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-04-17 17:02:04 - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-04-17 17:02:05 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-17 17:02:05 - Finished Spring Data repository scanning in 65 ms. Found 12 JPA repository interfaces.
+2026-04-17 17:02:06 - Tomcat initialized with port 8080 (http)
+2026-04-17 17:02:06 - Starting service [Tomcat]
+2026-04-17 17:02:06 - Starting Servlet engine: [Apache Tomcat/11.0.20]
+2026-04-17 17:02:06 - Root WebApplicationContext: initialization completed in 1306 ms
+2026-04-17 17:02:06 - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-17 17:02:06 - HHH000001: Hibernate ORM core version 7.2.7.Final
+2026-04-17 17:02:06 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-17 17:02:06 - HikariPool-1 - Starting...
+2026-04-17 17:02:06 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@5adda7f4
+2026-04-17 17:02:06 - HikariPool-1 - Start completed.
+2026-04-17 17:02:06 - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://localhost:3306/digital_fit]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.41
+	Default catalog/schema: digital_fit/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-17 17:02:07 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-17 17:02:07 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-17 17:02:07 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-17 17:02:08 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-17 17:02:08 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2026-04-17 17:02:08 - Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2026-04-17 17:02:08 - Exposing 1 endpoint beneath base path '/actuator'
+2026-04-17 17:02:08 - Tomcat started on port 8080 (http) with context path '/'
+2026-04-17 17:02:08 - Started DigitalFitApplication in 4.49 seconds (process running for 4.951)
+2026-04-17 17:02:10 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-17 17:02:10 - Initializing Servlet 'dispatcherServlet'
+2026-04-17 17:02:10 - Completed initialization in 1 ms
+2026-04-17 17:04:17 - Buscando usuario con login: usuario1
+2026-04-17 17:04:17 - Usuario encontrado: usuario1
+2026-04-17 17:04:30 - Buscando usuario con login: usuario1
+2026-04-17 17:04:30 - Usuario encontrado: usuario1
+2026-04-17 17:04:35 - Listando entrenamientos de usuario usuario1
+2026-04-17 17:04:41 - Usuario usuario1 consulta entrenamiento 4
+2026-04-17 17:04:44 - Listando entrenamientos de usuario usuario1
+2026-04-17 17:04:48 - Listando entrenamientos de usuario usuario1
+2026-04-17 17:04:48 - Listar historial de entrenamientos
+2026-04-17 17:04:48 - Listando centros privados
+2026-04-17 17:04:48 - Listando entrenamientos base
+2026-04-17 17:04:48 - Listando centros privados al usuario usuario1
+2026-04-17 17:04:48 - Listando lugares publicos de la app
+2026-04-17 17:04:48 - Listando mis lugares publicos
+2026-04-17 17:05:07 - Buscando registro con id: 6
+2026-04-17 17:05:18 - Listar historial de entrenamientos
+2026-04-17 17:05:18 - Listando entrenamientos base
+2026-04-17 17:05:18 - Listando centros privados al usuario usuario1
+2026-04-17 17:05:18 - Listando entrenamientos de usuario usuario1
+2026-04-17 17:05:18 - Listando centros privados
+2026-04-17 17:05:18 - Listando lugares publicos de la app
+2026-04-17 17:05:18 - Listando mis lugares publicos
+2026-04-17 17:05:21 - Obteniendo estadísticas del usuario usuario1
+2026-04-17 17:05:21 - Estadísticas del usuario usuario1 obtenidas exitosamente
+2026-04-17 17:05:42 - Listando tickets del usuario usuario1
+2026-04-17 17:05:50 - Obteniendo estadísticas del usuario usuario1
+2026-04-17 17:05:50 - Estadísticas del usuario usuario1 obtenidas exitosamente
+2026-04-17 17:05:51 - Listando entrenamientos base
+2026-04-17 17:05:51 - Listar historial de entrenamientos
+2026-04-17 17:05:51 - Listando centros privados
+2026-04-17 17:05:51 - Listando mis valoraciones
+2026-04-17 17:05:51 - Listando entrenamientos comunidad
+2026-04-17 17:05:51 - Listando entrenamientos de usuario usuario1
+2026-04-17 17:05:51 - Listando centros privados al usuario usuario1
+2026-04-17 17:05:51 - Listando lugares publicos de la app
+2026-04-17 17:05:51 - Listando mis lugares publicos
+2026-04-17 17:05:51 - Listando valoraciones públicas. Categoría: null
+2026-04-17 17:06:08 - Listando lugares publicos de la app
+2026-04-17 17:06:12 - Buscando lugar con id: 1
+2026-04-17 17:06:16 - Listando lugares publicos de la app
+2026-04-17 17:06:21 - Listando entrenamientos comunidad
+2026-04-17 17:06:48 - Buscando entrenamiento con id: 2
+2026-04-17 17:07:04 - Listando mis lugares publicos
+2026-04-17 17:07:40 - Listando centros privados al usuario usuario1
+2026-04-17 17:08:07 - Buscando usuario con login: admin1
+2026-04-17 17:08:07 - Usuario encontrado: admin1
+2026-04-17 17:08:12 - Listando entrenamientos base
+2026-04-17 17:08:20 - Listando centros privados
+2026-04-17 17:08:27 - Listando tickets para admin
+2026-04-17 17:08:31 - Cambiando estado de ticket con id: 1
+2026-04-17 17:08:31 - Listando tickets para admin
+2026-04-17 17:08:33 - Cambiando estado de ticket con id: 1
+2026-04-17 17:08:33 - Listando tickets para admin
+2026-04-17 17:08:54 - Registrando usuario: PPuta
+2026-04-17 17:08:54 - Usuario registrado exitosamente PPuta
