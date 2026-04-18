@@ -18,4 +18,4 @@ public interface CentroPrivadoBaseRepository extends JpaRepository<CentroPrivado
     List<CentroPrivadoBase> findByPrecioMensualLessThanEqual(Double precioMensual);
 
     Optional<CentroPrivadoBase> findByNombreIgnoreCase(String nombre);
-}
+} 

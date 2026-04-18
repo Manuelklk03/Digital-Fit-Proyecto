@@ -156,4 +156,5 @@ public class CentroPrivadoBaseService {
         entity.setLongitud(dto.getLongitud());
         return entity;
     }
+    
 }

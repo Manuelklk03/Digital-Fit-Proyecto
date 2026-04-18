@@ -34,3 +34,4 @@ public class CrearEntrenamientoComunidadDTO {
     @Min(value = 1, message = "La duración debe ser mayor que 0")
     private Integer duracionEnMinutos;
 }
+
