@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@JsonPropertyOrder({ "id", "asunto", "mensaje", "fecha", "estado" })
+@JsonPropertyOrder({ "id", "asunto", "mensaje", "fecha", "estado", "usuarioId", "username" })
 public class SoporteDTO {
 
     private Long id;
@@ -24,4 +24,8 @@ public class SoporteDTO {
     private LocalDateTime fecha;
 
     private EstadoSoporte estado;
+
+    private Long usuarioId;
+
+    private String username;
 }
