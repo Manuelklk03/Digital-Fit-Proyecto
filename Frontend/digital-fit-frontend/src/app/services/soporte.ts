@@ -28,6 +28,18 @@ export class SoporteService {
     });
   }
 
+  getMensajesTicket(id: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/mis-tickets/${id}/mensajes`, {
+      withCredentials: true
+    });
+  }
+
+  enviarMensajeTicket(id: number, contenido: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/mis-tickets/${id}/mensajes`, { contenido }, {
+      withCredentials: true
+    });
+  }
+
   borrarTicket(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`, {
       withCredentials: true

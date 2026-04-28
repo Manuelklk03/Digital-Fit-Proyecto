@@ -13,9 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.example.digital_fit.dto.Soporte.CrearSoporteDTO;
 import com.example.digital_fit.dto.Soporte.SoporteDTO;
+import com.example.digital_fit.dto.Soporte.CrearMensajeSoporteDTO;
+import com.example.digital_fit.dto.Soporte.MensajeSoporteDTO;
 import com.example.digital_fit.service.Soporte.SoporteService;
 
 import jakarta.validation.Valid;
@@ -27,8 +28,6 @@ public class SoporteRestController {
     @Autowired
     private SoporteService soporteService;
 
-    // Crear ticket:
-
     @PostMapping
     public ResponseEntity<SoporteDTO> crearTicket(@Valid @RequestBody CrearSoporteDTO dto,
             Authentication authentication) {
@@ -37,7 +36,6 @@ public class SoporteRestController {
                 .body(soporteService.crearTicket(dto, authentication.getName()));
     }
 
-    // Ver mis tickets:
     @GetMapping("/mis-tickets")
     public ResponseEntity<List<SoporteDTO>> verMisTickets(Authentication authentication) {
 
@@ -45,7 +43,6 @@ public class SoporteRestController {
                 .body(soporteService.listarTickets(authentication.getName()));
     }
 
-    // Ver detalles de ticket:
     @GetMapping("/mis-tickets/{id}")
     public ResponseEntity<SoporteDTO> verDetalles(@PathVariable Long id, Authentication authentication) {
 
@@ -53,7 +50,22 @@ public class SoporteRestController {
                 .body(soporteService.verDetalles(id, authentication.getName()));
     }
 
-    // Borrar ticket:
+    @GetMapping("/mis-tickets/{id}/mensajes")
+    public ResponseEntity<List<MensajeSoporteDTO>> verMensajes(@PathVariable Long id, Authentication authentication) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(soporteService.listarMensajesTicketUsuario(id, authentication.getName()));
+    }
+
+    @PostMapping("/mis-tickets/{id}/mensajes")
+    public ResponseEntity<MensajeSoporteDTO> enviarMensaje(
+            @PathVariable Long id,
+            @Valid @RequestBody CrearMensajeSoporteDTO dto,
+            Authentication authentication) {
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(soporteService.enviarMensajeUsuario(id, dto, authentication.getName()));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> borrarTicket(@PathVariable Long id, Authentication authentication) {
 

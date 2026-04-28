@@ -22,6 +22,18 @@ export class AdminSoporteService {
     });
   }
 
+  getMensajesTicketAdmin(id: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/${id}/mensajes`, {
+      withCredentials: true
+    });
+  }
+
+  enviarMensajeAdmin(id: number, contenido: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/${id}/mensajes`, { contenido }, {
+      withCredentials: true
+    });
+  }
+
   cambiarEstado(id: number, estado: string): Observable<any> {
     return this.http.patch<any>(`${this.apiUrl}/${id}/estado`, { estado }, {
       withCredentials: true

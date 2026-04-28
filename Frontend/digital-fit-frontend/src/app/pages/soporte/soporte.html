@@ -34,7 +34,8 @@
 
       <div class="grupo-campo">
         <label for="asunto">Asunto</label>
-        <input type="text" id="asunto" name="asunto" [(ngModel)]="asunto" required placeholder="Ej: No puedo guardar un entrenamiento">
+        <input type="text" id="asunto" name="asunto" [(ngModel)]="asunto" required
+          placeholder="Ej: No puedo guardar un entrenamiento">
       </div>
 
       <div class="grupo-campo">
@@ -71,7 +72,9 @@
 
         <input type="text" placeholder="Escribe aquí..." [(ngModel)]="busqueda" (input)="alCambiarBusqueda()">
 
-        <button type="button" class="boton-limpiar" (click)="limpiarBusqueda()">Limpiar</button>
+        <button type="button" class="boton-limpiar" (click)="limpiarBusqueda()">
+          Limpiar
+        </button>
       </div>
     </div>
 
@@ -87,8 +90,7 @@
             <p class="ticket-fecha"><strong>Fecha:</strong> {{ ticket.fecha }}</p>
           </div>
 
-          <span class="estado-ticket"
-            [class.estado-abierto]="ticket.estado === 'ABIERTO'"
+          <span class="estado-ticket" [class.estado-abierto]="ticket.estado === 'ABIERTO'"
             [class.estado-proceso]="ticket.estado === 'EN_PROCESO'"
             [class.estado-cerrado]="ticket.estado === 'CERRADO'">
             {{ mostrarEstado(ticket.estado) }}
@@ -101,7 +103,7 @@
 
         <div class="acciones-ticket">
           <a class="boton-detalle" [routerLink]="['/soporte', ticket.id]">
-            Ver detalle
+            Ver detalle / chat
           </a>
 
           <button class="boton-borrar" (click)="borrarTicket(ticket.id)">
