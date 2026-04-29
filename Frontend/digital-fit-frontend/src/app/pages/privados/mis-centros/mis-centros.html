@@ -59,6 +59,7 @@
       <div class="bloque-mapa-formulario">
         <div class="bloque-mapa-texto">
           <h4>Ubicación seleccionada</h4>
+
           <div class="resumen-ubicacion">
             <span>Latitud: {{ latitud }}</span>
             <span>Longitud: {{ longitud }}</span>
@@ -67,13 +68,6 @@
           <p class="texto-ayuda-autocompletado" [class.texto-autocompletando]="autocompletando">
             {{ textoAutocompletado }}
           </p>
-
-          <div class="acciones-autocompletado">
-            <button type="button" class="boton-detalle" (click)="autocompletarDatosDesdeUbicacion()"
-              [disabled]="autocompletando">
-              {{ autocompletando ? 'Buscando datos...' : 'Autocompletar datos' }}
-            </button>
-          </div>
         </div>
 
         <app-mapa-selector [latitud]="latitud" [longitud]="longitud"

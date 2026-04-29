@@ -143,6 +143,8 @@ export class MisCentrosComponent implements OnDestroy {
     this.latitud = evento.latitud;
     this.longitud = evento.longitud;
     this.textoAutocompletado = 'Ubicación actualizada. Buscando datos automáticos...';
+    this.autocompletando = true;
+    this.cdr.detectChanges();
 
     if (this.autocompletadoTimeout) {
       clearTimeout(this.autocompletadoTimeout);
@@ -154,9 +156,6 @@ export class MisCentrosComponent implements OnDestroy {
   }
 
   autocompletarDatosDesdeUbicacion(): void {
-    this.autocompletando = true;
-    this.cdr.detectChanges();
-
     this.misCentrosService.autocompletarDatosCentro(this.latitud, this.longitud).subscribe({
       next: (data: any) => {
         if (data?.direccion) {
