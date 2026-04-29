@@ -1,7 +1,7 @@
 import { MisCentrosService } from './../../../services/centros/mis-centros-service';
 import { Footer } from './../../../components/footer/footer';
 import { HeaderComponent } from './../../../components/header/header';
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { MapaSelectorComponent } from '../../../components/mapa-selector/mapa-selector';
@@ -12,7 +12,7 @@ import { MapaSelectorComponent } from '../../../components/mapa-selector/mapa-se
   templateUrl: './mis-centros.html',
   styleUrl: './mis-centros.css'
 })
-export class MisCentrosComponent {
+export class MisCentrosComponent implements OnDestroy {
 
   private misCentrosService = inject(MisCentrosService);
   private cdr = inject(ChangeDetectorRef);
@@ -23,7 +23,7 @@ export class MisCentrosComponent {
   direccion = '';
   telefono = '';
   horario = '';
-  precioMensual = 30;
+  precioMensual: number | null = null;
   descripcion = '';
   latitud = 39.4699;
   longitud = -0.3763;
@@ -33,6 +33,10 @@ export class MisCentrosComponent {
 
   mostrarFormularioMapa = false;
 
+  autocompletando = false;
+  textoAutocompletado = 'Selecciona una ubicación en el mapa para rellenar los datos automáticamente.';
+  private autocompletadoTimeout: any;
+
   mostrarPopup = false;
   textoPopup = '';
   tipoPopup: 'exito' | 'error' = 'exito';
@@ -40,6 +44,16 @@ export class MisCentrosComponent {
 
   ngOnInit(): void {
     this.cargarMisCentros();
+  }
+
+  ngOnDestroy(): void {
+    if (this.popupTimeout) {
+      clearTimeout(this.popupTimeout);
+    }
+
+    if (this.autocompletadoTimeout) {
+      clearTimeout(this.autocompletadoTimeout);
+    }
   }
 
   cargarMisCentros(): void {
@@ -116,16 +130,72 @@ export class MisCentrosComponent {
     this.direccion = '';
     this.telefono = '';
     this.horario = '';
-    this.precioMensual = 30;
+    this.precioMensual = null;
     this.descripcion = '';
     this.latitud = 39.4699;
     this.longitud = -0.3763;
+    this.autocompletando = false;
+    this.textoAutocompletado = 'Selecciona una ubicación en el mapa para rellenar los datos automáticamente.';
     this.mostrarFormularioMapa = true;
   }
 
   actualizarUbicacion(evento: { latitud: number, longitud: number }): void {
     this.latitud = evento.latitud;
     this.longitud = evento.longitud;
+    this.textoAutocompletado = 'Ubicación actualizada. Buscando datos automáticos...';
+
+    if (this.autocompletadoTimeout) {
+      clearTimeout(this.autocompletadoTimeout);
+    }
+
+    this.autocompletadoTimeout = setTimeout(() => {
+      this.autocompletarDatosDesdeUbicacion();
+    }, 1200);
+  }
+
+  autocompletarDatosDesdeUbicacion(): void {
+    this.autocompletando = true;
+    this.cdr.detectChanges();
+
+    this.misCentrosService.autocompletarDatosCentro(this.latitud, this.longitud).subscribe({
+      next: (data: any) => {
+        if (data?.direccion) {
+          this.direccion = data.direccion;
+        }
+
+        if (data?.telefono) {
+          this.telefono = data.telefono;
+        }
+
+        if (data?.horario) {
+          this.horario = data.horario;
+        }
+
+        if (data?.precioMensual != null) {
+          this.precioMensual = data.precioMensual;
+        }
+
+        if (data?.descripcion) {
+          this.descripcion = data.descripcion;
+        }
+
+        this.latitud = data?.latitud ?? this.latitud;
+        this.longitud = data?.longitud ?? this.longitud;
+
+        this.autocompletando = false;
+        this.textoAutocompletado = data?.datosEncontrados
+          ? 'Datos rellenados automáticamente. Solo te queda escribir el nombre y revisar el resto.'
+          : 'No se encontraron datos suficientes para esa ubicación. Puedes completar los campos manualmente.';
+
+        this.cdr.detectChanges();
+      },
+      error: (err: any) => {
+        console.error('ERROR AUTOCOMPLETADO CENTRO:', err);
+        this.autocompletando = false;
+        this.textoAutocompletado = 'No se pudo autocompletar la ubicación. Puedes completar los campos manualmente.';
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   guardarCentroDesdeMapa(): void {

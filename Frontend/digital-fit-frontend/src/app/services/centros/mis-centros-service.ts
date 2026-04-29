@@ -47,6 +47,17 @@ export class MisCentrosService {
     });
   }
 
+  autocompletarDatosCentro(latitud: number, longitud: number): Observable<any> {
+    const params = new HttpParams()
+      .set('latitud', latitud.toString())
+      .set('longitud', longitud.toString());
+
+    return this.http.get<any>(`${this.apiUrl}/autocompletar`, {
+      params,
+      withCredentials: true
+    });
+  }
+
   crearCentroDesdeMaps(centro: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/centros-maps`, centro, {
       withCredentials: true
