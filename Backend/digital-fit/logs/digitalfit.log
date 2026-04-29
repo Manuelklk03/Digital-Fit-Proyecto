@@ -1,21 +1,21 @@
-2026-04-28 11:05:33 - Starting DigitalFitApplication using Java 25.0.2 with PID 21096 (C:\Users\TiendaRoquetas\Desktop\MANU PRACTICAS\Digital-Fit-Proyecto\Backend\digital-fit\target\classes started by TiendaRoquetas in C:\Users\TiendaRoquetas\Desktop\MANU PRACTICAS\Digital-Fit-Proyecto\Backend\digital-fit)
-2026-04-28 11:05:33 - Running with Spring Boot v4.0.5, Spring v7.0.6
-2026-04-28 11:05:33 - No active profile set, falling back to 1 default profile: "default"
-2026-04-28 11:05:33 - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
-2026-04-28 11:05:33 - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
-2026-04-28 11:05:37 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2026-04-28 11:05:37 - Finished Spring Data repository scanning in 386 ms. Found 12 JPA repository interfaces.
-2026-04-28 11:05:40 - Tomcat initialized with port 8080 (http)
-2026-04-28 11:05:40 - Starting service [Tomcat]
-2026-04-28 11:05:40 - Starting Servlet engine: [Apache Tomcat/11.0.20]
-2026-04-28 11:05:40 - Root WebApplicationContext: initialization completed in 7167 ms
-2026-04-28 11:05:41 - HHH008540: Processing PersistenceUnitInfo [name: default]
-2026-04-28 11:05:41 - HHH000001: Hibernate ORM core version 7.2.7.Final
-2026-04-28 11:05:42 - No LoadTimeWeaver setup: ignoring JPA class transformer
-2026-04-28 11:05:42 - HikariPool-1 - Starting...
-2026-04-28 11:05:43 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@14edf58
-2026-04-28 11:05:43 - HikariPool-1 - Start completed.
-2026-04-28 11:05:43 - HHH10001005: Database info:
+2026-04-29 09:54:43 - Starting DigitalFitApplication using Java 25.0.2 with PID 11448 (C:\Users\TiendaRoquetas\Desktop\MANU PRACTICAS\Digital-Fit-Proyecto\Backend\digital-fit\target\classes started by TiendaRoquetas in C:\Users\TiendaRoquetas\Desktop\MANU PRACTICAS\Digital-Fit-Proyecto\Backend\digital-fit)
+2026-04-29 09:54:43 - Running with Spring Boot v4.0.5, Spring v7.0.6
+2026-04-29 09:54:43 - No active profile set, falling back to 1 default profile: "default"
+2026-04-29 09:54:44 - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-04-29 09:54:44 - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-04-29 09:54:49 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-29 09:54:50 - Finished Spring Data repository scanning in 474 ms. Found 13 JPA repository interfaces.
+2026-04-29 09:54:53 - Tomcat initialized with port 8080 (http)
+2026-04-29 09:54:53 - Starting service [Tomcat]
+2026-04-29 09:54:53 - Starting Servlet engine: [Apache Tomcat/11.0.20]
+2026-04-29 09:54:53 - Root WebApplicationContext: initialization completed in 9512 ms
+2026-04-29 09:54:54 - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-29 09:54:54 - HHH000001: Hibernate ORM core version 7.2.7.Final
+2026-04-29 09:54:56 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-29 09:54:57 - HikariPool-1 - Starting...
+2026-04-29 09:54:57 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@4fede601
+2026-04-29 09:54:57 - HikariPool-1 - Start completed.
+2026-04-29 09:54:58 - HHH10001005: Database info:
 	Database JDBC URL [jdbc:mysql://localhost:3306/digital_fit]
 	Database driver: MySQL Connector/J
 	Database dialect: MySQLDialect
@@ -27,32 +27,1005 @@
 	Pool: DataSourceConnectionProvider
 	Minimum pool size: undefined/unknown
 	Maximum pool size: undefined/unknown
-2026-04-28 11:05:45 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2026-04-28 11:05:49 - Initialized JPA EntityManagerFactory for persistence unit 'default'
-2026-04-28 11:05:49 - Hibernate is in classpath; If applicable, HQL parser will be used.
-2026-04-28 11:05:52 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'soporteAdminRestController': Unsatisfied dependency expressed through field 'soporteService': Error creating bean with name 'soporteService': Unsatisfied dependency expressed through field 'mensajeSoporteRepository': No qualifying bean of type 'com.example.digital_fit.repository.Soporte.MensajeSoporteRepository' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
-2026-04-28 11:05:52 - Closing JPA EntityManagerFactory for persistence unit 'default'
-2026-04-28 11:05:52 - HikariPool-1 - Shutdown initiated...
-2026-04-28 11:05:52 - HikariPool-1 - Shutdown completed.
-2026-04-28 11:05:52 - Stopping service [Tomcat]
-2026-04-28 11:05:52 - 
+2026-04-29 09:55:00 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-29 09:55:00 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-29 09:55:01 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-29 09:55:03 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-29 09:55:04 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2026-04-29 09:55:04 - Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2026-04-29 09:55:05 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-29 09:55:05 - Initializing Servlet 'dispatcherServlet'
+2026-04-29 09:55:05 - Obtaining singleton bean 'multipartResolver' in thread "RMI TCP Connection(2)-127.0.0.1" while other thread holds singleton lock for other beans [processorMetrics]
+2026-04-29 09:55:05 - Obtaining singleton bean 'healthEndpointWebMvcHandlerMapping' in thread "RMI TCP Connection(2)-127.0.0.1" while other thread holds singleton lock for other beans [org.springframework.boot.micrometer.metrics.autoconfigure.task.TaskExecutorMetricsAutoConfiguration]
+2026-04-29 09:55:05 - Obtaining singleton bean 'org.springframework.boot.webmvc.autoconfigure.actuate.endpoint.web.WebMvcHealthEndpointExtensionAutoConfiguration' in thread "RMI TCP Connection(2)-127.0.0.1" while other thread holds singleton lock for other beans [org.springframework.boot.micrometer.metrics.autoconfigure.task.TaskExecutorMetricsAutoConfiguration]
+2026-04-29 09:55:05 - Obtaining singleton bean 'webEndpointServletHandlerMapping' in thread "RMI TCP Connection(2)-127.0.0.1" while other thread holds singleton lock for other beans [org.springframework.boot.micrometer.metrics.autoconfigure.task.TaskExecutorMetricsAutoConfiguration]
+2026-04-29 09:55:05 - Obtaining singleton bean 'management.endpoints.web.cors-org.springframework.boot.actuate.autoconfigure.endpoint.web.CorsEndpointProperties' in thread "RMI TCP Connection(2)-127.0.0.1" while other thread holds singleton lock for other beans [org.springframework.boot.micrometer.metrics.autoconfigure.task.TaskExecutorMetricsAutoConfiguration]
+2026-04-29 09:55:05 - Exposing 1 endpoint beneath base path '/actuator'
+2026-04-29 09:55:05 - Obtaining singleton bean 'controllerEndpointHandlerMapping' in thread "RMI TCP Connection(2)-127.0.0.1" while other thread holds singleton lock for other beans []
+2026-04-29 09:55:05 - Completed initialization in 85 ms
+2026-04-29 09:55:06 - Tomcat started on port 8080 (http) with context path '/'
+2026-04-29 09:55:06 - Started DigitalFitApplication in 24.083 seconds (process running for 26.646)
+2026-04-29 09:55:46 - Buscando usuario con login: usuario1
+2026-04-29 09:55:47 - Usuario encontrado: usuario1
+2026-04-29 09:55:52 - Listando centros privados al usuario usuario1
+2026-04-29 10:00:52 - Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2026-04-29 10:00:52 - Commencing graceful shutdown. Waiting for active requests to complete
+2026-04-29 10:00:52 - Graceful shutdown complete
+2026-04-29 10:00:52 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-29 10:00:52 - HikariPool-1 - Shutdown initiated...
+2026-04-29 10:00:52 - HikariPool-1 - Shutdown completed.
+2026-04-29 10:00:53 - Starting DigitalFitApplication using Java 25.0.2 with PID 11448 (C:\Users\TiendaRoquetas\Desktop\MANU PRACTICAS\Digital-Fit-Proyecto\Backend\digital-fit\target\classes started by TiendaRoquetas in C:\Users\TiendaRoquetas\Desktop\MANU PRACTICAS\Digital-Fit-Proyecto\Backend\digital-fit)
+2026-04-29 10:00:53 - Running with Spring Boot v4.0.5, Spring v7.0.6
+2026-04-29 10:00:53 - No active profile set, falling back to 1 default profile: "default"
+2026-04-29 10:00:57 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-29 10:00:58 - Finished Spring Data repository scanning in 582 ms. Found 13 JPA repository interfaces.
+2026-04-29 10:00:59 - Tomcat initialized with port 8080 (http)
+2026-04-29 10:00:59 - Starting service [Tomcat]
+2026-04-29 10:00:59 - Starting Servlet engine: [Apache Tomcat/11.0.20]
+2026-04-29 10:00:59 - Root WebApplicationContext: initialization completed in 6424 ms
+2026-04-29 10:01:00 - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-29 10:01:00 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-29 10:01:00 - HikariPool-2 - Starting...
+2026-04-29 10:01:00 - HikariPool-2 - Added connection com.mysql.cj.jdbc.ConnectionImpl@1ca5a09e
+2026-04-29 10:01:00 - HikariPool-2 - Start completed.
+2026-04-29 10:01:00 - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://localhost:3306/digital_fit]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.45
+	Default catalog/schema: digital_fit/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-29 10:01:01 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-29 10:01:01 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-29 10:01:01 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-29 10:01:02 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2026-04-29 10:01:02 - Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2026-04-29 10:01:02 - Exposing 1 endpoint beneath base path '/actuator'
+2026-04-29 10:01:02 - Tomcat started on port 8080 (http) with context path '/'
+2026-04-29 10:01:02 - Started DigitalFitApplication in 9.51 seconds (process running for 383.213)
+2026-04-29 10:01:02 - Condition evaluation unchanged
+2026-04-29 10:01:10 - Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2026-04-29 10:01:10 - Commencing graceful shutdown. Waiting for active requests to complete
+2026-04-29 10:01:10 - Graceful shutdown complete
+2026-04-29 10:01:10 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-29 10:01:10 - HikariPool-2 - Shutdown initiated...
+2026-04-29 10:01:10 - HikariPool-2 - Shutdown completed.
+2026-04-29 10:01:10 - Starting DigitalFitApplication using Java 25.0.2 with PID 11448 (C:\Users\TiendaRoquetas\Desktop\MANU PRACTICAS\Digital-Fit-Proyecto\Backend\digital-fit\target\classes started by TiendaRoquetas in C:\Users\TiendaRoquetas\Desktop\MANU PRACTICAS\Digital-Fit-Proyecto\Backend\digital-fit)
+2026-04-29 10:01:10 - Running with Spring Boot v4.0.5, Spring v7.0.6
+2026-04-29 10:01:10 - No active profile set, falling back to 1 default profile: "default"
+2026-04-29 10:01:11 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-29 10:01:11 - Finished Spring Data repository scanning in 104 ms. Found 13 JPA repository interfaces.
+2026-04-29 10:01:11 - Tomcat initialized with port 8080 (http)
+2026-04-29 10:01:11 - Starting service [Tomcat]
+2026-04-29 10:01:11 - Starting Servlet engine: [Apache Tomcat/11.0.20]
+2026-04-29 10:01:11 - Root WebApplicationContext: initialization completed in 968 ms
+2026-04-29 10:01:11 - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-29 10:01:12 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-29 10:01:12 - HikariPool-3 - Starting...
+2026-04-29 10:01:12 - HikariPool-3 - Added connection com.mysql.cj.jdbc.ConnectionImpl@51c9567e
+2026-04-29 10:01:12 - HikariPool-3 - Start completed.
+2026-04-29 10:01:12 - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://localhost:3306/digital_fit]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.45
+	Default catalog/schema: digital_fit/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-29 10:01:12 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-29 10:01:12 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-29 10:01:13 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'centroPrivadoUsuarioRestController': Unsatisfied dependency expressed through field 'autocompletadoCentroPrivadoService': Error creating bean with name 'autocompletadoCentroPrivadoService': Lookup method resolution failed
+2026-04-29 10:01:13 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-29 10:01:13 - HikariPool-3 - Shutdown initiated...
+2026-04-29 10:01:13 - HikariPool-3 - Shutdown completed.
+2026-04-29 10:01:13 - Stopping service [Tomcat]
+2026-04-29 10:01:13 - 
 
 Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
-2026-04-28 11:05:52 - 
+2026-04-29 10:01:13 - Application run failed
+org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'centroPrivadoUsuarioRestController': Unsatisfied dependency expressed through field 'autocompletadoCentroPrivadoService': Error creating bean with name 'autocompletadoCentroPrivadoService': Lookup method resolution failed
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:767) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:748) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:146) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:493) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1446) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:602) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:196) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.instantiateSingleton(DefaultListableBeanFactory.java:1218) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingleton(DefaultListableBeanFactory.java:1184) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:1121) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:994) ~[spring-context-7.0.6.jar:7.0.6]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621) ~[spring-context-7.0.6.jar:7.0.6]
+	at org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:143) ~[spring-boot-web-server-4.0.5.jar:4.0.5]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:756) ~[spring-boot-4.0.5.jar:4.0.5]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:445) ~[spring-boot-4.0.5.jar:4.0.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:321) ~[spring-boot-4.0.5.jar:4.0.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1365) ~[spring-boot-4.0.5.jar:4.0.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354) ~[spring-boot-4.0.5.jar:4.0.5]
+	at com.example.digital_fit.DigitalFitApplication.main(DigitalFitApplication.java:10) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:52) ~[spring-boot-devtools-4.0.5.jar:4.0.5]
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'autocompletadoCentroPrivadoService': Lookup method resolution failed
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.checkLookupMethods(AutowiredAnnotationBeanPostProcessor.java:482) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.determineCandidateConstructors(AutowiredAnnotationBeanPostProcessor.java:352) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.determineConstructorsFromBeanPostProcessors(AbstractAutowireCapableBeanFactory.java:1321) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1218) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:565) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:201) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveBean(DefaultListableBeanFactory.java:1225) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1704) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1651) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:764) ~[spring-beans-7.0.6.jar:7.0.6]
+	... 25 common frames omitted
+Caused by: java.lang.IllegalStateException: Failed to introspect Class [com.example.digital_fit.service.CentroPrivado.AutocompletadoCentroPrivadoService] from ClassLoader [org.springframework.boot.devtools.restart.classloader.RestartClassLoader@4a0a46ae]
+	at org.springframework.util.ReflectionUtils.getDeclaredMethods(ReflectionUtils.java:483) ~[spring-core-7.0.6.jar:7.0.6]
+	at org.springframework.util.ReflectionUtils.doWithLocalMethods(ReflectionUtils.java:320) ~[spring-core-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.checkLookupMethods(AutowiredAnnotationBeanPostProcessor.java:460) ~[spring-beans-7.0.6.jar:7.0.6]
+	... 38 common frames omitted
+Caused by: java.lang.NoClassDefFoundError: JsonNode
+	at java.base/java.lang.Class.getDeclaredMethods0(Native Method) ~[na:na]
+	at java.base/java.lang.Class.privateGetDeclaredMethods(Class.java:3010) ~[na:na]
+	at java.base/java.lang.Class.getDeclaredMethods(Class.java:2329) ~[na:na]
+	at org.springframework.util.ReflectionUtils.getDeclaredMethods(ReflectionUtils.java:465) ~[spring-core-7.0.6.jar:7.0.6]
+	... 40 common frames omitted
+Caused by: java.lang.ClassNotFoundException: JsonNode
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:580) ~[na:na]
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:490) ~[na:na]
+	at java.base/java.lang.Class.forName0(Native Method) ~[na:na]
+	at java.base/java.lang.Class.forName(Class.java:547) ~[na:na]
+	at org.springframework.boot.devtools.restart.classloader.RestartClassLoader.loadClass(RestartClassLoader.java:123) ~[spring-boot-devtools-4.0.5.jar:4.0.5]
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:490) ~[na:na]
+	... 44 common frames omitted
+2026-04-29 10:01:38 - Starting DigitalFitApplication using Java 25.0.2 with PID 11448 (C:\Users\TiendaRoquetas\Desktop\MANU PRACTICAS\Digital-Fit-Proyecto\Backend\digital-fit\target\classes started by TiendaRoquetas in C:\Users\TiendaRoquetas\Desktop\MANU PRACTICAS\Digital-Fit-Proyecto\Backend\digital-fit)
+2026-04-29 10:01:38 - Running with Spring Boot v4.0.5, Spring v7.0.6
+2026-04-29 10:01:38 - No active profile set, falling back to 1 default profile: "default"
+2026-04-29 10:01:39 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-29 10:01:39 - Finished Spring Data repository scanning in 187 ms. Found 13 JPA repository interfaces.
+2026-04-29 10:01:39 - Tomcat initialized with port 8080 (http)
+2026-04-29 10:01:39 - Starting service [Tomcat]
+2026-04-29 10:01:39 - Starting Servlet engine: [Apache Tomcat/11.0.20]
+2026-04-29 10:01:39 - Root WebApplicationContext: initialization completed in 1349 ms
+2026-04-29 10:01:39 - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-29 10:01:39 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-29 10:01:39 - HikariPool-4 - Starting...
+2026-04-29 10:01:39 - HikariPool-4 - Added connection com.mysql.cj.jdbc.ConnectionImpl@a734b9d
+2026-04-29 10:01:39 - HikariPool-4 - Start completed.
+2026-04-29 10:01:39 - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://localhost:3306/digital_fit]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.45
+	Default catalog/schema: digital_fit/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-29 10:01:40 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-29 10:01:40 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-29 10:01:40 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'centroPrivadoUsuarioRestController': Unsatisfied dependency expressed through field 'autocompletadoCentroPrivadoService': Error creating bean with name 'autocompletadoCentroPrivadoService': Lookup method resolution failed
+2026-04-29 10:01:40 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-29 10:01:40 - HikariPool-4 - Shutdown initiated...
+2026-04-29 10:01:40 - HikariPool-4 - Shutdown completed.
+2026-04-29 10:01:40 - Stopping service [Tomcat]
+2026-04-29 10:01:40 - 
 
-***************************
-APPLICATION FAILED TO START
-***************************
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-04-29 10:01:40 - Application run failed
+org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'centroPrivadoUsuarioRestController': Unsatisfied dependency expressed through field 'autocompletadoCentroPrivadoService': Error creating bean with name 'autocompletadoCentroPrivadoService': Lookup method resolution failed
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:767) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:748) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:146) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:493) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1446) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:602) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:196) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.instantiateSingleton(DefaultListableBeanFactory.java:1218) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingleton(DefaultListableBeanFactory.java:1184) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:1121) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:994) ~[spring-context-7.0.6.jar:7.0.6]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621) ~[spring-context-7.0.6.jar:7.0.6]
+	at org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:143) ~[spring-boot-web-server-4.0.5.jar:4.0.5]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:756) ~[spring-boot-4.0.5.jar:4.0.5]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:445) ~[spring-boot-4.0.5.jar:4.0.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:321) ~[spring-boot-4.0.5.jar:4.0.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1365) ~[spring-boot-4.0.5.jar:4.0.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354) ~[spring-boot-4.0.5.jar:4.0.5]
+	at com.example.digital_fit.DigitalFitApplication.main(DigitalFitApplication.java:10) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:52) ~[spring-boot-devtools-4.0.5.jar:4.0.5]
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'autocompletadoCentroPrivadoService': Lookup method resolution failed
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.checkLookupMethods(AutowiredAnnotationBeanPostProcessor.java:482) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.determineCandidateConstructors(AutowiredAnnotationBeanPostProcessor.java:352) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.determineConstructorsFromBeanPostProcessors(AbstractAutowireCapableBeanFactory.java:1321) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1218) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:565) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:201) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveBean(DefaultListableBeanFactory.java:1225) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1704) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1651) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:764) ~[spring-beans-7.0.6.jar:7.0.6]
+	... 25 common frames omitted
+Caused by: java.lang.IllegalStateException: Failed to introspect Class [com.example.digital_fit.service.CentroPrivado.AutocompletadoCentroPrivadoService] from ClassLoader [org.springframework.boot.devtools.restart.classloader.RestartClassLoader@76cb69a9]
+	at org.springframework.util.ReflectionUtils.getDeclaredMethods(ReflectionUtils.java:483) ~[spring-core-7.0.6.jar:7.0.6]
+	at org.springframework.util.ReflectionUtils.doWithLocalMethods(ReflectionUtils.java:320) ~[spring-core-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.checkLookupMethods(AutowiredAnnotationBeanPostProcessor.java:460) ~[spring-beans-7.0.6.jar:7.0.6]
+	... 38 common frames omitted
+Caused by: java.lang.NoClassDefFoundError: JsonNode
+	at java.base/java.lang.Class.getDeclaredMethods0(Native Method) ~[na:na]
+	at java.base/java.lang.Class.privateGetDeclaredMethods(Class.java:3010) ~[na:na]
+	at java.base/java.lang.Class.getDeclaredMethods(Class.java:2329) ~[na:na]
+	at org.springframework.util.ReflectionUtils.getDeclaredMethods(ReflectionUtils.java:465) ~[spring-core-7.0.6.jar:7.0.6]
+	... 40 common frames omitted
+Caused by: java.lang.ClassNotFoundException: JsonNode
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:580) ~[na:na]
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:490) ~[na:na]
+	at java.base/java.lang.Class.forName0(Native Method) ~[na:na]
+	at java.base/java.lang.Class.forName(Class.java:547) ~[na:na]
+	at org.springframework.boot.devtools.restart.classloader.RestartClassLoader.loadClass(RestartClassLoader.java:123) ~[spring-boot-devtools-4.0.5.jar:4.0.5]
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:490) ~[na:na]
+	... 44 common frames omitted
+2026-04-29 10:01:46 - Starting DigitalFitApplication using Java 25.0.2 with PID 11448 (C:\Users\TiendaRoquetas\Desktop\MANU PRACTICAS\Digital-Fit-Proyecto\Backend\digital-fit\target\classes started by TiendaRoquetas in C:\Users\TiendaRoquetas\Desktop\MANU PRACTICAS\Digital-Fit-Proyecto\Backend\digital-fit)
+2026-04-29 10:01:46 - Running with Spring Boot v4.0.5, Spring v7.0.6
+2026-04-29 10:01:46 - No active profile set, falling back to 1 default profile: "default"
+2026-04-29 10:01:47 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-29 10:01:47 - Finished Spring Data repository scanning in 220 ms. Found 13 JPA repository interfaces.
+2026-04-29 10:01:47 - Tomcat initialized with port 8080 (http)
+2026-04-29 10:01:47 - Starting service [Tomcat]
+2026-04-29 10:01:47 - Starting Servlet engine: [Apache Tomcat/11.0.20]
+2026-04-29 10:01:47 - Root WebApplicationContext: initialization completed in 1133 ms
+2026-04-29 10:01:48 - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-29 10:01:48 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-29 10:01:48 - HikariPool-5 - Starting...
+2026-04-29 10:01:48 - HikariPool-5 - Added connection com.mysql.cj.jdbc.ConnectionImpl@490be37a
+2026-04-29 10:01:48 - HikariPool-5 - Start completed.
+2026-04-29 10:01:48 - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://localhost:3306/digital_fit]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.45
+	Default catalog/schema: digital_fit/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-29 10:01:48 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-29 10:01:48 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-29 10:01:49 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'centroPrivadoUsuarioRestController': Unsatisfied dependency expressed through field 'autocompletadoCentroPrivadoService': Error creating bean with name 'autocompletadoCentroPrivadoService': Lookup method resolution failed
+2026-04-29 10:01:49 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-29 10:01:49 - HikariPool-5 - Shutdown initiated...
+2026-04-29 10:01:49 - HikariPool-5 - Shutdown completed.
+2026-04-29 10:01:49 - Stopping service [Tomcat]
+2026-04-29 10:01:49 - 
 
-Description:
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-04-29 10:01:49 - Application run failed
+org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'centroPrivadoUsuarioRestController': Unsatisfied dependency expressed through field 'autocompletadoCentroPrivadoService': Error creating bean with name 'autocompletadoCentroPrivadoService': Lookup method resolution failed
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:767) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:748) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:146) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:493) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1446) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:602) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:196) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.instantiateSingleton(DefaultListableBeanFactory.java:1218) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingleton(DefaultListableBeanFactory.java:1184) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:1121) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:994) ~[spring-context-7.0.6.jar:7.0.6]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621) ~[spring-context-7.0.6.jar:7.0.6]
+	at org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:143) ~[spring-boot-web-server-4.0.5.jar:4.0.5]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:756) ~[spring-boot-4.0.5.jar:4.0.5]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:445) ~[spring-boot-4.0.5.jar:4.0.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:321) ~[spring-boot-4.0.5.jar:4.0.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1365) ~[spring-boot-4.0.5.jar:4.0.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354) ~[spring-boot-4.0.5.jar:4.0.5]
+	at com.example.digital_fit.DigitalFitApplication.main(DigitalFitApplication.java:10) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:52) ~[spring-boot-devtools-4.0.5.jar:4.0.5]
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'autocompletadoCentroPrivadoService': Lookup method resolution failed
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.checkLookupMethods(AutowiredAnnotationBeanPostProcessor.java:482) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.determineCandidateConstructors(AutowiredAnnotationBeanPostProcessor.java:352) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.determineConstructorsFromBeanPostProcessors(AbstractAutowireCapableBeanFactory.java:1321) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1218) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:565) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:201) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveBean(DefaultListableBeanFactory.java:1225) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1704) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1651) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:764) ~[spring-beans-7.0.6.jar:7.0.6]
+	... 25 common frames omitted
+Caused by: java.lang.IllegalStateException: Failed to introspect Class [com.example.digital_fit.service.CentroPrivado.AutocompletadoCentroPrivadoService] from ClassLoader [org.springframework.boot.devtools.restart.classloader.RestartClassLoader@60714ab1]
+	at org.springframework.util.ReflectionUtils.getDeclaredMethods(ReflectionUtils.java:483) ~[spring-core-7.0.6.jar:7.0.6]
+	at org.springframework.util.ReflectionUtils.doWithLocalMethods(ReflectionUtils.java:320) ~[spring-core-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.checkLookupMethods(AutowiredAnnotationBeanPostProcessor.java:460) ~[spring-beans-7.0.6.jar:7.0.6]
+	... 38 common frames omitted
+Caused by: java.lang.NoClassDefFoundError: JsonNode
+	at java.base/java.lang.Class.getDeclaredMethods0(Native Method) ~[na:na]
+	at java.base/java.lang.Class.privateGetDeclaredMethods(Class.java:3010) ~[na:na]
+	at java.base/java.lang.Class.getDeclaredMethods(Class.java:2329) ~[na:na]
+	at org.springframework.util.ReflectionUtils.getDeclaredMethods(ReflectionUtils.java:465) ~[spring-core-7.0.6.jar:7.0.6]
+	... 40 common frames omitted
+Caused by: java.lang.ClassNotFoundException: JsonNode
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:580) ~[na:na]
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:490) ~[na:na]
+	at java.base/java.lang.Class.forName0(Native Method) ~[na:na]
+	at java.base/java.lang.Class.forName(Class.java:547) ~[na:na]
+	at org.springframework.boot.devtools.restart.classloader.RestartClassLoader.loadClass(RestartClassLoader.java:123) ~[spring-boot-devtools-4.0.5.jar:4.0.5]
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:490) ~[na:na]
+	... 44 common frames omitted
+2026-04-29 10:01:53 - Starting DigitalFitApplication using Java 25.0.2 with PID 11448 (C:\Users\TiendaRoquetas\Desktop\MANU PRACTICAS\Digital-Fit-Proyecto\Backend\digital-fit\target\classes started by TiendaRoquetas in C:\Users\TiendaRoquetas\Desktop\MANU PRACTICAS\Digital-Fit-Proyecto\Backend\digital-fit)
+2026-04-29 10:01:53 - Running with Spring Boot v4.0.5, Spring v7.0.6
+2026-04-29 10:01:53 - No active profile set, falling back to 1 default profile: "default"
+2026-04-29 10:01:54 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-29 10:01:54 - Finished Spring Data repository scanning in 136 ms. Found 13 JPA repository interfaces.
+2026-04-29 10:01:54 - Tomcat initialized with port 8080 (http)
+2026-04-29 10:01:54 - Starting service [Tomcat]
+2026-04-29 10:01:54 - Starting Servlet engine: [Apache Tomcat/11.0.20]
+2026-04-29 10:01:54 - Root WebApplicationContext: initialization completed in 892 ms
+2026-04-29 10:01:54 - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-29 10:01:54 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-29 10:01:54 - HikariPool-6 - Starting...
+2026-04-29 10:01:54 - HikariPool-6 - Added connection com.mysql.cj.jdbc.ConnectionImpl@5c898520
+2026-04-29 10:01:54 - HikariPool-6 - Start completed.
+2026-04-29 10:01:54 - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://localhost:3306/digital_fit]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.45
+	Default catalog/schema: digital_fit/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-29 10:01:55 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-29 10:01:55 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-29 10:01:55 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'centroPrivadoUsuarioRestController': Unsatisfied dependency expressed through field 'autocompletadoCentroPrivadoService': Error creating bean with name 'autocompletadoCentroPrivadoService': Lookup method resolution failed
+2026-04-29 10:01:55 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-29 10:01:55 - HikariPool-6 - Shutdown initiated...
+2026-04-29 10:01:55 - HikariPool-6 - Shutdown completed.
+2026-04-29 10:01:55 - Stopping service [Tomcat]
+2026-04-29 10:01:55 - 
 
-Field mensajeSoporteRepository in com.example.digital_fit.service.Soporte.SoporteService required a bean of type 'com.example.digital_fit.repository.Soporte.MensajeSoporteRepository' that could not be found.
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-04-29 10:01:55 - Application run failed
+org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'centroPrivadoUsuarioRestController': Unsatisfied dependency expressed through field 'autocompletadoCentroPrivadoService': Error creating bean with name 'autocompletadoCentroPrivadoService': Lookup method resolution failed
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:767) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:748) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:146) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:493) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1446) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:602) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:196) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.instantiateSingleton(DefaultListableBeanFactory.java:1218) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingleton(DefaultListableBeanFactory.java:1184) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:1121) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:994) ~[spring-context-7.0.6.jar:7.0.6]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621) ~[spring-context-7.0.6.jar:7.0.6]
+	at org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:143) ~[spring-boot-web-server-4.0.5.jar:4.0.5]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:756) ~[spring-boot-4.0.5.jar:4.0.5]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:445) ~[spring-boot-4.0.5.jar:4.0.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:321) ~[spring-boot-4.0.5.jar:4.0.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1365) ~[spring-boot-4.0.5.jar:4.0.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354) ~[spring-boot-4.0.5.jar:4.0.5]
+	at com.example.digital_fit.DigitalFitApplication.main(DigitalFitApplication.java:10) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:52) ~[spring-boot-devtools-4.0.5.jar:4.0.5]
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'autocompletadoCentroPrivadoService': Lookup method resolution failed
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.checkLookupMethods(AutowiredAnnotationBeanPostProcessor.java:482) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.determineCandidateConstructors(AutowiredAnnotationBeanPostProcessor.java:352) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.determineConstructorsFromBeanPostProcessors(AbstractAutowireCapableBeanFactory.java:1321) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1218) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:565) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:201) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveBean(DefaultListableBeanFactory.java:1225) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1704) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1651) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:764) ~[spring-beans-7.0.6.jar:7.0.6]
+	... 25 common frames omitted
+Caused by: java.lang.IllegalStateException: Failed to introspect Class [com.example.digital_fit.service.CentroPrivado.AutocompletadoCentroPrivadoService] from ClassLoader [org.springframework.boot.devtools.restart.classloader.RestartClassLoader@74eb6c2f]
+	at org.springframework.util.ReflectionUtils.getDeclaredMethods(ReflectionUtils.java:483) ~[spring-core-7.0.6.jar:7.0.6]
+	at org.springframework.util.ReflectionUtils.doWithLocalMethods(ReflectionUtils.java:320) ~[spring-core-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.checkLookupMethods(AutowiredAnnotationBeanPostProcessor.java:460) ~[spring-beans-7.0.6.jar:7.0.6]
+	... 38 common frames omitted
+Caused by: java.lang.NoClassDefFoundError: JsonNode
+	at java.base/java.lang.Class.getDeclaredMethods0(Native Method) ~[na:na]
+	at java.base/java.lang.Class.privateGetDeclaredMethods(Class.java:3010) ~[na:na]
+	at java.base/java.lang.Class.getDeclaredMethods(Class.java:2329) ~[na:na]
+	at org.springframework.util.ReflectionUtils.getDeclaredMethods(ReflectionUtils.java:465) ~[spring-core-7.0.6.jar:7.0.6]
+	... 40 common frames omitted
+Caused by: java.lang.ClassNotFoundException: JsonNode
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:580) ~[na:na]
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:490) ~[na:na]
+	at java.base/java.lang.Class.forName0(Native Method) ~[na:na]
+	at java.base/java.lang.Class.forName(Class.java:547) ~[na:na]
+	at org.springframework.boot.devtools.restart.classloader.RestartClassLoader.loadClass(RestartClassLoader.java:123) ~[spring-boot-devtools-4.0.5.jar:4.0.5]
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:490) ~[na:na]
+	... 44 common frames omitted
+2026-04-29 10:01:58 - Starting DigitalFitApplication using Java 25.0.2 with PID 11448 (C:\Users\TiendaRoquetas\Desktop\MANU PRACTICAS\Digital-Fit-Proyecto\Backend\digital-fit\target\classes started by TiendaRoquetas in C:\Users\TiendaRoquetas\Desktop\MANU PRACTICAS\Digital-Fit-Proyecto\Backend\digital-fit)
+2026-04-29 10:01:58 - Running with Spring Boot v4.0.5, Spring v7.0.6
+2026-04-29 10:01:58 - No active profile set, falling back to 1 default profile: "default"
+2026-04-29 10:01:58 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-29 10:01:58 - Finished Spring Data repository scanning in 143 ms. Found 13 JPA repository interfaces.
+2026-04-29 10:01:59 - Tomcat initialized with port 8080 (http)
+2026-04-29 10:01:59 - Starting service [Tomcat]
+2026-04-29 10:01:59 - Starting Servlet engine: [Apache Tomcat/11.0.20]
+2026-04-29 10:01:59 - Root WebApplicationContext: initialization completed in 797 ms
+2026-04-29 10:01:59 - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-29 10:01:59 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-29 10:01:59 - HikariPool-7 - Starting...
+2026-04-29 10:01:59 - HikariPool-7 - Added connection com.mysql.cj.jdbc.ConnectionImpl@32f24a6
+2026-04-29 10:01:59 - HikariPool-7 - Start completed.
+2026-04-29 10:01:59 - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://localhost:3306/digital_fit]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.45
+	Default catalog/schema: digital_fit/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-29 10:01:59 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-29 10:01:59 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-29 10:01:59 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'centroPrivadoUsuarioRestController': Unsatisfied dependency expressed through field 'autocompletadoCentroPrivadoService': Error creating bean with name 'autocompletadoCentroPrivadoService': Lookup method resolution failed
+2026-04-29 10:01:59 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-29 10:01:59 - HikariPool-7 - Shutdown initiated...
+2026-04-29 10:01:59 - HikariPool-7 - Shutdown completed.
+2026-04-29 10:01:59 - Stopping service [Tomcat]
+2026-04-29 10:02:00 - 
 
-The injection point has the following annotations:
-	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-04-29 10:02:00 - Application run failed
+org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'centroPrivadoUsuarioRestController': Unsatisfied dependency expressed through field 'autocompletadoCentroPrivadoService': Error creating bean with name 'autocompletadoCentroPrivadoService': Lookup method resolution failed
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:767) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:748) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:146) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:493) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1446) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:602) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:196) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.instantiateSingleton(DefaultListableBeanFactory.java:1218) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingleton(DefaultListableBeanFactory.java:1184) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:1121) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:994) ~[spring-context-7.0.6.jar:7.0.6]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621) ~[spring-context-7.0.6.jar:7.0.6]
+	at org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:143) ~[spring-boot-web-server-4.0.5.jar:4.0.5]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:756) ~[spring-boot-4.0.5.jar:4.0.5]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:445) ~[spring-boot-4.0.5.jar:4.0.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:321) ~[spring-boot-4.0.5.jar:4.0.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1365) ~[spring-boot-4.0.5.jar:4.0.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354) ~[spring-boot-4.0.5.jar:4.0.5]
+	at com.example.digital_fit.DigitalFitApplication.main(DigitalFitApplication.java:10) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:52) ~[spring-boot-devtools-4.0.5.jar:4.0.5]
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'autocompletadoCentroPrivadoService': Lookup method resolution failed
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.checkLookupMethods(AutowiredAnnotationBeanPostProcessor.java:482) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.determineCandidateConstructors(AutowiredAnnotationBeanPostProcessor.java:352) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.determineConstructorsFromBeanPostProcessors(AbstractAutowireCapableBeanFactory.java:1321) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1218) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:565) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:201) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveBean(DefaultListableBeanFactory.java:1225) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1704) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1651) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:764) ~[spring-beans-7.0.6.jar:7.0.6]
+	... 25 common frames omitted
+Caused by: java.lang.IllegalStateException: Failed to introspect Class [com.example.digital_fit.service.CentroPrivado.AutocompletadoCentroPrivadoService] from ClassLoader [org.springframework.boot.devtools.restart.classloader.RestartClassLoader@79e5fcc3]
+	at org.springframework.util.ReflectionUtils.getDeclaredMethods(ReflectionUtils.java:483) ~[spring-core-7.0.6.jar:7.0.6]
+	at org.springframework.util.ReflectionUtils.doWithLocalMethods(ReflectionUtils.java:320) ~[spring-core-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.checkLookupMethods(AutowiredAnnotationBeanPostProcessor.java:460) ~[spring-beans-7.0.6.jar:7.0.6]
+	... 38 common frames omitted
+Caused by: java.lang.NoClassDefFoundError: JsonNode
+	at java.base/java.lang.Class.getDeclaredMethods0(Native Method) ~[na:na]
+	at java.base/java.lang.Class.privateGetDeclaredMethods(Class.java:3010) ~[na:na]
+	at java.base/java.lang.Class.getDeclaredMethods(Class.java:2329) ~[na:na]
+	at org.springframework.util.ReflectionUtils.getDeclaredMethods(ReflectionUtils.java:465) ~[spring-core-7.0.6.jar:7.0.6]
+	... 40 common frames omitted
+Caused by: java.lang.ClassNotFoundException: JsonNode
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:580) ~[na:na]
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:490) ~[na:na]
+	at java.base/java.lang.Class.forName0(Native Method) ~[na:na]
+	at java.base/java.lang.Class.forName(Class.java:547) ~[na:na]
+	at org.springframework.boot.devtools.restart.classloader.RestartClassLoader.loadClass(RestartClassLoader.java:123) ~[spring-boot-devtools-4.0.5.jar:4.0.5]
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:490) ~[na:na]
+	... 44 common frames omitted
+2026-04-29 10:02:03 - Starting DigitalFitApplication using Java 25.0.2 with PID 11448 (C:\Users\TiendaRoquetas\Desktop\MANU PRACTICAS\Digital-Fit-Proyecto\Backend\digital-fit\target\classes started by TiendaRoquetas in C:\Users\TiendaRoquetas\Desktop\MANU PRACTICAS\Digital-Fit-Proyecto\Backend\digital-fit)
+2026-04-29 10:02:03 - Running with Spring Boot v4.0.5, Spring v7.0.6
+2026-04-29 10:02:03 - No active profile set, falling back to 1 default profile: "default"
+2026-04-29 10:02:05 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-29 10:02:05 - Finished Spring Data repository scanning in 371 ms. Found 13 JPA repository interfaces.
+2026-04-29 10:02:06 - Tomcat initialized with port 8080 (http)
+2026-04-29 10:02:06 - Starting service [Tomcat]
+2026-04-29 10:02:06 - Starting Servlet engine: [Apache Tomcat/11.0.20]
+2026-04-29 10:02:06 - Root WebApplicationContext: initialization completed in 2587 ms
+2026-04-29 10:02:06 - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-29 10:02:06 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-29 10:02:06 - HikariPool-8 - Starting...
+2026-04-29 10:02:07 - HikariPool-8 - Added connection com.mysql.cj.jdbc.ConnectionImpl@4de8916c
+2026-04-29 10:02:07 - HikariPool-8 - Start completed.
+2026-04-29 10:02:07 - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://localhost:3306/digital_fit]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.45
+	Default catalog/schema: digital_fit/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-29 10:02:08 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-29 10:02:08 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-29 10:02:09 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'centroPrivadoUsuarioRestController': Unsatisfied dependency expressed through field 'autocompletadoCentroPrivadoService': Error creating bean with name 'autocompletadoCentroPrivadoService': Lookup method resolution failed
+2026-04-29 10:02:09 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-29 10:02:09 - HikariPool-8 - Shutdown initiated...
+2026-04-29 10:02:09 - HikariPool-8 - Shutdown completed.
+2026-04-29 10:02:09 - Stopping service [Tomcat]
+2026-04-29 10:02:09 - 
 
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-04-29 10:02:09 - Application run failed
+org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'centroPrivadoUsuarioRestController': Unsatisfied dependency expressed through field 'autocompletadoCentroPrivadoService': Error creating bean with name 'autocompletadoCentroPrivadoService': Lookup method resolution failed
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:767) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:748) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:146) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:493) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1446) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:602) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:196) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.instantiateSingleton(DefaultListableBeanFactory.java:1218) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingleton(DefaultListableBeanFactory.java:1184) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:1121) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:994) ~[spring-context-7.0.6.jar:7.0.6]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621) ~[spring-context-7.0.6.jar:7.0.6]
+	at org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:143) ~[spring-boot-web-server-4.0.5.jar:4.0.5]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:756) ~[spring-boot-4.0.5.jar:4.0.5]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:445) ~[spring-boot-4.0.5.jar:4.0.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:321) ~[spring-boot-4.0.5.jar:4.0.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1365) ~[spring-boot-4.0.5.jar:4.0.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354) ~[spring-boot-4.0.5.jar:4.0.5]
+	at com.example.digital_fit.DigitalFitApplication.main(DigitalFitApplication.java:10) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:52) ~[spring-boot-devtools-4.0.5.jar:4.0.5]
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'autocompletadoCentroPrivadoService': Lookup method resolution failed
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.checkLookupMethods(AutowiredAnnotationBeanPostProcessor.java:482) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.determineCandidateConstructors(AutowiredAnnotationBeanPostProcessor.java:352) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.determineConstructorsFromBeanPostProcessors(AbstractAutowireCapableBeanFactory.java:1321) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1218) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:565) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:201) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveBean(DefaultListableBeanFactory.java:1225) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1704) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1651) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:764) ~[spring-beans-7.0.6.jar:7.0.6]
+	... 25 common frames omitted
+Caused by: java.lang.IllegalStateException: Failed to introspect Class [com.example.digital_fit.service.CentroPrivado.AutocompletadoCentroPrivadoService] from ClassLoader [org.springframework.boot.devtools.restart.classloader.RestartClassLoader@54ce4477]
+	at org.springframework.util.ReflectionUtils.getDeclaredMethods(ReflectionUtils.java:483) ~[spring-core-7.0.6.jar:7.0.6]
+	at org.springframework.util.ReflectionUtils.doWithLocalMethods(ReflectionUtils.java:320) ~[spring-core-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.checkLookupMethods(AutowiredAnnotationBeanPostProcessor.java:460) ~[spring-beans-7.0.6.jar:7.0.6]
+	... 38 common frames omitted
+Caused by: java.lang.NoClassDefFoundError: JsonNode
+	at java.base/java.lang.Class.getDeclaredMethods0(Native Method) ~[na:na]
+	at java.base/java.lang.Class.privateGetDeclaredMethods(Class.java:3010) ~[na:na]
+	at java.base/java.lang.Class.getDeclaredMethods(Class.java:2329) ~[na:na]
+	at org.springframework.util.ReflectionUtils.getDeclaredMethods(ReflectionUtils.java:465) ~[spring-core-7.0.6.jar:7.0.6]
+	... 40 common frames omitted
+Caused by: java.lang.ClassNotFoundException: JsonNode
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:580) ~[na:na]
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:490) ~[na:na]
+	at java.base/java.lang.Class.forName0(Native Method) ~[na:na]
+	at java.base/java.lang.Class.forName(Class.java:547) ~[na:na]
+	at org.springframework.boot.devtools.restart.classloader.RestartClassLoader.loadClass(RestartClassLoader.java:123) ~[spring-boot-devtools-4.0.5.jar:4.0.5]
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:490) ~[na:na]
+	... 44 common frames omitted
+2026-04-29 10:02:20 - Starting DigitalFitApplication using Java 25.0.2 with PID 11448 (C:\Users\TiendaRoquetas\Desktop\MANU PRACTICAS\Digital-Fit-Proyecto\Backend\digital-fit\target\classes started by TiendaRoquetas in C:\Users\TiendaRoquetas\Desktop\MANU PRACTICAS\Digital-Fit-Proyecto\Backend\digital-fit)
+2026-04-29 10:02:20 - Running with Spring Boot v4.0.5, Spring v7.0.6
+2026-04-29 10:02:20 - No active profile set, falling back to 1 default profile: "default"
+2026-04-29 10:02:20 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-29 10:02:21 - Finished Spring Data repository scanning in 104 ms. Found 13 JPA repository interfaces.
+2026-04-29 10:02:21 - Tomcat initialized with port 8080 (http)
+2026-04-29 10:02:21 - Starting service [Tomcat]
+2026-04-29 10:02:21 - Starting Servlet engine: [Apache Tomcat/11.0.20]
+2026-04-29 10:02:21 - Root WebApplicationContext: initialization completed in 782 ms
+2026-04-29 10:02:21 - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-29 10:02:21 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-29 10:02:21 - HikariPool-9 - Starting...
+2026-04-29 10:02:21 - HikariPool-9 - Added connection com.mysql.cj.jdbc.ConnectionImpl@2530f84d
+2026-04-29 10:02:21 - HikariPool-9 - Start completed.
+2026-04-29 10:02:21 - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://localhost:3306/digital_fit]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.45
+	Default catalog/schema: digital_fit/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-29 10:02:22 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-29 10:02:22 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-29 10:02:22 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'centroPrivadoUsuarioRestController': Unsatisfied dependency expressed through field 'autocompletadoCentroPrivadoService': Error creating bean with name 'autocompletadoCentroPrivadoService': Lookup method resolution failed
+2026-04-29 10:02:22 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-29 10:02:22 - HikariPool-9 - Shutdown initiated...
+2026-04-29 10:02:22 - HikariPool-9 - Shutdown completed.
+2026-04-29 10:02:22 - Stopping service [Tomcat]
+2026-04-29 10:02:22 - 
 
-Action:
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-04-29 10:02:22 - Application run failed
+org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'centroPrivadoUsuarioRestController': Unsatisfied dependency expressed through field 'autocompletadoCentroPrivadoService': Error creating bean with name 'autocompletadoCentroPrivadoService': Lookup method resolution failed
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:767) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:748) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:146) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:493) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1446) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:602) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:196) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.instantiateSingleton(DefaultListableBeanFactory.java:1218) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingleton(DefaultListableBeanFactory.java:1184) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:1121) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:994) ~[spring-context-7.0.6.jar:7.0.6]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621) ~[spring-context-7.0.6.jar:7.0.6]
+	at org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:143) ~[spring-boot-web-server-4.0.5.jar:4.0.5]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:756) ~[spring-boot-4.0.5.jar:4.0.5]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:445) ~[spring-boot-4.0.5.jar:4.0.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:321) ~[spring-boot-4.0.5.jar:4.0.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1365) ~[spring-boot-4.0.5.jar:4.0.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354) ~[spring-boot-4.0.5.jar:4.0.5]
+	at com.example.digital_fit.DigitalFitApplication.main(DigitalFitApplication.java:10) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:52) ~[spring-boot-devtools-4.0.5.jar:4.0.5]
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'autocompletadoCentroPrivadoService': Lookup method resolution failed
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.checkLookupMethods(AutowiredAnnotationBeanPostProcessor.java:482) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.determineCandidateConstructors(AutowiredAnnotationBeanPostProcessor.java:352) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.determineConstructorsFromBeanPostProcessors(AbstractAutowireCapableBeanFactory.java:1321) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1218) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:565) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:201) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveBean(DefaultListableBeanFactory.java:1225) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1704) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1651) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:764) ~[spring-beans-7.0.6.jar:7.0.6]
+	... 25 common frames omitted
+Caused by: java.lang.IllegalStateException: Failed to introspect Class [com.example.digital_fit.service.CentroPrivado.AutocompletadoCentroPrivadoService] from ClassLoader [org.springframework.boot.devtools.restart.classloader.RestartClassLoader@3e00a89d]
+	at org.springframework.util.ReflectionUtils.getDeclaredMethods(ReflectionUtils.java:483) ~[spring-core-7.0.6.jar:7.0.6]
+	at org.springframework.util.ReflectionUtils.doWithLocalMethods(ReflectionUtils.java:320) ~[spring-core-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.checkLookupMethods(AutowiredAnnotationBeanPostProcessor.java:460) ~[spring-beans-7.0.6.jar:7.0.6]
+	... 38 common frames omitted
+Caused by: java.lang.NoClassDefFoundError: JsonNode
+	at java.base/java.lang.Class.getDeclaredMethods0(Native Method) ~[na:na]
+	at java.base/java.lang.Class.privateGetDeclaredMethods(Class.java:3010) ~[na:na]
+	at java.base/java.lang.Class.getDeclaredMethods(Class.java:2329) ~[na:na]
+	at org.springframework.util.ReflectionUtils.getDeclaredMethods(ReflectionUtils.java:465) ~[spring-core-7.0.6.jar:7.0.6]
+	... 40 common frames omitted
+Caused by: java.lang.ClassNotFoundException: JsonNode
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:580) ~[na:na]
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:490) ~[na:na]
+	at java.base/java.lang.Class.forName0(Native Method) ~[na:na]
+	at java.base/java.lang.Class.forName(Class.java:547) ~[na:na]
+	at org.springframework.boot.devtools.restart.classloader.RestartClassLoader.loadClass(RestartClassLoader.java:123) ~[spring-boot-devtools-4.0.5.jar:4.0.5]
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:490) ~[na:na]
+	... 44 common frames omitted
+2026-04-29 10:02:24 - Starting DigitalFitApplication using Java 25.0.2 with PID 11448 (C:\Users\TiendaRoquetas\Desktop\MANU PRACTICAS\Digital-Fit-Proyecto\Backend\digital-fit\target\classes started by TiendaRoquetas in C:\Users\TiendaRoquetas\Desktop\MANU PRACTICAS\Digital-Fit-Proyecto\Backend\digital-fit)
+2026-04-29 10:02:24 - Running with Spring Boot v4.0.5, Spring v7.0.6
+2026-04-29 10:02:24 - No active profile set, falling back to 1 default profile: "default"
+2026-04-29 10:02:25 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-29 10:02:25 - Finished Spring Data repository scanning in 164 ms. Found 13 JPA repository interfaces.
+2026-04-29 10:02:25 - Tomcat initialized with port 8080 (http)
+2026-04-29 10:02:25 - Starting service [Tomcat]
+2026-04-29 10:02:25 - Starting Servlet engine: [Apache Tomcat/11.0.20]
+2026-04-29 10:02:25 - Root WebApplicationContext: initialization completed in 1181 ms
+2026-04-29 10:02:25 - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-29 10:02:25 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-29 10:02:25 - HikariPool-10 - Starting...
+2026-04-29 10:02:25 - HikariPool-10 - Added connection com.mysql.cj.jdbc.ConnectionImpl@7e8fd5ac
+2026-04-29 10:02:25 - HikariPool-10 - Start completed.
+2026-04-29 10:02:25 - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://localhost:3306/digital_fit]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.45
+	Default catalog/schema: digital_fit/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-29 10:02:25 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-29 10:02:25 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-29 10:02:26 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'centroPrivadoUsuarioRestController': Unsatisfied dependency expressed through field 'autocompletadoCentroPrivadoService': Error creating bean with name 'autocompletadoCentroPrivadoService': Lookup method resolution failed
+2026-04-29 10:02:26 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-29 10:02:26 - HikariPool-10 - Shutdown initiated...
+2026-04-29 10:02:26 - HikariPool-10 - Shutdown completed.
+2026-04-29 10:02:26 - Stopping service [Tomcat]
+2026-04-29 10:02:26 - 
 
-Consider defining a bean of type 'com.example.digital_fit.repository.Soporte.MensajeSoporteRepository' in your configuration.
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-04-29 10:02:26 - Application run failed
+org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'centroPrivadoUsuarioRestController': Unsatisfied dependency expressed through field 'autocompletadoCentroPrivadoService': Error creating bean with name 'autocompletadoCentroPrivadoService': Lookup method resolution failed
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:767) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:748) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:146) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:493) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1446) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:602) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:196) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.instantiateSingleton(DefaultListableBeanFactory.java:1218) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingleton(DefaultListableBeanFactory.java:1184) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:1121) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:994) ~[spring-context-7.0.6.jar:7.0.6]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621) ~[spring-context-7.0.6.jar:7.0.6]
+	at org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:143) ~[spring-boot-web-server-4.0.5.jar:4.0.5]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:756) ~[spring-boot-4.0.5.jar:4.0.5]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:445) ~[spring-boot-4.0.5.jar:4.0.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:321) ~[spring-boot-4.0.5.jar:4.0.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1365) ~[spring-boot-4.0.5.jar:4.0.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354) ~[spring-boot-4.0.5.jar:4.0.5]
+	at com.example.digital_fit.DigitalFitApplication.main(DigitalFitApplication.java:10) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:52) ~[spring-boot-devtools-4.0.5.jar:4.0.5]
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'autocompletadoCentroPrivadoService': Lookup method resolution failed
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.checkLookupMethods(AutowiredAnnotationBeanPostProcessor.java:482) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.determineCandidateConstructors(AutowiredAnnotationBeanPostProcessor.java:352) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.determineConstructorsFromBeanPostProcessors(AbstractAutowireCapableBeanFactory.java:1321) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1218) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:565) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:201) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveBean(DefaultListableBeanFactory.java:1225) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1704) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1651) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:764) ~[spring-beans-7.0.6.jar:7.0.6]
+	... 25 common frames omitted
+Caused by: java.lang.IllegalStateException: Failed to introspect Class [com.example.digital_fit.service.CentroPrivado.AutocompletadoCentroPrivadoService] from ClassLoader [org.springframework.boot.devtools.restart.classloader.RestartClassLoader@11252166]
+	at org.springframework.util.ReflectionUtils.getDeclaredMethods(ReflectionUtils.java:483) ~[spring-core-7.0.6.jar:7.0.6]
+	at org.springframework.util.ReflectionUtils.doWithLocalMethods(ReflectionUtils.java:320) ~[spring-core-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.checkLookupMethods(AutowiredAnnotationBeanPostProcessor.java:460) ~[spring-beans-7.0.6.jar:7.0.6]
+	... 38 common frames omitted
+Caused by: java.lang.NoClassDefFoundError: JsonNode
+	at java.base/java.lang.Class.getDeclaredMethods0(Native Method) ~[na:na]
+	at java.base/java.lang.Class.privateGetDeclaredMethods(Class.java:3010) ~[na:na]
+	at java.base/java.lang.Class.getDeclaredMethods(Class.java:2329) ~[na:na]
+	at org.springframework.util.ReflectionUtils.getDeclaredMethods(ReflectionUtils.java:465) ~[spring-core-7.0.6.jar:7.0.6]
+	... 40 common frames omitted
+Caused by: java.lang.ClassNotFoundException: JsonNode
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:580) ~[na:na]
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:490) ~[na:na]
+	at java.base/java.lang.Class.forName0(Native Method) ~[na:na]
+	at java.base/java.lang.Class.forName(Class.java:547) ~[na:na]
+	at org.springframework.boot.devtools.restart.classloader.RestartClassLoader.loadClass(RestartClassLoader.java:123) ~[spring-boot-devtools-4.0.5.jar:4.0.5]
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:490) ~[na:na]
+	... 44 common frames omitted
+2026-04-29 10:02:32 - Starting DigitalFitApplication using Java 25.0.2 with PID 11448 (C:\Users\TiendaRoquetas\Desktop\MANU PRACTICAS\Digital-Fit-Proyecto\Backend\digital-fit\target\classes started by TiendaRoquetas in C:\Users\TiendaRoquetas\Desktop\MANU PRACTICAS\Digital-Fit-Proyecto\Backend\digital-fit)
+2026-04-29 10:02:32 - Running with Spring Boot v4.0.5, Spring v7.0.6
+2026-04-29 10:02:32 - No active profile set, falling back to 1 default profile: "default"
+2026-04-29 10:02:33 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-29 10:02:33 - Finished Spring Data repository scanning in 117 ms. Found 13 JPA repository interfaces.
+2026-04-29 10:02:33 - Tomcat initialized with port 8080 (http)
+2026-04-29 10:02:33 - Starting service [Tomcat]
+2026-04-29 10:02:33 - Starting Servlet engine: [Apache Tomcat/11.0.20]
+2026-04-29 10:02:33 - Root WebApplicationContext: initialization completed in 911 ms
+2026-04-29 10:02:34 - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-29 10:02:34 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-29 10:02:34 - HikariPool-11 - Starting...
+2026-04-29 10:02:34 - HikariPool-11 - Added connection com.mysql.cj.jdbc.ConnectionImpl@4392c019
+2026-04-29 10:02:34 - HikariPool-11 - Start completed.
+2026-04-29 10:02:34 - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://localhost:3306/digital_fit]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.45
+	Default catalog/schema: digital_fit/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-29 10:02:34 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-29 10:02:34 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-29 10:02:34 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'centroPrivadoUsuarioRestController': Unsatisfied dependency expressed through field 'autocompletadoCentroPrivadoService': Error creating bean with name 'autocompletadoCentroPrivadoService': Lookup method resolution failed
+2026-04-29 10:02:34 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-29 10:02:34 - HikariPool-11 - Shutdown initiated...
+2026-04-29 10:02:34 - HikariPool-11 - Shutdown completed.
+2026-04-29 10:02:34 - Stopping service [Tomcat]
+2026-04-29 10:02:34 - 
 
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-04-29 10:02:34 - Application run failed
+org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'centroPrivadoUsuarioRestController': Unsatisfied dependency expressed through field 'autocompletadoCentroPrivadoService': Error creating bean with name 'autocompletadoCentroPrivadoService': Lookup method resolution failed
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:767) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:748) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:146) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:493) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1446) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:602) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:196) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.instantiateSingleton(DefaultListableBeanFactory.java:1218) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingleton(DefaultListableBeanFactory.java:1184) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:1121) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:994) ~[spring-context-7.0.6.jar:7.0.6]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621) ~[spring-context-7.0.6.jar:7.0.6]
+	at org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:143) ~[spring-boot-web-server-4.0.5.jar:4.0.5]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:756) ~[spring-boot-4.0.5.jar:4.0.5]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:445) ~[spring-boot-4.0.5.jar:4.0.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:321) ~[spring-boot-4.0.5.jar:4.0.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1365) ~[spring-boot-4.0.5.jar:4.0.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354) ~[spring-boot-4.0.5.jar:4.0.5]
+	at com.example.digital_fit.DigitalFitApplication.main(DigitalFitApplication.java:10) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:52) ~[spring-boot-devtools-4.0.5.jar:4.0.5]
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'autocompletadoCentroPrivadoService': Lookup method resolution failed
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.checkLookupMethods(AutowiredAnnotationBeanPostProcessor.java:482) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.determineCandidateConstructors(AutowiredAnnotationBeanPostProcessor.java:352) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.determineConstructorsFromBeanPostProcessors(AbstractAutowireCapableBeanFactory.java:1321) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1218) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:565) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:201) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveBean(DefaultListableBeanFactory.java:1225) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1704) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1651) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:764) ~[spring-beans-7.0.6.jar:7.0.6]
+	... 25 common frames omitted
+Caused by: java.lang.IllegalStateException: Failed to introspect Class [com.example.digital_fit.service.CentroPrivado.AutocompletadoCentroPrivadoService] from ClassLoader [org.springframework.boot.devtools.restart.classloader.RestartClassLoader@47f0c465]
+	at org.springframework.util.ReflectionUtils.getDeclaredMethods(ReflectionUtils.java:483) ~[spring-core-7.0.6.jar:7.0.6]
+	at org.springframework.util.ReflectionUtils.doWithLocalMethods(ReflectionUtils.java:320) ~[spring-core-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.checkLookupMethods(AutowiredAnnotationBeanPostProcessor.java:460) ~[spring-beans-7.0.6.jar:7.0.6]
+	... 38 common frames omitted
+Caused by: java.lang.NoClassDefFoundError: JsonNode
+	at java.base/java.lang.Class.getDeclaredMethods0(Native Method) ~[na:na]
+	at java.base/java.lang.Class.privateGetDeclaredMethods(Class.java:3010) ~[na:na]
+	at java.base/java.lang.Class.getDeclaredMethods(Class.java:2329) ~[na:na]
+	at org.springframework.util.ReflectionUtils.getDeclaredMethods(ReflectionUtils.java:465) ~[spring-core-7.0.6.jar:7.0.6]
+	... 40 common frames omitted
+Caused by: java.lang.ClassNotFoundException: JsonNode
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:580) ~[na:na]
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:490) ~[na:na]
+	at java.base/java.lang.Class.forName0(Native Method) ~[na:na]
+	at java.base/java.lang.Class.forName(Class.java:547) ~[na:na]
+	at org.springframework.boot.devtools.restart.classloader.RestartClassLoader.loadClass(RestartClassLoader.java:123) ~[spring-boot-devtools-4.0.5.jar:4.0.5]
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:490) ~[na:na]
+	... 44 common frames omitted
+2026-04-29 10:02:38 - Starting DigitalFitApplication using Java 25.0.2 with PID 11448 (C:\Users\TiendaRoquetas\Desktop\MANU PRACTICAS\Digital-Fit-Proyecto\Backend\digital-fit\target\classes started by TiendaRoquetas in C:\Users\TiendaRoquetas\Desktop\MANU PRACTICAS\Digital-Fit-Proyecto\Backend\digital-fit)
+2026-04-29 10:02:38 - Running with Spring Boot v4.0.5, Spring v7.0.6
+2026-04-29 10:02:38 - No active profile set, falling back to 1 default profile: "default"
+2026-04-29 10:02:39 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-29 10:02:39 - Finished Spring Data repository scanning in 167 ms. Found 13 JPA repository interfaces.
+2026-04-29 10:02:39 - Tomcat initialized with port 8080 (http)
+2026-04-29 10:02:39 - Starting service [Tomcat]
+2026-04-29 10:02:39 - Starting Servlet engine: [Apache Tomcat/11.0.20]
+2026-04-29 10:02:39 - Root WebApplicationContext: initialization completed in 1168 ms
+2026-04-29 10:02:39 - HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-29 10:02:39 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-29 10:02:39 - HikariPool-12 - Starting...
+2026-04-29 10:02:39 - HikariPool-12 - Added connection com.mysql.cj.jdbc.ConnectionImpl@30d97e74
+2026-04-29 10:02:39 - HikariPool-12 - Start completed.
+2026-04-29 10:02:39 - HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://localhost:3306/digital_fit]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.45
+	Default catalog/schema: digital_fit/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-29 10:02:40 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-29 10:02:40 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-29 10:02:40 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-29 10:02:40 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2026-04-29 10:02:40 - Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2026-04-29 10:02:41 - Exposing 1 endpoint beneath base path '/actuator'
+2026-04-29 10:02:41 - Tomcat started on port 8080 (http) with context path '/'
+2026-04-29 10:02:41 - Started DigitalFitApplication in 2.716 seconds (process running for 481.846)
+2026-04-29 10:02:41 - Condition evaluation unchanged
+2026-04-29 10:03:18 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-29 10:03:18 - Initializing Servlet 'dispatcherServlet'
+2026-04-29 10:03:18 - Completed initialization in 1 ms
+2026-04-29 10:03:21 - Buscando usuario con login: usuario1
+2026-04-29 10:03:21 - Usuario encontrado: usuario1
+2026-04-29 10:03:26 - Listando centros privados al usuario usuario1
+2026-04-29 10:04:28 - Buscando usuario con login: usuario1
+2026-04-29 10:04:28 - Usuario encontrado: usuario1
