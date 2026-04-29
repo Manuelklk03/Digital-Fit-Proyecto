@@ -1029,3 +1029,27 @@ Caused by: java.lang.ClassNotFoundException: JsonNode
 2026-04-29 10:03:26 - Listando centros privados al usuario usuario1
 2026-04-29 10:04:28 - Buscando usuario con login: usuario1
 2026-04-29 10:04:28 - Usuario encontrado: usuario1
+2026-04-29 10:05:54 - Listando centros privados al usuario usuario1
+2026-04-29 10:05:58 - Listando centros privados al usuario usuario1
+2026-04-29 10:22:11 - Buscando usuario con login: usuario1
+2026-04-29 10:22:11 - Usuario encontrado: usuario1
+2026-04-29 10:24:50 - Listando centros privados al usuario usuario1
+2026-04-29 10:56:21 - Usuario usuario1 consulta centro privado 2
+2026-04-29 10:56:33 - Listando tickets del usuario usuario1
+2026-04-29 10:56:37 - Buscando ticket con id: 1
+2026-04-29 10:58:43 - Listando mis valoraciones
+2026-04-29 10:58:43 - Listar historial de entrenamientos
+2026-04-29 10:58:43 - Listando entrenamientos base
+2026-04-29 10:58:43 - Listando entrenamientos de usuario usuario1
+2026-04-29 10:58:43 - Listando centros privados
+2026-04-29 10:58:43 - Listando entrenamientos comunidad
+2026-04-29 10:58:43 - Listando centros privados al usuario usuario1
+2026-04-29 10:58:43 - Listando lugares publicos de la app
+2026-04-29 10:58:43 - Listando valoraciones públicas. Categoría: null
+2026-04-29 10:58:43 - Listando mis lugares publicos
+2026-04-29 10:58:57 - Buscando usuario con login: admin1
+2026-04-29 10:58:57 - Usuario encontrado: admin1
+2026-04-29 10:59:00 - Listando tickets para admin
+2026-04-29 10:59:01 - Cambiando estado de ticket con id: 1
+2026-04-29 10:59:01 - Listando tickets para admin
+2026-04-29 10:59:03 - Admin consulta ticket con id: 1
