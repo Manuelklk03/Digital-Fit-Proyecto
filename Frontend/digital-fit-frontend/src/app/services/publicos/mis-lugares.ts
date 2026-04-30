@@ -47,6 +47,17 @@ export class MisLugaresService {
     });
   }
 
+  autocompletarDatosLugar(latitud: number, longitud: number): Observable<any> {
+    const params = new HttpParams()
+      .set('latitud', latitud.toString())
+      .set('longitud', longitud.toString());
+
+    return this.http.get<any>(`${this.apiUrl}/autocompletar`, {
+      params,
+      withCredentials: true
+    });
+  }
+
   crearLugarDesdeMaps(lugar: any): Observable<any> {
     return this.http.post<any>(this.apiUrl, lugar, {
       withCredentials: true

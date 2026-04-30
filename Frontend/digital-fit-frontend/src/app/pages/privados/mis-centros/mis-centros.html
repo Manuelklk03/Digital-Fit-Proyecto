@@ -37,8 +37,13 @@
           <option value="precioMensual">Buscar por precio máximo</option>
         </select>
 
-        <input type="text" name="valorBusqueda" [(ngModel)]="valorBusqueda" (input)="alCambiarBusqueda()"
-          placeholder="Escribe aquí...">
+        <input
+          type="text"
+          name="valorBusqueda"
+          [(ngModel)]="valorBusqueda"
+          (input)="alCambiarBusqueda()"
+          placeholder="Escribe aquí..."
+        >
 
         <button type="button" class="boton-limpiar" (click)="limpiarBusqueda()">Limpiar</button>
         <button type="button" class="boton-detalle" (click)="abrirFormularioMapa()">Añadir desde mapa</button>
@@ -51,8 +56,7 @@
         <div>
           <span class="panel-kicker">Nuevo centro</span>
           <h3>Guardar centro desde mapa</h3>
-          <p>Selecciona la ubicación y la app rellenará automáticamente los datos disponibles. Solo tendrás que escribir
-            el nombre.</p>
+          <p>Selecciona la ubicación y la app rellenará automáticamente los datos disponibles. Solo tendrás que escribir el nombre.</p>
         </div>
       </div>
 
@@ -70,7 +74,9 @@
           </p>
         </div>
 
-        <app-mapa-selector [latitud]="latitud" [longitud]="longitud"
+        <app-mapa-selector
+          [latitud]="latitud"
+          [longitud]="longitud"
           (ubicacionSeleccionada)="actualizarUbicacion($event)">
         </app-mapa-selector>
       </div>
@@ -80,46 +86,85 @@
         <div class="grid-formulario">
           <div class="grupo-campo">
             <label for="nombre">Nombre</label>
-            <input type="text" id="nombre" name="nombre" [(ngModel)]="nombre" required
+            <input
+              type="text"
+              id="nombre"
+              name="nombre"
+              [(ngModel)]="nombre"
+              required
               placeholder="Este campo lo rellenas tú">
           </div>
 
           <div class="grupo-campo">
             <label for="direccion">Dirección</label>
-            <input type="text" id="direccion" name="direccion" [(ngModel)]="direccion" required>
+            <input
+              type="text"
+              id="direccion"
+              name="direccion"
+              [(ngModel)]="direccion"
+              required>
           </div>
 
           <div class="grupo-campo">
             <label for="telefono">Teléfono</label>
-            <input type="text" id="telefono" name="telefono" [(ngModel)]="telefono"
+            <input
+              type="text"
+              id="telefono"
+              name="telefono"
+              [(ngModel)]="telefono"
               placeholder="Se rellenará si existe">
           </div>
 
           <div class="grupo-campo">
             <label for="horario">Horario</label>
-            <input type="text" id="horario" name="horario" [(ngModel)]="horario" placeholder="Se rellenará si existe">
+            <input
+              type="text"
+              id="horario"
+              name="horario"
+              [(ngModel)]="horario"
+              placeholder="Se rellenará si existe">
           </div>
 
           <div class="grupo-campo">
             <label for="precioMensual">Precio mensual</label>
-            <input type="number" id="precioMensual" name="precioMensual" [(ngModel)]="precioMensual"
+            <input
+              type="number"
+              id="precioMensual"
+              name="precioMensual"
+              [(ngModel)]="precioMensual"
               placeholder="Se rellenará si se encuentra">
           </div>
 
           <div class="grupo-campo">
             <label for="latitud">Latitud</label>
-            <input type="number" id="latitud" name="latitud" [(ngModel)]="latitud" step="any" required>
+            <input
+              type="number"
+              id="latitud"
+              name="latitud"
+              [(ngModel)]="latitud"
+              step="any"
+              required>
           </div>
 
           <div class="grupo-campo">
             <label for="longitud">Longitud</label>
-            <input type="number" id="longitud" name="longitud" [(ngModel)]="longitud" step="any" required>
+            <input
+              type="number"
+              id="longitud"
+              name="longitud"
+              [(ngModel)]="longitud"
+              step="any"
+              required>
           </div>
         </div>
 
         <div class="grupo-campo grupo-campo-completo">
           <label for="descripcion">Descripción</label>
-          <textarea id="descripcion" name="descripcion" rows="4" [(ngModel)]="descripcion"
+          <textarea
+            id="descripcion"
+            name="descripcion"
+            rows="4"
+            [(ngModel)]="descripcion"
             placeholder="También puede completarse automáticamente si hay información útil"></textarea>
         </div>
 
@@ -150,8 +195,7 @@
             <p><strong>Dirección:</strong> {{ centro.direccion }}</p>
             <p><strong>Teléfono:</strong> {{ centro.telefono || 'No disponible' }}</p>
             <p><strong>Horario:</strong> {{ centro.horario || 'No disponible' }}</p>
-            <p><strong>Precio:</strong> {{ centro.precioMensual ?? 'No disponible' }} @if (centro.precioMensual != null)
-              { € }</p>
+            <p><strong>Precio:</strong> {{ centro.precioMensual ?? 'No disponible' }} @if (centro.precioMensual != null) { € }</p>
           </div>
 
           <div class="descripcion-tarjeta">
