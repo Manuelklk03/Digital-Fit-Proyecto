@@ -139,9 +139,20 @@ export class MisCentrosComponent implements OnDestroy {
     this.mostrarFormularioMapa = true;
   }
 
+  private limpiarCamposAutocompletables(): void {
+    this.direccion = '';
+    this.telefono = '';
+    this.horario = '';
+    this.precioMensual = null;
+    this.descripcion = '';
+  }
+
   actualizarUbicacion(evento: { latitud: number, longitud: number }): void {
     this.latitud = evento.latitud;
     this.longitud = evento.longitud;
+
+    this.limpiarCamposAutocompletables();
+
     this.textoAutocompletado = 'Ubicación actualizada. Buscando datos automáticos...';
     this.autocompletando = true;
     this.cdr.detectChanges();
@@ -156,27 +167,16 @@ export class MisCentrosComponent implements OnDestroy {
   }
 
   autocompletarDatosDesdeUbicacion(): void {
+    this.autocompletando = true;
+    this.cdr.detectChanges();
+
     this.misCentrosService.autocompletarDatosCentro(this.latitud, this.longitud).subscribe({
       next: (data: any) => {
-        if (data?.direccion) {
-          this.direccion = data.direccion;
-        }
-
-        if (data?.telefono) {
-          this.telefono = data.telefono;
-        }
-
-        if (data?.horario) {
-          this.horario = data.horario;
-        }
-
-        if (data?.precioMensual != null) {
-          this.precioMensual = data.precioMensual;
-        }
-
-        if (data?.descripcion) {
-          this.descripcion = data.descripcion;
-        }
+        this.direccion = data?.direccion ?? '';
+        this.telefono = data?.telefono ?? '';
+        this.horario = data?.horario ?? '';
+        this.precioMensual = data?.precioMensual ?? null;
+        this.descripcion = data?.descripcion ?? '';
 
         this.latitud = data?.latitud ?? this.latitud;
         this.longitud = data?.longitud ?? this.longitud;
@@ -190,6 +190,9 @@ export class MisCentrosComponent implements OnDestroy {
       },
       error: (err: any) => {
         console.error('ERROR AUTOCOMPLETADO CENTRO:', err);
+
+        this.limpiarCamposAutocompletables();
+
         this.autocompletando = false;
         this.textoAutocompletado = 'No se pudo autocompletar la ubicación. Puedes completar los campos manualmente.';
         this.cdr.detectChanges();

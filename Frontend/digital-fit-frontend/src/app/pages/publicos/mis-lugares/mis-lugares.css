@@ -496,3 +496,19 @@
         padding-top: 90px;
     }
 }
+.texto-ayuda-autocompletado {
+    margin: 14px 0 0 0;
+    padding: 12px 14px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #eef6ff, #f8fbff);
+    border: 1px solid #d7e6f7;
+    color: #41576f;
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+.texto-autocompletando {
+    background: linear-gradient(135deg, #fff4d6, #fff9eb);
+    border-color: #f3d27a;
+    color: #6b4b00;
+}

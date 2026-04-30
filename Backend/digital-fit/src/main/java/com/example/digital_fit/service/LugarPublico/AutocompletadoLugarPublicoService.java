@@ -1,4 +1,4 @@
-package com.example.digital_fit.service.CentroPrivado;
+package com.example.digital_fit.service.LugarPublico;
 
 import java.io.IOException;
 import java.net.URI;
@@ -10,45 +10,44 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.springframework.stereotype.Service;
 
-import com.example.digital_fit.dto.CentroPrivado.AutocompletarCentroPrivadoDTO;
+import com.example.digital_fit.dto.LugarPublico.AutocompletarLugarPublicoDTO;
+import com.example.digital_fit.model.Enums.TipoLugarPublico;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 
 @Service
-public class AutocompletadoCentroPrivadoService {
+public class AutocompletadoLugarPublicoService {
 
     private final HttpClient httpClient = HttpClient.newHttpClient();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public AutocompletarCentroPrivadoDTO autocompletar(Double latitud, Double longitud) {
-        AutocompletarCentroPrivadoDTO dto = new AutocompletarCentroPrivadoDTO();
+    public AutocompletarLugarPublicoDTO autocompletar(Double latitud, Double longitud) {
+        AutocompletarLugarPublicoDTO dto = new AutocompletarLugarPublicoDTO();
         dto.setLatitud(latitud);
         dto.setLongitud(longitud);
         dto.setDireccion("");
+        dto.setDescripcion("");
         dto.setTelefono("");
         dto.setHorario("");
-        dto.setPrecioMensual(null);
-        dto.setDescripcion("");
+        dto.setTipo(null);
         dto.setDatosEncontrados(false);
 
         try {
-            JsonNode lugarDeportivo = buscarLugarDeportivoCercano(latitud, longitud);
+            JsonNode lugarDetectado = buscarLugarDeportivoCercano(latitud, longitud);
 
-            if (lugarDeportivo != null && !lugarDeportivo.isMissingNode()) {
-                Double latPoi = obtenerLat(lugarDeportivo, latitud);
-                Double lonPoi = obtenerLon(lugarDeportivo, longitud);
+            if (lugarDetectado != null && !lugarDetectado.isMissingNode()) {
+                Double latPoi = obtenerLat(lugarDetectado, latitud);
+                Double lonPoi = obtenerLon(lugarDetectado, longitud);
 
                 dto.setLatitud(latPoi);
                 dto.setLongitud(lonPoi);
 
-                JsonNode tags = lugarDeportivo.path("tags");
+                JsonNode tags = lugarDetectado.path("tags");
 
-                String direccionDesdePoi = construirDireccionDesdeTags(tags);
+                String direccion = construirDireccionDesdeTags(tags);
                 String telefono = primerValorNoVacio(
                         tags.path("phone").asString(""),
                         tags.path("contact:phone").asString(""),
@@ -57,13 +56,13 @@ public class AutocompletadoCentroPrivadoService {
                         tags.path("opening_hours").asString(""),
                         tags.path("service_times").asString(""));
                 String horarioTraducido = traducirOpeningHours(horarioOriginal);
-                Double precioMensual = extraerPrecioMensual(tags);
-                String descripcion = construirDescripcionDesdePoi(tags);
+                TipoLugarPublico tipoDetectado = inferirTipo(tags);
+                String descripcion = construirDescripcionDesdePoi(tags, tipoDetectado);
 
-                dto.setDireccion(direccionDesdePoi);
+                dto.setDireccion(direccion);
                 dto.setTelefono(telefono);
                 dto.setHorario(horarioTraducido);
-                dto.setPrecioMensual(precioMensual);
+                dto.setTipo(tipoDetectado);
                 dto.setDescripcion(descripcion);
 
                 completarConReverseSiHaceFalta(dto, latPoi, lonPoi);
@@ -73,10 +72,10 @@ public class AutocompletadoCentroPrivadoService {
 
             dto.setDatosEncontrados(
                     !dto.getDireccion().isBlank()
+                            || !dto.getDescripcion().isBlank()
                             || !dto.getTelefono().isBlank()
                             || !dto.getHorario().isBlank()
-                            || dto.getPrecioMensual() != null
-                            || !dto.getDescripcion().isBlank());
+                            || dto.getTipo() != null);
 
             return dto;
 
@@ -91,17 +90,25 @@ public class AutocompletadoCentroPrivadoService {
         String query = """
                 [out:json][timeout:15];
                 (
-                  nwr(around:80,%f,%f)[leisure=fitness_centre];
-                  nwr(around:80,%f,%f)[leisure=sports_centre];
-                  nwr(around:80,%f,%f)[leisure=sports_hall];
-                  nwr(around:80,%f,%f)[leisure=stadium];
-                  nwr(around:80,%f,%f)[leisure=track];
-                  nwr(around:80,%f,%f)[leisure=pitch];
-                  nwr(around:80,%f,%f)[sport];
-                  nwr(around:80,%f,%f)[amenity=gym];
+                  nwr(around:120,%f,%f)[leisure=pitch];
+                  nwr(around:120,%f,%f)[leisure=track];
+                  nwr(around:120,%f,%f)[leisure=fitness_station];
+                  nwr(around:120,%f,%f)[leisure=park];
+                  nwr(around:120,%f,%f)[leisure=swimming_pool];
+                  nwr(around:120,%f,%f)[highway=cycleway];
+                  nwr(around:120,%f,%f)[highway=path];
+                  nwr(around:120,%f,%f)[highway=footway];
+                  nwr(around:120,%f,%f)[natural=beach];
+                  nwr(around:120,%f,%f)[waterway=river];
+                  nwr(around:120,%f,%f)[waterway=canal];
+                  nwr(around:120,%f,%f)[sport];
                 );
                 out center tags;
                 """.formatted(
+                latitud, longitud,
+                latitud, longitud,
+                latitud, longitud,
+                latitud, longitud,
                 latitud, longitud,
                 latitud, longitud,
                 latitud, longitud,
@@ -115,7 +122,7 @@ public class AutocompletadoCentroPrivadoService {
                 .uri(URI.create("https://overpass-api.de/api/interpreter"))
                 .header("Accept", "application/json")
                 .header("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
-                .header("User-Agent", "Digital-FIT/1.0 (deteccion-centros-deportivos)")
+                .header("User-Agent", "Digital-FIT/1.0 (deteccion-lugares-publicos)")
                 .POST(HttpRequest.BodyPublishers.ofString("data=" + URLEncoder.encode(query, StandardCharsets.UTF_8)))
                 .build();
 
@@ -151,29 +158,35 @@ public class AutocompletadoCentroPrivadoService {
 
     private int calcularPrioridad(JsonNode elemento) {
         JsonNode tags = elemento.path("tags");
+        TipoLugarPublico tipo = inferirTipo(tags);
 
-        String leisure = tags.path("leisure").asString("");
-        String amenity = tags.path("amenity").asString("");
-        String sport = tags.path("sport").asString("");
+        if (tipo == null)
+            return 10;
 
-        if ("fitness_centre".equals(leisure))
-            return 100;
-        if ("sports_centre".equals(leisure))
-            return 95;
-        if ("sports_hall".equals(leisure))
-            return 90;
-        if ("stadium".equals(leisure))
-            return 85;
-        if ("track".equals(leisure))
-            return 80;
-        if ("pitch".equals(leisure))
-            return 75;
-        if ("gym".equals(amenity))
-            return 65;
-        if (!sport.isBlank())
-            return 60;
-
-        return 10;
+        return switch (tipo) {
+            case PISTA_PADEL -> 100;
+            case PISTA_TENIS -> 98;
+            case PISTA_FRONTON -> 95;
+            case PISTA_FUTBOL -> 94;
+            case PISTA_BALONCESTO -> 94;
+            case PISTA_VOLEIBOL -> 94;
+            case CAMPO_RUGBY -> 94;
+            case ZONA_VOLEY_PLAYA -> 92;
+            case PISCINA_PUBLICA -> 90;
+            case PARQUE_CALISTENIA -> 88;
+            case ZONA_BARRAS -> 86;
+            case CIRCUITO_BIOSALUDABLE -> 84;
+            case CARRIL_BICI -> 82;
+            case CIRCUITO_CICLISMO -> 80;
+            case RUTA_RUNNING -> 78;
+            case RUTA_SENDERISMO -> 76;
+            case PLAYA_DEPORTIVA -> 74;
+            case ZONA_REMAR -> 72;
+            case RUTA_FLUVIAL -> 70;
+            case ZONA_MULTIDEPORTE -> 68;
+            case PARQUE_PUBLICO -> 60;
+            case ZONA_MONTAÑA -> 58;
+        };
     }
 
     private double calcularDistancia(double lat1, double lon1, double lat2, double lon2) {
@@ -206,7 +219,7 @@ public class AutocompletadoCentroPrivadoService {
         return valorPorDefecto;
     }
 
-    private void completarConReverseSiHaceFalta(AutocompletarCentroPrivadoDTO dto, Double latitud, Double longitud)
+    private void completarConReverseSiHaceFalta(AutocompletarLugarPublicoDTO dto, Double latitud, Double longitud)
             throws IOException, InterruptedException {
 
         if (!dto.getDireccion().isBlank()) {
@@ -216,7 +229,7 @@ public class AutocompletadoCentroPrivadoService {
         completarConReverse(dto, latitud, longitud);
     }
 
-    private void completarConReverse(AutocompletarCentroPrivadoDTO dto, Double latitud, Double longitud)
+    private void completarConReverse(AutocompletarLugarPublicoDTO dto, Double latitud, Double longitud)
             throws IOException, InterruptedException {
 
         String url = "https://nominatim.openstreetmap.org/reverse?format=jsonv2"
@@ -229,7 +242,7 @@ public class AutocompletadoCentroPrivadoService {
                 .uri(URI.create(url))
                 .header("Accept", "application/json")
                 .header("Accept-Language", "es")
-                .header("User-Agent", "Digital-FIT/1.0 (autocompletado-centros)")
+                .header("User-Agent", "Digital-FIT/1.0 (autocompletado-lugares)")
                 .GET()
                 .build();
 
@@ -260,13 +273,112 @@ public class AutocompletadoCentroPrivadoService {
                     extratags.path("opening_hours:description").asString(""))));
         }
 
-        if (dto.getPrecioMensual() == null) {
-            dto.setPrecioMensual(extraerPrecioMensual(extratags));
-        }
-
         if (dto.getDescripcion().isBlank()) {
             dto.setDescripcion(construirDescripcion(root, address));
         }
+
+        if (dto.getTipo() == null) {
+            dto.setTipo(inferirTipoDesdeReverse(root, address));
+        }
+    }
+
+    private TipoLugarPublico inferirTipo(JsonNode tags) {
+        String sport = tags.path("sport").asString("").toLowerCase();
+        String leisure = tags.path("leisure").asString("").toLowerCase();
+        String highway = tags.path("highway").asString("").toLowerCase();
+        String natural = tags.path("natural").asString("").toLowerCase();
+        String waterway = tags.path("waterway").asString("").toLowerCase();
+        String surface = tags.path("surface").asString("").toLowerCase();
+        String name = tags.path("name").asString("").toLowerCase();
+
+        List<String> deportes = separarValores(sport);
+
+        if (deportes.size() > 1) {
+            if (deportes.contains("beachvolleyball") || deportes.contains("beach_volleyball")) {
+                return TipoLugarPublico.ZONA_VOLEY_PLAYA;
+            }
+            return TipoLugarPublico.ZONA_MULTIDEPORTE;
+        }
+
+        if (natural.equals("beach"))
+            return TipoLugarPublico.PLAYA_DEPORTIVA;
+
+        if (contieneDeporte(deportes, "paddle_tennis", "padel", "paddle"))
+            return TipoLugarPublico.PISTA_PADEL;
+        if (contieneDeporte(deportes, "tennis"))
+            return TipoLugarPublico.PISTA_TENIS;
+        if (contieneDeporte(deportes, "fronton", "pelota", "jai_alai", "basque_pelota"))
+            return TipoLugarPublico.PISTA_FRONTON;
+        if (contieneDeporte(deportes, "soccer", "football", "futsal"))
+            return TipoLugarPublico.PISTA_FUTBOL;
+        if (contieneDeporte(deportes, "basketball"))
+            return TipoLugarPublico.PISTA_BALONCESTO;
+
+        if (contieneDeporte(deportes, "volleyball")) {
+            if (natural.equals("beach") || surface.equals("sand") || name.contains("playa")) {
+                return TipoLugarPublico.ZONA_VOLEY_PLAYA;
+            }
+            return TipoLugarPublico.PISTA_VOLEIBOL;
+        }
+
+        if (contieneDeporte(deportes, "rugby"))
+            return TipoLugarPublico.CAMPO_RUGBY;
+        if (contieneDeporte(deportes, "swimming"))
+            return TipoLugarPublico.PISCINA_PUBLICA;
+        if (contieneDeporte(deportes, "rowing", "canoe", "canoeing", "kayak"))
+            return TipoLugarPublico.ZONA_REMAR;
+        if (contieneDeporte(deportes, "cycling", "bicycle"))
+            return TipoLugarPublico.CIRCUITO_CICLISMO;
+        if (contieneDeporte(deportes, "running", "athletics", "jogging"))
+            return TipoLugarPublico.RUTA_RUNNING;
+        if (contieneDeporte(deportes, "hiking"))
+            return TipoLugarPublico.RUTA_SENDERISMO;
+        if (contieneDeporte(deportes, "fitness", "workout"))
+            return TipoLugarPublico.PARQUE_CALISTENIA;
+
+        if (highway.equals("cycleway"))
+            return TipoLugarPublico.CARRIL_BICI;
+        if (highway.equals("path") || highway.equals("footway"))
+            return TipoLugarPublico.RUTA_SENDERISMO;
+
+        if (waterway.equals("river") || waterway.equals("canal"))
+            return TipoLugarPublico.RUTA_FLUVIAL;
+
+        if (leisure.equals("swimming_pool"))
+            return TipoLugarPublico.PISCINA_PUBLICA;
+        if (leisure.equals("fitness_station")) {
+            if (name.contains("barras"))
+                return TipoLugarPublico.ZONA_BARRAS;
+            return TipoLugarPublico.PARQUE_CALISTENIA;
+        }
+        if (leisure.equals("track"))
+            return TipoLugarPublico.RUTA_RUNNING;
+        if (leisure.equals("pitch"))
+            return TipoLugarPublico.ZONA_MULTIDEPORTE;
+        if (leisure.equals("park"))
+            return TipoLugarPublico.PARQUE_PUBLICO;
+
+        return null;
+    }
+
+    private TipoLugarPublico inferirTipoDesdeReverse(JsonNode root, JsonNode address) {
+        String category = root.path("category").asString("").toLowerCase();
+        String type = root.path("type").asString("").toLowerCase();
+        String display = root.path("display_name").asString("").toLowerCase();
+        String road = address.path("road").asString("").toLowerCase();
+
+        if (type.contains("beach"))
+            return TipoLugarPublico.PLAYA_DEPORTIVA;
+        if (type.contains("park") || category.contains("leisure"))
+            return TipoLugarPublico.PARQUE_PUBLICO;
+        if (display.contains("bici") || road.contains("bici"))
+            return TipoLugarPublico.CARRIL_BICI;
+        if (display.contains("sender") || display.contains("trail"))
+            return TipoLugarPublico.RUTA_SENDERISMO;
+        if (display.contains("río") || display.contains("rio") || category.contains("waterway"))
+            return TipoLugarPublico.RUTA_FLUVIAL;
+
+        return null;
     }
 
     private String construirDireccionDesdeTags(JsonNode tags) {
@@ -355,34 +467,24 @@ public class AutocompletadoCentroPrivadoService {
         return displayName == null ? "" : displayName;
     }
 
-    private String construirDescripcionDesdePoi(JsonNode tags) {
-        String leisure = tags.path("leisure").asString("");
-        String sport = tags.path("sport").asString("");
+    private String construirDescripcionDesdePoi(JsonNode tags, TipoLugarPublico tipo) {
         String name = tags.path("name").asString("");
 
-        String tipo = switch (leisure) {
-            case "fitness_centre" -> "gimnasio";
-            case "sports_centre" -> "centro deportivo";
-            case "sports_hall" -> "pabellón deportivo";
-            case "stadium" -> "estadio";
-            case "track" -> "pista deportiva";
-            case "pitch" -> "instalación deportiva";
-            default -> !sport.isBlank() ? "instalación deportiva" : "";
-        };
-
-        if (!name.isBlank() && !tipo.isBlank()) {
-            return "Lugar deportivo detectado automáticamente: " + tipo + " cercano a " + name + ".";
+        if (tipo == null) {
+            return "";
         }
 
-        if (!tipo.isBlank()) {
-            return "Lugar deportivo detectado automáticamente: " + tipo + ".";
+        String tipoTexto = traducirTipo(tipo);
+
+        if (name != null && !name.isBlank()) {
+            return "Lugar detectado automáticamente: " + tipoTexto + " cercano a " + name + ".";
         }
 
-        return "";
+        return "Lugar detectado automáticamente: " + tipoTexto + ".";
     }
 
     private String construirDescripcion(JsonNode root, JsonNode address) {
-        String tipo = root.path("type").asString("");
+        String type = root.path("type").asString("");
         String city = primerValorNoVacio(
                 address.path("city").asString(""),
                 address.path("town").asString(""),
@@ -390,8 +492,8 @@ public class AutocompletadoCentroPrivadoService {
                 address.path("municipality").asString(""),
                 address.path("suburb").asString(""));
 
-        if (!tipo.isBlank() && !city.isBlank()) {
-            return "Ubicación detectada automáticamente cerca de " + city + " (" + tipo.replace('_', ' ') + ").";
+        if (!type.isBlank() && !city.isBlank()) {
+            return "Ubicación detectada automáticamente cerca de " + city + " (" + type.replace('_', ' ') + ").";
         }
 
         if (!city.isBlank()) {
@@ -401,38 +503,31 @@ public class AutocompletadoCentroPrivadoService {
         return "";
     }
 
-    private Double extraerPrecioMensual(JsonNode tags) {
-        String charge = primerValorNoVacio(
-                tags.path("charge").asString(""),
-                tags.path("charge:conditional").asString(""));
-
-        if (charge.isBlank()) {
-            return null;
-        }
-
-        String chargeLower = charge.toLowerCase();
-
-        boolean pareceMensual = chargeLower.contains("month")
-                || chargeLower.contains("monthly")
-                || chargeLower.contains("mes")
-                || chargeLower.contains("/month")
-                || chargeLower.contains("/mes");
-
-        if (!pareceMensual) {
-            return null;
-        }
-
-        Matcher matcher = Pattern.compile("(\\d+(?:[\\.,]\\d+)?)").matcher(charge);
-
-        if (matcher.find()) {
-            try {
-                return Double.valueOf(matcher.group(1).replace(",", "."));
-            } catch (NumberFormatException e) {
-                return null;
-            }
-        }
-
-        return null;
+    private String traducirTipo(TipoLugarPublico tipo) {
+        return switch (tipo) {
+            case PISTA_PADEL -> "pista de pádel";
+            case PISTA_TENIS -> "pista de tenis";
+            case PISTA_FRONTON -> "pista de frontón";
+            case PISTA_FUTBOL -> "pista de fútbol";
+            case PISTA_BALONCESTO -> "pista de baloncesto";
+            case PISTA_VOLEIBOL -> "pista de voleibol";
+            case CAMPO_RUGBY -> "campo de rugby";
+            case RUTA_RUNNING -> "ruta de running";
+            case CIRCUITO_CICLISMO -> "circuito de ciclismo";
+            case CARRIL_BICI -> "carril bici";
+            case PARQUE_CALISTENIA -> "parque de calistenia";
+            case ZONA_BARRAS -> "zona de barras";
+            case CIRCUITO_BIOSALUDABLE -> "circuito biosaludable";
+            case RUTA_SENDERISMO -> "ruta de senderismo";
+            case ZONA_MONTAÑA -> "zona de montaña";
+            case RUTA_FLUVIAL -> "ruta fluvial";
+            case PLAYA_DEPORTIVA -> "playa deportiva";
+            case ZONA_VOLEY_PLAYA -> "zona de vóley playa";
+            case ZONA_MULTIDEPORTE -> "zona multideporte";
+            case PARQUE_PUBLICO -> "parque público";
+            case PISCINA_PUBLICA -> "piscina pública";
+            case ZONA_REMAR -> "zona para remar";
+        };
     }
 
     private String traducirOpeningHours(String openingHours) {
@@ -442,7 +537,6 @@ public class AutocompletadoCentroPrivadoService {
 
         String texto = openingHours;
 
-        // Días
         texto = texto.replaceAll("\\bMo\\b", "Lun");
         texto = texto.replaceAll("\\bTu\\b", "Mar");
         texto = texto.replaceAll("\\bWe\\b", "Mié");
@@ -451,7 +545,6 @@ public class AutocompletadoCentroPrivadoService {
         texto = texto.replaceAll("\\bSa\\b", "Sáb");
         texto = texto.replaceAll("\\bSu\\b", "Dom");
 
-        // Meses
         texto = texto.replaceAll("\\bJan\\b", "Ene");
         texto = texto.replaceAll("\\bFeb\\b", "Feb");
         texto = texto.replaceAll("\\bMar\\b", "Mar");
@@ -465,13 +558,40 @@ public class AutocompletadoCentroPrivadoService {
         texto = texto.replaceAll("\\bNov\\b", "Nov");
         texto = texto.replaceAll("\\bDec\\b", "Dic");
 
-        // Otros
         texto = texto.replaceAll("\\bPH\\b", "Festivos");
         texto = texto.replaceAll("\\bSH\\b", "Vacaciones escolares");
         texto = texto.replaceAll("\\boff\\b", "cerrado");
         texto = texto.replace("24/7", "24 horas");
 
         return texto;
+    }
+
+    private List<String> separarValores(String texto) {
+        List<String> valores = new ArrayList<>();
+
+        if (texto == null || texto.isBlank()) {
+            return valores;
+        }
+
+        String[] partes = texto.toLowerCase().split("[;,]");
+
+        for (String parte : partes) {
+            String limpia = parte.trim();
+            if (!limpia.isBlank()) {
+                valores.add(limpia);
+            }
+        }
+
+        return valores;
+    }
+
+    private boolean contieneDeporte(List<String> deportes, String... buscados) {
+        for (String buscado : buscados) {
+            if (deportes.contains(buscado.toLowerCase())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private String unirConEspacio(String a, String b) {

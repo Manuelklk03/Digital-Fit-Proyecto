@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.digital_fit.dto.LugarPublico.AutocompletarLugarPublicoDTO;
 import com.example.digital_fit.dto.LugarPublico.CrearLugarPublicoDTO;
 import com.example.digital_fit.dto.LugarPublico.LugarPublicoUsuarioDTO;
 import com.example.digital_fit.model.Enums.TipoLugarPublico;
+import com.example.digital_fit.service.LugarPublico.AutocompletadoLugarPublicoService;
 import com.example.digital_fit.service.LugarPublico.LugarPublicoUsuarioService;
 
 import jakarta.validation.Valid;
@@ -29,17 +31,19 @@ public class LugarPublicoUsuarioRestController {
     @Autowired
     private LugarPublicoUsuarioService lugarPublicoUsuarioService;
 
-    // Listar mis lugares publicos:
+    @Autowired
+    private AutocompletadoLugarPublicoService autocompletadoLugarPublicoService;
+
     @GetMapping
     public ResponseEntity<List<LugarPublicoUsuarioDTO>> listar(Authentication authentication,
-            @RequestParam(required = false) String nombre, @RequestParam(required = false) String direccion,
+            @RequestParam(required = false) String nombre,
+            @RequestParam(required = false) String direccion,
             @RequestParam(required = false) TipoLugarPublico tipo) {
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(lugarPublicoUsuarioService.listarOFiltrar(authentication.getName(), nombre, direccion, tipo));
     }
 
-    // Ver detalles:
     @GetMapping("/{id}")
     public ResponseEntity<LugarPublicoUsuarioDTO> obtenerPorId(@PathVariable Long id, Authentication authentication) {
 
@@ -48,14 +52,13 @@ public class LugarPublicoUsuarioRestController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> borrar(@PathVariable Long id) {
+    public ResponseEntity<Void> borrar(@PathVariable Long id, Authentication authentication) {
 
-        lugarPublicoUsuarioService.borrarLugar(id);
+        lugarPublicoUsuarioService.borrarLugar(id, authentication.getName());
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    // Guardar desde G-MAPS:
     @PostMapping
     public ResponseEntity<LugarPublicoUsuarioDTO> crear(@Valid @RequestBody CrearLugarPublicoDTO dto,
             Authentication authentication) {
@@ -64,12 +67,20 @@ public class LugarPublicoUsuarioRestController {
                 .body(lugarPublicoUsuarioService.guardarDesdeMaps(dto, authentication.getName()));
     }
 
-    // Guardar desde base:
     @PostMapping("/base/{idBase}")
     public ResponseEntity<LugarPublicoUsuarioDTO> crearDesdeBase(@PathVariable Long idBase,
             Authentication authentication) {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(lugarPublicoUsuarioService.guardarDesdeBase(idBase, authentication.getName()));
+    }
+
+    @GetMapping("/autocompletar")
+    public ResponseEntity<AutocompletarLugarPublicoDTO> autocompletarDesdeUbicacion(
+            @RequestParam Double latitud,
+            @RequestParam Double longitud) {
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(autocompletadoLugarPublicoService.autocompletar(latitud, longitud));
     }
 }

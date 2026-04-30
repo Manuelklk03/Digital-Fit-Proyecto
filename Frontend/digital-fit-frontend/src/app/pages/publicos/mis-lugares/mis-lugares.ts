@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { MisLugaresService } from '../../../services/publicos/mis-lugares';
@@ -12,7 +12,7 @@ import { MapaSelectorComponent } from '../../../components/mapa-selector/mapa-se
   templateUrl: './mis-lugares.html',
   styleUrl: './mis-lugares.css'
 })
-export class MisLugaresComponent {
+export class MisLugaresComponent implements OnDestroy {
 
   private misLugaresService = inject(MisLugaresService);
   private cdr = inject(ChangeDetectorRef);
@@ -33,6 +33,10 @@ export class MisLugaresComponent {
 
   mostrarFormularioMapa = false;
 
+  autocompletando = false;
+  textoAutocompletado = 'Selecciona una ubicación en el mapa para rellenar los datos automáticamente.';
+  private autocompletadoTimeout: any;
+
   mostrarPopup = false;
   textoPopup = '';
   tipoPopup: 'exito' | 'error' = 'exito';
@@ -40,6 +44,16 @@ export class MisLugaresComponent {
 
   ngOnInit(): void {
     this.cargarMisLugares();
+  }
+
+  ngOnDestroy(): void {
+    if (this.popupTimeout) {
+      clearTimeout(this.popupTimeout);
+    }
+
+    if (this.autocompletadoTimeout) {
+      clearTimeout(this.autocompletadoTimeout);
+    }
   }
 
   cargarMisLugares(): void {
@@ -113,12 +127,70 @@ export class MisLugaresComponent {
     this.latitud = 39.4699;
     this.longitud = -0.3763;
     this.tipo = 'PARQUE_PUBLICO';
+    this.autocompletando = false;
+    this.textoAutocompletado = 'Selecciona una ubicación en el mapa para rellenar los datos automáticamente.';
     this.mostrarFormularioMapa = true;
+  }
+
+  private limpiarCamposAutocompletables(): void {
+    this.direccion = '';
+    this.descripcion = '';
+    this.telefono = '';
+    this.horario = '';
+    this.tipo = 'PARQUE_PUBLICO';
   }
 
   actualizarUbicacion(evento: { latitud: number, longitud: number }): void {
     this.latitud = evento.latitud;
     this.longitud = evento.longitud;
+
+    this.limpiarCamposAutocompletables();
+
+    this.textoAutocompletado = 'Ubicación actualizada. Buscando datos automáticos...';
+    this.autocompletando = true;
+    this.cdr.detectChanges();
+
+    if (this.autocompletadoTimeout) {
+      clearTimeout(this.autocompletadoTimeout);
+    }
+
+    this.autocompletadoTimeout = setTimeout(() => {
+      this.autocompletarDatosDesdeUbicacion();
+    }, 1200);
+  }
+
+  autocompletarDatosDesdeUbicacion(): void {
+    this.autocompletando = true;
+    this.cdr.detectChanges();
+
+    this.misLugaresService.autocompletarDatosLugar(this.latitud, this.longitud).subscribe({
+      next: (data: any) => {
+        this.direccion = data?.direccion ?? '';
+        this.descripcion = data?.descripcion ?? '';
+        this.telefono = data?.telefono ?? '';
+        this.horario = data?.horario ?? '';
+        this.tipo = data?.tipo ?? 'PARQUE_PUBLICO';
+
+        this.latitud = data?.latitud ?? this.latitud;
+        this.longitud = data?.longitud ?? this.longitud;
+
+        this.autocompletando = false;
+        this.textoAutocompletado = data?.datosEncontrados
+          ? 'Datos rellenados automáticamente. Solo te queda escribir el nombre y revisar el resto.'
+          : 'No se encontraron datos suficientes para esa ubicación. Puedes completar los campos manualmente.';
+
+        this.cdr.detectChanges();
+      },
+      error: (err: any) => {
+        console.error('ERROR AUTOCOMPLETADO LUGAR:', err);
+
+        this.limpiarCamposAutocompletables();
+
+        this.autocompletando = false;
+        this.textoAutocompletado = 'No se pudo autocompletar la ubicación. Puedes completar los campos manualmente.';
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   guardarLugarDesdeMapa(): void {
