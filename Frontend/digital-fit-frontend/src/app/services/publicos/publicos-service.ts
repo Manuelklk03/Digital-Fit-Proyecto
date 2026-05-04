@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 export class PublicosService {
 
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/api/lugares-publicos';
+  private apiUrl = '/api/lugares-publicos';
 
   getLugaresPublicos(): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrl, {

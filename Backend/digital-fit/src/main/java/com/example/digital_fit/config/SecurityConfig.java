@@ -2,6 +2,7 @@ package com.example.digital_fit.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -20,16 +21,23 @@ public class SecurityConfig {
 
         http
                 .cors(cors -> {
-                }) // IMportante
+                })
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/registro").permitAll()
-                        .requestMatchers("/api/auth/login").permitAll()
-                        .requestMatchers("/api/auth/yo").permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
+                        // Todo lo relacionado con login, registro y usuario actual queda permitido
+                        .requestMatchers("/api/auth/**").permitAll()
+
+                        // Panel admin protegido
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
+
+                        // El resto necesita sesión iniciada
                         .anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginProcessingUrl("/api/auth/login")
+                        .usernameParameter("username")
+                        .passwordParameter("password")
                         .successHandler((request, response, authentication) -> {
                             response.setStatus(HttpStatus.OK.value());
                         })
@@ -37,12 +45,10 @@ public class SecurityConfig {
                             response.sendError(HttpStatus.UNAUTHORIZED.value(), "Credenciales incorrectas");
                         })
                         .permitAll())
-
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint((request, response, authException) -> {
                             response.sendError(HttpStatus.UNAUTHORIZED.value(), "No autenticado");
                         }))
-
                 .logout(logout -> logout
                         .logoutUrl("/api/auth/logout")
                         .logoutSuccessHandler((request, response, authentication) -> {

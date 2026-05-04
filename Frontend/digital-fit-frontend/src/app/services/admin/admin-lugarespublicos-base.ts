@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 export class AdminLugaresPublicosBaseService {
 
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/api/admin/lugares-publicos-base';
+  private apiUrl = '/api/admin/lugares-publicos-base';
 
   crearLugarPublicoBase(lugar: any): Observable<any> {
     return this.http.post<any>(this.apiUrl, lugar, {

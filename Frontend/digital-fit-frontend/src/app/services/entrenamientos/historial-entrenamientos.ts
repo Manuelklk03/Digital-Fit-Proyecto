@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 export class HistorialEntrenamientosService {
 
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/api/entrenamientos/mi-historial';
+  private apiUrl = '/api/entrenamientos/mi-historial';
 
   getHistorial(): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrl, {

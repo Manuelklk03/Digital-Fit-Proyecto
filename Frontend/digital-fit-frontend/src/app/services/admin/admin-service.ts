@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 export class AdminService {
 
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/api/admin';
+  private apiUrl = '/api/admin';
 
   crearAdmin(admin: any): Observable<string> {
     return this.http.post(

@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 export class AdminSoporteService {
 
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/api/admin/soporte';
+  private apiUrl = '/api/admin/soporte';
 
   getTicketsAdmin(): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrl, {

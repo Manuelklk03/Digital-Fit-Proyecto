@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 export class AdminCentrosPrivadosBaseService {
 
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/api/admin/centros-privados-base';
+  private apiUrl = '/api/...';
 
   crearCentroPrivadoBase(centro: any): Observable<any> {
     return this.http.post<any>(this.apiUrl, centro, {
