@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 export class AdminEntrenamientosBaseService {
 
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/api/admin/entrenamientos-base';
+  private apiUrl = '/api/admin/entrenamientos-base';
 
   crearEntrenamientoBase(entrenamiento: any): Observable<any> {
     return this.http.post<any>(this.apiUrl, entrenamiento, {
