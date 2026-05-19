@@ -170,6 +170,7 @@ public class EntrenamientoComunidadService {
         return dto;
     }
 
+    @SuppressWarnings("unused")
     private EntrenamientoComunidad dtoToEntity(EntrenamientoComunidadDTO dto) {
         EntrenamientoComunidad entrenamiento = new EntrenamientoComunidad();
 
