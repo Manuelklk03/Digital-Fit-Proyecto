@@ -48,18 +48,18 @@ public class LugarPublicoUsuarioService {
 
         if (nombre != null) {
             lugares = lugarPublicoUsuarioRepository
-                    .findByUsuarioAndNombreContainingIgnoreCase(usuario, nombre);
+                    .findVisiblesByUsuarioAndNombreContainingIgnoreCase(usuario, nombre);
 
         } else if (direccion != null) {
             lugares = lugarPublicoUsuarioRepository
-                    .findByUsuarioAndDireccionContainingIgnoreCase(usuario, direccion);
+                    .findVisiblesByUsuarioAndDireccionContainingIgnoreCase(usuario, direccion);
 
         } else if (tipo != null) {
             lugares = lugarPublicoUsuarioRepository
-                    .findByUsuarioAndTipo(usuario, tipo);
+                    .findVisiblesByUsuarioAndTipo(usuario, tipo);
 
         } else {
-            lugares = lugarPublicoUsuarioRepository.findByUsuario(usuario);
+            lugares = lugarPublicoUsuarioRepository.findVisiblesByUsuario(usuario);
         }
 
         List<LugarPublicoUsuarioDTO> lugaresDTO = new ArrayList<>();
@@ -102,7 +102,10 @@ public class LugarPublicoUsuarioService {
             throw new OperacionNoPermitida("No tienes permiso para borrar este lugar.");
         }
 
-        lugarPublicoUsuarioRepository.delete(lugar);
+        lugar.setActivo(false);
+        lugarPublicoUsuarioRepository.save(lugar);
+
+        log.info("Lugar {} ocultado para usuario {}", id, username);
     }
 
     @Transactional
@@ -117,7 +120,7 @@ public class LugarPublicoUsuarioService {
                 .orElseThrow(
                         () -> new RecursoNoEncontradoException("Lugar base con id: " + lugarId + " No encontrado."));
 
-        if (lugarPublicoUsuarioRepository.findByUsuarioAndNombreIgnoreCase(usuario, lugarBase.getNombre())
+        if (lugarPublicoUsuarioRepository.findVisibleByUsuarioAndNombreIgnoreCase(usuario, lugarBase.getNombre())
                 .isPresent()) {
             throw new OperacionNoPermitida("Ya tienes añadido ese lugar en mis lugares.");
         }
@@ -133,6 +136,7 @@ public class LugarPublicoUsuarioService {
         lugar.setLatitud(lugarBase.getLatitud());
         lugar.setLongitud(lugarBase.getLongitud());
         lugar.setTipo(lugarBase.getTipo());
+        lugar.setActivo(true);
 
         LugarPublicoUsuario lugarGuardado = lugarPublicoUsuarioRepository.save(lugar);
 
@@ -149,7 +153,7 @@ public class LugarPublicoUsuarioService {
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
 
-        if (lugarPublicoUsuarioRepository.findByUsuarioAndNombreIgnoreCase(usuario, dto.getNombre()).isPresent()) {
+        if (lugarPublicoUsuarioRepository.findVisibleByUsuarioAndNombreIgnoreCase(usuario, dto.getNombre()).isPresent()) {
             throw new OperacionNoPermitida("Ya tienes un lugar con ese nombre en mis lugares.");
         }
 
@@ -164,6 +168,7 @@ public class LugarPublicoUsuarioService {
         lugar.setLatitud(dto.getLatitud());
         lugar.setLongitud(dto.getLongitud());
         lugar.setTipo(dto.getTipo());
+        lugar.setActivo(true);
 
         LugarPublicoUsuario lugarGuardado = lugarPublicoUsuarioRepository.save(lugar);
 
