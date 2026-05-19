@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.example.digital_fit.model.Entrenamientos.EntrenamientoUsuario;
@@ -16,16 +18,60 @@ public interface EntrenamientoUsuarioRepository extends JpaRepository<Entrenamie
 
     List<EntrenamientoUsuario> findByUsuarioId(Long usuarioId);
 
-    List<EntrenamientoUsuario> findByUsuario(Usuario usuario);
+    @Query("""
+            SELECT e FROM EntrenamientoUsuario e
+            WHERE e.usuario = :usuario
+            AND (e.activo IS NULL OR e.activo = true)
+            """)
+    List<EntrenamientoUsuario> findVisiblesByUsuario(@Param("usuario") Usuario usuario);
 
-    List<EntrenamientoUsuario> findByUsuarioAndCategoria(Usuario usuario, CategoriaEntrenamientoComunidad categoria);
+    @Query("""
+            SELECT e FROM EntrenamientoUsuario e
+            WHERE e.usuario = :usuario
+            AND e.categoria = :categoria
+            AND (e.activo IS NULL OR e.activo = true)
+            """)
+    List<EntrenamientoUsuario> findVisiblesByUsuarioAndCategoria(
+            @Param("usuario") Usuario usuario,
+            @Param("categoria") CategoriaEntrenamientoComunidad categoria);
 
-    List<EntrenamientoUsuario> findByUsuarioAndNivel(Usuario usuario, NivelEntrenamiento nivel);
+    @Query("""
+            SELECT e FROM EntrenamientoUsuario e
+            WHERE e.usuario = :usuario
+            AND e.nivel = :nivel
+            AND (e.activo IS NULL OR e.activo = true)
+            """)
+    List<EntrenamientoUsuario> findVisiblesByUsuarioAndNivel(
+            @Param("usuario") Usuario usuario,
+            @Param("nivel") NivelEntrenamiento nivel);
 
-    List<EntrenamientoUsuario> findByUsuarioAndDuracionEnMinutosLessThanEqual(Usuario usuario,
-            Integer duracionEnMinutos);
+    @Query("""
+            SELECT e FROM EntrenamientoUsuario e
+            WHERE e.usuario = :usuario
+            AND e.duracionEnMinutos <= :duracionEnMinutos
+            AND (e.activo IS NULL OR e.activo = true)
+            """)
+    List<EntrenamientoUsuario> findVisiblesByUsuarioAndDuracionEnMinutosLessThanEqual(
+            @Param("usuario") Usuario usuario,
+            @Param("duracionEnMinutos") Integer duracionEnMinutos);
 
-    List<EntrenamientoUsuario> findByUsuarioAndNombreContainingIgnoreCase(Usuario usuario, String nombre);
+    @Query("""
+            SELECT e FROM EntrenamientoUsuario e
+            WHERE e.usuario = :usuario
+            AND LOWER(e.nombre) LIKE LOWER(CONCAT('%', :nombre, '%'))
+            AND (e.activo IS NULL OR e.activo = true)
+            """)
+    List<EntrenamientoUsuario> findVisiblesByUsuarioAndNombreContainingIgnoreCase(
+            @Param("usuario") Usuario usuario,
+            @Param("nombre") String nombre);
 
-    Optional<EntrenamientoUsuario> findByUsuarioAndNombreIgnoreCase(Usuario usuario, String nombre);
+    @Query("""
+            SELECT e FROM EntrenamientoUsuario e
+            WHERE e.usuario = :usuario
+            AND LOWER(e.nombre) = LOWER(:nombre)
+            AND (e.activo IS NULL OR e.activo = true)
+            """)
+    Optional<EntrenamientoUsuario> findVisibleByUsuarioAndNombreIgnoreCase(
+            @Param("usuario") Usuario usuario,
+            @Param("nombre") String nombre);
 }
