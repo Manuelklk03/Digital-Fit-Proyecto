@@ -49,6 +49,8 @@ public class LugarPublicoUsuario {
     @Enumerated(EnumType.STRING)
     private TipoLugarPublico tipo;
 
+    private Boolean activo = true;
+
     // Relacion:
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)

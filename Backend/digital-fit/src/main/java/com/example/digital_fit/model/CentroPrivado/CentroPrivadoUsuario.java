@@ -46,6 +46,8 @@ public class CentroPrivadoUsuario {
 
     private Double longitud;
 
+    private Boolean activo = true;
+
     // Relación con usuario:
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
