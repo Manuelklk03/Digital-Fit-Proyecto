@@ -45,6 +45,8 @@ public class EntrenamientoUsuario {
 
     private Integer duracionEnMinutos;
 
+    private Boolean activo = true;
+
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;

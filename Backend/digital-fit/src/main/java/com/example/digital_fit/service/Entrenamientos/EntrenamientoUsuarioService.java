@@ -56,17 +56,17 @@ public class EntrenamientoUsuarioService {
         List<EntrenamientoUsuario> entrenamientos = new ArrayList<>();
 
         if (categoria != null) {
-            entrenamientos = entrenamientoUsuarioRepository.findByUsuarioAndCategoria(usuario, categoria);
+            entrenamientos = entrenamientoUsuarioRepository.findVisiblesByUsuarioAndCategoria(usuario, categoria);
         } else if (nivel != null) {
-            entrenamientos = entrenamientoUsuarioRepository.findByUsuarioAndNivel(usuario, nivel);
+            entrenamientos = entrenamientoUsuarioRepository.findVisiblesByUsuarioAndNivel(usuario, nivel);
         } else if (duracionEnMinutos != null) {
-            entrenamientos = entrenamientoUsuarioRepository.findByUsuarioAndDuracionEnMinutosLessThanEqual(
+            entrenamientos = entrenamientoUsuarioRepository.findVisiblesByUsuarioAndDuracionEnMinutosLessThanEqual(
                     usuario,
                     duracionEnMinutos);
         } else if (nombre != null) {
-            entrenamientos = entrenamientoUsuarioRepository.findByUsuarioAndNombreContainingIgnoreCase(usuario, nombre);
+            entrenamientos = entrenamientoUsuarioRepository.findVisiblesByUsuarioAndNombreContainingIgnoreCase(usuario, nombre);
         } else {
-            entrenamientos = entrenamientoUsuarioRepository.findByUsuario(usuario);
+            entrenamientos = entrenamientoUsuarioRepository.findVisiblesByUsuario(usuario);
         }
 
         List<EntrenamientoUsuarioDTO> entrenamientoDTOs = new ArrayList<>();
@@ -86,7 +86,7 @@ public class EntrenamientoUsuarioService {
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
 
-        if (entrenamientoUsuarioRepository.findByUsuarioAndNombreIgnoreCase(usuario, dto.getNombre()).isPresent()) {
+        if (entrenamientoUsuarioRepository.findVisibleByUsuarioAndNombreIgnoreCase(usuario, dto.getNombre()).isPresent()) {
             throw new OperacionNoPermitida("Ya tienes un entrenamiento con ese nombre.");
         }
 
@@ -96,6 +96,7 @@ public class EntrenamientoUsuarioService {
         entrenamientoUsuario.setCategoria(dto.getCategoria());
         entrenamientoUsuario.setNivel(dto.getNivel());
         entrenamientoUsuario.setDuracionEnMinutos(dto.getDuracionEnMinutos());
+        entrenamientoUsuario.setActivo(true);
         entrenamientoUsuario.setUsuario(usuario);
 
         EntrenamientoUsuario entrenamientoUsuarioGuardado = entrenamientoUsuarioRepository.save(entrenamientoUsuario);
@@ -116,7 +117,7 @@ public class EntrenamientoUsuarioService {
         EntrenamientoBase entrenamientoBase = entrenamientoBaseRepository.findById(idBase)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Entrenamiento base no encontrado"));
 
-        if (entrenamientoUsuarioRepository.findByUsuarioAndNombreIgnoreCase(usuario, entrenamientoBase.getNombre())
+        if (entrenamientoUsuarioRepository.findVisibleByUsuarioAndNombreIgnoreCase(usuario, entrenamientoBase.getNombre())
                 .isPresent()) {
             throw new OperacionNoPermitida("Ya tienes añadido ese entrenamiento en mis entrenamientos.");
         }
@@ -127,6 +128,7 @@ public class EntrenamientoUsuarioService {
         entrenamientoUsuario.setCategoria(entrenamientoBase.getCategoria());
         entrenamientoUsuario.setNivel(entrenamientoBase.getNivel());
         entrenamientoUsuario.setDuracionEnMinutos(entrenamientoBase.getDuracionEnMinutos());
+        entrenamientoUsuario.setActivo(true);
         entrenamientoUsuario.setUsuario(usuario);
 
         EntrenamientoUsuario entrenamientoUsuarioGuardado = entrenamientoUsuarioRepository.save(entrenamientoUsuario);
@@ -147,7 +149,7 @@ public class EntrenamientoUsuarioService {
         EntrenamientoComunidad entrenamientoComunidad = entrenamientoComunidadRepository.findById(idComunidad)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Entrenamiento comunidad no encontrado"));
 
-        if (entrenamientoUsuarioRepository.findByUsuarioAndNombreIgnoreCase(usuario, entrenamientoComunidad.getNombre())
+        if (entrenamientoUsuarioRepository.findVisibleByUsuarioAndNombreIgnoreCase(usuario, entrenamientoComunidad.getNombre())
                 .isPresent()) {
             throw new OperacionNoPermitida("Ya tienes añadido ese entrenamiento en mis entrenamientos.");
         }
@@ -158,6 +160,7 @@ public class EntrenamientoUsuarioService {
         entrenamientoUsuario.setCategoria(entrenamientoComunidad.getCategoria());
         entrenamientoUsuario.setNivel(entrenamientoComunidad.getNivel());
         entrenamientoUsuario.setDuracionEnMinutos(entrenamientoComunidad.getDuracionEnMinutos());
+        entrenamientoUsuario.setActivo(true);
         entrenamientoUsuario.setUsuario(usuario);
 
         EntrenamientoUsuario entrenamientoUsuarioGuardado = entrenamientoUsuarioRepository.save(entrenamientoUsuario);
@@ -182,9 +185,10 @@ public class EntrenamientoUsuarioService {
             throw new OperacionNoPermitida("No tienes permiso para borrar este entrenamiento");
         }
 
-        entrenamientoUsuarioRepository.delete(entrenamientoUsuario);
+        entrenamientoUsuario.setActivo(false);
+        entrenamientoUsuarioRepository.save(entrenamientoUsuario);
 
-        log.info("Entrenamiento {} borrado para usuario {}", id, username);
+        log.info("Entrenamiento {} ocultado para usuario {}", id, username);
     }
 
     public EntrenamientoUsuarioDTO detalle(Long id, String username) {
