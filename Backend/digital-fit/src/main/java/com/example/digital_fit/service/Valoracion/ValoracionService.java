@@ -327,6 +327,7 @@ public class ValoracionService {
         return dto;
     }
 
+    @SuppressWarnings("unused")
     private Valoracion dtoToEntity(ValoracionDTO dto) {
         Valoracion valoracion = new Valoracion();
         valoracion.setId(dto.getId());

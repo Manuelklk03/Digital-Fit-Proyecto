@@ -46,6 +46,7 @@ public class CentroPrivadoUsuario {
 
     private Double longitud;
 
+    @Builder.Default
     private Boolean activo = true;
 
     // Relación con usuario:
