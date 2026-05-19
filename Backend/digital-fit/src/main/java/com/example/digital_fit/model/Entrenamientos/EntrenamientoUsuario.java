@@ -45,6 +45,7 @@ public class EntrenamientoUsuario {
 
     private Integer duracionEnMinutos;
 
+    @Builder.Default
     private Boolean activo = true;
 
     @ManyToOne
