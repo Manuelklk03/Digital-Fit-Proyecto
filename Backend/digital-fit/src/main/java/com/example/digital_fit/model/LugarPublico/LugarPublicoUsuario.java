@@ -49,6 +49,7 @@ public class LugarPublicoUsuario {
     @Enumerated(EnumType.STRING)
     private TipoLugarPublico tipo;
 
+    @Builder.Default
     private Boolean activo = true;
 
     // Relacion:
