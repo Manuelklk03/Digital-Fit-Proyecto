@@ -311,3 +311,162 @@ Si preguntan "donde esta...":
 - Permiso frontend: `guards`.
 - Permiso backend: `SecurityConfig`.
 
+## Flujos Concretos Para Defender
+
+### Flujo 1: Registro
+
+```text
+register.html/register.ts
+-> auth-service.ts
+-> POST /api/auth/registro
+-> AuthController.registrar
+-> AuthService.registrar
+-> UsuarioRepository
+-> usuarios
+```
+
+Puntos que decir:
+
+- Se valida con `UsuarioDTO`.
+- Se comprueba username/email duplicado.
+- Se cifra password con BCrypt.
+- Se guarda con rol `USER`.
+
+### Flujo 2: Login
+
+```text
+login.html/login.ts
+-> auth-service.ts
+-> POST /api/auth/login
+-> SecurityConfig.formLogin
+-> CustomUserDetailsService
+-> UsuarioRepository
+-> sesion Spring Security
+```
+
+Puntos que decir:
+
+- Login lo procesa Spring Security.
+- El usuario puede entrar con username o email.
+- La cookie de sesion se manda luego con `withCredentials`.
+
+### Flujo 3: Copiar Entrenamiento Base a Mis Entrenamientos
+
+```text
+entrenamientos page
+-> entrenamientos-service.ts
+-> mis-entrenamientos-service.ts
+-> POST /api/mis-entrenamientos/desde-base/{idBase}
+-> EntrenamientoUsuarioRestController
+-> EntrenamientoUsuarioService.anadirDesdeBase
+-> EntrenamientoBaseRepository
+-> EntrenamientoUsuarioRepository
+-> entrenamientos_usuario
+```
+
+No se modifica el entrenamiento base. Se crea una copia asociada al usuario.
+
+### Flujo 4: Guardar Lugar o Centro Desde Mapa
+
+```text
+mapa-selector
+-> service de mis centros/mis lugares
+-> controller usuario
+-> service usuario
+-> repository
+-> tabla *_usuario
+```
+
+Leaflet ayuda a seleccionar coordenadas y backend guarda datos asociados al usuario autenticado.
+
+### Flujo 5: Registrar Historial
+
+```text
+historial-entrenamientos page
+-> historial-entrenamientos.ts service
+-> POST /api/entrenamientos/mi-historial
+-> HistorialEntrenamientosRestController
+-> HistorialEntrenamientosService.crearHistorialEntrenamiento
+-> repositories de entrenamiento/ubicacion
+-> historial_entrenamientos
+```
+
+Validaciones:
+
+- Debe haber un entrenamiento.
+- Solo un entrenamiento: base o usuario.
+- Como maximo una ubicacion.
+- Si el recurso es privado, se comprueba que sea del usuario.
+
+### Flujo 6: Ver Estadisticas
+
+```text
+estadisticas page
+-> estadisticas-service.ts
+-> GET /api/estadisticas
+-> EstadisticasRestController
+-> EstadisticasService
+-> EstadisticasRepository
+-> historial_entrenamientos
+```
+
+Todo sale del historial: contar, sumar, promediar y agrupar.
+
+### Flujo 7: Crear Valoracion
+
+```text
+valoraciones-service.ts
+-> POST /api/valoraciones/{tipoContenido}/{idContenido}
+-> ValoracionRestController
+-> ValoracionService.crearOActualizar
+-> validarContenidoExisteYPermisos
+-> ValoracionRepository
+-> valoraciones
+```
+
+Si ya existe valoracion del mismo usuario para ese contenido, se actualiza.
+
+### Flujo 8: Soporte Usuario y Admin
+
+Usuario:
+
+```text
+soporte page -> soporte.ts -> /api/soporte -> SoporteRestController -> SoporteService
+```
+
+Admin:
+
+```text
+admin/soporte page -> admin-soporte-service.ts -> /api/admin/soporte -> SoporteAdminRestController
+```
+
+Usuario abre tickets y admin puede revisar/cambiar estado.
+
+## Que Abrir en VS Code si te Preguntan
+
+```text
+Seguridad:
+  Backend/.../config/SecurityConfig.java
+
+Usuario:
+  Backend/.../model/Auth/Usuario.java
+  Backend/.../service/Auth/AuthService.java
+
+Rutas frontend:
+  Frontend/.../src/app/app.routes.ts
+
+Historial:
+  Backend/.../model/Entrenamientos/HistorialEntrenamientos.java
+  Backend/.../service/Entrenamientos/HistorialEntrenamientosService.java
+
+Valoraciones:
+  Backend/.../model/Valoracion/Valoracion.java
+  Backend/.../service/Valoracion/ValoracionService.java
+
+Estadisticas:
+  Backend/.../repository/Estadisticas/EstadisticasRepository.java
+```
+
+## Explicacion de Carpetas en 20 Segundos
+
+> El backend esta dividido en `model`, `controller`, `service`, `repository`, `dto` y `config`. El frontend esta dividido en `pages`, `services`, `guards` y `components`. Asi puedo encontrar rapido si algo es pantalla, llamada HTTP, endpoint, logica o entidad.

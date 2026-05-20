@@ -378,3 +378,149 @@ Si preguntan por IA:
 
 > No recuerdo el nombre exacto ahora mismo, pero por arquitectura estaria en el modulo correspondiente: controller para endpoint, service para logica, repository para BD y model para entidad. Lo buscaria en esa carpeta y podria seguir el flujo desde ahi.
 
+## Preguntas Teoricas DAW Probables
+
+### Que es una SPA?
+
+Una SPA, Single Page Application, es una aplicacion web donde se carga una pagina principal y despues Angular cambia las vistas sin recargar toda la web. En mi proyecto Angular gestiona las rutas en `app.routes.ts`.
+
+### Que diferencia hay entre frontend y backend?
+
+Frontend es la parte visual que usa el usuario: Angular, componentes, rutas y servicios HTTP. Backend es la API: Spring Boot, seguridad, logica de negocio, entidades y acceso a MySQL.
+
+### Que es MVC o arquitectura por capas?
+
+Es una forma de separar responsabilidades. En mi proyecto no es MVC clasico de vistas del servidor, porque la vista esta en Angular, pero si hay capas claras:
+
+- Controller: entrada HTTP.
+- Service: logica.
+- Repository: datos.
+- Model: entidades.
+
+### Que es un DTO?
+
+Un DTO es un objeto para transportar datos entre frontend y backend. Sirve para no exponer directamente entidades y para validar datos de entrada. Ejemplo: `UsuarioDTO`, `CrearValoracionDTO`, `CrearEntrenamientoUsuario`.
+
+### Que es ORM?
+
+ORM significa Object Relational Mapping. JPA/Hibernate convierte clases Java en tablas y objetos Java en registros de base de datos. Por ejemplo, `Usuario.java` se corresponde con `usuarios`.
+
+### Que es JPA?
+
+JPA es la especificacion de Java para persistencia. En el proyecto se usa con Spring Data JPA, que permite crear repositories y consultar entidades sin escribir todo el SQL manual.
+
+### Que es una clave primaria?
+
+Es el identificador unico de una fila. En las entidades suele ser `id` con `@Id` y `@GeneratedValue`.
+
+### Que es una clave foranea?
+
+Es un campo que apunta a la clave primaria de otra tabla. Ejemplo: `usuario_id` en `entrenamientos_usuario` apunta a `usuarios.id`.
+
+### Que es una relacion 1:N?
+
+Un registro de una tabla puede tener muchos registros asociados en otra. Ejemplo: un usuario puede tener muchos entrenamientos personales.
+
+### Que es `@ManyToOne`?
+
+En JPA significa que muchos registros de esta entidad apuntan a uno de otra entidad. Ejemplo: muchos `EntrenamientoUsuario` pertenecen a un `Usuario`.
+
+### Que es `@OneToMany`?
+
+Significa que un registro tiene una lista de otros registros. Ejemplo: `Soporte` tiene una lista de `MensajeSoporte`.
+
+### Que es CRUD?
+
+CRUD son las operaciones basicas: crear, leer, actualizar y eliminar. En el proyecto aparece en entrenamientos, lugares, centros, soporte y admin.
+
+### Que diferencia hay entre PUT y PATCH?
+
+`PUT` suele actualizar un recurso completo. `PATCH` actualiza solo una parte. En soporte admin se usa `PATCH` para cambiar el estado de un ticket.
+
+### Que es CORS?
+
+CORS controla si una web puede llamar a una API desde otro origen. En local Angular puede estar en `localhost:4200` y Spring Boot en otro puerto, por eso se configura `CorsConfig.java`.
+
+## Seguridad Web Normal que Pueden Preguntar
+
+### Puede alguien saltarse un guard de Angular?
+
+Si. Un guard solo protege la navegacion del frontend. Por eso el backend tambien protege endpoints. Si alguien llama manualmente a `/api/admin/...`, Spring Security comprueba el rol.
+
+### Que es XSS?
+
+Cross-Site Scripting: inyectar JavaScript malicioso en una pagina. Angular reduce el riesgo porque escapa contenido por defecto, pero igualmente hay que evitar pintar HTML no confiable.
+
+### Que es CSRF?
+
+Cross-Site Request Forgery: hacer que un usuario autenticado envie una peticion sin querer. En el proyecto CSRF esta desactivado para facilitar la API con Angular, pero en produccion habria que revisarlo y proteger mejor operaciones sensibles.
+
+### Puede haber inyeccion SQL?
+
+El riesgo baja porque se usa JPA y repositories, no concatenacion manual de SQL con strings de usuario. Aun asi, las entradas se validan y en consultas nativas se deben usar parametros.
+
+### Que pasa si alguien cambia el id en la URL?
+
+El backend debe comprobar propiedad del recurso. Por ejemplo, si intentas ver un historial que no es tuyo, el service compara el usuario del historial con el usuario autenticado y lanza `OperacionNoPermitida`.
+
+### Que informacion sensible no deberia estar en frontend?
+
+Passwords, secretos, claves privadas o reglas de seguridad reales. El frontend puede tener rutas y llamadas, pero las decisiones de permiso deben estar en backend.
+
+## Preguntas Sobre Codigo Con Respuesta Corta
+
+### Donde esta el endpoint de registro?
+
+En `AuthController.java`, metodo `registrar`, bajo `/api/auth/registro`.
+
+### Donde esta el login?
+
+No esta como metodo normal del controller. Lo procesa Spring Security con `loginProcessingUrl("/api/auth/login")` en `SecurityConfig.java`.
+
+### Donde se obtiene el usuario actual?
+
+En controllers se usa `Authentication authentication`. Con `authentication.getName()` se obtiene el username.
+
+### Donde se crean admins?
+
+En `AdminRestController.java`, endpoint `/api/admin/crear-admin`, y la logica en `AuthService.registrarAdmin`.
+
+### Donde se controlan errores?
+
+En `GlobalExceptionHandler.java`.
+
+### Donde se cargan datos iniciales?
+
+En `data.sql`.
+
+### Donde se definen enums?
+
+En `model/Enums`: roles, estados de soporte, tipos de valoracion, categorias, niveles y tipos de lugar publico.
+
+### Donde esta la configuracion de MySQL?
+
+En `application.properties` y tambien en `docker-compose.yml` para Docker.
+
+## Calidad y Mejoras
+
+### Que pruebas has hecho?
+
+He hecho pruebas manuales de los flujos principales: registro, login, navegacion, CRUD, mapa, historial, valoraciones, estadisticas, soporte y admin. Hay archivos `.spec.ts` en Angular y una prueba base en Spring Boot, aunque una mejora seria ampliar tests automaticos.
+
+### Que mejorarias antes de produccion?
+
+- Activar y configurar CSRF correctamente si se mantiene sesion por cookies.
+- Usar variables de entorno para secretos.
+- Usar Flyway/Liquibase para migraciones.
+- Anadir Swagger/OpenAPI.
+- Anadir tests de integracion.
+- Revisar logs y errores.
+- Desplegar con HTTPS.
+
+### Que parte tiene mas complejidad?
+
+Historial y valoraciones. Historial conecta usuario, entrenamiento y ubicacion con varias opciones. Valoraciones puede apuntar a muchos tipos de contenido mediante `tipo_valoracion + id_relacionado`.
+
+### Como sabes que tu BD tiene sentido?
+
+Porque cada tabla representa una responsabilidad clara. No guardo listas dentro de usuarios; uso relaciones. Distingo catalogo base de datos personales. Historial guarda hechos reales y estadisticas se calculan desde ahi.

@@ -433,3 +433,173 @@ No necesariamente. Es flexible, pero tiene una desventaja: la integridad depende
 
 `historial_entrenamientos`.
 
+## Ejemplos de la Demo: Que Tablas se Tocan
+
+### Usuario se registra
+
+```text
+usuarios
+```
+
+Se crea una fila con username, email, password cifrada y rol `USER`.
+
+### Usuario copia un entrenamiento base
+
+```text
+lee: entrenamientos_base
+crea: entrenamientos_usuario
+relaciona con: usuarios
+```
+
+No cambia el catalogo. Crea una copia privada.
+
+### Usuario guarda un centro base
+
+```text
+lee: centros_privados_base
+crea: centros_privados_usuario
+relaciona con: usuarios
+```
+
+### Usuario guarda un lugar desde mapa
+
+```text
+crea: lugares_publicos_usuario
+relaciona con: usuarios
+guarda: latitud, longitud
+```
+
+### Usuario registra entrenamiento realizado
+
+```text
+crea: historial_entrenamientos
+relaciona con:
+  usuarios
+  entrenamientos_base O entrenamientos_usuario
+  ubicacion opcional
+```
+
+### Usuario crea valoracion
+
+```text
+crea/actualiza: valoraciones
+relaciona fisicamente con: usuarios
+relaciona logicamente con: tipo_valoracion + id_relacionado
+```
+
+### Usuario abre soporte
+
+```text
+crea: soporte
+puede crear: mensajes_soporte
+relaciona con: usuarios
+```
+
+## Como Leer Anotaciones JPA
+
+### `@Entity`
+
+Indica que una clase Java representa una tabla.
+
+### `@Id`
+
+Marca la clave primaria.
+
+### `@GeneratedValue`
+
+Indica que el id se genera automaticamente.
+
+### `@Column`
+
+Configura una columna. Si pone `unique = true`, ese campo no puede repetirse. Si pone `nullable = false`, es obligatorio.
+
+### `@Enumerated(EnumType.STRING)`
+
+Guarda un enum como texto, por ejemplo `USER`, `ADMIN`, `ABIERTO` o `CERRADO`.
+
+### `@ManyToOne`
+
+Muchos registros apuntan a uno.
+
+Ejemplo:
+
+```text
+muchos entrenamientos_usuario -> un usuario
+```
+
+### `@OneToMany`
+
+Un registro tiene muchos.
+
+Ejemplo:
+
+```text
+un ticket soporte -> muchos mensajes_soporte
+```
+
+### `@JoinColumn`
+
+Dice que columna guarda la FK.
+
+Ejemplo:
+
+```java
+@JoinColumn(name = "usuario_id")
+private Usuario usuario;
+```
+
+Significa que la tabla tiene una columna `usuario_id` que apunta a `usuarios.id`.
+
+## Cardinalidades en Lenguaje Humano
+
+```text
+1:1  = uno con uno
+1:N  = uno con muchos
+N:M  = muchos con muchos
+```
+
+En tu proyecto predomina `1:N`:
+
+- Un usuario tiene muchos tickets.
+- Un usuario tiene muchos entrenamientos personales.
+- Un ticket tiene muchos mensajes.
+- Un entrenamiento puede aparecer en muchos historiales.
+
+## Por Que No Hay Muchas Relaciones N:M
+
+En vez de una relacion N:M entre usuarios y entrenamientos base, cuando un usuario guarda uno se crea una copia en `entrenamientos_usuario`. Asi el usuario puede personalizarla sin modificar el original.
+
+Frase:
+
+> Evite relaciones N:M complejas copiando contenido base a tablas de usuario cuando el usuario lo guarda o personaliza.
+
+## Borrado Logico
+
+Algunas tablas tienen `activo`.
+
+```text
+activo = true  -> visible
+activo = false -> oculto, pero sigue en BD
+```
+
+Se usa en:
+
+- `entrenamientos_usuario`
+- `centros_privados_usuario`
+- `lugares_publicos_usuario`
+
+Por que:
+
+> Si borrara fisicamente un entrenamiento que aparece en historial, podria romper referencias. Con borrado logico lo oculto al usuario, pero se conserva para registros antiguos.
+
+## Como Defender el Diagrama en 45 Segundos
+
+> La base gira alrededor de usuarios. Hay catalogos base para informacion comun y tablas usuario para informacion personalizada. El historial es la tabla de hechos: guarda que usuario hizo que entrenamiento, cuando, cuanto tiempo y opcionalmente donde. Las estadisticas se calculan desde ese historial. Valoraciones es especial porque una unica tabla puede valorar varios contenidos usando `tipo_valoracion` e `id_relacionado`. Soporte se divide en tickets y mensajes.
+
+## Fallos que No Debes Cometer al Explicar BD
+
+- No digas que el frontend guarda directamente en la BD; siempre pasa por backend.
+- No digas que los guards son seguridad suficiente; backend valida.
+- No digas que valoraciones tiene FK real a todas las tablas; es relacion logica.
+- No digas que estadisticas se guardan en una tabla; se calculan desde historial.
+- No digas que borrar siempre elimina fisicamente; hay borrado logico en datos de usuario.
