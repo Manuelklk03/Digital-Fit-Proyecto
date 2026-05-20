@@ -1,0 +1,211 @@
+@startuml Digital_Fit_ER_Diagram
+!define PRIMARYKEY(x) <color:FF0000><b>PK: x</b></color>
+!define FOREIGNKEY(x) <color:0066FF><b>FK: x</b></color>
+!define UNIQUE(x) <u>x</u>
+
+skinparam backgroundColor #FEFEFE
+skinparam linetype ortho
+
+entity "🔐 USUARIOS" as usuarios {
+    PRIMARYKEY(id) : BIGINT
+    username : VARCHAR(255) UNIQUE NOT NULL
+    email : VARCHAR(255) UNIQUE NOT NULL
+    password : VARCHAR(255) NOT NULL [BCrypt cifrada]
+    rol : ENUM ['USER', 'ADMIN']
+    fecha_registro : TIMESTAMP
+}
+
+entity "📋 ENTRENAMIENTOS_BASE" as ent_base {
+    PRIMARYKEY(id) : BIGINT
+    nombre : VARCHAR(255) UNIQUE NOT NULL
+    descripcion : TEXT
+    categoria : ENUM [FUERZA_TOTAL, RUNNING, HIIT, ...]
+    nivel : ENUM [PRINCIPIANTE, INTERMEDIO, AVANZADO, EXPERTO]
+    duracion_en_minutos : INT
+}
+
+entity "📝 ENTRENAMIENTOS_USUARIO" as ent_usuario {
+    PRIMARYKEY(id) : BIGINT
+    nombre : VARCHAR(255) NOT NULL
+    descripcion : TEXT
+    categoria : ENUM
+    nivel : ENUM
+    duracion_en_minutos : INT
+    activo : BOOLEAN [borrado lógico]
+    FOREIGNKEY(usuario_id) : BIGINT
+    fecha_creacion : TIMESTAMP
+}
+
+entity "👥 ENTRENAMIENTOS_COMUNIDAD" as ent_comunidad {
+    PRIMARYKEY(id) : BIGINT
+    nombre : VARCHAR(255) NOT NULL
+    descripcion : TEXT
+    categoria : ENUM
+    nivel : ENUM
+    duracion_en_minutos : INT
+    fecha_publicacion : TIMESTAMP
+    FOREIGNKEY(usuario_id) : BIGINT [autor]
+}
+
+entity "🏋️ CENTROS_PRIVADOS_BASE" as centro_base {
+    PRIMARYKEY(id) : BIGINT
+    nombre : VARCHAR(255) UNIQUE NOT NULL
+    direccion : VARCHAR(255)
+    telefono : VARCHAR(20)
+    horario : VARCHAR(255)
+    precio_mensual : DECIMAL(10,2)
+    descripcion : TEXT
+    latitud : DOUBLE
+    longitud : DOUBLE
+}
+
+entity "⭐ CENTROS_PRIVADOS_USUARIO" as centro_usuario {
+    PRIMARYKEY(id) : BIGINT
+    nombre : VARCHAR(255)
+    direccion : VARCHAR(255)
+    telefono : VARCHAR(20)
+    horario : VARCHAR(255)
+    precio_mensual : DECIMAL(10,2)
+    descripcion : TEXT
+    latitud : DOUBLE
+    longitud : DOUBLE
+    activo : BOOLEAN [borrado lógico]
+    FOREIGNKEY(usuario_id) : BIGINT
+}
+
+entity "🏞️ LUGARES_PUBLICOS_BASE" as lugar_base {
+    PRIMARYKEY(id) : BIGINT
+    nombre : VARCHAR(255) UNIQUE NOT NULL
+    direccion : VARCHAR(255)
+    descripcion : TEXT
+    telefono : VARCHAR(20)
+    horario : VARCHAR(255)
+    latitud : DOUBLE
+    longitud : DOUBLE
+    tipo : ENUM [PARQUE_PUBLICO, PLAYA_DEPORTIVA]
+}
+
+entity "📍 LUGARES_PUBLICOS_USUARIO" as lugar_usuario {
+    PRIMARYKEY(id) : BIGINT
+    nombre : VARCHAR(255) NOT NULL
+    direccion : VARCHAR(255)
+    descripcion : TEXT
+    telefono : VARCHAR(20)
+    horario : VARCHAR(255)
+    latitud : DOUBLE
+    longitud : DOUBLE
+    tipo : ENUM
+    activo : BOOLEAN [borrado lógico]
+    FOREIGNKEY(usuario_id) : BIGINT
+}
+
+entity "📊 HISTORIAL_ENTRENAMIENTOS" as historial {
+    PRIMARYKEY(id) : BIGINT
+    FOREIGNKEY(usuario_id) : BIGINT [obligatorio]
+    FOREIGNKEY(entrenamiento_base_id) : BIGINT [opcional]
+    FOREIGNKEY(entrenamiento_usuario_id) : BIGINT [opcional]
+    FOREIGNKEY(lugar_publico_base_id) : BIGINT [opcional]
+    FOREIGNKEY(lugar_publico_usuario_id) : BIGINT [opcional]
+    FOREIGNKEY(centro_privado_base_id) : BIGINT [opcional]
+    FOREIGNKEY(centro_privado_usuario_id) : BIGINT [opcional]
+    fecha_hora : TIMESTAMP
+    duracion_minutos : INT
+    notas : TEXT
+    --
+    CONSTRAINT: exactamente 1 entrenamiento
+    CONSTRAINT: máximo 1 ubicación
+}
+
+entity "⭐ VALORACIONES" as valoraciones {
+    PRIMARYKEY(id) : BIGINT
+    puntuacion : INT [1-5]
+    comentario : TEXT
+    fecha : TIMESTAMP
+    tipo_valoracion : ENUM [CENTRO_PRIVADO_BASE, CENTRO_PRIVADO_USUARIO, ...]
+    FOREIGNKEY(id_relacionado) : BIGINT [logico con tipo_valoracion]
+    FOREIGNKEY(usuario_id) : BIGINT
+    --
+    UNIQUE(usuario_id, tipo_valoracion, id_relacionado)
+}
+
+entity "🆘 SOPORTE" as soporte {
+    PRIMARYKEY(id) : BIGINT
+    asunto : VARCHAR(255) NOT NULL
+    mensaje : TEXT NOT NULL
+    fecha : TIMESTAMP
+    estado : ENUM [ABIERTO, EN_PROCESO, CERRADO]
+    FOREIGNKEY(usuario_id) : BIGINT
+}
+
+entity "💬 MENSAJES_SOPORTE" as mensajes {
+    PRIMARYKEY(id) : BIGINT
+    contenido : TEXT NOT NULL
+    fecha : TIMESTAMP
+    FOREIGNKEY(ticket_id) : BIGINT [soporte]
+    FOREIGNKEY(emisor_id) : BIGINT [usuario que envía]
+}
+
+' === RELACIONES ===
+
+' Usuario es centro de todo
+usuarios ||--o{ ent_usuario : "crea"
+usuarios ||--o{ ent_comunidad : "publica"
+usuarios ||--o{ centro_usuario : "guarda"
+usuarios ||--o{ lugar_usuario : "guarda"
+usuarios ||--o{ historial : "registra"
+usuarios ||--o{ valoraciones : "crea"
+usuarios ||--o{ soporte : "abre"
+usuarios ||--o{ mensajes : "envía"
+
+' Entrenamientos base pueden estar en historial
+ent_base ||--o{ historial : "referencia"
+
+' Entrenamientos de usuario pueden estar en historial
+ent_usuario ||--o{ historial : "referencia"
+
+' Ubicaciones base pueden estar en historial
+lugar_base ||--o{ historial : "ubicación"
+centro_base ||--o{ historial : "ubicación"
+
+' Ubicaciones de usuario pueden estar en historial
+lugar_usuario ||--o{ historial : "ubicación"
+centro_usuario ||--o{ historial : "ubicación"
+
+' Soporte - Mensajes
+soporte ||--o{ mensajes : "contiene"
+
+note right of historial
+  🔑 ENTIDAD CENTRAL para estadísticas
+  - Hub que conecta al usuario con su actividad
+  - Cada registro = 1 entrenamiento realizado
+  - Permite calcular todas las métricas
+end note
+
+note right of valoraciones
+  ⚠️ RELACIÓN POLIMORFICA
+  - Puede valorar cualquier tipo de contenido
+  - Se resuelve con: tipo_valoracion + id_relacionado
+  - La integridad se valida en código (ServicioValoracion)
+  - Un usuario solo 1 valoración por contenido
+end note
+
+note right of usuarios
+  🔒 TABLA CENTRAL
+  - Todos los datos privados pertenecen a un usuario
+  - roles: USER (normal) o ADMIN
+  - password cifrada con BCrypt
+end note
+
+note bottom of ent_base, centro_base, lugar_base
+  📦 TABLAS "BASE" = Catálogo de la aplicación
+  Gestionadas por administrador
+  Visibles para todos los usuarios
+end note
+
+note bottom of ent_usuario, centro_usuario, lugar_usuario
+  👤 TABLAS "USUARIO" = Zona privada
+  Creadas o guardadas por cada usuario
+  Tienen flag "activo" para borrado lógico
+end note
+
+@enduml
