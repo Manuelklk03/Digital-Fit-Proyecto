@@ -56,6 +56,43 @@ Ruta base:
 | `components` | Componentes reutilizables |
 | `components/mapa-selector` | Mapa con Leaflet |
 
+## Como se Une el Frontend
+
+```text
+main.ts
+-> app.config.ts
+-> provideRouter(routes)
+-> app.routes.ts
+-> page/component
+-> service HttpClient
+-> /api/...
+```
+
+Como explicarlo:
+
+- `main.ts` arranca Angular.
+- `app.config.ts` registra proveedores globales como `provideRouter(routes)` y `provideHttpClient()`.
+- `app.routes.ts` decide que componente se carga para cada URL.
+- `pages/.../*.ts` contiene la logica de cada pantalla.
+- `pages/.../*.html` contiene la vista.
+- `services/.../*.ts` centraliza las llamadas HTTP al backend.
+- `components/...` contiene piezas reutilizables, como `header`, `footer` o `mapa-selector`.
+
+Ejemplo practico:
+
+```text
+Usuario entra en /mis-centros
+-> app.routes.ts carga MisCentrosComponent
+-> mis-centros.ts usa MisCentrosService
+-> mis-centros-service.ts llama a /api/mis-centros-privados
+-> backend devuelve datos
+-> mis-centros.html los muestra
+```
+
+Frase:
+
+> Las pantallas no llaman directamente a la base de datos. Una page de Angular llama a un service, el service llama al endpoint REST y el backend se encarga de validar y consultar MySQL.
+
 ## Rutas Angular Importantes
 
 Archivo:

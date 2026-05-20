@@ -497,6 +497,74 @@ relaciona con: usuarios
 
 ## Como Leer Anotaciones JPA
 
+## Como se Unen Entidades, Repositories y Backend
+
+Flujo mental:
+
+```text
+Entidad Java
+-> Anotaciones JPA
+-> Tabla MySQL
+-> Repository
+-> Service
+-> Controller
+-> Endpoint REST
+```
+
+Ejemplo con usuario:
+
+```text
+Usuario.java
+-> @Entity
+-> tabla usuarios
+-> UsuarioRepository
+-> AuthService / CustomUserDetailsService
+-> AuthController o SecurityConfig
+-> /api/auth/...
+```
+
+Ejemplo con historial:
+
+```text
+HistorialEntrenamientos.java
+-> @Entity
+-> tabla historial_entrenamientos
+-> HistorialEntrenamientosRepository
+-> HistorialEntrenamientosService
+-> HistorialEntrenamientosRestController
+-> /api/entrenamientos/mi-historial
+```
+
+Como se crea una relacion:
+
+```java
+@ManyToOne
+@JoinColumn(name = "usuario_id")
+private Usuario usuario;
+```
+
+Significa:
+
+```text
+Muchos registros de esta tabla pertenecen a un usuario.
+En MySQL se guarda una columna usuario_id.
+usuario_id apunta a usuarios.id.
+```
+
+Frase para tribunal:
+
+> En backend las clases del paquete `model` representan tablas. Las anotaciones JPA indican las columnas y relaciones. Los repositories consultan esas entidades, los services aplican reglas de negocio y los controllers exponen los endpoints REST.
+
+Regla rapida:
+
+```text
+model      = que se guarda
+repository = como se consulta
+service    = que reglas se aplican
+controller = que endpoint lo expone
+dto        = que datos entran o salen
+```
+
 ### `@Entity`
 
 Indica que una clase Java representa una tabla.
