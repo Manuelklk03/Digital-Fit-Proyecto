@@ -53,6 +53,16 @@ Porque el proyecto tiene relaciones claras entre entidades. Una base relacional 
 
 Spring Security procesa `/api/auth/login`, busca usuario, compara password con BCrypt y crea sesion.
 
+Importante si preguntan por token:
+
+> No uso JWT. No envio `Authorization: Bearer`. Uso cookie de sesion de Spring Security y Angular la manda con `withCredentials: true`.
+
+Archivos:
+
+- `Frontend/digital-fit-frontend/src/app/services/auth-service.ts`
+- `Backend/digital-fit/src/main/java/com/example/digital_fit/config/SecurityConfig.java`
+- `Backend/digital-fit/src/main/java/com/example/digital_fit/config/CorsConfig.java`
+
 ### 6. Es hackeable el frontend?
 
 Si, todo frontend es manipulable. Por eso la seguridad real esta en backend: roles, DTOs, services y comprobaciones de propiedad.
@@ -177,6 +187,16 @@ Angular + Spring Boot + MySQL/JPA + Docker + Nginx + Leaflet.
 
 `app.routes.ts`
 
+### Como se crean rutas Angular?
+
+En `app.routes.ts` con `export const routes: Routes = [...]`. Cada ruta tiene `path`, `component` y a veces `canActivate`. En `app.config.ts` se registran con `provideRouter(routes)`.
+
+Ejemplo:
+
+```ts
+{ path: 'admin/soporte', component: AdminSoporteComponent, canActivate: [adminGuard] }
+```
+
 ### Donde estan guards?
 
 `Frontend/digital-fit-frontend/src/app/guards`
@@ -212,6 +232,10 @@ Con BCrypt.
 ### Como se mantiene sesion?
 
 Con cookie de sesion de Spring Security y `withCredentials` en Angular.
+
+### Donde se envia el token?
+
+No hay token JWT. Se envia la cookie de sesion automaticamente si el service usa `withCredentials: true`.
 
 ### Que mejora tecnica dirias?
 

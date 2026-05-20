@@ -58,6 +58,19 @@ Ruta base:
 
 ## Rutas Angular Importantes
 
+Archivo:
+
+`Frontend/digital-fit-frontend/src/app/app.routes.ts`
+
+Como leerlo:
+
+- Arriba se importan componentes y guards.
+- `export const routes: Routes = [` declara la lista de rutas.
+- Cada entrada une una URL (`path`) con una pantalla (`component`).
+- `canActivate` indica el guard que protege la ruta.
+- Las rutas con `:id` son rutas dinamicas de detalle.
+- `**` es el comodin final para redirigir si la ruta no existe.
+
 | Ruta | Uso | Guard |
 |---|---|---|
 | `/login` | Login | `publicGuard` |
@@ -78,6 +91,115 @@ Ruta base:
 | `/admin/crear-admin` | Crear admin | `adminGuard` |
 
 ## Flujo de Demo y Codigo Asociado
+
+## Preguntas de "Abre el Fichero y Enseñalo"
+
+### Donde se envia el token?
+
+Respuesta corta:
+
+> No se envia token JWT. Se usa sesion de Spring Security con cookie. Angular envia la cookie en las peticiones con `withCredentials: true`.
+
+Abrir:
+
+```text
+Frontend/digital-fit-frontend/src/app/services/auth-service.ts
+```
+
+Que mirar:
+
+- `login(...)`: hace `POST` a `/api/auth/login`.
+- En las opciones HTTP aparece `withCredentials: true`.
+- No hay `Authorization: Bearer ...`.
+- No hay guardado de token en `localStorage` ni `sessionStorage`.
+
+Backend que lo confirma:
+
+```text
+Backend/digital-fit/src/main/java/com/example/digital_fit/config/SecurityConfig.java
+```
+
+Que mirar:
+
+- `formLogin(...)`
+- `loginProcessingUrl("/api/auth/login")`
+- `.anyRequest().authenticated()`
+- `/api/admin/**` con `hasRole("ADMIN")`
+
+CORS/cookies:
+
+```text
+Backend/digital-fit/src/main/java/com/example/digital_fit/config/CorsConfig.java
+```
+
+Que mirar:
+
+- `configuration.setAllowCredentials(true)`
+
+### Como se crean las rutas en el frontend?
+
+Abrir:
+
+```text
+Frontend/digital-fit-frontend/src/app/app.routes.ts
+Frontend/digital-fit-frontend/src/app/app.config.ts
+```
+
+Que mirar en `app.routes.ts`:
+
+```ts
+export const routes: Routes = [
+  { path: 'login', component: LoginComponent, canActivate: [publicGuard] },
+  { path: 'inicio', component: InicioComponent, canActivate: [authGuard] },
+  { path: 'mis-entrenamientos/:id', component: DetalleMiEntrenamientoComponent, canActivate: [userGuard] },
+  { path: 'admin/soporte', component: AdminSoporteComponent, canActivate: [adminGuard] },
+  { path: '**', redirectTo: 'login' }
+];
+```
+
+Que mirar en `app.config.ts`:
+
+```ts
+provideRouter(routes)
+```
+
+Frase:
+
+> Angular Router recibe el array `routes`. Cada ruta define una URL, el componente que se renderiza y opcionalmente un guard. Despues `app.config.ts` registra esas rutas con `provideRouter(routes)`.
+
+### Donde se navega desde HTML?
+
+Abrir:
+
+```text
+Frontend/digital-fit-frontend/src/app/components/header/header.html
+Frontend/digital-fit-frontend/src/app/pages/inicio/inicio.html
+```
+
+Buscar:
+
+```text
+routerLink
+```
+
+Ejemplos:
+
+- `routerLink="/inicio"`
+- `[routerLink]="['/soporte', ticket.id]"`
+
+### Donde redirige desde TypeScript?
+
+Buscar:
+
+```text
+router.navigate
+```
+
+Ejemplos:
+
+- Guards: redirigen a `/login` o `/inicio`.
+- Login: al entrar correctamente navega a `/inicio`.
+- Admin/user pages: redirigen si el rol no corresponde.
 
 ### 1. Registro e Inicio de Sesion
 

@@ -108,6 +108,39 @@ Ubicacion:
 
 Porque para una aplicacion web con frontend y backend coordinados, la sesion de Spring Security es suficiente y mas sencilla. JWT seria mas interesante para una API movil, microservicios o integraciones externas.
 
+### Donde se envia el token en el frontend?
+
+Respuesta importante:
+
+> En este proyecto no se envia un token JWT ni un `Authorization: Bearer ...` desde Angular. La autenticacion se mantiene con sesion de Spring Security. El backend crea la cookie de sesion al hacer login y Angular la incluye en las peticiones usando `withCredentials: true`.
+
+Si te piden abrir el fichero:
+
+- Frontend login: `Frontend/digital-fit-frontend/src/app/services/auth-service.ts`
+- Lineas clave:
+  - `login(...)`: construye usuario/password y hace `POST /api/auth/login`.
+  - `withCredentials: true`: aparece en login, registro, `/yo`, `/me` y logout.
+- Backend login: `Backend/digital-fit/src/main/java/com/example/digital_fit/config/SecurityConfig.java`
+- Linea clave: `loginProcessingUrl("/api/auth/login")`.
+- CORS con cookies: `Backend/digital-fit/src/main/java/com/example/digital_fit/config/CorsConfig.java`
+- Linea clave: `configuration.setAllowCredentials(true)`.
+
+Frase para decir:
+
+> Si el tribunal me pregunta por el token, lo primero es aclarar que no uso JWT. Uso cookie de sesion. Por eso no hay `localStorage`, `sessionStorage` ni cabecera `Authorization`; lo que hay es `withCredentials: true` en los services de Angular.
+
+Como buscarlo rapido:
+
+```text
+Buscar en VS Code:
+withCredentials
+Authorization
+Bearer
+localStorage
+```
+
+En este proyecto `withCredentials` aparece en los services HTTP, pero `Authorization/Bearer/localStorage` no son el mecanismo de autenticacion.
+
 ### Donde se cifra la contrasena?
 
 En `AuthService`, al registrar usuario:
@@ -256,6 +289,44 @@ Ubicacion:
 ### Donde estan las rutas?
 
 En `Frontend/digital-fit-frontend/src/app/app.routes.ts`.
+
+### Como se crean las rutas en el frontend?
+
+En Angular se importan los componentes de cada pantalla y despues se crea un array `routes: Routes`.
+
+Ubicacion exacta:
+
+- `Frontend/digital-fit-frontend/src/app/app.routes.ts`
+- `Frontend/digital-fit-frontend/src/app/app.config.ts`
+
+Como funciona:
+
+1. En `app.routes.ts` se importan componentes y guards.
+2. Se declara `export const routes: Routes = [...]`.
+3. Cada objeto tiene:
+   - `path`: URL del navegador.
+   - `component`: pantalla que se carga.
+   - `canActivate`: guard que decide si puede entrar.
+4. En `app.config.ts` se registra con `provideRouter(routes)`.
+5. En las plantillas se navega con `routerLink`, por ejemplo en `components/header/header.html` o `pages/inicio/inicio.html`.
+
+Ejemplo:
+
+```ts
+{ path: 'admin/soporte', component: AdminSoporteComponent, canActivate: [adminGuard] }
+```
+
+Frase para decir:
+
+> Las rutas no se crean en HTML directamente. Se declaran en `app.routes.ts` como objetos de Angular Router. Luego `app.config.ts` las registra con `provideRouter(routes)` y desde las vistas se navega con `routerLink` o desde TypeScript con `router.navigate(...)`.
+
+Si te piden una ruta con parametro:
+
+```ts
+{ path: 'mis-entrenamientos/:id', component: DetalleMiEntrenamientoComponent, canActivate: [userGuard] }
+```
+
+El `:id` indica que esa parte de la URL es dinamica.
 
 ### Que son los guards?
 
