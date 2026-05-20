@@ -139,3 +139,106 @@ No inventes. Di:
 - Se ubicar rutas, services, controllers, services backend y entities.
 - Se reconocer mejoras sin tirar mi proyecto abajo.
 
+## Flashcards Rapidas
+
+### Que es Digital Fit?
+
+App web deportiva para centralizar entrenamientos, ubicaciones, historial, valoraciones, estadisticas y soporte.
+
+### Stack?
+
+Angular + Spring Boot + MySQL/JPA + Docker + Nginx + Leaflet.
+
+### Donde estan entidades?
+
+`Backend/digital-fit/src/main/java/com/example/digital_fit/model`
+
+### Donde estan endpoints?
+
+`Backend/digital-fit/src/main/java/com/example/digital_fit/controller`
+
+### Donde esta la logica?
+
+`Backend/digital-fit/src/main/java/com/example/digital_fit/service`
+
+### Donde estan consultas?
+
+`Backend/digital-fit/src/main/java/com/example/digital_fit/repository`
+
+### Donde esta seguridad?
+
+`SecurityConfig.java`
+
+### Donde esta CORS?
+
+`CorsConfig.java`
+
+### Donde estan rutas Angular?
+
+`app.routes.ts`
+
+### Donde estan guards?
+
+`Frontend/digital-fit-frontend/src/app/guards`
+
+### Donde estan llamadas HTTP?
+
+`Frontend/digital-fit-frontend/src/app/services`
+
+### Tabla central?
+
+`usuarios`
+
+### Tabla mas importante para seguimiento?
+
+`historial_entrenamientos`
+
+### Tabla especial?
+
+`valoraciones`, porque usa `tipo_valoracion + id_relacionado`.
+
+### Por que frontend es manipulable?
+
+Porque corre en el navegador del usuario.
+
+### Quien protege de verdad?
+
+Backend: Spring Security, roles, DTOs y services.
+
+### Como se cifran passwords?
+
+Con BCrypt.
+
+### Como se mantiene sesion?
+
+Con cookie de sesion de Spring Security y `withCredentials` en Angular.
+
+### Que mejora tecnica dirias?
+
+Tests, Swagger/OpenAPI, Flyway/Liquibase, HTTPS y despliegue real.
+
+## Preguntas Trampa Suaves
+
+### Si quito el guard admin de Angular, soy admin?
+
+No. Solo cambiaria el frontend. Backend sigue protegiendo `/api/admin/**` con Spring Security.
+
+### Si cambio un `id` en la URL, puedo ver datos de otro?
+
+No deberia. El backend comprueba propiedad del recurso en los services.
+
+### Si borro un entrenamiento de usuario, desaparece del historial?
+
+No necesariamente. Se usa borrado logico con `activo = false` para no romper registros antiguos.
+
+### Si registro estadisticas, donde se guardan?
+
+No se guardan como tabla principal; se calculan desde historial.
+
+### Si una valoracion apunta a un contenido, donde esta la FK?
+
+FK real solo a usuario. El contenido se referencia logicamente con `tipo_valoracion + id_relacionado`.
+
+## Mini Guion Para Sonar Seguro
+
+> Mi proyecto esta organizado por capas. Angular muestra vistas y llama al backend con services. Spring Boot recibe endpoints en controllers, aplica logica en services, accede a MySQL con repositories y guarda entidades JPA. La seguridad real esta en backend con Spring Security, roles y validaciones. La base de datos se organiza alrededor de usuarios, separando catalogos base de datos personales. Historial registra la actividad real y de ahi salen las estadisticas.
