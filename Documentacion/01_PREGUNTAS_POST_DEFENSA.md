@@ -290,6 +290,46 @@ Ubicacion:
 
 En `Frontend/digital-fit-frontend/src/app/app.routes.ts`.
 
+### Como se unen los componentes en el frontend?
+
+En Angular la aplicacion se une por rutas, paginas, servicios y componentes reutilizables.
+
+Flujo mental:
+
+```text
+app.config.ts
+-> registra app.routes.ts
+-> app.routes.ts decide que page se carga
+-> page.ts contiene la logica
+-> page.html pinta la vista
+-> page.css da estilos
+-> service.ts llama al backend
+-> components reutilizables se insertan dentro de pages
+```
+
+Ejemplo:
+
+```text
+/publicos
+-> app.routes.ts carga PublicosComponent
+-> publicos.ts pide datos al service
+-> publicos-service.ts hace GET /api/lugares-publicos
+-> publicos.html muestra la lista
+-> mapa-selector se usa como componente reutilizable si hace falta mapa
+```
+
+Ubicaciones:
+
+- Rutas: `Frontend/digital-fit-frontend/src/app/app.routes.ts`
+- Registro de rutas: `Frontend/digital-fit-frontend/src/app/app.config.ts`
+- Paginas: `Frontend/digital-fit-frontend/src/app/pages`
+- Servicios HTTP: `Frontend/digital-fit-frontend/src/app/services`
+- Componentes reutilizables: `Frontend/digital-fit-frontend/src/app/components`
+
+Frase para decir:
+
+> En Angular no tengo una pagina HTML independiente por cada URL. `app.routes.ts` decide que componente se renderiza, el componente `.ts` contiene la logica, el `.html` pinta la vista y los services separan las llamadas HTTP al backend.
+
 ### Como se crean las rutas en el frontend?
 
 En Angular se importan los componentes de cada pantalla y despues se crea un array `routes: Routes`.

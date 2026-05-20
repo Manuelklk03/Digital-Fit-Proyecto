@@ -133,6 +133,39 @@ mensajes_soporte
 
 > Si un usuario crea algo desde Angular, el componente llama a un service, el service hace una peticion HTTP a `/api/...`, Spring Boot la recibe en un controller, delega en un service, valida permisos y datos, usa un repository JPA y finalmente guarda en MySQL.
 
+## Como se Une Todo
+
+Frontend:
+
+```text
+app.routes.ts
+-> page.ts
+-> page.html
+-> service.ts
+-> /api/...
+```
+
+Backend:
+
+```text
+Controller
+-> Service
+-> Repository
+-> Entity
+-> MySQL
+```
+
+JPA:
+
+```text
+Entity Java + @ManyToOne/@OneToMany/@JoinColumn
+-> tabla y claves foraneas en MySQL
+```
+
+Frase rapida:
+
+> En Angular las rutas cargan componentes y los services llaman al backend. En Spring los controllers reciben la peticion, los services aplican reglas, los repositories consultan entidades JPA y JPA traduce esas entidades a tablas MySQL.
+
 ## Si Te Preguntan Algo que No Sabes
 
 No inventes. Di:
