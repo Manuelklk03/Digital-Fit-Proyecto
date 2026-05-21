@@ -489,7 +489,7 @@ Si preguntan por IA:
 
 > No recuerdo el nombre exacto ahora mismo, pero por arquitectura estaria en el modulo correspondiente: controller para endpoint, service para logica, repository para BD y model para entidad. Lo buscaria en esa carpeta y podria seguir el flujo desde ahi.
 
-## Preguntas Teoricas DAW Probables
+## Preguntas Teoricas y de Codigo Sobre la App
 
 ### Que es una SPA?
 
@@ -551,6 +551,313 @@ CRUD son las operaciones basicas: crear, leer, actualizar y eliminar. En el proy
 ### Que es CORS?
 
 CORS controla si una web puede llamar a una API desde otro origen. En local Angular puede estar en `localhost:4200` y Spring Boot en otro puerto, por eso se configura `CorsConfig.java`.
+
+### Como se conecta una pantalla del frontend con el backend?
+
+Flujo:
+
+```text
+page.html
+-> page.ts
+-> service.ts
+-> endpoint /api/...
+-> controller
+-> service backend
+-> repository
+-> MySQL
+```
+
+Ejemplo con estadisticas:
+
+```text
+estadisticas.html
+-> estadisticas.ts
+-> estadisticas-service.ts
+-> GET /api/estadisticas
+-> EstadisticasRestController
+-> EstadisticasService
+-> EstadisticasRepository
+-> historial_entrenamientos
+```
+
+Frase:
+
+> Las paginas de Angular no acceden directamente a la base de datos. Siempre pasan por un service HTTP, y el backend decide que datos devuelve.
+
+### Como se conecta una entidad Java con una tabla?
+
+Con JPA/Hibernate.
+
+```text
+Clase Java con @Entity
+-> campos de la clase
+-> columnas de la tabla
+-> relaciones con @ManyToOne, @OneToMany y @JoinColumn
+```
+
+Ejemplo:
+
+```text
+Usuario.java -> tabla usuarios
+EntrenamientoUsuario.java -> tabla entrenamientos_usuario
+@JoinColumn(name = "usuario_id") -> FK hacia usuarios.id
+```
+
+Frase:
+
+> Las entidades del paquete `model` representan tablas. Los repositories trabajan con esas entidades y JPA se encarga de traducirlo a consultas contra MySQL.
+
+### Como funcionan las estadisticas en el codigo?
+
+Las estadisticas no se guardan como una tabla independiente principal. Se calculan a partir del historial.
+
+Flujo:
+
+```text
+GET /api/estadisticas
+-> EstadisticasRestController.obtenerEstadisticas
+-> authentication.getName()
+-> EstadisticasService.obtenerEstadisticas(username)
+-> UsuarioRepository busca el usuario
+-> EstadisticasRepository consulta historial_entrenamientos
+-> EstadisticaUsuarioDTO devuelve el resultado
+```
+
+Que calcula:
+
+- Entrenamientos realizados.
+- Minutos entrenados.
+- Promedio de minutos.
+- Centros privados visitados.
+- Lugares publicos visitados.
+- Entrenamiento mas realizado.
+
+Archivos:
+
+- `EstadisticasRestController.java`
+- `EstadisticasService.java`
+- `EstadisticasRepository.java`
+- `EstadisticaUsuarioDTO.java`
+- `historial_entrenamientos`
+
+Frase:
+
+> El historial es la fuente de verdad. Las estadisticas son datos derivados: el repository cuenta, suma, promedia y agrupa registros del historial del usuario autenticado.
+
+### Por que algunas consultas de estadisticas son nativas?
+
+Porque algunas estadisticas tienen que combinar varias columnas opcionales del historial, por ejemplo centros base y centros de usuario, o lugares base y lugares de usuario.
+
+Ejemplo:
+
+```text
+centro_privado_base_id
+centro_privado_usuario_id
+lugar_publico_base_id
+lugar_publico_usuario_id
+```
+
+Para contar ubicaciones distintas se usan consultas SQL nativas con `COUNT(DISTINCT ...)` y `COALESCE`.
+
+Frase:
+
+> Uso JPQL para consultas simples y SQL nativo cuando la consulta depende de columnas concretas y agregaciones mas especificas.
+
+### Como funciona el soporte o chat?
+
+Soporte esta modelado como tickets y mensajes.
+
+```text
+soporte
+-> ticket principal: asunto, mensaje inicial, estado, usuario, fecha
+
+mensajes_soporte
+-> mensajes de la conversacion
+-> cada mensaje tiene ticket, emisor, contenido y fecha
+```
+
+Flujo usuario:
+
+```text
+soporte.ts frontend
+-> POST /api/soporte
+-> SoporteRestController.crearTicket
+-> SoporteService.crearTicket
+-> SoporteRepository guarda ticket
+-> MensajeSoporteRepository guarda mensaje inicial
+```
+
+Flujo mensajes:
+
+```text
+GET /api/soporte/mis-tickets/{id}/mensajes
+POST /api/soporte/mis-tickets/{id}/mensajes
+```
+
+Admin:
+
+```text
+/api/admin/soporte
+-> SoporteAdminRestController
+-> SoporteService
+```
+
+Frase:
+
+> No es un chat en tiempo real con WebSocket. Es una conversacion tipo ticket: se guardan mensajes en base de datos y se consultan desde frontend.
+
+### Que reglas tiene el soporte?
+
+Reglas principales:
+
+- Un usuario solo puede ver sus propios tickets.
+- Admin puede ver todos los tickets.
+- Un usuario no puede responder a un ticket cerrado.
+- El usuario no puede responder hasta que un admin haya iniciado la conversacion.
+- Si el admin responde a un ticket abierto, pasa a `EN_PROCESO`.
+- Admin solo puede borrar tickets cerrados.
+
+Donde esta:
+
+- `SoporteService.java`
+- `SoporteRestController.java`
+- `SoporteAdminRestController.java`
+- `Soporte.java`
+- `MensajeSoporte.java`
+
+Frase:
+
+> El service concentra las reglas: propiedad del ticket, estado, permisos y conversion a DTO. El controller solo expone endpoints.
+
+### Como sabe el backend que usuario esta haciendo la peticion?
+
+Spring Security inyecta `Authentication authentication` en el controller.
+
+Ejemplo:
+
+```java
+authentication.getName()
+```
+
+Eso devuelve el username del usuario autenticado. Luego el service lo busca en `UsuarioRepository`.
+
+Frase:
+
+> No envio el id del usuario desde Angular para operaciones privadas. Uso la sesion y `Authentication` para obtener el usuario real autenticado.
+
+### Por que usas DTOs en vez de devolver entidades directamente?
+
+Porque los DTOs controlan que datos entran y salen de la API.
+
+Ventajas:
+
+- No expongo campos internos como password.
+- Puedo validar datos con `@NotBlank`, `@NotNull`, `@Email`, etc.
+- Evito acoplar directamente la API a la estructura de la entidad.
+- Puedo devolver solo lo que necesita el frontend.
+
+Ejemplos:
+
+- `UsuarioDTO`: registro.
+- `UsuarioSesionDTO`: datos del usuario en sesion.
+- `CrearSoporteDTO`: crear ticket.
+- `MensajeSoporteDTO`: devolver mensajes.
+- `EstadisticaUsuarioDTO`: devolver estadisticas calculadas.
+
+### Como maneja el backend los errores de validacion de DTO?
+
+Si un controller recibe `@Valid @RequestBody` y el DTO no cumple las anotaciones, Spring lanza `MethodArgumentNotValidException`.
+
+El `GlobalExceptionHandler` la captura y devuelve:
+
+```text
+HTTP 400 BAD_REQUEST
+{
+  "campo": "mensaje de error"
+}
+```
+
+Frase:
+
+> Los DTOs validan la entrada y el handler transforma los errores en respuestas claras para el frontend.
+
+### Que diferencia hay entre validacion de DTO y validacion de service?
+
+DTO:
+
+- Valida forma del dato.
+- Ejemplo: campo obligatorio, email valido, longitud maxima, numero minimo.
+
+Service:
+
+- Valida reglas de negocio.
+- Ejemplo: el recurso pertenece al usuario, el ticket no esta cerrado, el entrenamiento existe, solo puede haber una ubicacion en historial.
+
+Frase:
+
+> El DTO valida datos simples; el service valida reglas reales de la aplicacion.
+
+### Como se conecta el historial con estadisticas?
+
+Cuando el usuario registra un entrenamiento realizado, se crea una fila en `historial_entrenamientos`.
+
+Despues estadisticas lee esa tabla:
+
+```text
+historial_entrenamientos
+-> contar registros
+-> sumar duracion
+-> calcular promedio
+-> agrupar entrenamientos
+-> contar ubicaciones distintas
+```
+
+Frase:
+
+> El historial guarda hechos reales. Estadisticas no inventa datos ni los duplica: calcula resultados a partir de esos hechos.
+
+### Como se conecta el mapa con centros y lugares?
+
+El mapa es un componente reutilizable del frontend:
+
+```text
+components/mapa-selector
+```
+
+Sirve para seleccionar o mostrar coordenadas. Los datos se guardan en entidades de centros/lugares:
+
+```text
+CentroPrivadoBase / CentroPrivadoUsuario
+LugarPublicoBase / LugarPublicoUsuario
+```
+
+Frase:
+
+> Leaflet solo pinta o selecciona coordenadas en frontend. La informacion persistente se guarda en MySQL a traves del backend.
+
+### Como se conecta admin con el resto de la aplicacion?
+
+Admin usa rutas y endpoints separados.
+
+Frontend:
+
+```text
+/admin/soporte
+/admin/crear-admin
+adminGuard
+```
+
+Backend:
+
+```text
+/api/admin/**
+SecurityConfig -> hasRole("ADMIN")
+@PreAuthorize("hasRole('ADMIN')")
+```
+
+Frase:
+
+> Admin no es solo un menu oculto. Aunque alguien intente llamar al endpoint manualmente, backend exige rol ADMIN.
 
 ## Seguridad Web Normal que Pueden Preguntar
 
