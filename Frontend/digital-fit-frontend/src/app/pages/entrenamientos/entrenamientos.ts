@@ -153,8 +153,8 @@ export class EntrenamientosComponent {
           this.limpiarFormulario();
           this.cargarEntrenamientos();
         },
-        error: () => {
-          this.abrirPopup('No se pudo actualizar el entrenamiento base.', 'error');
+        error: (err: any) => {
+          this.abrirPopup(this.obtenerMensajeError(err, 'No se pudo actualizar el entrenamiento base.'), 'error');
         }
       });
     } else {
@@ -164,8 +164,8 @@ export class EntrenamientosComponent {
           this.limpiarFormulario();
           this.cargarEntrenamientos();
         },
-        error: () => {
-          this.abrirPopup('No se pudo crear el entrenamiento base.', 'error');
+        error: (err: any) => {
+          this.abrirPopup(this.obtenerMensajeError(err, 'No se pudo crear el entrenamiento base.'), 'error');
         }
       });
     }
@@ -197,8 +197,8 @@ export class EntrenamientosComponent {
       next: () => {
         this.abrirPopup('Entrenamiento añadido a mis entrenamientos.', 'exito');
       },
-      error: () => {
-        this.abrirPopup('No se pudo añadir a mis entrenamientos.', 'error');
+      error: (err: any) => {
+        this.abrirPopup(this.obtenerMensajeError(err, 'No se pudo añadir a mis entrenamientos.'), 'error');
       }
     });
   }
@@ -253,5 +253,13 @@ export class EntrenamientosComponent {
   cerrarPopup(): void {
     this.mostrarPopup = false;
     this.cdr.detectChanges();
+  }
+
+  private obtenerMensajeError(err: any, mensajePorDefecto: string): string {
+    if (typeof err?.error === 'string' && err.error.trim() !== '') {
+      return err.error;
+    }
+
+    return mensajePorDefecto;
   }
 }

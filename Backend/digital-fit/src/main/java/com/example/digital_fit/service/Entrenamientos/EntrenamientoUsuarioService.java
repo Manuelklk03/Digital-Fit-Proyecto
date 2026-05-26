@@ -117,9 +117,15 @@ public class EntrenamientoUsuarioService {
         EntrenamientoBase entrenamientoBase = entrenamientoBaseRepository.findById(idBase)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Entrenamiento base no encontrado"));
 
-        if (entrenamientoUsuarioRepository.findVisibleByUsuarioAndNombreIgnoreCase(usuario, entrenamientoBase.getNombre())
-                .isPresent()) {
-            throw new OperacionNoPermitida("Ya tienes añadido ese entrenamiento en mis entrenamientos.");
+        boolean yaAnadidoPorOrigen = entrenamientoUsuarioRepository
+                .findVisibleByUsuarioAndEntrenamientoBaseOrigen(usuario, entrenamientoBase)
+                .isPresent();
+        boolean yaAnadidoPorNombre = entrenamientoUsuarioRepository
+                .findVisibleByUsuarioAndNombreIgnoreCase(usuario, entrenamientoBase.getNombre())
+                .isPresent();
+
+        if (yaAnadidoPorOrigen || yaAnadidoPorNombre) {
+            throw new OperacionNoPermitida("Entrenamiento ya añadido");
         }
 
         EntrenamientoUsuario entrenamientoUsuario = new EntrenamientoUsuario();
@@ -129,6 +135,7 @@ public class EntrenamientoUsuarioService {
         entrenamientoUsuario.setNivel(entrenamientoBase.getNivel());
         entrenamientoUsuario.setDuracionEnMinutos(entrenamientoBase.getDuracionEnMinutos());
         entrenamientoUsuario.setActivo(true);
+        entrenamientoUsuario.setEntrenamientoBaseOrigen(entrenamientoBase);
         entrenamientoUsuario.setUsuario(usuario);
 
         EntrenamientoUsuario entrenamientoUsuarioGuardado = entrenamientoUsuarioRepository.save(entrenamientoUsuario);
@@ -149,9 +156,15 @@ public class EntrenamientoUsuarioService {
         EntrenamientoComunidad entrenamientoComunidad = entrenamientoComunidadRepository.findById(idComunidad)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Entrenamiento comunidad no encontrado"));
 
-        if (entrenamientoUsuarioRepository.findVisibleByUsuarioAndNombreIgnoreCase(usuario, entrenamientoComunidad.getNombre())
-                .isPresent()) {
-            throw new OperacionNoPermitida("Ya tienes añadido ese entrenamiento en mis entrenamientos.");
+        boolean yaAnadidoPorOrigen = entrenamientoUsuarioRepository
+                .findVisibleByUsuarioAndEntrenamientoComunidadOrigen(usuario, entrenamientoComunidad)
+                .isPresent();
+        boolean yaAnadidoPorNombre = entrenamientoUsuarioRepository
+                .findVisibleByUsuarioAndNombreIgnoreCase(usuario, entrenamientoComunidad.getNombre())
+                .isPresent();
+
+        if (yaAnadidoPorOrigen || yaAnadidoPorNombre) {
+            throw new OperacionNoPermitida("Entrenamiento ya añadido");
         }
 
         EntrenamientoUsuario entrenamientoUsuario = new EntrenamientoUsuario();
@@ -161,6 +174,7 @@ public class EntrenamientoUsuarioService {
         entrenamientoUsuario.setNivel(entrenamientoComunidad.getNivel());
         entrenamientoUsuario.setDuracionEnMinutos(entrenamientoComunidad.getDuracionEnMinutos());
         entrenamientoUsuario.setActivo(true);
+        entrenamientoUsuario.setEntrenamientoComunidadOrigen(entrenamientoComunidad);
         entrenamientoUsuario.setUsuario(usuario);
 
         EntrenamientoUsuario entrenamientoUsuarioGuardado = entrenamientoUsuarioRepository.save(entrenamientoUsuario);
