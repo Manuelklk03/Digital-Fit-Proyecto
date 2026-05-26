@@ -79,10 +79,6 @@ Base es catalogo general; usuario es contenido privado/personalizado asociado a 
 
 Con `tipo_valoracion + id_relacionado`, porque se pueden valorar muchos tipos de contenido con una sola tabla.
 
-### 10. Que mejorarias?
-
-Mas tests, Swagger/OpenAPI, Flyway/Liquibase, despliegue real, estadisticas avanzadas y recomendaciones.
-
 ## Archivos que Debes Saber Ubicar
 
 | Tema | Ubicacion |
@@ -138,7 +134,9 @@ mensajes_soporte
 Frontend:
 
 ```text
-app.routes.ts
+main.ts
+-> app.config.ts
+-> app.routes.ts
 -> page.ts
 -> page.html
 -> service.ts
@@ -166,21 +164,29 @@ Frase rapida:
 
 > En Angular las rutas cargan componentes y los services llaman al backend. En Spring los controllers reciben la peticion, los services aplican reglas, los repositories consultan entidades JPA y JPA traduce esas entidades a tablas MySQL.
 
-## Si Te Preguntan Algo que No Sabes
+## Angular en 60 Segundos
 
-No inventes. Di:
+```text
+main.ts arranca la app
+app.config.ts registra rutas y HttpClient
+app.html tiene <router-outlet>
+app.routes.ts decide que pantalla se carga
+pages tienen .ts + .html + .css
+services hacen llamadas HTTP
+guards protegen navegacion
+components son piezas reutilizables
+```
 
-> No recuerdo el nombre exacto de memoria, pero por la arquitectura estaria en la capa correspondiente: controller si es endpoint, service si es logica, repository si es consulta y model si es entidad. Puedo localizarlo siguiendo ese flujo.
+Conceptos que pueden preguntar:
 
-## Checklist Final
-
-- Se explicar login y sesiones.
-- Se explicar por que el frontend es manipulable.
-- Se explicar base vs usuario.
-- Se explicar historial.
-- Se explicar valoraciones polimorficas.
-- Se ubicar rutas, services, controllers, services backend y entities.
-- Se reconocer mejoras sin tirar mi proyecto abajo.
+- `router-outlet`: hueco donde se pinta la ruta activa.
+- `routerLink`: navegacion desde HTML.
+- `router.navigate`: navegacion desde TypeScript.
+- `ngModel`: conecta input con variable del componente.
+- `(ngSubmit)`: envia formulario.
+- `BehaviorSubject`: comparte usuario actual en frontend.
+- `withCredentials`: envia cookie de sesion al backend.
+- No hay interceptor porque no se usa JWT.
 
 ## Flashcards Rapidas
 
@@ -269,10 +275,6 @@ Con cookie de sesion de Spring Security y `withCredentials` en Angular.
 ### Donde se envia el token?
 
 No hay token JWT. Se envia la cookie de sesion automaticamente si el service usa `withCredentials: true`.
-
-### Que mejora tecnica dirias?
-
-Tests, Swagger/OpenAPI, Flyway/Liquibase, HTTPS y despliegue real.
 
 ## Preguntas Trampa Suaves
 

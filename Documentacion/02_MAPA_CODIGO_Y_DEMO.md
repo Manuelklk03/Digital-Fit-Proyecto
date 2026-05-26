@@ -56,6 +56,22 @@ Ruta base:
 | `components` | Componentes reutilizables |
 | `components/mapa-selector` | Mapa con Leaflet |
 
+## Archivos Clave Frontend
+
+| Tema | Archivo | Que decir |
+|---|---|---|
+| Arranque Angular | `src/main.ts` | Llama a `bootstrapApplication(App, appConfig)` |
+| Config global | `src/app/app.config.ts` | Registra `provideRouter(routes)` y `provideHttpClient()` |
+| Componente raiz | `src/app/app.ts` | Componente principal de la SPA |
+| Hueco de rutas | `src/app/app.html` | Contiene `<router-outlet>` |
+| Rutas | `src/app/app.routes.ts` | Une URL, componente y guard |
+| Login HTTP | `src/app/services/auth-service.ts` | Login, logout, usuario actual y cookie con `withCredentials` |
+| Estado usuario | `src/app/services/auth-service.ts` + `components/header/header.ts` | `BehaviorSubject` comparte usuario actual |
+| Formularios | `pages/login`, `pages/register` | `FormsModule`, `ngModel`, `ngSubmit` |
+| Navegacion HTML | `components/header/header.html`, `pages/inicio/inicio.html` | `routerLink` |
+| Navegacion TS | guards y pages | `router.navigate(...)` |
+| Mapa | `components/mapa-selector` | Leaflet y coordenadas |
+
 ## Como se Une el Frontend
 
 ```text
@@ -92,6 +108,75 @@ Usuario entra en /mis-centros
 Frase:
 
 > Las pantallas no llaman directamente a la base de datos. Una page de Angular llama a un service, el service llama al endpoint REST y el backend se encarga de validar y consultar MySQL.
+
+## Conceptos Angular que Pueden Preguntar
+
+### `router-outlet`
+
+```text
+app.html
+-> <router-outlet></router-outlet>
+```
+
+Es el hueco donde Angular pinta la pantalla que corresponde a la ruta activa.
+
+### Standalone components
+
+Los componentes importan directamente lo que necesitan:
+
+```ts
+imports: [FormsModule, RouterLink, HeaderComponent, Footer]
+```
+
+Asi cada pantalla declara sus dependencias.
+
+### Formularios
+
+Buscar en `pages/login/login.html`:
+
+```text
+[(ngModel)]
+(ngSubmit)
+[disabled]
+```
+
+Explicacion:
+
+- `[(ngModel)]`: sincroniza input con variable del `.ts`.
+- `(ngSubmit)`: ejecuta el metodo al enviar formulario.
+- `[disabled]`: activa/desactiva el boton segun una variable.
+
+### Bindings
+
+Buscar en HTML:
+
+```text
+{{ textoPopup }}
+[class.popup-error]="tipoPopup === 'error'"
+(click)="cerrarPopup()"
+```
+
+Explicacion:
+
+- `{{ ... }}` muestra valores del `.ts`.
+- `[propiedad]` asigna propiedades o clases.
+- `(evento)` llama metodos del componente.
+
+### Estado de usuario en frontend
+
+Buscar en `auth-service.ts`:
+
+```text
+BehaviorSubject
+usuario$
+usuarioSubject.next(usuario)
+```
+
+El header se suscribe a `usuario$` para cambiar menu segun `USER` o `ADMIN`.
+
+### No hay interceptor
+
+No hay interceptor porque no se usa JWT. Cada service manda `withCredentials: true` para que el navegador envie la cookie de sesion.
 
 ## Rutas Angular Importantes
 
@@ -423,6 +508,7 @@ Frontend:
 - `pages/admin/soporte`
 - `services/soporte.ts`
 - `services/admin/admin-soporte-service.ts`
+- `pages/admin/soporte/admin-detalle-ticket`
 
 Backend:
 
@@ -437,6 +523,77 @@ Backend:
 Que decir:
 
 > Soporte se modela como ticket y mensajes. Admin puede revisar y cambiar estado.
+
+Idea principal:
+
+> No es un chat en tiempo real con WebSocket. Es un sistema de tickets con conversacion persistida en base de datos. El frontend consulta y envia mensajes mediante endpoints REST, y el backend guarda cada mensaje asociado a un ticket.
+
+Modelo:
+
+```text
+soporte
+-> ticket principal
+-> asunto, mensaje inicial, estado, usuario y fecha
+
+mensajes_soporte
+-> mensajes de la conversacion
+-> ticket_id indica a que ticket pertenece
+-> emisor_id indica quien lo ha escrito
+-> contenido y fecha del mensaje
+```
+
+Flujo al crear ticket:
+
+```text
+soporte.ts
+-> POST /api/soporte
+-> SoporteRestController.crearTicket
+-> SoporteService.crearTicket
+-> SoporteRepository.save(ticket)
+-> MensajeSoporteRepository.save(mensajeInicial)
+```
+
+Al crear el ticket se guardan dos cosas:
+
+1. El registro principal en `soporte`.
+2. El primer mensaje en `mensajes_soporte`.
+
+Asi el texto inicial no queda solo como campo del ticket, tambien aparece dentro de la conversacion.
+
+Mensajes del usuario:
+
+```text
+GET  /api/soporte/mis-tickets/{id}/mensajes
+POST /api/soporte/mis-tickets/{id}/mensajes
+```
+
+Mensajes del admin:
+
+```text
+GET  /api/admin/soporte/{id}/mensajes
+POST /api/admin/soporte/{id}/mensajes
+```
+
+Reglas importantes:
+
+- El usuario solo puede ver y escribir en sus propios tickets.
+- El admin puede ver todos los tickets desde `/api/admin/soporte`.
+- Si el ticket esta `CERRADO`, ya no admite mensajes.
+- El usuario no puede responder hasta que un admin haya iniciado la conversacion.
+- Cuando el admin responde a un ticket `ABIERTO`, el backend lo pasa a `EN_PROCESO`.
+- El admin solo puede borrar tickets cerrados.
+
+Estados:
+
+```text
+ABIERTO     -> ticket creado por usuario
+EN_PROCESO -> admin ya ha respondido o lo esta gestionando
+CERRADO    -> ticket terminado
+```
+
+Frase para defender:
+
+> El controller solo expone los endpoints. La logica importante esta en `SoporteService`: comprueba el usuario autenticado, valida la propiedad del ticket, controla el estado y convierte entidades a DTO para no exponer directamente las entidades JPA.
 
 ## Endpoints Principales
 
@@ -590,16 +747,53 @@ Si ya existe valoracion del mismo usuario para ese contenido, se actualiza.
 Usuario:
 
 ```text
-soporte page -> soporte.ts -> /api/soporte -> SoporteRestController -> SoporteService
+soporte page
+-> soporte.ts
+-> POST /api/soporte
+-> SoporteRestController.crearTicket
+-> SoporteService.crearTicket
+-> SoporteRepository
+-> MensajeSoporteRepository
+-> soporte + mensajes_soporte
 ```
 
 Admin:
 
 ```text
-admin/soporte page -> admin-soporte-service.ts -> /api/admin/soporte -> SoporteAdminRestController
+admin/soporte page
+-> admin-soporte-service.ts
+-> GET /api/admin/soporte
+-> SoporteAdminRestController.verTickets
+-> SoporteService.listarTicketsAdmin
 ```
 
-Usuario abre tickets y admin puede revisar/cambiar estado.
+Conversacion:
+
+```text
+detalle ticket
+-> getMensajesTicket / getMensajesTicketAdmin
+-> GET .../{id}/mensajes
+-> MensajeSoporteRepository.findByTicketOrderByFechaAsc
+-> mensajes ordenados por fecha
+```
+
+Responder:
+
+```text
+textarea chat
+-> enviarMensajeTicket / enviarMensajeAdmin
+-> POST .../{id}/mensajes
+-> SoporteService.enviarMensajeUsuario/enviarMensajeAdmin
+-> MensajeSoporteRepository.save
+```
+
+Usuario abre tickets, admin revisa, responde y puede cambiar estado con:
+
+```text
+PATCH /api/admin/soporte/{id}/estado
+```
+
+Si el admin responde estando `ABIERTO`, pasa a `EN_PROCESO`. Si esta `CERRADO`, backend bloquea nuevos mensajes.
 
 ## Que Abrir en VS Code si te Preguntan
 
@@ -624,6 +818,15 @@ Valoraciones:
 
 Estadisticas:
   Backend/.../repository/Estadisticas/EstadisticasRepository.java
+
+Soporte:
+  Backend/.../model/Soporte/Soporte.java
+  Backend/.../model/Soporte/MensajeSoporte.java
+  Backend/.../service/Soporte/SoporteService.java
+  Backend/.../controller/Soporte/SoporteRestController.java
+  Backend/.../controller/Soporte/Admin/SoporteAdminRestController.java
+  Frontend/.../src/app/services/soporte.ts
+  Frontend/.../src/app/services/admin/admin-soporte-service.ts
 ```
 
 ## Explicacion de Carpetas en 20 Segundos

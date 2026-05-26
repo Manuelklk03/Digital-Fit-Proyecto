@@ -75,7 +75,7 @@ export class AdminSoporteComponent {
   borrarTicket(id: number): void {
     this.adminSoporteService.borrarTicketCerrado(id).subscribe({
       next: () => {
-        this.abrirPopup('Ticket borrado correctamente.', 'error');
+        this.abrirPopup('Ticket borrado correctamente.', 'exito');
         this.cargarTickets();
       },
       error: () => {

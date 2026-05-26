@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.example.digital_fit.model.Entrenamientos.EntrenamientoBase;
+import com.example.digital_fit.model.Entrenamientos.EntrenamientoComunidad;
 import com.example.digital_fit.model.Entrenamientos.EntrenamientoUsuario;
 import com.example.digital_fit.model.Enums.CategoriaEntrenamientoComunidad;
 import com.example.digital_fit.model.Enums.NivelEntrenamiento;
@@ -74,4 +76,24 @@ public interface EntrenamientoUsuarioRepository extends JpaRepository<Entrenamie
     Optional<EntrenamientoUsuario> findVisibleByUsuarioAndNombreIgnoreCase(
             @Param("usuario") Usuario usuario,
             @Param("nombre") String nombre);
+
+    @Query("""
+            SELECT e FROM EntrenamientoUsuario e
+            WHERE e.usuario = :usuario
+            AND e.entrenamientoBaseOrigen = :entrenamientoBase
+            AND (e.activo IS NULL OR e.activo = true)
+            """)
+    Optional<EntrenamientoUsuario> findVisibleByUsuarioAndEntrenamientoBaseOrigen(
+            @Param("usuario") Usuario usuario,
+            @Param("entrenamientoBase") EntrenamientoBase entrenamientoBase);
+
+    @Query("""
+            SELECT e FROM EntrenamientoUsuario e
+            WHERE e.usuario = :usuario
+            AND e.entrenamientoComunidadOrigen = :entrenamientoComunidad
+            AND (e.activo IS NULL OR e.activo = true)
+            """)
+    Optional<EntrenamientoUsuario> findVisibleByUsuarioAndEntrenamientoComunidadOrigen(
+            @Param("usuario") Usuario usuario,
+            @Param("entrenamientoComunidad") EntrenamientoComunidad entrenamientoComunidad);
 }

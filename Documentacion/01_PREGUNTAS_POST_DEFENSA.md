@@ -1,16 +1,5 @@
 # 01 - Preguntas Post-Defensa
 
-Este es el documento principal para preparar el turno de preguntas. La defensa ya explica el proyecto por encima; aqui se responde lo que pueden preguntar para comprobar si entiendes codigo, seguridad, base de datos y decisiones tecnicas.
-
-## Metodo para responder
-
-Usa siempre esta estructura:
-
-1. Idea en una frase.
-2. Donde esta en el codigo.
-3. Como funciona por dentro.
-4. Mejora posible si procede.
-
 Ejemplo:
 
 > El login lo gestiona Spring Security con sesion. Esta configurado en `SecurityConfig.java`; el usuario se carga en `CustomUserDetailsService.java`; la contrasena se compara con BCrypt; Angular envia la cookie de sesion con `withCredentials`.
@@ -268,23 +257,146 @@ No hay FK fisica directa a cada tabla posible; la integridad se comprueba en el 
 
 ### Como se calculan estadisticas?
 
-Desde `historial_entrenamientos`.
+Las estadisticas se calculan desde `historial_entrenamientos`, porque esa tabla guarda lo que el usuario ha hecho realmente: entrenamiento, fecha, duracion y ubicacion opcional.
+
+Flujo:
+
+```text
+estadisticas page
+-> estadisticas-service.ts
+-> GET /api/estadisticas
+-> EstadisticasRestController.obtenerEstadisticas
+-> EstadisticasService.obtenerEstadisticas
+-> EstadisticasRepository
+-> historial_entrenamientos
+```
+
+El controller recibe la peticion y usa `Authentication authentication` para saber que usuario esta logueado:
+
+```text
+authentication.getName()
+```
+
+Despues `EstadisticasService` busca el usuario en `UsuarioRepository` y llama a varios metodos del repository. Cada metodo calcula una parte concreta.
 
 Se calcula:
 
-- Total de entrenamientos.
-- Minutos entrenados.
-- Promedio.
-- Centros visitados.
-- Lugares visitados.
-- Entrenamiento mas realizado.
+- Total de entrenamientos: hace un `COUNT` de los registros del historial de ese usuario.
+- Minutos entrenados: hace un `SUM` de `duracionMinutos`.
+- Promedio: hace un `AVG` de `duracionMinutos`.
+- Centros visitados: cuenta centros privados distintos usados en el historial.
+- Lugares visitados: cuenta lugares publicos distintos usados en el historial.
+- Entrenamiento mas realizado: agrupa entrenamientos por nombre, cuenta repeticiones y se queda con el mayor.
+
+Ejemplo de idea:
+
+```text
+Si un usuario tiene 5 filas en historial_entrenamientos:
+-> total entrenamientos = 5
+-> minutos entrenados = suma de las duraciones
+-> promedio = suma / cantidad
+```
+
+Para los datos simples se usa JPQL:
+
+```text
+COUNT(h)
+SUM(h.duracionMinutos)
+AVG(h.duracionMinutos)
+```
+
+Para centros y lugares se usa SQL nativo porque hay dos posibles origenes:
+
+```text
+centro_privado_base_id
+centro_privado_usuario_id
+
+lugar_publico_base_id
+lugar_publico_usuario_id
+```
+
+Por eso se cuentan valores distintos con `COUNT(DISTINCT ...)` y se suman los de base + usuario. Tambien se usa `COALESCE` para devolver 0 si no hay resultados.
+
+Para el entrenamiento mas realizado se combinan entrenamientos base y entrenamientos del usuario:
+
+```text
+entrenamientos_base
+UNION ALL
+entrenamientos_usuario
+GROUP BY nombre
+ORDER BY total DESC
+LIMIT 1
+```
+
+Al final el service mete todos los resultados en `EstadisticaUsuarioDTO`. Si algun resultado viene `null`, por ejemplo porque el usuario todavia no tiene historial, se cambia por un valor por defecto:
+
+```text
+0 entrenamientos
+0 minutos
+0.0 de promedio
+"N/A" como entrenamiento mas realizado
+```
+
+Frase:
+
+> Las estadisticas no se guardan duplicadas en otra tabla. Se calculan en tiempo real a partir del historial mediante consultas agregadas: contar, sumar, promediar, contar ubicaciones distintas y buscar el entrenamiento mas repetido.
 
 Ubicacion:
 
+- `EstadisticasRestController.java`
 - `EstadisticasService.java`
 - `EstadisticasRepository.java`
+- `EstadisticaUsuarioDTO.java`
 
 ## Frontend Angular
+
+### Como arranca Angular?
+
+El arranque esta en `main.ts`.
+
+Flujo:
+
+```text
+main.ts
+-> bootstrapApplication(App, appConfig)
+-> app.config.ts registra rutas y HttpClient
+-> App usa <router-outlet>
+-> app.routes.ts decide que pantalla se carga
+```
+
+Archivos:
+
+- `Frontend/digital-fit-frontend/src/main.ts`
+- `Frontend/digital-fit-frontend/src/app/app.config.ts`
+- `Frontend/digital-fit-frontend/src/app/app.ts`
+- `Frontend/digital-fit-frontend/src/app/app.html`
+- `Frontend/digital-fit-frontend/src/app/app.routes.ts`
+
+Frase para decir:
+
+> Angular arranca en `main.ts`, carga el componente raiz `App` y usa `app.config.ts` para registrar rutas y HttpClient. El `router-outlet` es el hueco donde Angular pinta la pantalla correspondiente a la URL.
+
+### Que es `router-outlet`?
+
+Es el punto donde Angular renderiza el componente de la ruta activa.
+
+En tu proyecto:
+
+```html
+<router-outlet></router-outlet>
+```
+
+Esta en:
+
+- `Frontend/digital-fit-frontend/src/app/app.html`
+
+Ejemplo:
+
+```text
+/login
+-> app.routes.ts encuentra LoginComponent
+-> LoginComponent se pinta dentro de router-outlet
+```
 
 ### Donde estan las rutas?
 
@@ -329,6 +441,63 @@ Ubicaciones:
 Frase para decir:
 
 > En Angular no tengo una pagina HTML independiente por cada URL. `app.routes.ts` decide que componente se renderiza, el componente `.ts` contiene la logica, el `.html` pinta la vista y los services separan las llamadas HTTP al backend.
+
+### Que son los standalone components e imports?
+
+El proyecto usa el estilo moderno de Angular, donde los componentes declaran directamente lo que necesitan en `imports`.
+
+Ejemplo:
+
+```ts
+@Component({
+  selector: 'app-login',
+  imports: [FormsModule, RouterLink, HeaderComponent, Footer],
+  templateUrl: './login.html',
+  styleUrl: './login.css'
+})
+```
+
+Significa:
+
+- `FormsModule`: permite usar formularios con `ngModel`.
+- `RouterLink`: permite navegar desde el HTML.
+- `HeaderComponent` y `Footer`: se pueden usar dentro del HTML como `<app-header>` y `<app-footer>`.
+
+Frase:
+
+> En vez de declarar todo en un modulo grande, cada componente importa las piezas que necesita. Eso hace mas claro que depende de que.
+
+### Como funcionan los formularios en Angular?
+
+En los formularios se usa `FormsModule` y `ngModel`.
+
+Ejemplo en login:
+
+```html
+<form (ngSubmit)="iniciarSesion()">
+<input [(ngModel)]="username" name="usuario">
+```
+
+Esto significa:
+
+- `[(ngModel)]="username"` sincroniza el input con la variable `username` del `.ts`.
+- `(ngSubmit)="iniciarSesion()"` llama al metodo cuando se envia el formulario.
+- `[disabled]="cargando"` bloquea el boton mientras se esta procesando.
+
+Flujo:
+
+```text
+login.html
+-> usuario escribe en inputs
+-> ngModel actualiza username/password
+-> ngSubmit llama a iniciarSesion()
+-> login.ts llama a AuthService.login()
+-> backend procesa /api/auth/login
+```
+
+Frase:
+
+> El HTML recoge datos con `ngModel`, el TypeScript ejecuta la logica y el service separa la llamada HTTP al backend.
 
 ### Como se crean las rutas en el frontend?
 
@@ -389,9 +558,68 @@ Ejemplos:
 - Entrenamientos: `services/entrenamientos`
 - Soporte: `soporte.ts`
 
-### Por que usas `withCredentials: true`?
+### Como funcionan los services de Angular?
 
-Porque el backend usa sesion con cookie. Angular debe enviar esa cookie en cada peticion.
+Los services concentran las llamadas HTTP para que los componentes no tengan URLs y logica de API mezcladas con la vista.
+
+Ejemplo:
+
+```text
+login.ts
+-> AuthService.login(username, password)
+-> HttpClient.post('/api/auth/login', ...)
+```
+
+Frase:
+
+> El componente gestiona la pantalla y el service gestiona la comunicacion HTTP.
+
+### Por que no hay interceptor HTTP?
+
+Porque no se esta usando JWT ni una cabecera `Authorization` comun que haya que anadir automaticamente.
+
+En este proyecto cada service manda:
+
+```ts
+withCredentials: true
+```
+
+Eso hace que el navegador envie la cookie de sesion de Spring Security.
+
+Frase:
+
+> Si usara JWT, tendria sentido un interceptor para anadir el token a cada peticion. Como uso cookie de sesion, lo importante es `withCredentials: true`.
+
+### Como se guarda el usuario actual en frontend?
+
+En `AuthService` hay un `BehaviorSubject`.
+
+```ts
+private usuarioSubject = new BehaviorSubject<any | null>(null);
+usuario$ = this.usuarioSubject.asObservable();
+```
+
+Cuando se llama a `/api/auth/me`, el service actualiza ese estado:
+
+```ts
+tap(usuario => this.usuarioSubject.next(usuario))
+```
+
+El `HeaderComponent` se suscribe a `usuario$` para mostrar opciones segun el rol.
+
+Flujo:
+
+```text
+login correcto
+-> AuthService.me()
+-> usuarioSubject.next(usuario)
+-> HeaderComponent recibe usuario
+-> muestra menu USER o ADMIN
+```
+
+Frase:
+
+> El estado de sesion visible en frontend se comparte con un `BehaviorSubject`, pero la sesion real sigue estando en backend con la cookie de Spring Security.
 
 ### Donde esta el mapa?
 
@@ -438,14 +666,6 @@ Excepciones:
 - `backend`: Spring Boot.
 - `frontend`: Angular servido por Nginx.
 
-### Que hace Nginx?
-
-Sirve Angular compilado y redirige `/api/` al backend.
-
-Ubicacion:
-
-- `Frontend/digital-fit-frontend/nginx.conf`
-
 ### Donde estan los datos iniciales?
 
 En `Backend/digital-fit/src/main/resources/data.sql`.
@@ -472,22 +692,9 @@ Porque es libre, ligero y suficiente para mapas interactivos sin depender de cos
 
 ## Puntos Debiles y Mejoras
 
-Si preguntan que mejorarias:
-
-- Mas tests automaticos.
-- Swagger/OpenAPI para documentar endpoints.
-- Flyway o Liquibase para migraciones de BD.
-- Despliegue real en produccion.
-- Estadisticas mas avanzadas.
-- Recomendaciones personalizadas.
-
 Si preguntan por IA:
 
 > He usado IA como apoyo para acelerar, revisar y documentar, pero entiendo la arquitectura, las entidades, las relaciones, el flujo frontend-backend y puedo ubicar el codigo principal.
-
-## Respuesta si te bloqueas
-
-> No recuerdo el nombre exacto ahora mismo, pero por arquitectura estaria en el modulo correspondiente: controller para endpoint, service para logica, repository para BD y model para entidad. Lo buscaria en esa carpeta y podria seguir el flujo desde ahi.
 
 ## Preguntas Teoricas y de Codigo Sobre la App
 
@@ -519,18 +726,6 @@ ORM significa Object Relational Mapping. JPA/Hibernate convierte clases Java en 
 ### Que es JPA?
 
 JPA es la especificacion de Java para persistencia. En el proyecto se usa con Spring Data JPA, que permite crear repositories y consultar entidades sin escribir todo el SQL manual.
-
-### Que es una clave primaria?
-
-Es el identificador unico de una fila. En las entidades suele ser `id` con `@Id` y `@GeneratedValue`.
-
-### Que es una clave foranea?
-
-Es un campo que apunta a la clave primaria de otra tabla. Ejemplo: `usuario_id` en `entrenamientos_usuario` apunta a `usuarios.id`.
-
-### Que es una relacion 1:N?
-
-Un registro de una tabla puede tener muchos registros asociados en otra. Ejemplo: un usuario puede tener muchos entrenamientos personales.
 
 ### Que es `@ManyToOne`?
 
@@ -609,11 +804,25 @@ Frase:
 
 ### Como funcionan las estadisticas en el codigo?
 
-Las estadisticas no se guardan como una tabla independiente principal. Se calculan a partir del historial.
+Las estadisticas son un resumen calculado del historial del usuario. No son datos que el usuario rellene directamente, sino datos derivados de los entrenamientos que ya ha registrado.
+
+Idea principal:
+
+```text
+El usuario registra entrenamientos en historial
+-> historial_entrenamientos guarda los hechos
+-> estadisticas consulta ese historial
+-> se devuelve un DTO con totales y resumenes
+```
+
+Por eso la tabla importante es `historial_entrenamientos`. Estadisticas no necesita una tabla propia con datos duplicados, porque puede calcularlos desde el historial.
 
 Flujo:
 
 ```text
+estadisticas.html
+-> estadisticas.ts
+-> estadisticas-service.ts
 GET /api/estadisticas
 -> EstadisticasRestController.obtenerEstadisticas
 -> authentication.getName()
@@ -623,7 +832,15 @@ GET /api/estadisticas
 -> EstadisticaUsuarioDTO devuelve el resultado
 ```
 
-Que calcula:
+Que hace cada parte:
+
+- `estadisticas-service.ts`: llama al backend con `GET /api/estadisticas`.
+- `EstadisticasRestController.java`: recibe la peticion y obtiene el usuario autenticado con `Authentication`.
+- `EstadisticasService.java`: coordina la logica; busca el usuario y rellena el DTO.
+- `EstadisticasRepository.java`: hace las consultas de conteo, suma, promedio y agrupacion.
+- `EstadisticaUsuarioDTO.java`: es el objeto que vuelve al frontend con los resultados.
+
+Que calcula el repository:
 
 - Entrenamientos realizados.
 - Minutos entrenados.
@@ -639,6 +856,21 @@ Archivos:
 - `EstadisticasRepository.java`
 - `EstadisticaUsuarioDTO.java`
 - `historial_entrenamientos`
+
+Ejemplo para explicarlo:
+
+> Si un usuario registra 5 entrenamientos en historial, estadisticas cuenta esos 5 registros. Si esos entrenamientos suman 300 minutos, devuelve 300 minutos entrenados. Y si un entrenamiento aparece varias veces, puede detectarlo como entrenamiento mas realizado.
+
+Punto importante:
+
+El service controla valores nulos. Si una consulta no devuelve nada porque el usuario todavia no tiene historial, se devuelven valores por defecto:
+
+```text
+0 entrenamientos
+0 minutos
+0.0 de promedio
+"N/A" como entrenamiento mas realizado
+```
 
 Frase:
 
@@ -665,18 +897,22 @@ Frase:
 
 ### Como funciona el soporte o chat?
 
-Soporte esta modelado como tickets y mensajes.
+Soporte funciona como un sistema de tickets con conversacion. No es un chat en tiempo real tipo WhatsApp, porque no usa WebSocket ni mensajes instantaneos. Es una conversacion guardada en base de datos: el frontend consulta y envia mensajes mediante endpoints REST.
+
+Modelo:
 
 ```text
 soporte
--> ticket principal: asunto, mensaje inicial, estado, usuario, fecha
+-> ticket principal
+-> guarda asunto, mensaje inicial, estado, usuario y fecha
 
 mensajes_soporte
 -> mensajes de la conversacion
--> cada mensaje tiene ticket, emisor, contenido y fecha
+-> cada mensaje pertenece a un ticket
+-> cada mensaje tiene emisor, contenido y fecha
 ```
 
-Flujo usuario:
+Cuando el usuario crea un ticket:
 
 ```text
 soporte.ts frontend
@@ -687,14 +923,32 @@ soporte.ts frontend
 -> MensajeSoporteRepository guarda mensaje inicial
 ```
 
-Flujo mensajes:
+Esto significa que al crear el ticket se guardan dos cosas:
+
+1. El ticket en `soporte`.
+2. El primer mensaje en `mensajes_soporte`.
+
+Asi el mensaje inicial tambien queda dentro de la conversacion.
+
+Para ver mensajes de un ticket:
 
 ```text
 GET /api/soporte/mis-tickets/{id}/mensajes
-POST /api/soporte/mis-tickets/{id}/mensajes
+-> SoporteRestController.verMensajes
+-> SoporteService.listarMensajesTicketUsuario
+-> MensajeSoporteRepository.findByTicketOrderByFechaAsc
 ```
 
-Admin:
+Para enviar un mensaje como usuario:
+
+```text
+POST /api/soporte/mis-tickets/{id}/mensajes
+-> SoporteRestController.enviarMensaje
+-> SoporteService.enviarMensajeUsuario
+-> MensajeSoporteRepository.save
+```
+
+Para admin:
 
 ```text
 /api/admin/soporte
@@ -702,9 +956,29 @@ Admin:
 -> SoporteService
 ```
 
+El admin tiene endpoints separados porque puede ver todos los tickets, cambiar estados y responder como administrador.
+
+Estados:
+
+```text
+ABIERTO      -> ticket creado por usuario
+EN_PROCESO  -> admin ya ha respondido o esta gestionandolo
+CERRADO     -> ticket terminado
+```
+
+Archivos:
+
+- Frontend usuario: `services/soporte.ts`
+- Frontend admin: `services/admin/admin-soporte-service.ts`
+- Controller usuario: `SoporteRestController.java`
+- Controller admin: `SoporteAdminRestController.java`
+- Logica: `SoporteService.java`
+- Entidades: `Soporte.java`, `MensajeSoporte.java`
+- Repositories: `SoporteRepository.java`, `MensajeSoporteRepository.java`
+
 Frase:
 
-> No es un chat en tiempo real con WebSocket. Es una conversacion tipo ticket: se guardan mensajes en base de datos y se consultan desde frontend.
+> Soporte no es un chat en tiempo real, es un sistema de tickets con mensajes persistidos. Cada conversacion queda guardada en base de datos y se consulta mediante endpoints REST.
 
 ### Que reglas tiene el soporte?
 
@@ -865,14 +1139,6 @@ Frase:
 
 Si. Un guard solo protege la navegacion del frontend. Por eso el backend tambien protege endpoints. Si alguien llama manualmente a `/api/admin/...`, Spring Security comprueba el rol.
 
-### Que es XSS?
-
-Cross-Site Scripting: inyectar JavaScript malicioso en una pagina. Angular reduce el riesgo porque escapa contenido por defecto, pero igualmente hay que evitar pintar HTML no confiable.
-
-### Que es CSRF?
-
-Cross-Site Request Forgery: hacer que un usuario autenticado envie una peticion sin querer. En el proyecto CSRF esta desactivado para facilitar la API con Angular, pero en produccion habria que revisarlo y proteger mejor operaciones sensibles.
-
 ### Puede haber inyeccion SQL?
 
 El riesgo baja porque se usa JPA y repositories, no concatenacion manual de SQL con strings de usuario. Aun asi, las entradas se validan y en consultas nativas se deben usar parametros.
@@ -907,13 +1173,6 @@ En `AdminRestController.java`, endpoint `/api/admin/crear-admin`, y la logica en
 
 En `GlobalExceptionHandler.java`.
 
-### Donde se cargan datos iniciales?
-
-En `data.sql`.
-
-### Donde se definen enums?
-
-En `model/Enums`: roles, estados de soporte, tipos de valoracion, categorias, niveles y tipos de lugar publico.
 
 ### Donde esta la configuracion de MySQL?
 
@@ -924,16 +1183,6 @@ En `application.properties` y tambien en `docker-compose.yml` para Docker.
 ### Que pruebas has hecho?
 
 He hecho pruebas manuales de los flujos principales: registro, login, navegacion, CRUD, mapa, historial, valoraciones, estadisticas, soporte y admin. Hay archivos `.spec.ts` en Angular y una prueba base en Spring Boot, aunque una mejora seria ampliar tests automaticos.
-
-### Que mejorarias antes de produccion?
-
-- Activar y configurar CSRF correctamente si se mantiene sesion por cookies.
-- Usar variables de entorno para secretos.
-- Usar Flyway/Liquibase para migraciones.
-- Anadir Swagger/OpenAPI.
-- Anadir tests de integracion.
-- Revisar logs y errores.
-- Desplegar con HTTPS.
 
 ### Que parte tiene mas complejidad?
 

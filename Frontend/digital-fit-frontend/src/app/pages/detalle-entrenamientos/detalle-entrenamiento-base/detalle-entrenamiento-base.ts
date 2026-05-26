@@ -72,8 +72,8 @@ export class DetalleEntrenamientoComponent {
       next: () => {
         this.abrirPopup('Entrenamiento añadido a mis entrenamientos.', 'exito');
       },
-      error: () => {
-        this.abrirPopup('No se pudo añadir a mis entrenamientos.', 'error');
+      error: (err: any) => {
+        this.abrirPopup(this.obtenerMensajeError(err, 'No se pudo añadir a mis entrenamientos.'), 'error');
       }
     });
   }
@@ -85,7 +85,7 @@ export class DetalleEntrenamientoComponent {
 
     this.adminEntrenamientosBaseService.borrarEntrenamientoBase(this.entrenamiento.id).subscribe({
       next: () => {
-        this.abrirPopup('Entrenamiento base borrado correctamente.', 'error');
+        this.abrirPopup('Entrenamiento base borrado correctamente.', 'exito');
 
         setTimeout(() => {
           this.router.navigate(['/entrenamientos']);
@@ -134,5 +134,13 @@ export class DetalleEntrenamientoComponent {
   cerrarPopup(): void {
     this.mostrarPopup = false;
     this.cdr.detectChanges();
+  }
+
+  private obtenerMensajeError(err: any, mensajePorDefecto: string): string {
+    if (typeof err?.error === 'string' && err.error.trim() !== '') {
+      return err.error;
+    }
+
+    return mensajePorDefecto;
   }
 }

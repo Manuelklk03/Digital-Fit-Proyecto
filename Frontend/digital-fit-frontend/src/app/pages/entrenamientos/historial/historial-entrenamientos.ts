@@ -182,7 +182,7 @@ export class HistorialEntrenamientosComponent {
   borrarRegistro(id: number): void {
     this.historialService.borrarRegistro(id).subscribe({
       next: () => {
-        this.abrirPopup('Registro borrado correctamente.', 'error');
+        this.abrirPopup('Registro borrado correctamente.', 'exito');
         this.cargarHistorial();
       },
       error: () => {
