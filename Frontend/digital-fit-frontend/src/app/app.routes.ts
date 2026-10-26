@@ -12,7 +12,18 @@ import { DetallePrivadoComponent } from './pages/detalle-privado/detalle-privado
 import { authGuard } from './guards/auth-guard';
 import { publicGuard } from './guards/public-guard';
 import { DetalleEntrenamientoComponent } from './pages/detalle-entrenamientos/detalle-entrenamiento-base/detalle-entrenamiento-base';
-
+import { MisEntrenamientosComponent } from './pages/entrenamientos/mis-entrenamientos/mis-entrenamientos';
+import { MisCentrosComponent } from './pages/privados/mis-centros/mis-centros';
+import { DetalleMiCentroComponent } from './pages/detalle-privado/detalle-mi-centro/detalle-mi-centro';
+import { DetalleMiEntrenamientoComponent } from './pages/detalle-entrenamientos/detalle-mis-entrenamientos/detalle-mis-entrenamientos';
+import { DetalleMiLugarComponent } from './pages/detalle-publico/detalle-mis-lugares/detalle-mi-lugar/detalle-mi-lugar';
+import { MisLugaresComponent } from './pages/publicos/mis-lugares/mis-lugares';
+import { EntrenamientosComunidadComponent } from './pages/entrenamientos/comunidad/entrenamientos-comunidad';
+import { DetalleEntrenamientoComunidadComponent } from './pages/detalle-entrenamientos/detalle-comunidad/detalle-entrenamiento-comunidad/detalle-entrenamiento-comunidad';
+import { HistorialEntrenamientosComponent } from './pages/entrenamientos/historial/historial-entrenamientos';
+import { DetalleHistorialEntrenamientoComponent } from './pages/detalle-entrenamientos/detalle-historial/detalle-historial';
+import { EstadisticasComponent } from './pages/estadisticas/estadisticas';
+import { AdminSoporteComponent } from './pages/admin/soporte/soporte-admin/soporte-admin';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -29,5 +40,17 @@ export const routes: Routes = [
   { path: 'valoraciones', component: ValoracionesComponent, canActivate: [authGuard] },
   { path: 'publicos/:id', component: DetallePublicoComponent, canActivate: [authGuard] },
   { path: 'entrenamientos/:id', component: DetalleEntrenamientoComponent, canActivate: [authGuard] },
+  { path: 'mis-entrenamientos', component: MisEntrenamientosComponent, canActivate: [authGuard] },
+  { path: 'mis-centros', component: MisCentrosComponent, canActivate: [authGuard] },
+  { path: 'mis-centros/:id', component: DetalleMiCentroComponent, canActivate: [authGuard] },
+  { path: 'mis-entrenamientos/:id', component: DetalleMiEntrenamientoComponent, canActivate: [authGuard] },
+  { path: 'mis-lugares', component: MisLugaresComponent, canActivate: [authGuard] },
+  { path: 'mis-lugares/:id', component: DetalleMiLugarComponent, canActivate: [authGuard] },
+  { path: 'entrenamientos-comunidad', component: EntrenamientosComunidadComponent, canActivate: [authGuard] },
+  { path: 'entrenamientos-comunidad/:id', component: DetalleEntrenamientoComunidadComponent, canActivate: [authGuard] },
+  { path: 'historial-entrenamientos', component: HistorialEntrenamientosComponent, canActivate: [authGuard] },
+{ path: 'historial-entrenamientos/:id', component: DetalleHistorialEntrenamientoComponent, canActivate: [authGuard] },
+{ path: 'estadisticas', component: EstadisticasComponent, canActivate: [authGuard] },
+{ path: 'admin/soporte', component: AdminSoporteComponent, canActivate: [authGuard] },
   { path: '**', redirectTo: 'login' }
 ];

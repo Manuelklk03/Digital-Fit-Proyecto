@@ -13,17 +13,14 @@ export class HeaderComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
 
-  usuarioActual: string | null = null;
+  usuarioActual: any = null;
 
   ngOnInit(): void {
-
-    // 🔥 escucha cambios de login en tiempo real
     this.authService.usuario$.subscribe(usuario => {
       this.usuarioActual = usuario;
     });
 
-    // 🔥 al cargar la app intenta recuperar sesión
-    this.authService.yo().subscribe({
+    this.authService.me().subscribe({
       error: () => {
         this.usuarioActual = null;
       }
@@ -36,5 +33,13 @@ export class HeaderComponent {
         this.router.navigate(['/login']);
       }
     });
+  }
+
+  esAdmin(): boolean {
+    return this.usuarioActual?.rol === 'ADMIN';
+  }
+
+  iconoUsuario(): string {
+    return this.esAdmin() ? '🛡️' : '👤';
   }
 }

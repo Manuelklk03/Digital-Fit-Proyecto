@@ -1,0 +1,68 @@
+<app-header></app-header>
+
+<main class="detalle-mi-lugar">
+
+    @if (lugar) {
+    <div class="grid-detalle">
+
+        <div class="columna-imagen">
+            <div class="imagen-wrapper">
+                <img src="img/LOGOFINAL-removebg.png" alt="Mi lugar">
+                <span class="badge">Mi lugar</span>
+            </div>
+        </div>
+
+        <div class="columna-info">
+
+            <h1>{{ lugar.nombre }}</h1>
+
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="label">Dirección:</span>
+                    <span>{{ lugar.direccion }}</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="label">Teléfono:</span>
+                    <span>{{ lugar.telefono }}</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="label">Horario:</span>
+                    <span>{{ lugar.horario }}</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="label">Tipo:</span>
+                    <span>{{ lugar.tipo }}</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="label">Latitud:</span>
+                    <span>{{ lugar.latitud }}</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="label">Longitud:</span>
+                    <span>{{ lugar.longitud }}</span>
+                </div>
+            </div>
+
+            <details class="bloque-detalles">
+                <summary>Descripción</summary>
+                <p>{{ lugar.descripcion }}</p>
+            </details>
+
+            <button class="boton-ubicacion">
+                Ver ubicación
+            </button>
+
+        </div>
+    </div>
+    } @else {
+    <p class="mensaje-cargando">Cargando detalle...</p>
+    }
+
+</main>
+
+<app-footer></app-footer>

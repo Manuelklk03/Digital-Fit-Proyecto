@@ -1,0 +1,121 @@
+<app-header></app-header>
+
+<main class="pagina-mis-lugares">
+
+    <section class="cabecera-pagina">
+        <h1>Mis lugares</h1>
+        <p>
+            Aquí puedes ver tus lugares guardados y añadir lugares personalizados.
+        </p>
+    </section>
+
+    <section class="bloque-formulario">
+        <h2>Añadir lugar personalizado</h2>
+
+        <form class="formulario-lugar" (ngSubmit)="crearLugar()">
+
+            <div class="grupo-campo">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" name="nombre" [(ngModel)]="nombre" required>
+            </div>
+
+            <div class="grupo-campo">
+                <label for="direccion">Dirección</label>
+                <input type="text" id="direccion" name="direccion" [(ngModel)]="direccion" required>
+            </div>
+
+            <div class="grupo-campo">
+                <label for="descripcion">Descripción</label>
+                <textarea id="descripcion" name="descripcion" rows="4" [(ngModel)]="descripcion"></textarea>
+            </div>
+
+            <div class="grupo-campo">
+                <label for="telefono">Teléfono</label>
+                <input type="text" id="telefono" name="telefono" [(ngModel)]="telefono">
+            </div>
+
+            <div class="grupo-campo">
+                <label for="horario">Horario</label>
+                <input type="text" id="horario" name="horario" [(ngModel)]="horario">
+            </div>
+
+            <div class="grupo-campo">
+                <label for="latitud">Latitud</label>
+                <input type="number" id="latitud" name="latitud" [(ngModel)]="latitud">
+            </div>
+
+            <div class="grupo-campo">
+                <label for="longitud">Longitud</label>
+                <input type="number" id="longitud" name="longitud" [(ngModel)]="longitud">
+            </div>
+
+            <div class="grupo-campo">
+                <label for="tipo">Tipo</label>
+                <select id="tipo" name="tipo" [(ngModel)]="tipo">
+                    <option value="PARQUE_PUBLICO">PARQUE_PUBLICO</option>
+                    <option value="PARQUE_CALISTENIA">PARQUE_CALISTENIA</option>
+                    <option value="ZONA_BARRAS">ZONA_BARRAS</option>
+                    <option value="PISTA_FUTBOL">PISTA_FUTBOL</option>
+                    <option value="PISTA_BALONCESTO">PISTA_BALONCESTO</option>
+                    <option value="PISTA_PADEL">PISTA_PADEL</option>
+                    <option value="PISTA_TENIS">PISTA_TENIS</option>
+                    <option value="PLAYA_DEPORTIVA">PLAYA_DEPORTIVA</option>
+                    <option value="RUTA_RUNNING">RUTA_RUNNING</option>
+                    <option value="RUTA_SENDERISMO">RUTA_SENDERISMO</option>
+                </select>
+            </div>
+
+            <button type="submit" class="boton-guardar">
+                Guardar lugar
+            </button>
+
+            @if (mensajeExito) {
+            <p class="mensaje-exito">{{ mensajeExito }}</p>
+            }
+
+            @if (mensajeError) {
+            <p class="mensaje-error">{{ mensajeError }}</p>
+            }
+
+        </form>
+    </section>
+
+    <section class="bloque-listado">
+        <h2>Listado de mis lugares</h2>
+
+        @if (lugares.length > 0) {
+        <div class="grid-lugares">
+
+            @for (lugar of lugares; track lugar.id) {
+            <article class="tarjeta-lugar">
+
+                <h3>{{ lugar.nombre }}</h3>
+
+                <p><strong>Dirección:</strong> {{ lugar.direccion }}</p>
+                <p><strong>Tipo:</strong> {{ lugar.tipo }}</p>
+                <p><strong>Teléfono:</strong> {{ lugar.telefono }}</p>
+                <p><strong>Horario:</strong> {{ lugar.horario }}</p>
+                <p>{{ lugar.descripcion }}</p>
+
+                <div class="acciones-lugar">
+                    <a class="boton-detalle" [routerLink]="['/mis-lugares', lugar.id]">
+                        Ver detalle
+                    </a>
+
+                    <button class="boton-borrar" (click)="borrarLugar(lugar.id)">
+                        Borrar lugar
+                    </button>
+                </div>
+
+            </article>
+            }
+
+        </div>
+        } @else {
+        <p class="sin-datos">No tienes lugares guardados todavía.</p>
+        }
+    </section>
+
+</main>
+
+<app-footer></app-footer>
