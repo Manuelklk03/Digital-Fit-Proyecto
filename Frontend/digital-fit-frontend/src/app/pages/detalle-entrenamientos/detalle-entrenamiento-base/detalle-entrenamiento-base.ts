@@ -85,7 +85,11 @@ export class DetalleEntrenamientoComponent {
 
     this.adminEntrenamientosBaseService.borrarEntrenamientoBase(this.entrenamiento.id).subscribe({
       next: () => {
-        this.router.navigate(['/entrenamientos']);
+        this.abrirPopup('Entrenamiento base borrado correctamente.', 'error');
+
+        setTimeout(() => {
+          this.router.navigate(['/entrenamientos']);
+        }, 1200);
       },
       error: () => {
         this.abrirPopup('No se pudo borrar el entrenamiento base.', 'error');

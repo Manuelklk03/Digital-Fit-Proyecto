@@ -1,0 +1,26 @@
+<div class="mapa-contenedor">
+
+  @if (!soloVista) {
+    <div class="barra-superior-mapa">
+      <input
+        type="text"
+        [(ngModel)]="textoBusqueda"
+        placeholder="Buscar dirección en Comunidad Valenciana"
+      >
+
+      <button type="button" (click)="buscarDireccion()">
+        Buscar
+      </button>
+
+      <button type="button" (click)="volverAValencia()">
+        Volver a Valencia
+      </button>
+
+      <button type="button" (click)="volverAMarcador()">
+        Ir a ubicación marcada
+      </button>
+    </div>
+  }
+
+  <div #mapContainer class="mapa-leaflet"></div>
+</div>

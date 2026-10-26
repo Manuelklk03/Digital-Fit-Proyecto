@@ -4,10 +4,11 @@ import { RouterLink } from '@angular/router';
 import { MisLugaresService } from '../../../services/publicos/mis-lugares';
 import { Footer } from '../../../components/footer/footer';
 import { HeaderComponent } from '../../../components/header/header';
+import { MapaSelectorComponent } from '../../../components/mapa-selector/mapa-selector';
 
 @Component({
   selector: 'app-mis-lugares',
-  imports: [HeaderComponent, Footer, FormsModule, RouterLink],
+  imports: [HeaderComponent, Footer, FormsModule, RouterLink, MapaSelectorComponent],
   templateUrl: './mis-lugares.html',
   styleUrl: './mis-lugares.css'
 })
@@ -18,8 +19,19 @@ export class MisLugaresComponent {
 
   lugares: any[] = [];
 
+  nombre = '';
+  direccion = '';
+  descripcion = '';
+  telefono = '';
+  horario = '';
+  latitud = 39.4699;
+  longitud = -0.3763;
+  tipo = 'PARQUE_PUBLICO';
+
   tipoBusqueda = 'nombre';
   valorBusqueda = '';
+
+  mostrarFormularioMapa = false;
 
   mostrarPopup = false;
   textoPopup = '';
@@ -92,6 +104,51 @@ export class MisLugaresComponent {
     this.cargarMisLugares();
   }
 
+  abrirFormularioMapa(): void {
+    this.nombre = '';
+    this.direccion = '';
+    this.descripcion = '';
+    this.telefono = '';
+    this.horario = '';
+    this.latitud = 39.4699;
+    this.longitud = -0.3763;
+    this.tipo = 'PARQUE_PUBLICO';
+    this.mostrarFormularioMapa = true;
+  }
+
+  actualizarUbicacion(evento: { latitud: number, longitud: number }): void {
+    this.latitud = evento.latitud;
+    this.longitud = evento.longitud;
+  }
+
+  guardarLugarDesdeMapa(): void {
+    const payload = {
+      nombre: this.nombre,
+      direccion: this.direccion,
+      descripcion: this.descripcion,
+      telefono: this.telefono,
+      horario: this.horario,
+      latitud: this.latitud,
+      longitud: this.longitud,
+      tipo: this.tipo
+    };
+
+    this.misLugaresService.crearLugarDesdeMaps(payload).subscribe({
+      next: () => {
+        this.abrirPopup('Lugar guardado correctamente.', 'exito');
+        this.mostrarFormularioMapa = false;
+        this.cargarMisLugares();
+      },
+      error: () => {
+        this.abrirPopup('No se pudo guardar el lugar.', 'error');
+      }
+    });
+  }
+
+  cancelarFormularioMapa(): void {
+    this.mostrarFormularioMapa = false;
+  }
+
   borrarLugar(id: number): void {
     this.misLugaresService.borrarLugar(id).subscribe({
       next: () => {
@@ -111,6 +168,14 @@ export class MisLugaresComponent {
 
     return tipo.replaceAll('_', ' ').toLowerCase()
       .replace(/\b\w/g, letra => letra.toUpperCase());
+  }
+
+  formatearUbicacion(latitud: number, longitud: number): string {
+    if (latitud == null || longitud == null) {
+      return 'Sin ubicación';
+    }
+
+    return `${latitud}, ${longitud}`;
   }
 
   abrirPopup(texto: string, tipo: 'exito' | 'error'): void {

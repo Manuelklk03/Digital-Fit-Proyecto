@@ -14,7 +14,7 @@
   <section class="cabecera-pagina">
     <h1>Mis centros</h1>
     <p>
-      Aquí puedes ver tus centros guardados. Más adelante podrás añadir nuevos desde el mapa.
+      Aquí puedes ver tus centros guardados y añadir nuevos desde el mapa.
     </p>
   </section>
 
@@ -36,13 +36,81 @@
           placeholder="Escribe aquí...">
 
         <button type="button" class="boton-limpiar" (click)="limpiarBusqueda()">Limpiar</button>
+        <button type="button" class="boton-detalle" (click)="abrirFormularioMapa()">Añadir desde mapa</button>
       </div>
     </div>
+
+    @if (mostrarFormularioMapa) {
+    <div class="bloque-formulario-mapa">
+      <h3>Nuevo centro desde mapa</h3>
+
+      <app-mapa-selector
+        [latitud]="latitud"
+        [longitud]="longitud"
+        (ubicacionSeleccionada)="actualizarUbicacion($event)">
+      </app-mapa-selector>
+
+      <form class="formulario-centro" (ngSubmit)="guardarCentroDesdeMapa()">
+
+        <div class="grid-formulario">
+          <div class="grupo-campo">
+            <label for="nombre">Nombre</label>
+            <input type="text" id="nombre" name="nombre" [(ngModel)]="nombre" required>
+          </div>
+
+          <div class="grupo-campo">
+            <label for="direccion">Dirección</label>
+            <input type="text" id="direccion" name="direccion" [(ngModel)]="direccion" required>
+          </div>
+
+          <div class="grupo-campo">
+            <label for="telefono">Teléfono</label>
+            <input type="text" id="telefono" name="telefono" [(ngModel)]="telefono">
+          </div>
+
+          <div class="grupo-campo">
+            <label for="horario">Horario</label>
+            <input type="text" id="horario" name="horario" [(ngModel)]="horario">
+          </div>
+
+          <div class="grupo-campo">
+            <label for="precioMensual">Precio mensual</label>
+            <input type="number" id="precioMensual" name="precioMensual" [(ngModel)]="precioMensual">
+          </div>
+
+          <div class="grupo-campo">
+            <label for="latitud">Latitud</label>
+            <input type="number" id="latitud" name="latitud" [(ngModel)]="latitud" step="any" required>
+          </div>
+
+          <div class="grupo-campo">
+            <label for="longitud">Longitud</label>
+            <input type="number" id="longitud" name="longitud" [(ngModel)]="longitud" step="any" required>
+          </div>
+        </div>
+
+        <div class="grupo-campo">
+          <label for="descripcion">Descripción</label>
+          <textarea id="descripcion" name="descripcion" rows="4" [(ngModel)]="descripcion"></textarea>
+        </div>
+
+        <div class="acciones-centro">
+          <button class="boton-detalle" type="submit">Guardar centro</button>
+          <button class="boton-limpiar" type="button" (click)="cancelarFormularioMapa()">Cancelar</button>
+        </div>
+      </form>
+    </div>
+    }
 
     @if (centros.length > 0) {
     <div class="grid-centros">
       @for (centro of centros; track centro.id) {
       <article class="tarjeta-centro">
+
+        <div class="ubicacion-tarjeta">
+          <strong>Ubicación:</strong> {{ formatearUbicacion(centro.latitud, centro.longitud) }}
+        </div>
+
         <h3>{{ centro.nombre }}</h3>
 
         <p><strong>Dirección:</strong> {{ centro.direccion }}</p>

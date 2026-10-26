@@ -95,6 +95,17 @@
         <textarea id="descripcion" name="descripcion" rows="4" [(ngModel)]="descripcion"></textarea>
       </div>
 
+      <div class="grupo-campo">
+        <label>Seleccionar ubicación en el mapa</label>
+
+        <app-mapa-selector
+          [latitud]="latitud"
+          [longitud]="longitud"
+          [soloVista]="false"
+          (ubicacionSeleccionada)="actualizarUbicacion($event)">
+        </app-mapa-selector>
+      </div>
+
       <div class="acciones-formulario">
         <button type="submit" class="boton-guardar">
           @if (editandoId !== null) {
@@ -102,6 +113,10 @@
           } @else {
           Crear lugar
           }
+        </button>
+
+        <button type="button" class="boton-cancelar" (click)="limpiarFormulario()">
+          Limpiar formulario
         </button>
 
         @if (editandoId !== null) {
@@ -139,6 +154,11 @@
     <div class="grid-lugares">
       @for (lugar of lugares; track lugar.id) {
       <article class="tarjeta-lugar">
+
+        <div class="ubicacion-tarjeta">
+          <strong>Ubicación:</strong> {{ formatearUbicacion(lugar.latitud, lugar.longitud) }}
+        </div>
+
         <h3>{{ lugar.nombre }}</h3>
 
         <p><strong>Dirección:</strong> {{ lugar.direccion }}</p>

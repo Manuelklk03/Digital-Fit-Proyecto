@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.digital_fit.dto.LugarPublico.CrearLugarPublicoDTO;
 import com.example.digital_fit.dto.LugarPublico.LugarPublicoBaseDTO;
-import com.example.digital_fit.exception.ErrorArgumentoException;
+import com.example.digital_fit.exception.OperacionNoPermitida;
 import com.example.digital_fit.exception.RecursoNoEncontradoException;
 import com.example.digital_fit.model.Enums.TipoLugarPublico;
 import com.example.digital_fit.model.LugarPublico.LugarPublicoBase;
@@ -66,14 +66,8 @@ public class LugarPublicoBaseService {
 
         log.info("Creando lugar publico {}", dto.getNombre());
 
-        boolean repetido = lugarPublicoBaseRepository
-                .existsByNombreIgnoreCaseAndDireccionIgnoreCaseAndTipo(
-                        dto.getNombre(),
-                        dto.getDireccion(),
-                        dto.getTipo());
-
-        if (repetido) {
-            throw new ErrorArgumentoException("Ya existe un lugar público base igual");
+        if (lugarPublicoBaseRepository.findByNombreIgnoreCase(dto.getNombre()).isPresent()) {
+            throw new OperacionNoPermitida("Ya existe un lugar público base con ese nombre.");
         }
 
         LugarPublicoBase lugar = new LugarPublicoBase();
@@ -101,16 +95,11 @@ public class LugarPublicoBaseService {
         LugarPublicoBase lugar = lugarPublicoBaseRepository.findById(id)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Lugar con id: " + id + " No encontrado."));
 
-        boolean repetido = lugarPublicoBaseRepository
-                .existsByNombreIgnoreCaseAndDireccionIgnoreCaseAndTipoAndIdNot(
-                        dto.getNombre(),
-                        dto.getDireccion(),
-                        dto.getTipo(),
-                        id);
-
-        if (repetido) {
-            throw new ErrorArgumentoException("Ya existe otro lugar público base igual");
-        }
+        lugarPublicoBaseRepository.findByNombreIgnoreCase(dto.getNombre()).ifPresent(existente -> {
+            if (!existente.getId().equals(id)) {
+                throw new OperacionNoPermitida("Ya existe otro lugar público base con ese nombre.");
+            }
+        });
 
         lugar.setNombre(dto.getNombre());
         lugar.setDireccion(dto.getDireccion());

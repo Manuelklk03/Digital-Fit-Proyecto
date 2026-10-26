@@ -6,10 +6,11 @@ import { PublicosService } from '../../../services/publicos/publicos-service';
 import { MisLugaresService } from '../../../services/publicos/mis-lugares';
 import { AdminLugaresPublicosBaseService } from '../../../services/admin/admin-lugarespublicos-base';
 import { AuthService } from '../../../services/auth-service';
+import { MapaSelectorComponent } from '../../../components/mapa-selector/mapa-selector';
 
 @Component({
   selector: 'app-detalle-publico',
-  imports: [HeaderComponent, Footer, RouterLink],
+  imports: [HeaderComponent, Footer, RouterLink, MapaSelectorComponent],
   templateUrl: './detalle-publico.html',
   styleUrl: './detalle-publico.css'
 })
@@ -63,6 +64,23 @@ export class DetallePublicoComponent {
     return this.usuarioActual?.rol === 'ADMIN';
   }
 
+  mostrarTipoLegible(tipo: string): string {
+    if (!tipo) {
+      return 'Sin tipo';
+    }
+
+    return tipo.replaceAll('_', ' ').toLowerCase()
+      .replace(/\b\w/g, letra => letra.toUpperCase());
+  }
+
+  formatearUbicacion(latitud: number, longitud: number): string {
+    if (latitud == null || longitud == null) {
+      return 'Sin ubicación';
+    }
+
+    return `${latitud}, ${longitud}`;
+  }
+
   anadirAMisLugares(): void {
     if (!this.lugar?.id) {
       return;
@@ -85,21 +103,16 @@ export class DetallePublicoComponent {
 
     this.adminLugaresPublicosBaseService.borrarLugarPublicoBase(this.lugar.id).subscribe({
       next: () => {
-        this.router.navigate(['/publicos']);
+        this.abrirPopup('Lugar público base borrado correctamente.', 'exito');
+
+        setTimeout(() => {
+          this.router.navigate(['/publicos']);
+        }, 1200);
       },
       error: () => {
         this.abrirPopup('No se pudo borrar el lugar público base.', 'error');
       }
     });
-  }
-
-  mostrarTipoLegible(tipo: string): string {
-    if (!tipo) {
-      return 'Sin tipo';
-    }
-
-    return tipo.replaceAll('_', ' ').toLowerCase()
-      .replace(/\b\w/g, letra => letra.toUpperCase());
   }
 
   abrirPopup(texto: string, tipo: 'exito' | 'error'): void {

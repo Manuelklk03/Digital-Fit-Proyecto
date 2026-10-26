@@ -25,7 +25,8 @@ public class CentroPrivadoBaseAdminRestController {
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<CentroPrivadoBaseDTO> crearCentroPrivadoBase(@RequestBody CrearCentroPrivadoDTO dto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(centroPrivadoBaseAdminService.crearCentroPrivado(dto));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(centroPrivadoBaseAdminService.crearCentroPrivado(dto));
     }
 
     @PutMapping("/{id}")

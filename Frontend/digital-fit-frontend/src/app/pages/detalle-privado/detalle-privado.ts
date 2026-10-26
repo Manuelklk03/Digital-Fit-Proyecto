@@ -6,10 +6,11 @@ import { PrivadosService } from '../../services/centros/privados-service';
 import { MisCentrosService } from '../../services/centros/mis-centros-service';
 import { AdminCentrosPrivadosBaseService } from '../../services/admin/admin-centro-base';
 import { AuthService } from '../../services/auth-service';
+import { MapaSelectorComponent } from '../../components/mapa-selector/mapa-selector';
 
 @Component({
   selector: 'app-detalle-privado',
-  imports: [HeaderComponent, Footer, RouterLink],
+  imports: [HeaderComponent, Footer, RouterLink, MapaSelectorComponent],
   templateUrl: './detalle-privado.html',
   styleUrl: './detalle-privado.css'
 })
@@ -63,6 +64,14 @@ export class DetallePrivadoComponent {
     return this.usuarioActual?.rol === 'ADMIN';
   }
 
+  formatearUbicacion(latitud: number, longitud: number): string {
+    if (latitud == null || longitud == null) {
+      return 'Sin ubicación';
+    }
+
+    return `${latitud}, ${longitud}`;
+  }
+
   anadirAMisCentros(): void {
     if (!this.centro?.id) {
       return;
@@ -85,7 +94,11 @@ export class DetallePrivadoComponent {
 
     this.adminCentrosPrivadosBaseService.borrarCentroPrivadoBase(this.centro.id).subscribe({
       next: () => {
-        this.router.navigate(['/privados']);
+        this.abrirPopup('Centro privado base borrado correctamente.', 'exito');
+
+        setTimeout(() => {
+          this.router.navigate(['/privados']);
+        }, 1200);
       },
       error: () => {
         this.abrirPopup('No se pudo borrar el centro privado base.', 'error');

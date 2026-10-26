@@ -7,10 +7,11 @@ import { Footer } from '../../components/footer/footer';
 import { PublicosService } from '../../services/publicos/publicos-service';
 import { AdminLugaresPublicosBaseService } from '../../services/admin/admin-lugarespublicos-base';
 import { AuthService } from '../../services/auth-service';
+import { MapaSelectorComponent } from '../../components/mapa-selector/mapa-selector';
 
 @Component({
   selector: 'app-publicos',
-  imports: [HeaderComponent, Footer, FormsModule, RouterLink],
+  imports: [HeaderComponent, Footer, FormsModule, RouterLink, MapaSelectorComponent],
   templateUrl: './publicos.html',
   styleUrl: './publicos.css'
 })
@@ -30,8 +31,10 @@ export class PublicosComponent {
   descripcion = '';
   telefono = '';
   horario = '';
-  latitud = 0;
-  longitud = 0;
+
+  latitud = 39.4699;
+  longitud = -0.3763;
+
   tipo = 'PARQUE_PUBLICO';
 
   editandoId: number | null = null;
@@ -122,6 +125,11 @@ export class PublicosComponent {
     this.cargarLugares();
   }
 
+  actualizarUbicacion(evento: { latitud: number, longitud: number }): void {
+    this.latitud = evento.latitud;
+    this.longitud = evento.longitud;
+  }
+
   guardarLugarBase(): void {
     const payload = {
       nombre: this.nombre,
@@ -166,8 +174,8 @@ export class PublicosComponent {
     this.descripcion = lugar.descripcion;
     this.telefono = lugar.telefono;
     this.horario = lugar.horario;
-    this.latitud = lugar.latitud ?? 0;
-    this.longitud = lugar.longitud ?? 0;
+    this.latitud = lugar.latitud ?? 39.4699;
+    this.longitud = lugar.longitud ?? -0.3763;
     this.tipo = lugar.tipo;
   }
 
@@ -205,8 +213,8 @@ export class PublicosComponent {
     this.descripcion = '';
     this.telefono = '';
     this.horario = '';
-    this.latitud = 0;
-    this.longitud = 0;
+    this.latitud = 39.4699;
+    this.longitud = -0.3763;
     this.tipo = 'PARQUE_PUBLICO';
   }
 
@@ -217,6 +225,14 @@ export class PublicosComponent {
 
     return tipo.replaceAll('_', ' ').toLowerCase()
       .replace(/\b\w/g, letra => letra.toUpperCase());
+  }
+
+  formatearUbicacion(latitud: number, longitud: number): string {
+    if (latitud == null || longitud == null) {
+      return 'Sin ubicación';
+    }
+
+    return `${latitud}, ${longitud}`;
   }
 
   abrirPopup(texto: string, tipo: 'exito' | 'error'): void {

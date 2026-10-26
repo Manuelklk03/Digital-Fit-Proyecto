@@ -90,6 +90,48 @@
     animation: fadeUp 0.9s ease;
 }
 
+.bloque-formulario-mapa {
+    margin-bottom: 24px;
+    padding: 20px;
+    border-radius: 18px;
+    background-color: #eef6ff;
+}
+
+.formulario-centro {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-top: 18px;
+}
+
+.grid-formulario {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.grupo-campo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.grupo-campo label {
+    font-weight: bold;
+    color: var(--color-azul-oscuro);
+}
+
+.grupo-campo input,
+.grupo-campo textarea,
+.barra-busqueda input,
+.barra-busqueda select {
+    padding: 14px;
+    border: 1px solid #aac5eb;
+    border-radius: 12px;
+    font-size: 15px;
+    background-color: white;
+}
+
 .cabecera-listado {
     display: flex;
     justify-content: space-between;
@@ -111,15 +153,6 @@
     align-items: center;
 }
 
-.barra-busqueda input,
-.barra-busqueda select {
-    padding: 14px;
-    border: 1px solid #aac5eb;
-    border-radius: 12px;
-    font-size: 15px;
-    background-color: white;
-}
-
 .barra-busqueda input {
     min-width: 240px;
 }
@@ -135,6 +168,16 @@
     padding: 22px;
     border-radius: 18px;
     box-shadow: 0px 8px 18px rgba(0, 0, 0, 0.08);
+}
+
+.ubicacion-tarjeta {
+    margin-bottom: 14px;
+    padding: 10px 12px;
+    background-color: #dbeafe;
+    border-left: 4px solid var(--color-azul-oscuro);
+    border-radius: 10px;
+    font-size: 14px;
+    word-break: break-word;
 }
 
 .tarjeta-centro h3 {
@@ -191,6 +234,12 @@
     font-weight: bold;
 }
 
+@media (max-width: 800px) {
+    .grid-formulario {
+        grid-template-columns: 1fr;
+    }
+}
+
 @media (max-width: 600px) {
     .cabecera-pagina h1 {
         font-size: 30px;
@@ -207,7 +256,8 @@
 
     .barra-busqueda input,
     .barra-busqueda select,
-    .boton-limpiar {
+    .boton-limpiar,
+    .boton-detalle {
         width: 100%;
     }
 

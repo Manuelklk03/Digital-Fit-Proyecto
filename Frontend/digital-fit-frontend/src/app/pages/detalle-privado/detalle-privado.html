@@ -43,9 +43,23 @@
       <span>{{ centro.precioMensual }} €</span>
     </div>
 
+    <div class="dato-detalle">
+      <span class="etiqueta">Ubicación</span>
+      <span>{{ centro.latitud }}, {{ centro.longitud }}</span>
+    </div>
+
     <div class="descripcion-detalle">
       <h2>Descripción</h2>
       <p>{{ centro.descripcion || 'Sin descripción' }}</p>
+    </div>
+
+    <div class="mapa-detalle">
+      <h2>Ubicación en el mapa</h2>
+      <app-mapa-selector
+        [latitud]="centro.latitud"
+        [longitud]="centro.longitud"
+        [soloVista]="true">
+      </app-mapa-selector>
     </div>
 
     <div class="acciones-detalle">
