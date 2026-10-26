@@ -1,0 +1,109 @@
+package com.example.digital_fit.service.Entrenamientos;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.digital_fit.dto.Entrenamientos.CrearEntrenamientoUsuario;
+import com.example.digital_fit.dto.Entrenamientos.EntrenamientoUsuarioDTO;
+import com.example.digital_fit.exception.OperacionNoPermitida;
+import com.example.digital_fit.exception.RecursoNoEncontradoException;
+import com.example.digital_fit.model.Auth.Usuario;
+import com.example.digital_fit.model.Entrenamientos.EntrenamientoBase;
+import com.example.digital_fit.model.Entrenamientos.EntrenamientoUsuario;
+import com.example.digital_fit.repository.Auth.UsuarioRepository;
+import com.example.digital_fit.repository.Entrenamientos.EntrenamientoBaseRepository;
+import com.example.digital_fit.repository.Entrenamientos.EntrenamientoUsuarioRepository;
+
+import jakarta.transaction.Transactional;
+
+@Service
+public class EntrenamientoUsuarioService {
+
+    @Autowired
+    private EntrenamientoUsuarioRepository entrenamientoUsuarioRepository;
+
+    @Autowired
+    private EntrenamientoBaseRepository entrenamientoBaseRepository;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
+    public List<EntrenamientoUsuarioDTO> listarMisEntrenamientos(String username) {
+        Usuario usuario = usuarioRepository.findByUsername(username)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
+
+        List<EntrenamientoUsuario> entrenamientos = entrenamientoUsuarioRepository.findByUsuario(usuario);
+
+        List<EntrenamientoUsuarioDTO> dtos = new ArrayList<>();
+        for (EntrenamientoUsuario entrenamiento : entrenamientos) {
+            dtos.add(entityToDto(entrenamiento));
+        }
+        return dtos;
+    }
+
+    @Transactional
+    public EntrenamientoUsuarioDTO crearEntrenamientoPersonalizado(CrearEntrenamientoUsuario dto, String username) {
+        Usuario usuario = usuarioRepository.findByUsername(username)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
+
+        EntrenamientoUsuario entrenamientoUsuario = new EntrenamientoUsuario();
+        entrenamientoUsuario.setNombre(dto.getNombre());
+        entrenamientoUsuario.setDescripcion(dto.getDescripcion());
+        entrenamientoUsuario.setUsuario(usuario);
+
+        EntrenamientoUsuario entrenamientoUsuarioGuardado = entrenamientoUsuarioRepository.save(entrenamientoUsuario);
+        return entityToDto(entrenamientoUsuarioGuardado);
+    }
+
+    @Transactional
+    public EntrenamientoUsuarioDTO añadirDesdeBase(Long idBase, String username) {
+        Usuario usuario = usuarioRepository.findByUsername(username)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
+
+        EntrenamientoBase entrenamientoBase = entrenamientoBaseRepository.findById(idBase)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Entrenamiento base no encontrado"));
+
+        EntrenamientoUsuario entrenamientoUsuario = new EntrenamientoUsuario();
+        entrenamientoUsuario.setNombre(entrenamientoBase.getNombre());
+        entrenamientoUsuario.setDescripcion(entrenamientoBase.getDescripcion());
+        entrenamientoUsuario.setUsuario(usuario);
+
+        EntrenamientoUsuario entrenamientoUsuarioGuardado = entrenamientoUsuarioRepository.save(entrenamientoUsuario);
+        return entityToDto(entrenamientoUsuarioGuardado);
+    }
+
+    @Transactional
+    public void borrarDeMisEntrenamientos(Long id, String username) {
+        Usuario usuario = usuarioRepository.findByUsername(username)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
+
+        EntrenamientoUsuario entrenamientoUsuario = entrenamientoUsuarioRepository.findById(id)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Entrenamiento usuario no encontrado"));
+
+        if (!entrenamientoUsuario.getUsuario().getId().equals(usuario.getId())) {
+            throw new OperacionNoPermitida("No tienes permiso para borrar este entrenamiento");
+        }
+        entrenamientoUsuarioRepository.delete(entrenamientoUsuario);
+    }
+
+    public EntrenamientoUsuarioDTO entityToDto(EntrenamientoUsuario entrenamientoUsuario) {
+        EntrenamientoUsuarioDTO entrenamientoUsuarioDTO = new EntrenamientoUsuarioDTO();
+        entrenamientoUsuarioDTO.setId(entrenamientoUsuario.getId());
+        entrenamientoUsuarioDTO.setNombre(entrenamientoUsuario.getNombre());
+        entrenamientoUsuarioDTO.setDescripcion(entrenamientoUsuario.getDescripcion());
+
+        return entrenamientoUsuarioDTO;
+    }
+
+    public EntrenamientoUsuario dtoToEntity(EntrenamientoUsuarioDTO dto) {
+        EntrenamientoUsuario entrenamientoUsuario = new EntrenamientoUsuario();
+        entrenamientoUsuario.setId(dto.getId());
+        entrenamientoUsuario.setNombre(dto.getNombre());
+        entrenamientoUsuario.setDescripcion(dto.getDescripcion());
+
+        return entrenamientoUsuario;
+    }
+}

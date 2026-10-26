@@ -1,14 +1,14 @@
-package com.example.digital_fit.model;
+package com.example.digital_fit.model.Entrenamientos;
 
-import com.example.digital_fit.model.Enums.Rol;
+import com.example.digital_fit.model.Auth.Usuario;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,26 +16,24 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Entity
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+@Entity
 @Builder
-@Table(name = "usuarios")
-public class Usuario {
+@Table(name = "entrenamientos_usuario")
+public class EntrenamientoUsuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
-    private String username;
-
-    @Column(nullable = false, unique = true)
-    private String email;
-
     @Column(nullable = false)
-    private String password;
+    private String nombre;
 
-    @Enumerated(EnumType.STRING)
-    private Rol rol;
+    @Column(nullable = false, length = 1000)
+    private String descripcion;
+
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private Usuario usuario;
 }
