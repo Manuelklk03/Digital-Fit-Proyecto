@@ -13,13 +13,17 @@ import com.example.digital_fit.model.Auth.Usuario;
 @Repository
 public interface ValoracionRepository extends JpaRepository<Valoracion, Long> {
 
-    List<Valoracion> findByTipoDeValoracionAndIdRelacionado(TipoDeValoracion tipo, Long idRelacionado);
+        boolean existsByUsuarioAndTipoDeValoracionAndIdRelacionado(Usuario usuario, TipoDeValoracion tipo,
+                        Long idRelacionado);
 
-    List<Valoracion> findByUsuario(Usuario usuario);
+        List<Valoracion> findByTipoDeValoracionAndIdRelacionado(TipoDeValoracion tipoDeValoracion, Long idRelacionado);
 
-    Optional<Valoracion> findByUsuarioAndTipoDeValoracionAndIdRelacionado(Usuario usuario, TipoDeValoracion tipo,
-            Long idRelacionado);
+        List<Valoracion> findByUsuario(Usuario usuario);
 
-    boolean existsByUsuarioAndTipoDeValoracionAndIdRelacionado(Usuario usuario, TipoDeValoracion tipo,
-            Long idRelacionado);
+        Optional<Valoracion> findByUsuarioAndTipoDeValoracionAndIdRelacionado(
+                        Usuario usuario,
+                        TipoDeValoracion tipoDeValoracion,
+                        Long idRelacionado);
+
+        List<Valoracion> findByTipoDeValoracionInOrderByFechaDesc(List<TipoDeValoracion> tipos);
 }

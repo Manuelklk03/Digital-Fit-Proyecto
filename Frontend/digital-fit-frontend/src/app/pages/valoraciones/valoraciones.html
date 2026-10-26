@@ -14,7 +14,8 @@
   <section class="cabecera-valoraciones">
     <h1>Valoraciones</h1>
     <p>
-      Aquí puedes crear nuevas valoraciones, consultar tus valoraciones y ver las del contenido seleccionado.
+      Aquí puedes crear nuevas valoraciones, consultar tus valoraciones y ver las valoraciones públicas realizadas por
+      otros usuarios.
     </p>
   </section>
 
@@ -56,12 +57,8 @@
 
         <div class="selector-estrellas" (mouseleave)="quitarHoverEstrella()">
           @for (estrella of estrellas; track estrella) {
-          <button
-            type="button"
-            class="estrella"
-            [class.estrella-activa]="estrellaActiva(estrella)"
-            (click)="seleccionarEstrella(estrella)"
-            (mouseenter)="activarHoverEstrella(estrella)"
+          <button type="button" class="estrella" [class.estrella-activa]="estrellaActiva(estrella)"
+            (click)="seleccionarEstrella(estrella)" (mouseenter)="activarHoverEstrella(estrella)"
             [attr.aria-label]="'Puntuar con ' + estrella + ' estrellas'">
             ★
           </button>
@@ -145,20 +142,30 @@
   <section class="bloque-listado">
     <div class="cabecera-listado">
       <div>
-        <h2>Valoraciones del contenido seleccionado</h2>
-        <p class="texto-secundario">{{ valoracionesContenido.length }} valoración(es)</p>
+        <h2>Valoraciones públicas de usuarios</h2>
+        <p class="texto-secundario">{{ valoracionesPublicas.length }} valoración(es)</p>
+      </div>
+
+      <div class="barra-busqueda">
+        <select name="filtroValoracionesPublicas" [(ngModel)]="filtroValoracionesPublicas"
+          (change)="cambiarFiltroValoracionesPublicas()">
+          <option value="TODOS">Todos los tipos</option>
+          <option value="ENTRENAMIENTOS">Entrenamientos</option>
+          <option value="CENTROS_PRIVADOS">Centros privados</option>
+          <option value="LUGARES_PUBLICOS">Lugares públicos</option>
+        </select>
       </div>
     </div>
 
-    @if (contenidoSeleccionadoId) {
-    @if (valoracionesContenido.length > 0) {
+    @if (valoracionesPublicas.length > 0) {
     <div class="grid-valoraciones">
 
-      @for (valoracion of valoracionesContenido; track valoracion.id) {
+      @for (valoracion of valoracionesPublicas; track valoracion.id) {
       <article class="tarjeta-valoracion">
         <h3>{{ valoracion.contenidoNombre || 'Contenido' }}</h3>
 
-        <p><strong>Usuario:</strong> {{ valoracion.username }}</p>
+        <p><strong>Usuario:</strong> {{ valoracion.username || valoracion.usuario || 'Usuario' }}</p>
+        <p><strong>Categoría:</strong> {{ mostrarCategoriaGeneral(valoracion.tipoDeValoracion) }}</p>
         <p><strong>Puntuación:</strong> {{ valoracion.puntuacion }}/5</p>
         <p><strong>Comentario:</strong> {{ valoracion.comentario || 'Sin comentario' }}</p>
         <p><strong>Fecha:</strong> {{ valoracion.fecha }}</p>
@@ -167,10 +174,7 @@
 
     </div>
     } @else {
-    <p class="sin-datos">Todavía no hay valoraciones para este contenido.</p>
-    }
-    } @else {
-    <p class="sin-datos">Selecciona un contenido para ver sus valoraciones.</p>
+    <p class="sin-datos">No hay valoraciones públicas para el filtro seleccionado.</p>
     }
   </section>
 
