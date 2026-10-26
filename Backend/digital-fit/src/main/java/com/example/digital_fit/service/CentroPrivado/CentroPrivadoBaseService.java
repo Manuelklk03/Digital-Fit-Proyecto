@@ -3,6 +3,8 @@ package com.example.digital_fit.service.CentroPrivado;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +19,12 @@ public class CentroPrivadoBaseService {
     @Autowired
     private CentroPrivadoBaseRepository centroPrivadoBaseRepository;
 
+    private static final Logger log = LoggerFactory.getLogger(CentroPrivadoBaseService.class);
+
     // Listar o filtrar
     public List<CentroPrivadoBaseDTO> listarOFiltrar(String nombre, String direccion, Double precioMensual) {
+
+        log.debug("Listando centros privados");
 
         List<CentroPrivadoBase> centros = new ArrayList<>();
 
@@ -43,6 +49,9 @@ public class CentroPrivadoBaseService {
 
     // Ver detalle
     public CentroPrivadoBaseDTO obtenerPorId(Long id) {
+
+        log.debug("Buscando centro privado con id: {}", id);
+
         CentroPrivadoBase entidad = centroPrivadoBaseRepository.findById(id)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Centro con id: " + id + " No encontrado."));
 

@@ -3,6 +3,8 @@ package com.example.digital_fit.service.LugarPublico;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +20,12 @@ public class LugarPublicoBaseService {
     @Autowired
     private LugarPublicoBaseRepository lugarPublicoBaseRepository;
 
+    private static final Logger log = LoggerFactory.getLogger(LugarPublicoBaseService.class);
+
     public List<LugarPublicoBaseDTO> listarOFiltrar(String nombre, String direccion, TipoLugarPublico tipo) {
+
+        log.debug("Listando lugares publicos de la app");
+
         List<LugarPublicoBase> lugares = new ArrayList<>();
 
         if (nombre != null) {
@@ -42,6 +49,9 @@ public class LugarPublicoBaseService {
 
     // Ver detalles:
     public LugarPublicoBaseDTO buscarPorId(Long id) {
+
+        log.debug("Buscando lugar con id: {}", id);
+
         LugarPublicoBase lugar = lugarPublicoBaseRepository.findById(id)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Lugar con id: " + id + " No encontrado."));
 

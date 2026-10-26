@@ -18,6 +18,8 @@ import com.example.digital_fit.dto.Soporte.CrearSoporteDTO;
 import com.example.digital_fit.dto.Soporte.SoporteDTO;
 import com.example.digital_fit.service.Soporte.SoporteService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("api/soporte")
 public class SoporteRestController {
@@ -28,7 +30,8 @@ public class SoporteRestController {
     // Crear ticket:
 
     @PostMapping
-    public ResponseEntity<SoporteDTO> crearTicket(@RequestBody CrearSoporteDTO dto, Authentication authentication) {
+    public ResponseEntity<SoporteDTO> crearTicket(@Valid @RequestBody CrearSoporteDTO dto,
+            Authentication authentication) {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(soporteService.crearTicket(dto, authentication.getName()));

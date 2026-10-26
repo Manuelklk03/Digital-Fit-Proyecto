@@ -3,6 +3,8 @@ package com.example.digital_fit.service.LugarPublico;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,9 +34,13 @@ public class LugarPublicoUsuarioService {
     @Autowired
     private LugarPublicoBaseRepository lugarPublicoBaseRepository;
 
+    private static final Logger log = LoggerFactory.getLogger(LugarPublicoUsuarioService.class);
+
     // Listar o filtrar mis lugares:
     public List<LugarPublicoUsuarioDTO> listarOFiltrar(String username, String nombre, String direccion,
             TipoLugarPublico tipo) {
+
+        log.debug("Listando mis lugares publicos");
 
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado."));
@@ -72,6 +78,9 @@ public class LugarPublicoUsuarioService {
 
     // Ver detalles de un lugar:
     public LugarPublicoUsuarioDTO verDetalle(Long id, String username) {
+
+        log.debug("Buscando lugar con id: {}", id);
+
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
 
@@ -86,8 +95,13 @@ public class LugarPublicoUsuarioService {
 
     // Borrar un lugar:
     public void borrarLugar(Long id) {
+
+        log.info("Borrando lugar con id: {}", id);
+
         LugarPublicoUsuario lugar = lugarPublicoUsuarioRepository.findById(id)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Lugar con id: " + id + " No encontrado."));
+
+        log.info("Borrando lugar con id: {}", id);
 
         lugarPublicoUsuarioRepository.delete(lugar);
     }
@@ -95,6 +109,9 @@ public class LugarPublicoUsuarioService {
     // Guardar desde base:
     @Transactional
     public LugarPublicoUsuarioDTO guardarDesdeBase(Long lugarId, String username) {
+
+        log.debug("Guardando lugar desde base con id: {}", lugarId);
+
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
 
@@ -116,12 +133,17 @@ public class LugarPublicoUsuarioService {
 
         LugarPublicoUsuario lugarGuardado = lugarPublicoUsuarioRepository.save(lugar);
 
+        log.debug("Lugar guardado con id: {}", lugarGuardado.getId());
+
         return entityToDto(lugarGuardado);
     }
 
     // Guardar desde maps:
     @Transactional
     public LugarPublicoUsuarioDTO guardarDesdeMaps(CrearLugarPublicoDTO dto, String username) {
+
+        log.debug("Guardando lugar desde maps");
+
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
 
@@ -138,6 +160,8 @@ public class LugarPublicoUsuarioService {
         lugar.setTipo(dto.getTipo());
 
         LugarPublicoUsuario lugarGuardado = lugarPublicoUsuarioRepository.save(lugar);
+
+        log.debug("Lugar guardado con id: {}", lugarGuardado.getId());
 
         return entityToDto(lugarGuardado);
     }

@@ -20,6 +20,8 @@ import com.example.digital_fit.dto.LugarPublico.LugarPublicoUsuarioDTO;
 import com.example.digital_fit.model.Enums.TipoLugarPublico;
 import com.example.digital_fit.service.LugarPublico.LugarPublicoUsuarioService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/mis-lugares-publicos")
 public class LugarPublicoUsuarioRestController {
@@ -55,7 +57,7 @@ public class LugarPublicoUsuarioRestController {
 
     // Guardar desde G-MAPS:
     @PostMapping
-    public ResponseEntity<LugarPublicoUsuarioDTO> crear(@RequestBody CrearLugarPublicoDTO dto,
+    public ResponseEntity<LugarPublicoUsuarioDTO> crear(@Valid @RequestBody CrearLugarPublicoDTO dto,
             Authentication authentication) {
 
         return ResponseEntity.status(HttpStatus.CREATED)

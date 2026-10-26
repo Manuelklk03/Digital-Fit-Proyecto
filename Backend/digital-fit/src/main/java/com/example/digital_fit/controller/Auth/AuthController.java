@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.digital_fit.dto.Auth.UsuarioDTO;
 import com.example.digital_fit.service.Auth.AuthService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -21,7 +23,7 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/registro")
-    public ResponseEntity<String> registrar(@RequestBody UsuarioDTO usuarioDTO) {
+    public ResponseEntity<String> registrar(@Valid @RequestBody UsuarioDTO usuarioDTO) {
         authService.registrar(usuarioDTO);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body("Usuario registrado exitosamente");
@@ -29,6 +31,11 @@ public class AuthController {
 
     @GetMapping("/yo")
     public ResponseEntity<String> yo(Authentication authentication) {
+
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("No autenticado");
+        }
         return ResponseEntity.status(HttpStatus.OK).body(authentication.getName());
     }
 }

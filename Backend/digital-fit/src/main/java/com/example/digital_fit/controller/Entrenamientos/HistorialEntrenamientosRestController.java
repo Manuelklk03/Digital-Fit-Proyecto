@@ -20,6 +20,8 @@ import com.example.digital_fit.dto.Entrenamientos.CrearEntrenamientoHistorialDTO
 import com.example.digital_fit.dto.Entrenamientos.HistorialEntrenamientosDTO;
 import com.example.digital_fit.service.Entrenamientos.HistorialEntrenamientosService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("api/entrenamientos/mi-historial")
 public class HistorialEntrenamientosRestController {
@@ -51,7 +53,7 @@ public class HistorialEntrenamientosRestController {
     // Registrar entrenamiento realizado:
     @PostMapping
     public ResponseEntity<HistorialEntrenamientosDTO> crearHistorialEntrenamiento(
-            @RequestBody CrearEntrenamientoHistorialDTO dto, Authentication authentication) {
+            @Valid @RequestBody CrearEntrenamientoHistorialDTO dto, Authentication authentication) {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(historialEntrenamientosService.crearHistorialEntrenamiento(dto, authentication.getName()));

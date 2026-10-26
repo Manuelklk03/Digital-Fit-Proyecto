@@ -3,6 +3,8 @@ package com.example.digital_fit.service.Entrenamientos;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,9 +21,13 @@ public class EntrenamientoBaseService {
     @Autowired
     private EntrenamientoBaseRepository entrenamientoBaseRepository;
 
+    private static final Logger log = LoggerFactory.getLogger(EntrenamientoBaseService.class);
+
     // Listar o filtrar:
     public List<EntrenamientoBaseDTO> listarOFiltrar(CategoriaEntrenamientoComunidad categoria,
             NivelEntrenamiento nivel, Integer duracionEnMinutos, String nombre) {
+
+        log.debug("Listando entrenamientos base");
 
         List<EntrenamientoBase> entrenamientosBase = new ArrayList<>();
 
@@ -42,11 +48,14 @@ public class EntrenamientoBaseService {
         for (EntrenamientoBase entrenamientoBase : entrenamientosBase) {
             entrenamientosBaseDTO.add(entityToDto(entrenamientoBase));
         }
-        
+
         return entrenamientosBaseDTO;
     }
 
     public EntrenamientoBaseDTO obtenerPorId(Long id) {
+
+        log.debug("Buscando entrenamiento base con id: {}", id);
+
         EntrenamientoBase entrenamientoBase = entrenamientoBaseRepository.findById(id)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Entrenamiento base no encontrado con ID: " + id));
 

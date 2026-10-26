@@ -1,5 +1,7 @@
 package com.example.digital_fit.service.Auth;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,8 @@ import jakarta.transaction.Transactional;
 @Service
 public class AuthService {
 
+    private static final Logger log = LoggerFactory.getLogger(AuthService.class);
+
     @Autowired
     private UsuarioRepository usuarioRepository;
 
@@ -27,7 +31,10 @@ public class AuthService {
     @Transactional
     public void registrar(UsuarioDTO usuarioDTO) {
 
+        log.info("Registrando usuario: {}", usuarioDTO.getUsername());
+
         if (usuarioRepository.findByUsername(usuarioDTO.getUsername()).isPresent()) {
+            log.warn("Usuario no creado,username ya existente {}", usuarioDTO.getUsername());
             throw new UsernameYaExiste("Nombre de usuario ya existe");
         }
 
@@ -43,13 +50,19 @@ public class AuthService {
                 .build();
 
         usuarioRepository.save(usuario);
+
+        log.info("Usuario registrado exitosamente {}", usuario.getUsername());
     }
 
     // Registrar admin:
     @Transactional
     public void registrarAdmin(CrearAdmin crearAdmin) {
 
+        log.info("Creacion de administrador {}", crearAdmin.getUsername());
+
         if (usuarioRepository.findByUsername(crearAdmin.getUsername()).isPresent()) {
+            log.warn("Admin no creado,username ya existente {}", crearAdmin.getUsername());
+
             throw new UsernameYaExiste("Nombre de usuario ya existe");
         }
 
@@ -61,6 +74,8 @@ public class AuthService {
         admin.setRol(Rol.ADMIN);
 
         usuarioRepository.save(admin);
+
+        log.info("Admin creado exitosamente {}", admin.getUsername());
     }
 
 }
