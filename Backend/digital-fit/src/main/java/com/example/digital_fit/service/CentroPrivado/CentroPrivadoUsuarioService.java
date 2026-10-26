@@ -46,17 +46,17 @@ public class CentroPrivadoUsuarioService {
         List<CentroPrivadoUsuario> centros = new ArrayList<>();
 
         if (nombre != null) {
-            centros = centroPrivadoUsuarioRepository.findByUsuarioAndNombreContainingIgnoreCase(usuario, nombre);
+            centros = centroPrivadoUsuarioRepository.findVisiblesByUsuarioAndNombreContainingIgnoreCase(usuario, nombre);
 
         } else if (direccion != null) {
             centros = centroPrivadoUsuarioRepository
-                    .findByUsuarioAndDireccionContainingIgnoreCase(usuario, direccion);
+                    .findVisiblesByUsuarioAndDireccionContainingIgnoreCase(usuario, direccion);
 
         } else if (precioMensual != null) {
             centros = centroPrivadoUsuarioRepository
-                    .findByUsuarioAndPrecioMensualLessThanEqual(usuario, precioMensual);
+                    .findVisiblesByUsuarioAndPrecioMensualLessThanEqual(usuario, precioMensual);
         } else {
-            centros = centroPrivadoUsuarioRepository.findByUsuario(usuario);
+            centros = centroPrivadoUsuarioRepository.findVisiblesByUsuario(usuario);
         }
 
         List<CentroPrivadoUsuarioDTO> centrosDTO = new ArrayList<>();
@@ -76,7 +76,7 @@ public class CentroPrivadoUsuarioService {
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
 
-        if (centroPrivadoUsuarioRepository.findByUsuarioAndNombreIgnoreCase(usuario, dto.getNombre()).isPresent()) {
+        if (centroPrivadoUsuarioRepository.findVisibleByUsuarioAndNombreIgnoreCase(usuario, dto.getNombre()).isPresent()) {
             throw new OperacionNoPermitida("Ya tienes un centro privado con ese nombre en mis centros.");
         }
 
@@ -89,6 +89,7 @@ public class CentroPrivadoUsuarioService {
         centro.setDescripcion(dto.getDescripcion());
         centro.setLatitud(dto.getLatitud());
         centro.setLongitud(dto.getLongitud());
+        centro.setActivo(true);
         centro.setUsuario(usuario);
 
         CentroPrivadoUsuario centroGuardado = centroPrivadoUsuarioRepository.save(centro);
@@ -109,7 +110,7 @@ public class CentroPrivadoUsuarioService {
         CentroPrivadoBase centroBase = centroPrivadoBaseRepository.findById(idBase)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Centro base no encontrado en la lista."));
 
-        if (centroPrivadoUsuarioRepository.findByUsuarioAndNombreIgnoreCase(usuario, centroBase.getNombre()).isPresent()) {
+        if (centroPrivadoUsuarioRepository.findVisibleByUsuarioAndNombreIgnoreCase(usuario, centroBase.getNombre()).isPresent()) {
             throw new OperacionNoPermitida("Ya tienes añadido ese centro en mis centros.");
         }
 
@@ -122,6 +123,7 @@ public class CentroPrivadoUsuarioService {
         centro.setDescripcion(centroBase.getDescripcion());
         centro.setLatitud(centroBase.getLatitud());
         centro.setLongitud(centroBase.getLongitud());
+        centro.setActivo(true);
         centro.setUsuario(usuario);
 
         CentroPrivadoUsuario centroGuardado = centroPrivadoUsuarioRepository.save(centro);
@@ -165,9 +167,10 @@ public class CentroPrivadoUsuarioService {
             throw new OperacionNoPermitida("No tienes permiso para borrar este centro.");
         }
 
-        centroPrivadoUsuarioRepository.delete(centro);
+        centro.setActivo(false);
+        centroPrivadoUsuarioRepository.save(centro);
 
-        log.info("Centro privado {} borrado para usuario {}", id, username);
+        log.info("Centro privado {} ocultado para usuario {}", id, username);
     }
 
     public CentroPrivadoUsuario dtoToEntity(CentroPrivadoUsuarioDTO dto) {

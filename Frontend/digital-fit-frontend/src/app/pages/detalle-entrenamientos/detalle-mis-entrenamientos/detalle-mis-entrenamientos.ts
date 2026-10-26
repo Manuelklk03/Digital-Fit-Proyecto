@@ -81,7 +81,7 @@ export class DetalleMiEntrenamientoComponent {
 
     this.misEntrenamientosService.borrarEntrenamiento(this.entrenamiento.id).subscribe({
       next: () => {
-        this.abrirPopup('Entrenamiento borrado correctamente.', 'error');
+        this.abrirPopup('Entrenamiento borrado correctamente.', 'exito');
 
         setTimeout(() => {
           this.router.navigate(['/mis-entrenamientos']);

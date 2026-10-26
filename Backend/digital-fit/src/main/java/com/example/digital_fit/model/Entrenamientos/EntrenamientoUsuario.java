@@ -45,6 +45,9 @@ public class EntrenamientoUsuario {
 
     private Integer duracionEnMinutos;
 
+    @Builder.Default
+    private Boolean activo = true;
+
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
