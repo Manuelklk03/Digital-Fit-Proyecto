@@ -40,6 +40,9 @@ public class EntrenamientoBaseService {
         dto.setId(entrenamientoBase.getId());
         dto.setNombre(entrenamientoBase.getNombre());
         dto.setDescripcion(entrenamientoBase.getDescripcion());
+        dto.setCategoria(entrenamientoBase.getCategoria());
+        dto.setNivel(entrenamientoBase.getNivel());
+        dto.setDuracionEnMinutos(entrenamientoBase.getDuracionEnMinutos());
         return dto;
     }
 
@@ -48,6 +51,9 @@ public class EntrenamientoBaseService {
         entrenamientoBase.setId(dto.getId());
         entrenamientoBase.setNombre(dto.getNombre());
         entrenamientoBase.setDescripcion(dto.getDescripcion());
+        entrenamientoBase.setCategoria(dto.getCategoria());
+        entrenamientoBase.setNivel(dto.getNivel());
+        entrenamientoBase.setDuracionEnMinutos(dto.getDuracionEnMinutos());
         return entrenamientoBase;
     }
 }
