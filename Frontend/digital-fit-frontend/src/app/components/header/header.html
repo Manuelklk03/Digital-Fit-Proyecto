@@ -1,0 +1,27 @@
+<header class="cabecera">
+
+  <a class="logo-enlace" routerLink="/inicio">
+    <img src="img/LOGOFINAL-removebg.png" alt="Logo Digital-FIT">
+  </a>
+
+  <nav class="menu-navegacion">
+    <ul>
+      <li><a routerLink="/inicio">Inicio</a></li>
+      <li><a routerLink="/privados">Centros privados</a></li>
+      <li><a routerLink="/publicos">Lugares públicos</a></li>
+      <li><a routerLink="/entrenamientos">Entrenamientos</a></li>
+      <li><a routerLink="/soporte">Soporte</a></li>
+    </ul>
+  </nav>
+
+  <div class="estado-usuario">
+    @if (usuarioActual) {
+      <span>👤 {{ usuarioActual }}</span>
+      <button class="boton-header" (click)="cerrarSesion()">Salir</button>
+    } @else {
+      <span>Sesión no iniciada</span>
+      <a class="boton-header" routerLink="/login">Entrar</a>
+    }
+  </div>
+
+</header>
