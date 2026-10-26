@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 export class PrivadosService {
 
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/api/centros-privados';
+  private apiUrl = '/api/centros-privados';
 
   getCentrosPrivados(): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrl, {

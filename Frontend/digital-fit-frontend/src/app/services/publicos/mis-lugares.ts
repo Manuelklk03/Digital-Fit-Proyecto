@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 export class MisLugaresService {
 
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/api/mis-lugares-publicos';
+  private apiUrl = '/api/mis-lugares-publicos';
 
   getMisLugares(): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrl, {

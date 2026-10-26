@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 export class ValoracionesService {
 
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/api/valoraciones';
+  private apiUrl = '/api/valoraciones';
 
   getMisValoraciones(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/mis-valoraciones`, {
