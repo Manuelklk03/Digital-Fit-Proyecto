@@ -11,22 +11,32 @@
   </div>
   }
 
-  <section class="cabecera-pagina">
-    <h1>Lugares públicos base</h1>
-    <p>
-      Aquí puedes consultar los lugares públicos base disponibles en la aplicación.
-    </p>
+  <section class="hero-seccion">
+    <div class="hero-contenido">
+      <span class="hero-etiqueta">Digital-FIT · Lugares públicos</span>
+      <h1>Lugares públicos base</h1>
+      <p>
+        Explora los lugares deportivos públicos disponibles, consulta su ubicación
+        y, si eres administrador, organiza el catálogo base con una interfaz más cuidada.
+      </p>
+    </div>
   </section>
 
   @if (esAdmin()) {
-  <section class="bloque-formulario">
-    <h2>
-      @if (editandoId !== null) {
-      Editar lugar público base
-      } @else {
-      Crear lugar público base
-      }
-    </h2>
+  <section class="panel-seccion panel-formulario">
+    <div class="panel-cabecera">
+      <div>
+        <span class="panel-kicker">Administración</span>
+        <h2>
+          @if (editandoId !== null) {
+          Editar lugar público base
+          } @else {
+          Crear lugar público base
+          }
+        </h2>
+        <p>Completa los datos del lugar y selecciona la ubicación exacta en el mapa.</p>
+      </div>
+    </div>
 
     <form class="formulario-lugar" (ngSubmit)="guardarLugarBase()">
 
@@ -90,13 +100,22 @@
         </div>
       </div>
 
-      <div class="grupo-campo">
+      <div class="grupo-campo grupo-campo-completo">
         <label for="descripcion">Descripción</label>
         <textarea id="descripcion" name="descripcion" rows="4" [(ngModel)]="descripcion"></textarea>
       </div>
 
-      <div class="grupo-campo">
-        <label>Seleccionar ubicación en el mapa</label>
+      <div class="bloque-mapa-formulario">
+        <div class="bloque-mapa-texto">
+          <h3>Ubicación del lugar</h3>
+          <p>
+            Busca la dirección o marca el punto exacto sobre el mapa para guardar el lugar público base.
+          </p>
+          <div class="resumen-ubicacion">
+            <span>Latitud: {{ latitud }}</span>
+            <span>Longitud: {{ longitud }}</span>
+          </div>
+        </div>
 
         <app-mapa-selector
           [latitud]="latitud"
@@ -120,7 +139,7 @@
         </button>
 
         @if (editandoId !== null) {
-        <button type="button" class="boton-cancelar" (click)="cancelarEdicion()">
+        <button type="button" class="boton-secundario" (click)="cancelarEdicion()">
           Cancelar edición
         </button>
         }
@@ -129,10 +148,11 @@
   </section>
   }
 
-  <section class="bloque-listado">
-    <div class="cabecera-listado">
+  <section class="panel-seccion panel-listado">
+    <div class="panel-cabecera panel-cabecera-listado">
       <div>
-        <h2>Listado de lugares públicos base</h2>
+        <span class="panel-kicker">Listado principal</span>
+        <h2>Lugares públicos base</h2>
         <p class="texto-secundario">{{ lugares.length }} lugar(es)</p>
       </div>
 
@@ -143,8 +163,13 @@
           <option value="tipo">Buscar por tipo</option>
         </select>
 
-        <input type="text" name="valorBusqueda" [(ngModel)]="valorBusqueda" (input)="alCambiarBusqueda()"
-          placeholder="Escribe aquí...">
+        <input
+          type="text"
+          name="valorBusqueda"
+          [(ngModel)]="valorBusqueda"
+          (input)="alCambiarBusqueda()"
+          placeholder="Escribe aquí..."
+        >
 
         <button type="button" class="boton-limpiar" (click)="limpiarBusqueda()">Limpiar</button>
       </div>
@@ -155,17 +180,31 @@
       @for (lugar of lugares; track lugar.id) {
       <article class="tarjeta-lugar">
 
-        <div class="ubicacion-tarjeta">
-          <strong>Ubicación:</strong> {{ formatearUbicacion(lugar.latitud, lugar.longitud) }}
+        <div class="tarjeta-superior">
+          <div class="ubicacion-tarjeta">
+            <span class="ubicacion-label">Ubicación</span>
+            <span>{{ formatearUbicacion(lugar.latitud, lugar.longitud) }}</span>
+          </div>
         </div>
 
-        <h3>{{ lugar.nombre }}</h3>
+        <div class="tarjeta-contenido">
+          <h3>{{ lugar.nombre }}</h3>
 
-        <p><strong>Dirección:</strong> {{ lugar.direccion }}</p>
-        <p><strong>Tipo:</strong> {{ mostrarTipoLegible(lugar.tipo) }}</p>
-        <p><strong>Teléfono:</strong> {{ lugar.telefono || 'No disponible' }}</p>
-        <p><strong>Horario:</strong> {{ lugar.horario || 'No disponible' }}</p>
-        <p><strong>Descripción:</strong> {{ lugar.descripcion || 'Sin descripción' }}</p>
+          <div class="chips-tipo">
+            <span>{{ mostrarTipoLegible(lugar.tipo) }}</span>
+          </div>
+
+          <div class="lista-datos">
+            <p><strong>Dirección:</strong> {{ lugar.direccion }}</p>
+            <p><strong>Teléfono:</strong> {{ lugar.telefono || 'No disponible' }}</p>
+            <p><strong>Horario:</strong> {{ lugar.horario || 'No disponible' }}</p>
+          </div>
+
+          <div class="descripcion-tarjeta">
+            <strong>Descripción</strong>
+            <p>{{ lugar.descripcion || 'Sin descripción' }}</p>
+          </div>
+        </div>
 
         <div class="acciones-lugar">
           <a class="boton-detalle" [routerLink]="['/publicos', lugar.id]">
@@ -190,7 +229,10 @@
       }
     </div>
     } @else {
-    <p class="sin-datos">No hay lugares públicos base disponibles o no coinciden con la búsqueda.</p>
+    <div class="estado-vacio">
+      <h3>Sin resultados</h3>
+      <p>No hay lugares públicos base disponibles o no coinciden con la búsqueda.</p>
+    </div>
     }
   </section>
 

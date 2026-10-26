@@ -4,32 +4,66 @@
 
   @if (ticket) {
   <section class="cabecera-detalle">
+    <span class="etiqueta-superior">Soporte</span>
     <h1>{{ ticket.asunto }}</h1>
-    <p>Consulta toda la información del ticket enviado a soporte.</p>
+    <p>
+      Consulta toda la información del ticket enviado a soporte.
+    </p>
   </section>
 
   <section class="contenedor-detalle">
-    <div class="info-item">
-      <span class="label">Fecha</span>
-      <span>{{ ticket.fecha }}</span>
+
+    <div class="fila-resumen">
+      <article class="tarjeta-resumen">
+        <span class="resumen-label">Fecha</span>
+        <p>{{ ticket.fecha }}</p>
+      </article>
+
+      <article class="tarjeta-resumen">
+        <span class="resumen-label">Estado</span>
+        <p class="estado-ticket" [class]="claseEstado(ticket.estado)">
+          {{ mostrarEstado(ticket.estado) }}
+        </p>
+      </article>
     </div>
 
-    <div class="info-item">
-      <span class="label">Estado</span>
-      <span>{{ mostrarEstado(ticket.estado) }}</span>
-    </div>
+    <section class="bloque-info">
+      <h2>Información del ticket</h2>
 
-    <div class="bloque-detalles">
+      <div class="info-item">
+        <span class="label">Asunto</span>
+        <span>{{ ticket.asunto }}</span>
+      </div>
+
+      <div class="info-item">
+        <span class="label">Fecha</span>
+        <span>{{ ticket.fecha }}</span>
+      </div>
+
+      <div class="info-item">
+        <span class="label">Estado</span>
+        <span class="estado-ticket" [class]="claseEstado(ticket.estado)">
+          {{ mostrarEstado(ticket.estado) }}
+        </span>
+      </div>
+    </section>
+
+    <section class="bloque-detalles">
       <h2>Mensaje</h2>
-      <p>{{ ticket.mensaje }}</p>
-    </div>
+      <p>{{ ticket.mensaje || 'Sin mensaje' }}</p>
+    </section>
 
     <div class="acciones-detalle">
       <a class="boton-volver" routerLink="/soporte">Volver</a>
     </div>
+
   </section>
   } @else {
-  <p class="mensaje-cargando">Cargando detalle...</p>
+  <section class="cabecera-detalle">
+    <span class="etiqueta-superior">Soporte</span>
+    <h1>Detalle del ticket</h1>
+    <p>Cargando detalle...</p>
+  </section>
   }
 
 </main>

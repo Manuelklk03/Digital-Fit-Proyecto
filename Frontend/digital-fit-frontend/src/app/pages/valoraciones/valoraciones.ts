@@ -54,6 +54,9 @@ export class ValoracionesComponent {
   puntuacion = 5;
   comentario = '';
 
+  estrellas = [1, 2, 3, 4, 5];
+  hoveredPuntuacion = 0;
+
   tipoBusquedaMisValoraciones = 'general';
   busquedaMisValoraciones = '';
 
@@ -231,6 +234,43 @@ export class ValoracionesComponent {
     });
   }
 
+  seleccionarEstrella(valor: number): void {
+    this.puntuacion = valor;
+  }
+
+  activarHoverEstrella(valor: number): void {
+    this.hoveredPuntuacion = valor;
+  }
+
+  quitarHoverEstrella(): void {
+    this.hoveredPuntuacion = 0;
+  }
+
+  estrellaActiva(valor: number): boolean {
+    if (this.hoveredPuntuacion > 0) {
+      return valor <= this.hoveredPuntuacion;
+    }
+
+    return valor <= this.puntuacion;
+  }
+
+  getTextoPuntuacion(): string {
+    switch (this.puntuacion) {
+      case 1:
+        return 'Muy mala';
+      case 2:
+        return 'Mala';
+      case 3:
+        return 'Normal';
+      case 4:
+        return 'Buena';
+      case 5:
+        return 'Muy buena';
+      default:
+        return '';
+    }
+  }
+
   guardarValoracion(): void {
     if (!this.contenidoSeleccionadoId) {
       this.abrirPopup('Debes seleccionar un contenido.', 'error');
@@ -249,6 +289,7 @@ export class ValoracionesComponent {
           this.abrirPopup('Valoración guardada correctamente.', 'exito');
           this.puntuacion = 5;
           this.comentario = '';
+          this.hoveredPuntuacion = 0;
           this.cargarMisValoraciones();
           this.cargarValoracionesDelContenido();
         },

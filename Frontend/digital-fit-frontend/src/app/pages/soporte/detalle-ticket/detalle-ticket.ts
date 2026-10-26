@@ -59,4 +59,17 @@ export class DetalleTicketComponent {
         return estado || 'Sin estado';
     }
   }
+
+  claseEstado(estado: string): string {
+    switch (estado) {
+      case 'ABIERTO':
+        return 'estado-abierto';
+      case 'EN_PROCESO':
+        return 'estado-proceso';
+      case 'CERRADO':
+        return 'estado-cerrado';
+      default:
+        return '';
+    }
+  }
 }

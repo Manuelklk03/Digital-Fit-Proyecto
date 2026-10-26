@@ -4,8 +4,11 @@
 
   @if (cargando) {
   <section class="hero-inicio">
-    <div class="hero-contenido">
-      <img src="img/LOGOFINAL-removebg.png" alt="Logo Digital-FIT" class="logo-inicio">
+    <div class="hero-contenido hero-cargando">
+      <div class="fondo-brillo fondo-brillo-1"></div>
+      <div class="fondo-brillo fondo-brillo-2"></div>
+
+      <img src="img/Logo 3D de DIGITAL-FIT con pulso.png" alt="Logo Digital-FIT" class="logo-inicio logo-inicio-animado">
       <h1>Bienvenido a Digital-FIT</h1>
       <p>Cargando panel principal...</p>
     </div>
@@ -14,19 +17,30 @@
 
   <section class="hero-inicio hero-admin">
     <div class="hero-contenido">
-      <img src="img/LOGOFINAL-removebg.png" alt="Logo Digital-FIT" class="logo-inicio">
-      <span class="insignia-rol admin">Administrador</span>
-      <h1>Panel de administración</h1>
-      <p>
-        Bienvenido, <strong>{{ usuarioActual.username }}</strong>.
-        Desde aquí puedes gestionar el contenido base, revisar soporte y controlar la estructura principal de la
-        aplicación.
-      </p>
+      <div class="fondo-brillo fondo-brillo-1"></div>
+      <div class="fondo-brillo fondo-brillo-2"></div>
+
+      <div class="hero-grid">
+        <div class="hero-texto">
+          <span class="insignia-rol admin">Administrador</span>
+          <span class="hero-subtitulo">Control total del sistema</span>
+          <h1>Panel de administración</h1>
+          <p>
+            Bienvenido, <strong>{{ usuarioActual.username }}</strong>.
+            Desde aquí puedes gestionar el contenido base, revisar soporte y controlar la estructura principal de la aplicación.
+          </p>
+        </div>
+
+        <div class="hero-logo-panel">
+          <img src="img/Logo 3D de DIGITAL-FIT con pulso.png" alt="Logo Digital-FIT" class="logo-inicio logo-inicio-animado">
+        </div>
+      </div>
     </div>
   </section>
 
   <section class="bloque-seccion">
     <div class="titulo-seccion">
+      <span class="mini-etiqueta">Gestión</span>
       <h2>Gestión general</h2>
       <p>Accesos principales para administración y revisión del sistema.</p>
     </div>
@@ -48,6 +62,7 @@
 
   <section class="bloque-seccion">
     <div class="titulo-seccion">
+      <span class="mini-etiqueta">Contenido</span>
       <h2>Contenido base de la app</h2>
       <p>Desde estos apartados puedes crear, editar y borrar el contenido principal visible para los usuarios.</p>
     </div>
@@ -68,7 +83,7 @@
       <a class="tarjeta-acceso admin" routerLink="/publicos">
         <span class="etiqueta-tarjeta">Base</span>
         <h3>Lugares públicos base</h3>
-        <p>Gestiona espacios públicos deportivos visibles para los usuarios.</p>
+        <p>Gestiona espacios deportivos visibles para los usuarios.</p>
       </a>
     </div>
   </section>
@@ -77,18 +92,30 @@
 
   <section class="hero-inicio hero-user">
     <div class="hero-contenido">
-      <img src="img/LOGOFINAL-removebg.png" alt="Logo Digital-FIT" class="logo-inicio">
-      <span class="insignia-rol user">Usuario</span>
-      <h1>Bienvenido a Digital-FIT</h1>
-      <p>
-        Hola, <strong>{{ usuarioActual.username }}</strong>.
-        Desde aquí puedes moverte por la app, registrar tu actividad y acceder rápido a los apartados más importantes.
-      </p>
+      <div class="fondo-brillo fondo-brillo-1"></div>
+      <div class="fondo-brillo fondo-brillo-2"></div>
+
+      <div class="hero-grid">
+        <div class="hero-texto">
+          <span class="insignia-rol user">Usuario</span>
+          <span class="hero-subtitulo">Tu espacio deportivo personal</span>
+          <h1>Bienvenido a Digital-FIT</h1>
+          <p>
+            Hola, <strong>{{ usuarioActual.username }}</strong>.
+            Desde aquí puedes moverte por la app, registrar tu actividad y acceder rápido a los apartados más importantes.
+          </p>
+        </div>
+
+        <div class="hero-logo-panel">
+          <img src="img/Logo 3D de DIGITAL-FIT con pulso.png" alt="Logo Digital-FIT" class="logo-inicio logo-inicio-animado">
+        </div>
+      </div>
     </div>
   </section>
 
   <section class="bloque-seccion">
     <div class="titulo-seccion">
+      <span class="mini-etiqueta">Personal</span>
       <h2>Mi espacio personal</h2>
       <p>Accesos rápidos a tus apartados principales como usuario.</p>
     </div>
@@ -134,6 +161,7 @@
 
   <section class="bloque-seccion">
     <div class="titulo-seccion">
+      <span class="mini-etiqueta">Explorar</span>
       <h2>Explorar contenidos</h2>
       <p>Descubre recursos base y entrenamientos compartidos por la comunidad.</p>
     </div>
