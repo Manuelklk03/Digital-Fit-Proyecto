@@ -1,0 +1,116 @@
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.detalle-publico {
+    padding: 60px 20px 80px;
+    display: grid;
+}
+
+.grid-detalle {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    animation: fadeUp 0.8s ease;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+@media (max-width: 900px) {
+    .grid-detalle {
+        grid-template-columns: 1fr;
+    }
+}
+
+.imagen-wrapper {
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    background-color: var(--color-azul-caja);
+    padding: 20px;
+}
+
+.imagen-wrapper img {
+    width: 100%;
+    display: block;
+    transition: 0.5s ease;
+}
+
+.imagen-wrapper:hover img {
+    transform: scale(1.05);
+}
+
+.badge {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background-color: var(--color-azul-oscuro);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+.columna-info {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.columna-info h1 {
+    margin: 0;
+    color: var(--color-azul-oscuro);
+}
+
+.info-grid {
+    display: grid;
+    gap: 12px;
+}
+
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--color-azul-caja);
+    padding: 12px 18px;
+    border-radius: 10px;
+    gap: 15px;
+}
+
+.label {
+    font-weight: bold;
+}
+
+.bloque-detalles summary {
+    cursor: pointer;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.boton-favorito {
+    padding: 14px 28px;
+    border-radius: 12px;
+    border: none;
+    background-color: var(--color-azul);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s ease;
+    width: fit-content;
+}
+
+.boton-favorito:hover {
+    transform: translateY(-3px);
+    animation: pulse 0.6s ease;
+}
+
+.mensaje-cargando {
+    text-align: center;
+    font-weight: bold;
+}
