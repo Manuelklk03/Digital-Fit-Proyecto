@@ -58,6 +58,7 @@ public class EntrenamientoUsuarioService {
         return entityToDto(entrenamientoUsuarioGuardado);
     }
 
+    // Para añadir entrenamientos de la app a el apartado mis entrenamientos:
     @Transactional
     public EntrenamientoUsuarioDTO añadirDesdeBase(Long idBase, String username) {
         Usuario usuario = usuarioRepository.findByUsername(username)
@@ -89,6 +90,7 @@ public class EntrenamientoUsuarioService {
         entrenamientoUsuarioRepository.delete(entrenamientoUsuario);
     }
 
+    // Mappers:
     public EntrenamientoUsuarioDTO entityToDto(EntrenamientoUsuario entrenamientoUsuario) {
         EntrenamientoUsuarioDTO entrenamientoUsuarioDTO = new EntrenamientoUsuarioDTO();
         entrenamientoUsuarioDTO.setId(entrenamientoUsuario.getId());
