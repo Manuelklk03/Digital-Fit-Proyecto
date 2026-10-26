@@ -15,4 +15,8 @@ public interface CentroPrivadoBaseRepository extends JpaRepository<CentroPrivado
     List<CentroPrivadoBase> findByDireccionContainingIgnoreCase(String direccion);
 
     List<CentroPrivadoBase> findByPrecioMensualLessThanEqual(Double precioMensual);
+
+    boolean existsByNombreIgnoreCaseAndDireccionIgnoreCase(String nombre, String direccion);
+
+    boolean existsByNombreIgnoreCaseAndDireccionIgnoreCaseAndIdNot(String nombre, String direccion, Long id);
 }

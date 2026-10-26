@@ -18,17 +18,13 @@ export class MisLugaresComponent {
 
   lugares: any[] = [];
 
-  nombre = '';
-  direccion = '';
-  descripcion = '';
-  telefono = '';
-  horario = '';
-  latitud = 0;
-  longitud = 0;
-  tipo = 'PARQUE_PUBLICO';
+  tipoBusqueda = 'nombre';
+  valorBusqueda = '';
 
-  mensajeExito = '';
-  mensajeError = '';
+  mostrarPopup = false;
+  textoPopup = '';
+  tipoPopup: 'exito' | 'error' = 'exito';
+  private popupTimeout: any;
 
   ngOnInit(): void {
     this.cargarMisLugares();
@@ -36,59 +32,105 @@ export class MisLugaresComponent {
 
   cargarMisLugares(): void {
     this.misLugaresService.getMisLugares().subscribe({
-      next: (data) => {
-        console.log('MIS LUGARES:', data);
+      next: (data: any[]) => {
         this.lugares = data;
         this.cdr.detectChanges();
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('ERROR MIS LUGARES:', err);
+        this.abrirPopup('No se pudieron cargar tus lugares.', 'error');
       }
     });
   }
 
-  crearLugar(): void {
-    this.mensajeExito = '';
-    this.mensajeError = '';
+  buscarLugares(): void {
+    const texto = this.valorBusqueda.trim();
 
-    const nuevoLugar = {
-      nombre: this.nombre,
-      direccion: this.direccion,
-      descripcion: this.descripcion,
-      telefono: this.telefono,
-      horario: this.horario,
-      latitud: this.latitud,
-      longitud: this.longitud,
-      tipo: this.tipo
-    };
+    if (!texto) {
+      this.cargarMisLugares();
+      return;
+    }
 
-    this.misLugaresService.crearLugarDesdeMaps(nuevoLugar).subscribe({
-      next: () => {
-        this.mensajeExito = 'Lugar guardado correctamente.';
-        this.nombre = '';
-        this.direccion = '';
-        this.descripcion = '';
-        this.telefono = '';
-        this.horario = '';
-        this.latitud = 0;
-        this.longitud = 0;
-        this.tipo = 'PARQUE_PUBLICO';
-        this.cargarMisLugares();
+    if (this.tipoBusqueda === 'direccion') {
+      this.misLugaresService.getMisLugaresFiltrados(undefined, texto, undefined).subscribe({
+        next: (data: any[]) => {
+          this.lugares = data;
+          this.cdr.detectChanges();
+        },
+        error: (err: any) => console.error('ERROR FILTRO DIRECCION MIS LUGARES:', err)
+      });
+      return;
+    }
+
+    if (this.tipoBusqueda === 'tipo') {
+      this.misLugaresService.getMisLugaresFiltrados(undefined, undefined, texto).subscribe({
+        next: (data: any[]) => {
+          this.lugares = data;
+          this.cdr.detectChanges();
+        },
+        error: (err: any) => console.error('ERROR FILTRO TIPO MIS LUGARES:', err)
+      });
+      return;
+    }
+
+    this.misLugaresService.getMisLugaresFiltrados(texto, undefined, undefined).subscribe({
+      next: (data: any[]) => {
+        this.lugares = data;
+        this.cdr.detectChanges();
       },
-      error: () => {
-        this.mensajeError = 'No se pudo guardar el lugar.';
-      }
+      error: (err: any) => console.error('ERROR FILTRO NOMBRE MIS LUGARES:', err)
     });
+  }
+
+  alCambiarBusqueda(): void {
+    this.buscarLugares();
+  }
+
+  limpiarBusqueda(): void {
+    this.tipoBusqueda = 'nombre';
+    this.valorBusqueda = '';
+    this.cargarMisLugares();
   }
 
   borrarLugar(id: number): void {
     this.misLugaresService.borrarLugar(id).subscribe({
       next: () => {
+        this.abrirPopup('Lugar borrado correctamente.', 'exito');
         this.cargarMisLugares();
       },
       error: () => {
-        this.mensajeError = 'No se pudo borrar el lugar.';
+        this.abrirPopup('No se pudo borrar el lugar.', 'error');
       }
     });
+  }
+
+  mostrarTipoLegible(tipo: string): string {
+    if (!tipo) {
+      return 'Sin tipo';
+    }
+
+    return tipo.replaceAll('_', ' ').toLowerCase()
+      .replace(/\b\w/g, letra => letra.toUpperCase());
+  }
+
+  abrirPopup(texto: string, tipo: 'exito' | 'error'): void {
+    this.textoPopup = texto;
+    this.tipoPopup = tipo;
+    this.mostrarPopup = true;
+    this.cdr.detectChanges();
+
+    if (this.popupTimeout) {
+      clearTimeout(this.popupTimeout);
+    }
+
+    this.popupTimeout = setTimeout(() => {
+      this.mostrarPopup = false;
+      this.cdr.detectChanges();
+    }, 3000);
+  }
+
+  cerrarPopup(): void {
+    this.mostrarPopup = false;
+    this.cdr.detectChanges();
   }
 }

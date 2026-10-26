@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.digital_fit.dto.CentroPrivado.CentroPrivadoUsuarioDTO;
 import com.example.digital_fit.dto.CentroPrivado.CrearCentroPrivadoDTO;
+import com.example.digital_fit.exception.ErrorArgumentoException;
 import com.example.digital_fit.exception.OperacionNoPermitida;
 import com.example.digital_fit.exception.RecursoNoEncontradoException;
 import com.example.digital_fit.model.Auth.Usuario;
@@ -35,8 +36,6 @@ public class CentroPrivadoUsuarioService {
 
     private static final Logger log = LoggerFactory.getLogger(CentroPrivadoUsuarioService.class);
 
-    // Listar filtrando mis centros:
-
     public List<CentroPrivadoUsuarioDTO> listarOFiltrar(String username, String nombre, String direccion,
             Double precioMensual) {
 
@@ -49,14 +48,10 @@ public class CentroPrivadoUsuarioService {
 
         if (nombre != null) {
             centros = centroPrivadoUsuarioRepository.findByUsuarioAndNombreContainingIgnoreCase(usuario, nombre);
-
         } else if (direccion != null) {
-            centros = centroPrivadoUsuarioRepository
-                    .findByUsuarioAndDireccionContainingIgnoreCase(usuario, direccion);
-
+            centros = centroPrivadoUsuarioRepository.findByUsuarioAndDireccionContainingIgnoreCase(usuario, direccion);
         } else if (precioMensual != null) {
-            centros = centroPrivadoUsuarioRepository
-                    .findByUsuarioAndPrecioMensualLessThanEqual(usuario, precioMensual);
+            centros = centroPrivadoUsuarioRepository.findByUsuarioAndPrecioMensualLessThanEqual(usuario, precioMensual);
         } else {
             centros = centroPrivadoUsuarioRepository.findByUsuario(usuario);
         }
@@ -70,7 +65,6 @@ public class CentroPrivadoUsuarioService {
         return centrosDTO;
     }
 
-    // Añadir centro privado desde maps:
     @Transactional
     public CentroPrivadoUsuarioDTO AñdirCentroPrivadoMaps(CrearCentroPrivadoDTO dto, String username) {
 
@@ -78,6 +72,16 @@ public class CentroPrivadoUsuarioService {
 
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
+
+        boolean repetido = centroPrivadoUsuarioRepository
+                .existsByUsuarioAndNombreIgnoreCaseAndDireccionIgnoreCase(
+                        usuario,
+                        dto.getNombre(),
+                        dto.getDireccion());
+
+        if (repetido) {
+            throw new ErrorArgumentoException("Ya tienes este centro en mis centros");
+        }
 
         CentroPrivadoUsuario centro = new CentroPrivadoUsuario();
         centro.setNombre(dto.getNombre());
@@ -97,17 +101,26 @@ public class CentroPrivadoUsuarioService {
         return entityToDto(centroGuardado);
     }
 
-    // Añadir centro privado desde lista de la app:
     @Transactional
     public CentroPrivadoUsuarioDTO AñadirPrivadoAMisCentros(Long idBase, String username) {
 
-        log.info("Usuario {}añade centro privado de la base {}", username, idBase);
+        log.info("Usuario {} añade centro privado de la base {}", username, idBase);
 
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
 
         CentroPrivadoBase centroBase = centroPrivadoBaseRepository.findById(idBase)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Centro base no encontrado en la lista."));
+
+        boolean repetido = centroPrivadoUsuarioRepository
+                .existsByUsuarioAndNombreIgnoreCaseAndDireccionIgnoreCase(
+                        usuario,
+                        centroBase.getNombre(),
+                        centroBase.getDireccion());
+
+        if (repetido) {
+            throw new ErrorArgumentoException("Ya tienes este centro en mis centros");
+        }
 
         CentroPrivadoUsuario centro = new CentroPrivadoUsuario();
         centro.setNombre(centroBase.getNombre());
@@ -127,7 +140,6 @@ public class CentroPrivadoUsuarioService {
         return entityToDto(centroGuardado);
     }
 
-    // Detalle CentroPrivado:
     public CentroPrivadoUsuarioDTO verDetalle(Long id, String username) {
 
         log.debug("Usuario {} consulta centro privado {}", username, id);
@@ -146,7 +158,6 @@ public class CentroPrivadoUsuarioService {
         return entityToDto(centro);
     }
 
-    // Borrar Centro de MisCentrosGuardados:
     @Transactional
     public void borrarDeMisCentrosGuardados(Long id, String username) {
 
@@ -168,7 +179,6 @@ public class CentroPrivadoUsuarioService {
         log.info("Centro privado {} borrado para usuario {}", id, username);
     }
 
-    // Mappers:
     public CentroPrivadoUsuario dtoToEntity(CentroPrivadoUsuarioDTO dto) {
         CentroPrivadoUsuario centro = new CentroPrivadoUsuario();
         centro.setId(dto.getId());
@@ -196,5 +206,4 @@ public class CentroPrivadoUsuarioService {
         dto.setLongitud(centro.getLongitud());
         return dto;
     }
-
 }

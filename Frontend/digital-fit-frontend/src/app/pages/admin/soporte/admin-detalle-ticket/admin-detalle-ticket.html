@@ -1,0 +1,46 @@
+<app-header></app-header>
+
+<main class="detalle-ticket-admin">
+
+  @if (mostrarPopup) {
+    <div class="popup-overlay">
+      <div class="popup-mensaje" [class.popup-error]="tipoPopup === 'error'">
+        <p>{{ textoPopup }}</p>
+        <button type="button" (click)="cerrarPopup()">Cerrar</button>
+      </div>
+    </div>
+  }
+
+  @if (ticket) {
+    <div class="contenedor-detalle">
+      <h1>{{ ticket.asunto }}</h1>
+
+      <div class="info-item">
+        <span class="label">Fecha:</span>
+        <span>{{ ticket.fecha }}</span>
+      </div>
+
+      <div class="info-item">
+        <span class="label">Estado:</span>
+        <span>{{ mostrarEstado(ticket.estado) }}</span>
+      </div>
+
+      <details class="bloque-detalles" open>
+        <summary>Mensaje</summary>
+        <p>{{ ticket.mensaje }}</p>
+      </details>
+
+      <div class="acciones-ticket">
+        <button class="boton-estado" (click)="cambiarEstado('ABIERTO')">Abierto</button>
+        <button class="boton-estado" (click)="cambiarEstado('EN_PROCESO')">En proceso</button>
+        <button class="boton-estado" (click)="cambiarEstado('CERRADO')">Cerrado</button>
+        <button class="boton-borrar" (click)="borrarTicket()">Borrar</button>
+      </div>
+    </div>
+  } @else {
+    <p class="mensaje-cargando">Cargando detalle...</p>
+  }
+
+</main>
+
+<app-footer></app-footer>

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.digital_fit.dto.Entrenamientos.CrearEntrenamientoUsuario;
 import com.example.digital_fit.dto.Entrenamientos.EntrenamientoUsuarioDTO;
+import com.example.digital_fit.exception.ErrorArgumentoException;
 import com.example.digital_fit.exception.OperacionNoPermitida;
 import com.example.digital_fit.exception.RecursoNoEncontradoException;
 import com.example.digital_fit.model.Auth.Usuario;
@@ -43,7 +44,9 @@ public class EntrenamientoUsuarioService {
     private static final Logger log = LoggerFactory.getLogger(EntrenamientoUsuarioService.class);
 
     public List<EntrenamientoUsuarioDTO> listarOFiltrar(String username,
-            CategoriaEntrenamientoComunidad categoria, NivelEntrenamiento nivel, Integer duracionEnMinutos,
+            CategoriaEntrenamientoComunidad categoria,
+            NivelEntrenamiento nivel,
+            Integer duracionEnMinutos,
             String nombre) {
 
         log.debug("Listando entrenamientos de usuario {}", username);
@@ -58,8 +61,8 @@ public class EntrenamientoUsuarioService {
         } else if (nivel != null) {
             entrenamientos = entrenamientoUsuarioRepository.findByUsuarioAndNivel(usuario, nivel);
         } else if (duracionEnMinutos != null) {
-            entrenamientos = entrenamientoUsuarioRepository.findByUsuarioAndDuracionEnMinutosLessThanEqual(usuario,
-                    duracionEnMinutos);
+            entrenamientos = entrenamientoUsuarioRepository.findByUsuarioAndDuracionEnMinutosLessThanEqual(
+                    usuario, duracionEnMinutos);
         } else if (nombre != null) {
             entrenamientos = entrenamientoUsuarioRepository.findByUsuarioAndNombreContainingIgnoreCase(usuario, nombre);
         } else {
@@ -73,16 +76,27 @@ public class EntrenamientoUsuarioService {
         }
 
         return entrenamientoDTOs;
-
     }
 
     @Transactional
     public EntrenamientoUsuarioDTO crearEntrenamientoPersonalizado(CrearEntrenamientoUsuario dto, String username) {
 
-        log.info("Usuario {} crea Entrenamiento {}", username, dto.getNombre());
+        log.info("Usuario {} crea entrenamiento {}", username, dto.getNombre());
 
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
+
+        boolean repetido = entrenamientoUsuarioRepository
+                .existsByUsuarioAndNombreIgnoreCaseAndCategoriaAndNivelAndDuracionEnMinutos(
+                        usuario,
+                        dto.getNombre(),
+                        dto.getCategoria(),
+                        dto.getNivel(),
+                        dto.getDuracionEnMinutos());
+
+        if (repetido) {
+            throw new ErrorArgumentoException("Ya tienes un entrenamiento igual en mis entrenamientos");
+        }
 
         EntrenamientoUsuario entrenamientoUsuario = new EntrenamientoUsuario();
         entrenamientoUsuario.setNombre(dto.getNombre());
@@ -99,17 +113,28 @@ public class EntrenamientoUsuarioService {
         return entityToDto(entrenamientoUsuarioGuardado);
     }
 
-    // Para añadir entrenamientos de la app a el apartado mis entrenamientos:
     @Transactional
-    public EntrenamientoUsuarioDTO añadirDesdeBase(Long idBase, String username) {
+    public EntrenamientoUsuarioDTO anadirDesdeBase(Long idBase, String username) {
 
-        log.info("Usuario {}añade entrenamiento de la base {}", username, idBase);
+        log.info("Usuario {} añade entrenamiento de la base {}", username, idBase);
 
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
 
         EntrenamientoBase entrenamientoBase = entrenamientoBaseRepository.findById(idBase)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Entrenamiento base no encontrado"));
+
+        boolean repetido = entrenamientoUsuarioRepository
+                .existsByUsuarioAndNombreIgnoreCaseAndCategoriaAndNivelAndDuracionEnMinutos(
+                        usuario,
+                        entrenamientoBase.getNombre(),
+                        entrenamientoBase.getCategoria(),
+                        entrenamientoBase.getNivel(),
+                        entrenamientoBase.getDuracionEnMinutos());
+
+        if (repetido) {
+            throw new ErrorArgumentoException("Ya tienes este entrenamiento en mis entrenamientos");
+        }
 
         EntrenamientoUsuario entrenamientoUsuario = new EntrenamientoUsuario();
         entrenamientoUsuario.setNombre(entrenamientoBase.getNombre());
@@ -126,11 +151,10 @@ public class EntrenamientoUsuarioService {
         return entityToDto(entrenamientoUsuarioGuardado);
     }
 
-    // Para añadir entrenamientos de la comunidad a el apartado mis entrenamientos:
     @Transactional
-    public EntrenamientoUsuarioDTO añadirDesdeComunidad(Long idComunidad, String username) {
+    public EntrenamientoUsuarioDTO anadirDesdeComunidad(Long idComunidad, String username) {
 
-        log.info("Usuario {}añade entrenamiento de la comunidad {}", username, idComunidad);
+        log.info("Usuario {} añade entrenamiento de la comunidad {}", username, idComunidad);
 
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
@@ -138,8 +162,19 @@ public class EntrenamientoUsuarioService {
         EntrenamientoComunidad entrenamientoComunidad = entrenamientoComunidadRepository.findById(idComunidad)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Entrenamiento comunidad no encontrado"));
 
-        EntrenamientoUsuario entrenamientoUsuario = new EntrenamientoUsuario();
+        boolean repetido = entrenamientoUsuarioRepository
+                .existsByUsuarioAndNombreIgnoreCaseAndCategoriaAndNivelAndDuracionEnMinutos(
+                        usuario,
+                        entrenamientoComunidad.getNombre(),
+                        entrenamientoComunidad.getCategoria(),
+                        entrenamientoComunidad.getNivel(),
+                        entrenamientoComunidad.getDuracionEnMinutos());
 
+        if (repetido) {
+            throw new ErrorArgumentoException("Ya tienes este entrenamiento en mis entrenamientos");
+        }
+
+        EntrenamientoUsuario entrenamientoUsuario = new EntrenamientoUsuario();
         entrenamientoUsuario.setNombre(entrenamientoComunidad.getNombre());
         entrenamientoUsuario.setDescripcion(entrenamientoComunidad.getDescripcion());
         entrenamientoUsuario.setCategoria(entrenamientoComunidad.getCategoria());
@@ -154,7 +189,6 @@ public class EntrenamientoUsuarioService {
         return entityToDto(entrenamientoUsuarioGuardado);
     }
 
-    // Para borrar entrenamientos de mis entrenamientos:
     @Transactional
     public void borrarDeMisEntrenamientos(Long id, String username) {
 
@@ -170,12 +204,11 @@ public class EntrenamientoUsuarioService {
             throw new OperacionNoPermitida("No tienes permiso para borrar este entrenamiento");
         }
 
-        log.info("Entrenamiento {} borrado para usuario {}", id, username);
-
         entrenamientoUsuarioRepository.delete(entrenamientoUsuario);
+
+        log.info("Entrenamiento {} borrado para usuario {}", id, username);
     }
 
-    // Para mostrar detalle de entrenamientos:
     public EntrenamientoUsuarioDTO detalle(Long id, String username) {
 
         log.debug("Usuario {} consulta entrenamiento {}", username, id);
@@ -193,7 +226,6 @@ public class EntrenamientoUsuarioService {
         return entityToDto(entrenamientoUsuario);
     }
 
-    // Mappers:
     public EntrenamientoUsuarioDTO entityToDto(EntrenamientoUsuario entrenamientoUsuario) {
         EntrenamientoUsuarioDTO entrenamientoUsuarioDTO = new EntrenamientoUsuarioDTO();
         entrenamientoUsuarioDTO.setId(entrenamientoUsuario.getId());
@@ -202,7 +234,6 @@ public class EntrenamientoUsuarioService {
         entrenamientoUsuarioDTO.setCategoria(entrenamientoUsuario.getCategoria());
         entrenamientoUsuarioDTO.setNivel(entrenamientoUsuario.getNivel());
         entrenamientoUsuarioDTO.setDuracionEnMinutos(entrenamientoUsuario.getDuracionEnMinutos());
-
         return entrenamientoUsuarioDTO;
     }
 
@@ -214,7 +245,6 @@ public class EntrenamientoUsuarioService {
         entrenamientoUsuario.setCategoria(dto.getCategoria());
         entrenamientoUsuario.setNivel(dto.getNivel());
         entrenamientoUsuario.setDuracionEnMinutos(dto.getDuracionEnMinutos());
-
         return entrenamientoUsuario;
     }
 }

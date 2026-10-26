@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DetalleEntrenamientoComunidad } from './detalle-entrenamiento-comunidad';
+import { DetalleEntrenamientoComunidadComponent } from './detalle-entrenamiento-comunidad';
 
 describe('DetalleEntrenamientoComunidad', () => {
-  let component: DetalleEntrenamientoComunidad;
-  let fixture: ComponentFixture<DetalleEntrenamientoComunidad>;
+  let component: DetalleEntrenamientoComunidadComponent;
+  let fixture: ComponentFixture<DetalleEntrenamientoComunidadComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DetalleEntrenamientoComunidad],
+      imports: [DetalleEntrenamientoComunidadComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(DetalleEntrenamientoComunidad);
+    fixture = TestBed.createComponent(DetalleEntrenamientoComunidadComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

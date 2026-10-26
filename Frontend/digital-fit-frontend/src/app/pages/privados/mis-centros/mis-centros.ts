@@ -18,17 +18,13 @@ export class MisCentrosComponent {
 
   centros: any[] = [];
 
-  nombre = '';
-  direccion = '';
-  telefono = '';
-  horario = '';
-  precioMensual = 30;
-  descripcion = '';
-  latitud = 0;
-  longitud = 0;
+  tipoBusqueda = 'nombre';
+  valorBusqueda = '';
 
-  mensajeExito = '';
-  mensajeError = '';
+  mostrarPopup = false;
+  textoPopup = '';
+  tipoPopup: 'exito' | 'error' = 'exito';
+  private popupTimeout: any;
 
   ngOnInit(): void {
     this.cargarMisCentros();
@@ -36,59 +32,103 @@ export class MisCentrosComponent {
 
   cargarMisCentros(): void {
     this.misCentrosService.getMisCentros().subscribe({
-      next: (data) => {
-        console.log('MIS CENTROS:', data);
+      next: (data: any[]) => {
         this.centros = data;
         this.cdr.detectChanges();
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('ERROR MIS CENTROS:', err);
+        this.abrirPopup('No se pudieron cargar tus centros.', 'error');
       }
     });
   }
 
-  crearCentro(): void {
-    this.mensajeExito = '';
-    this.mensajeError = '';
+  buscarCentros(): void {
+    const texto = this.valorBusqueda.trim();
 
-    const nuevoCentro = {
-      nombre: this.nombre,
-      direccion: this.direccion,
-      telefono: this.telefono,
-      horario: this.horario,
-      precioMensual: this.precioMensual,
-      descripcion: this.descripcion,
-      latitud: this.latitud,
-      longitud: this.longitud
-    };
+    if (!texto) {
+      this.cargarMisCentros();
+      return;
+    }
 
-    this.misCentrosService.crearCentroDesdeMaps(nuevoCentro).subscribe({
-      next: () => {
-        this.mensajeExito = 'Centro guardado correctamente.';
-        this.nombre = '';
-        this.direccion = '';
-        this.telefono = '';
-        this.horario = '';
-        this.precioMensual = 30;
-        this.descripcion = '';
-        this.latitud = 0;
-        this.longitud = 0;
-        this.cargarMisCentros();
-      },
-      error: () => {
-        this.mensajeError = 'No se pudo guardar el centro.';
+    if (this.tipoBusqueda === 'direccion') {
+      this.misCentrosService.getMisCentrosFiltrados(undefined, texto, undefined).subscribe({
+        next: (data: any[]) => {
+          this.centros = data;
+          this.cdr.detectChanges();
+        },
+        error: (err: any) => console.error('ERROR FILTRO DIRECCION MIS CENTROS:', err)
+      });
+      return;
+    }
+
+    if (this.tipoBusqueda === 'precioMensual') {
+      const precio = Number(texto);
+
+      if (isNaN(precio)) {
+        this.centros = [];
+        return;
       }
+
+      this.misCentrosService.getMisCentrosFiltrados(undefined, undefined, precio).subscribe({
+        next: (data: any[]) => {
+          this.centros = data;
+          this.cdr.detectChanges();
+        },
+        error: (err: any) => console.error('ERROR FILTRO PRECIO MIS CENTROS:', err)
+      });
+      return;
+    }
+
+    this.misCentrosService.getMisCentrosFiltrados(texto, undefined, undefined).subscribe({
+      next: (data: any[]) => {
+        this.centros = data;
+        this.cdr.detectChanges();
+      },
+      error: (err: any) => console.error('ERROR FILTRO NOMBRE MIS CENTROS:', err)
     });
+  }
+
+  alCambiarBusqueda(): void {
+    this.buscarCentros();
+  }
+
+  limpiarBusqueda(): void {
+    this.tipoBusqueda = 'nombre';
+    this.valorBusqueda = '';
+    this.cargarMisCentros();
   }
 
   borrarCentro(id: number): void {
     this.misCentrosService.borrarCentro(id).subscribe({
       next: () => {
+        this.abrirPopup('Centro borrado correctamente.', 'exito');
         this.cargarMisCentros();
       },
       error: () => {
-        this.mensajeError = 'No se pudo borrar el centro.';
+        this.abrirPopup('No se pudo borrar el centro.', 'error');
       }
     });
+  }
+
+  abrirPopup(texto: string, tipo: 'exito' | 'error'): void {
+    this.textoPopup = texto;
+    this.tipoPopup = tipo;
+    this.mostrarPopup = true;
+    this.cdr.detectChanges();
+
+    if (this.popupTimeout) {
+      clearTimeout(this.popupTimeout);
+    }
+
+    this.popupTimeout = setTimeout(() => {
+      this.mostrarPopup = false;
+      this.cdr.detectChanges();
+    }, 3000);
+  }
+
+  cerrarPopup(): void {
+    this.mostrarPopup = false;
+    this.cdr.detectChanges();
   }
 }

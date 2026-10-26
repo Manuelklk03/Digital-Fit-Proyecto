@@ -9,9 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.digital_fit.dto.CentroPrivado.CentroPrivadoBaseDTO;
+import com.example.digital_fit.dto.CentroPrivado.CrearCentroPrivadoDTO;
+import com.example.digital_fit.exception.ErrorArgumentoException;
 import com.example.digital_fit.exception.RecursoNoEncontradoException;
 import com.example.digital_fit.model.CentroPrivado.CentroPrivadoBase;
 import com.example.digital_fit.repository.CentroPrivado.CentroPrivadoBaseRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class CentroPrivadoBaseService {
@@ -21,7 +25,6 @@ public class CentroPrivadoBaseService {
 
     private static final Logger log = LoggerFactory.getLogger(CentroPrivadoBaseService.class);
 
-    // Listar o filtrar
     public List<CentroPrivadoBaseDTO> listarOFiltrar(String nombre, String direccion, Double precioMensual) {
 
         log.debug("Listando centros privados");
@@ -47,7 +50,6 @@ public class CentroPrivadoBaseService {
         return centrosDTO;
     }
 
-    // Ver detalle
     public CentroPrivadoBaseDTO obtenerPorId(Long id) {
 
         log.debug("Buscando centro privado con id: {}", id);
@@ -58,7 +60,80 @@ public class CentroPrivadoBaseService {
         return entityToDto(entidad);
     }
 
-    // Mappers
+    @Transactional
+    public CentroPrivadoBaseDTO crearCentroPrivado(CrearCentroPrivadoDTO dto) {
+
+        log.info("Creando centro privado {}", dto.getNombre());
+
+        boolean repetido = centroPrivadoBaseRepository
+                .existsByNombreIgnoreCaseAndDireccionIgnoreCase(dto.getNombre(), dto.getDireccion());
+
+        if (repetido) {
+            throw new ErrorArgumentoException("Ya existe un centro privado base con ese nombre y dirección");
+        }
+
+        CentroPrivadoBase centroPrivadoBase = new CentroPrivadoBase();
+        centroPrivadoBase.setNombre(dto.getNombre());
+        centroPrivadoBase.setDireccion(dto.getDireccion());
+        centroPrivadoBase.setTelefono(dto.getTelefono());
+        centroPrivadoBase.setHorario(dto.getHorario());
+        centroPrivadoBase.setPrecioMensual(dto.getPrecioMensual());
+        centroPrivadoBase.setDescripcion(dto.getDescripcion());
+        centroPrivadoBase.setLatitud(dto.getLatitud());
+        centroPrivadoBase.setLongitud(dto.getLongitud());
+
+        centroPrivadoBase = centroPrivadoBaseRepository.save(centroPrivadoBase);
+
+        return entityToDto(centroPrivadoBase);
+    }
+
+    @Transactional
+    public CentroPrivadoBaseDTO actualizarCentroPrivado(Long id, CrearCentroPrivadoDTO dto) {
+
+        log.info("Actualizando centro privado con id: {}", id);
+
+        CentroPrivadoBase centroPrivadoBase = centroPrivadoBaseRepository.findById(id)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Centro con id: " + id + " No encontrado."));
+
+        boolean repetido = centroPrivadoBaseRepository
+                .existsByNombreIgnoreCaseAndDireccionIgnoreCaseAndIdNot(
+                        dto.getNombre(),
+                        dto.getDireccion(),
+                        id);
+
+        if (repetido) {
+            throw new ErrorArgumentoException("Ya existe otro centro privado base con ese nombre y dirección");
+        }
+
+        centroPrivadoBase.setNombre(dto.getNombre());
+        centroPrivadoBase.setDireccion(dto.getDireccion());
+        centroPrivadoBase.setTelefono(dto.getTelefono());
+        centroPrivadoBase.setHorario(dto.getHorario());
+        centroPrivadoBase.setPrecioMensual(dto.getPrecioMensual());
+        centroPrivadoBase.setDescripcion(dto.getDescripcion());
+        centroPrivadoBase.setLatitud(dto.getLatitud());
+        centroPrivadoBase.setLongitud(dto.getLongitud());
+
+        centroPrivadoBase = centroPrivadoBaseRepository.save(centroPrivadoBase);
+
+        log.info("Centro privado actualizado con id: {}", id);
+
+        return entityToDto(centroPrivadoBase);
+    }
+
+    @Transactional
+    public void borrarCentroPrivado(Long id) {
+
+        log.info("Borrando centro privado con id: {}", id);
+
+        CentroPrivadoBase entidad = centroPrivadoBaseRepository.findById(id)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Centro con id: " + id + " No encontrado."));
+
+        centroPrivadoBaseRepository.delete(entidad);
+
+        log.info("Centro privado con id: {} borrado", id);
+    }
+
     public CentroPrivadoBaseDTO entityToDto(CentroPrivadoBase entity) {
         CentroPrivadoBaseDTO dto = new CentroPrivadoBaseDTO();
         dto.setId(entity.getId());

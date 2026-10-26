@@ -12,11 +12,28 @@ import org.springframework.stereotype.Service;
 import com.example.digital_fit.dto.Valoracion.CrearValoracionDTO;
 import com.example.digital_fit.dto.Valoracion.ValoracionDTO;
 import com.example.digital_fit.exception.ErrorArgumentoException;
+import com.example.digital_fit.exception.OperacionNoPermitida;
 import com.example.digital_fit.exception.RecursoNoEncontradoException;
 import com.example.digital_fit.model.Auth.Usuario;
+import com.example.digital_fit.model.CentroPrivado.CentroPrivadoBase;
+import com.example.digital_fit.model.CentroPrivado.CentroPrivadoUsuario;
+import com.example.digital_fit.model.Entrenamientos.EntrenamientoBase;
+import com.example.digital_fit.model.Entrenamientos.EntrenamientoComunidad;
+import com.example.digital_fit.model.Entrenamientos.EntrenamientoUsuario;
+import com.example.digital_fit.model.Entrenamientos.HistorialEntrenamientos;
 import com.example.digital_fit.model.Enums.TipoDeValoracion;
+import com.example.digital_fit.model.LugarPublico.LugarPublicoBase;
+import com.example.digital_fit.model.LugarPublico.LugarPublicoUsuario;
 import com.example.digital_fit.model.Valoracion.Valoracion;
 import com.example.digital_fit.repository.Auth.UsuarioRepository;
+import com.example.digital_fit.repository.CentroPrivado.CentroPrivadoBaseRepository;
+import com.example.digital_fit.repository.CentroPrivado.CentroPrivadoUsuarioRepository;
+import com.example.digital_fit.repository.Entrenamientos.EntrenamientoBaseRepository;
+import com.example.digital_fit.repository.Entrenamientos.EntrenamientoComunidadRepository;
+import com.example.digital_fit.repository.Entrenamientos.EntrenamientoUsuarioRepository;
+import com.example.digital_fit.repository.Entrenamientos.HistorialEntrenamientosRepository;
+import com.example.digital_fit.repository.LugarPublico.LugarPublicoBaseRepository;
+import com.example.digital_fit.repository.LugarPublico.LugarPublicoUsuarioRepository;
 import com.example.digital_fit.repository.Valoracion.ValoracionRepository;
 
 import jakarta.transaction.Transactional;
@@ -29,6 +46,30 @@ public class ValoracionService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private EntrenamientoBaseRepository entrenamientoBaseRepository;
+
+    @Autowired
+    private EntrenamientoUsuarioRepository entrenamientoUsuarioRepository;
+
+    @Autowired
+    private HistorialEntrenamientosRepository historialEntrenamientosRepository;
+
+    @Autowired
+    private EntrenamientoComunidadRepository entrenamientoComunidadRepository;
+
+    @Autowired
+    private CentroPrivadoBaseRepository centroPrivadoBaseRepository;
+
+    @Autowired
+    private CentroPrivadoUsuarioRepository centroPrivadoUsuarioRepository;
+
+    @Autowired
+    private LugarPublicoBaseRepository lugarPublicoBaseRepository;
+
+    @Autowired
+    private LugarPublicoUsuarioRepository lugarPublicoUsuarioRepository;
 
     private static final Logger log = LoggerFactory.getLogger(ValoracionService.class);
 
@@ -83,7 +124,6 @@ public class ValoracionService {
         log.info("Valoracion con id {} borrada", valoracion.getId());
 
         valoracionRepository.delete(valoracion);
-
     }
 
     @Transactional
@@ -95,21 +135,22 @@ public class ValoracionService {
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
 
-        // Validar puntuacion
         if (dto.getPuntuacion() == null || dto.getPuntuacion() < 1 || dto.getPuntuacion() > 5) {
             throw new ErrorArgumentoException("La puntuación debe estar entre 1 y 5");
         }
 
-        // Buscar si ya existe valoración del usuario para ese contenido
-        Valoracion valoracion = valoracionRepository
-                .findByUsuarioAndTipoDeValoracionAndIdRelacionado(usuario, tipo, contenidoId).orElseGet(() -> Valoracion
-                        .builder().usuario(usuario).tipoDeValoracion(tipo).idRelacionado(contenidoId).build());
+        validarContenidoExisteYPermisos(tipo, contenidoId, usuario);
 
-        // Actualizar
+        Valoracion valoracion = valoracionRepository
+                .findByUsuarioAndTipoDeValoracionAndIdRelacionado(usuario, tipo, contenidoId)
+                .orElseGet(() -> Valoracion.builder()
+                        .usuario(usuario)
+                        .tipoDeValoracion(tipo)
+                        .idRelacionado(contenidoId)
+                        .build());
+
         valoracion.setPuntuacion(dto.getPuntuacion());
         valoracion.setComentario(dto.getComentario());
-
-        // Fecha de creacxion o actualización
         valoracion.setFecha(LocalDateTime.now());
 
         Valoracion guardada = valoracionRepository.save(valoracion);
@@ -117,6 +158,104 @@ public class ValoracionService {
         log.info("Valoracion con id {} guardada/actualizada", guardada.getId());
 
         return entityToDto(guardada);
+    }
+
+    private void validarContenidoExisteYPermisos(TipoDeValoracion tipo, Long contenidoId, Usuario usuario) {
+
+        switch (tipo) {
+            case ENTRENAMIENTO_BASE -> entrenamientoBaseRepository.findById(contenidoId)
+                    .orElseThrow(() -> new RecursoNoEncontradoException("Entrenamiento base no encontrado"));
+
+            case ENTRENAMIENTO_COMUNIDAD -> entrenamientoComunidadRepository.findById(contenidoId)
+                    .orElseThrow(() -> new RecursoNoEncontradoException("Entrenamiento comunidad no encontrado"));
+
+            case ENTRENAMIENTO_USUARIO -> {
+                EntrenamientoUsuario entrenamientoUsuario = entrenamientoUsuarioRepository.findById(contenidoId)
+                        .orElseThrow(() -> new RecursoNoEncontradoException("Entrenamiento usuario no encontrado"));
+
+                if (!entrenamientoUsuario.getUsuario().getId().equals(usuario.getId())) {
+                    throw new OperacionNoPermitida("No puedes valorar un entrenamiento de usuario que no es tuyo");
+                }
+            }
+
+            case HISTORIAL_ENTRENAMIENTO -> {
+                HistorialEntrenamientos historial = historialEntrenamientosRepository.findById(contenidoId)
+                        .orElseThrow(() -> new RecursoNoEncontradoException("Registro de historial no encontrado"));
+
+                if (!historial.getUsuario().getId().equals(usuario.getId())) {
+                    throw new OperacionNoPermitida("No puedes valorar un historial que no es tuyo");
+                }
+            }
+
+            case CENTRO_PRIVADO_BASE -> centroPrivadoBaseRepository.findById(contenidoId)
+                    .orElseThrow(() -> new RecursoNoEncontradoException("Centro privado base no encontrado"));
+
+            case CENTRO_PRIVADO_USUARIO -> {
+                CentroPrivadoUsuario centro = centroPrivadoUsuarioRepository.findById(contenidoId)
+                        .orElseThrow(() -> new RecursoNoEncontradoException("Centro privado usuario no encontrado"));
+
+                if (!centro.getUsuario().getId().equals(usuario.getId())) {
+                    throw new OperacionNoPermitida("No puedes valorar un centro privado que no es tuyo");
+                }
+            }
+
+            case LUGAR_PUBLICO_BASE -> lugarPublicoBaseRepository.findById(contenidoId)
+                    .orElseThrow(() -> new RecursoNoEncontradoException("Lugar público base no encontrado"));
+
+            case LUGAR_PUBLICO_USUARIO -> {
+                LugarPublicoUsuario lugar = lugarPublicoUsuarioRepository.findById(contenidoId)
+                        .orElseThrow(() -> new RecursoNoEncontradoException("Lugar público usuario no encontrado"));
+
+                if (!lugar.getUsuario().getId().equals(usuario.getId())) {
+                    throw new OperacionNoPermitida("No puedes valorar un lugar público que no es tuyo");
+                }
+            }
+
+            default -> throw new ErrorArgumentoException("Tipo de valoración no válido");
+        }
+    }
+
+    private String obtenerNombreContenido(TipoDeValoracion tipo, Long contenidoId) {
+        return switch (tipo) {
+            case ENTRENAMIENTO_BASE -> entrenamientoBaseRepository.findById(contenidoId)
+                    .map(EntrenamientoBase::getNombre)
+                    .orElse("Contenido no encontrado");
+
+            case ENTRENAMIENTO_USUARIO -> entrenamientoUsuarioRepository.findById(contenidoId)
+                    .map(EntrenamientoUsuario::getNombre)
+                    .orElse("Contenido no encontrado");
+
+            case HISTORIAL_ENTRENAMIENTO -> historialEntrenamientosRepository.findById(contenidoId)
+                    .map(h -> {
+                        if (h.getEntrenamientoBase() != null) {
+                            return h.getEntrenamientoBase().getNombre();
+                        } else if (h.getEntrenamientoUsuario() != null) {
+                            return h.getEntrenamientoUsuario().getNombre();
+                        }
+                        return "Historial sin entrenamiento";
+                    })
+                    .orElse("Contenido no encontrado");
+
+            case ENTRENAMIENTO_COMUNIDAD -> entrenamientoComunidadRepository.findById(contenidoId)
+                    .map(EntrenamientoComunidad::getNombre)
+                    .orElse("Contenido no encontrado");
+
+            case CENTRO_PRIVADO_BASE -> centroPrivadoBaseRepository.findById(contenidoId)
+                    .map(CentroPrivadoBase::getNombre)
+                    .orElse("Contenido no encontrado");
+
+            case CENTRO_PRIVADO_USUARIO -> centroPrivadoUsuarioRepository.findById(contenidoId)
+                    .map(CentroPrivadoUsuario::getNombre)
+                    .orElse("Contenido no encontrado");
+
+            case LUGAR_PUBLICO_BASE -> lugarPublicoBaseRepository.findById(contenidoId)
+                    .map(LugarPublicoBase::getNombre)
+                    .orElse("Contenido no encontrado");
+
+            case LUGAR_PUBLICO_USUARIO -> lugarPublicoUsuarioRepository.findById(contenidoId)
+                    .map(LugarPublicoUsuario::getNombre)
+                    .orElse("Contenido no encontrado");
+        };
     }
 
     // Mappers
@@ -128,6 +267,7 @@ public class ValoracionService {
         dto.setComentario(valoracion.getComentario());
         dto.setTipoDeValoracion(valoracion.getTipoDeValoracion());
         dto.setContenidoId(valoracion.getIdRelacionado());
+        dto.setContenidoNombre(obtenerNombreContenido(valoracion.getTipoDeValoracion(), valoracion.getIdRelacionado()));
 
         dto.setUsuarioId(valoracion.getUsuario().getId());
         dto.setUsername(valoracion.getUsuario().getUsername());

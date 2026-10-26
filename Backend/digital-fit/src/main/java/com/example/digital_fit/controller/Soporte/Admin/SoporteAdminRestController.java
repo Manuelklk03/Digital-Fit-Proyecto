@@ -13,41 +13,39 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.example.digital_fit.dto.Soporte.SoporteDTO;
 import com.example.digital_fit.dto.Soporte.Admin.CambiarEstadoSoporte;
 import com.example.digital_fit.service.Soporte.SoporteService;
 
 @RestController
-@RequestMapping("api/admin/soporte")
+@RequestMapping("/api/admin/soporte")
 public class SoporteAdminRestController {
 
     @Autowired
     private SoporteService soporteService;
 
-    // Ver todos los tickets:
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<SoporteDTO>> verTickets() {
-
         return ResponseEntity.status(HttpStatus.OK).body(soporteService.listarTicketsAdmin());
     }
 
-    // Cambiar estado de ticket:
     @PatchMapping("/{id}/estado")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<SoporteDTO> cambiarEstado(@PathVariable Long id, @RequestBody CambiarEstadoSoporte dto) {
-
         return ResponseEntity.status(HttpStatus.OK).body(soporteService.cambiarEstado(id, dto));
-
     }
 
-    // Borrar ticket en estado cerrado:
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> borrarTicket(@PathVariable Long id) {
         soporteService.borrarTicketCerrado(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 
-        return ResponseEntity.status(HttpStatus.OK).build();
+    @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<SoporteDTO> verDetalles(@PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(soporteService.verDetallesAdmin(id));
     }
 }

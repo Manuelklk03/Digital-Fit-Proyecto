@@ -1,38 +1,125 @@
-import { HeaderComponent } from './../../../components/header/header';
-import { Footer } from './../../../components/footer/footer';
-import { PublicosService } from './../../../services/publicos/publicos-service';
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-
-
-
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { HeaderComponent } from '../../../components/header/header';
+import { Footer } from '../../../components/footer/footer';
+import { PublicosService } from '../../../services/publicos/publicos-service';
+import { MisLugaresService } from '../../../services/publicos/mis-lugares';
+import { AdminLugaresPublicosBaseService } from '../../../services/admin/admin-lugarespublicos-base';
+import { AuthService } from '../../../services/auth-service';
 
 @Component({
   selector: 'app-detalle-publico',
-  imports: [HeaderComponent, Footer],
+  imports: [HeaderComponent, Footer, RouterLink],
   templateUrl: './detalle-publico.html',
   styleUrl: './detalle-publico.css'
 })
 export class DetallePublicoComponent {
 
   private route = inject(ActivatedRoute);
-  private publicosService = inject(PublicosService);
+  private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
 
+  private publicosService = inject(PublicosService);
+  private misLugaresService = inject(MisLugaresService);
+  private adminLugaresPublicosBaseService = inject(AdminLugaresPublicosBaseService);
+  private authService = inject(AuthService);
+
   lugar: any = null;
+  usuarioActual: any = null;
+
+  mostrarPopup = false;
+  textoPopup = '';
+  tipoPopup: 'exito' | 'error' = 'exito';
+  private popupTimeout: any;
 
   ngOnInit(): void {
+    this.authService.me().subscribe({
+      next: (usuario: any) => {
+        this.usuarioActual = usuario;
+        this.cargarDetalle();
+      },
+      error: () => {
+        this.router.navigate(['/login']);
+      }
+    });
+  }
+
+  cargarDetalle(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
 
-    this.publicosService.getPublicoById(id).subscribe({
-      next: (data) => {
-        console.log('DETALLE PUBLICO:', data);
+    this.publicosService.getLugarPublicoById(id).subscribe({
+      next: (data: any) => {
         this.lugar = data;
         this.cdr.detectChanges();
       },
-      error: (err) => {
-        console.error('ERROR DETALLE PUBLICO:', err);
+      error: (err: any) => {
+        console.error('ERROR DETALLE LUGAR PUBLICO:', err);
+        this.abrirPopup('No se pudo cargar el detalle del lugar.', 'error');
       }
     });
+  }
+
+  esAdmin(): boolean {
+    return this.usuarioActual?.rol === 'ADMIN';
+  }
+
+  anadirAMisLugares(): void {
+    if (!this.lugar?.id) {
+      return;
+    }
+
+    this.misLugaresService.anadirLugarDesdeBase(this.lugar.id).subscribe({
+      next: () => {
+        this.abrirPopup('Lugar añadido a mis lugares.', 'exito');
+      },
+      error: () => {
+        this.abrirPopup('No se pudo añadir a mis lugares.', 'error');
+      }
+    });
+  }
+
+  borrarLugarBase(): void {
+    if (!this.lugar?.id) {
+      return;
+    }
+
+    this.adminLugaresPublicosBaseService.borrarLugarPublicoBase(this.lugar.id).subscribe({
+      next: () => {
+        this.router.navigate(['/publicos']);
+      },
+      error: () => {
+        this.abrirPopup('No se pudo borrar el lugar público base.', 'error');
+      }
+    });
+  }
+
+  mostrarTipoLegible(tipo: string): string {
+    if (!tipo) {
+      return 'Sin tipo';
+    }
+
+    return tipo.replaceAll('_', ' ').toLowerCase()
+      .replace(/\b\w/g, letra => letra.toUpperCase());
+  }
+
+  abrirPopup(texto: string, tipo: 'exito' | 'error'): void {
+    this.textoPopup = texto;
+    this.tipoPopup = tipo;
+    this.mostrarPopup = true;
+    this.cdr.detectChanges();
+
+    if (this.popupTimeout) {
+      clearTimeout(this.popupTimeout);
+    }
+
+    this.popupTimeout = setTimeout(() => {
+      this.mostrarPopup = false;
+      this.cdr.detectChanges();
+    }, 3000);
+  }
+
+  cerrarPopup(): void {
+    this.mostrarPopup = false;
+    this.cdr.detectChanges();
   }
 }

@@ -10,12 +10,20 @@ import com.example.digital_fit.model.CentroPrivado.CentroPrivadoUsuario;
 
 @Repository
 public interface CentroPrivadoUsuarioRepository extends JpaRepository<CentroPrivadoUsuario, Long> {
+
     List<CentroPrivadoUsuario> findByUsuario(Usuario usuario);
 
     List<CentroPrivadoUsuario> findByUsuarioAndNombreContainingIgnoreCase(Usuario usuario, String nombre);
 
-    List<CentroPrivadoUsuario> findByUsuarioAndDireccionContainingIgnoreCase(Usuario usuario,
-            String direccion);
+    List<CentroPrivadoUsuario> findByUsuarioAndDireccionContainingIgnoreCase(Usuario usuario, String direccion);
 
     List<CentroPrivadoUsuario> findByUsuarioAndPrecioMensualLessThanEqual(Usuario usuario, Double precioMensual);
+
+    boolean existsByUsuarioAndNombreIgnoreCaseAndDireccionIgnoreCase(Usuario usuario, String nombre, String direccion);
+
+    boolean existsByUsuarioAndNombreIgnoreCaseAndDireccionIgnoreCaseAndIdNot(
+            Usuario usuario,
+            String nombre,
+            String direccion,
+            Long id);
 }

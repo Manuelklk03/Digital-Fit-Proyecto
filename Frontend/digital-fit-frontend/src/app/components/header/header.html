@@ -6,32 +6,26 @@
 
   <nav class="menu-navegacion">
     <ul>
+      @if (esAdmin()) {
       <li><a routerLink="/inicio">Inicio</a></li>
-      <li><a routerLink="/privados">Centros privados</a></li>
-      <li><a routerLink="/publicos">Lugares públicos</a></li>
-      <li><a routerLink="/entrenamientos">Entrenamientos</a></li>
-      <li><a routerLink="/entrenamientos-comunidad">Comunidad</a></li>
+      <li><a routerLink="/admin/soporte">Panel soporte</a></li>
+      <li><a routerLink="/admin/crear-admin">Crear admin</a></li>
+      } @else {
+      <li><a routerLink="/inicio">Inicio</a></li>
       <li><a routerLink="/mis-entrenamientos">Mis entrenamientos</a></li>
       <li><a routerLink="/mis-centros">Mis centros</a></li>
       <li><a routerLink="/mis-lugares">Mis lugares</a></li>
-      <li><a routerLink="/historial-entrenamientos">Historial</a></li>
-      <li><a routerLink="/estadisticas">Estadísticas</a></li>
-      <li><a routerLink="/soporte">Soporte</a></li>
-      <li><a routerLink="/valoraciones">Valoraciones</a></li>
-
-      @if (esAdmin()) {
-        <li><a routerLink="/admin/soporte">Panel soporte</a></li>
       }
     </ul>
   </nav>
 
   <div class="estado-usuario">
     @if (usuarioActual) {
-      <span>{{ iconoUsuario() }} {{ usuarioActual.username }} ({{ usuarioActual.rol }})</span>
-      <button class="boton-header" (click)="cerrarSesion()">Salir</button>
+    <span>{{ iconoUsuario() }} {{ usuarioActual.username }} ({{ usuarioActual.rol }})</span>
+    <button class="boton-header" (click)="cerrarSesion()">Salir</button>
     } @else {
-      <span>Sesión no iniciada</span>
-      <a class="boton-header" routerLink="/login">Entrar</a>
+    <span>Sesión no iniciada</span>
+    <a class="boton-header" routerLink="/login">Entrar</a>
     }
   </div>
 
