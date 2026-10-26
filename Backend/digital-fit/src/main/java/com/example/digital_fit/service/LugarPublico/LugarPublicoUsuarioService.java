@@ -84,15 +84,23 @@ public class LugarPublicoUsuarioService {
         if (!lugar.getUsuario().getId().equals(usuario.getId())) {
             throw new OperacionNoPermitida("No tienes permiso para ver este lugar.");
         }
+
         return entityToDto(lugar);
     }
 
-    public void borrarLugar(Long id) {
+    public void borrarLugar(Long id, String username) {
 
         log.info("Borrando lugar con id: {}", id);
 
+        Usuario usuario = usuarioRepository.findByUsername(username)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
+
         LugarPublicoUsuario lugar = lugarPublicoUsuarioRepository.findById(id)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Lugar con id: " + id + " No encontrado."));
+
+        if (!lugar.getUsuario().getId().equals(usuario.getId())) {
+            throw new OperacionNoPermitida("No tienes permiso para borrar este lugar.");
+        }
 
         lugarPublicoUsuarioRepository.delete(lugar);
     }
@@ -109,7 +117,8 @@ public class LugarPublicoUsuarioService {
                 .orElseThrow(
                         () -> new RecursoNoEncontradoException("Lugar base con id: " + lugarId + " No encontrado."));
 
-        if (lugarPublicoUsuarioRepository.findByUsuarioAndNombreIgnoreCase(usuario, lugarBase.getNombre()).isPresent()) {
+        if (lugarPublicoUsuarioRepository.findByUsuarioAndNombreIgnoreCase(usuario, lugarBase.getNombre())
+                .isPresent()) {
             throw new OperacionNoPermitida("Ya tienes añadido ese lugar en mis lugares.");
         }
 
