@@ -154,8 +154,8 @@ export class PrivadosComponent {
           this.limpiarFormulario();
           this.cargarCentros();
         },
-        error: () => {
-          this.abrirPopup('No se pudo actualizar el centro privado base.', 'error');
+        error: (err: any) => {
+          this.abrirPopup(this.obtenerMensajeError(err, 'No se pudo actualizar el centro privado base.'), 'error');
         }
       });
     } else {
@@ -165,8 +165,8 @@ export class PrivadosComponent {
           this.limpiarFormulario();
           this.cargarCentros();
         },
-        error: () => {
-          this.abrirPopup('No se pudo crear el centro privado base.', 'error');
+        error: (err: any) => {
+          this.abrirPopup(this.obtenerMensajeError(err, 'No se pudo crear el centro privado base.'), 'error');
         }
       });
     }
@@ -190,8 +190,8 @@ export class PrivadosComponent {
         this.abrirPopup('Centro privado base borrado correctamente.', 'exito');
         this.cargarCentros();
       },
-      error: () => {
-        this.abrirPopup('No se pudo borrar el centro privado base.', 'error');
+      error: (err: any) => {
+        this.abrirPopup(this.obtenerMensajeError(err, 'No se pudo borrar el centro privado base.'), 'error');
       }
     });
   }
@@ -250,5 +250,20 @@ export class PrivadosComponent {
   cerrarPopup(): void {
     this.mostrarPopup = false;
     this.cdr.detectChanges();
+  }
+
+  private obtenerMensajeError(err: any, mensajePorDefecto: string): string {
+    if (typeof err?.error === 'string' && err.error.trim() !== '') {
+      return err.error;
+    }
+
+    if (err?.error && typeof err.error === 'object') {
+      const primerValor = Object.values(err.error)[0];
+      if (typeof primerValor === 'string' && primerValor.trim() !== '') {
+        return primerValor;
+      }
+    }
+
+    return mensajePorDefecto;
   }
 }

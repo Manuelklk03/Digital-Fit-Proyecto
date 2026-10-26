@@ -49,6 +49,14 @@ public class EntrenamientoUsuario {
     private Boolean activo = true;
 
     @ManyToOne
+    @JoinColumn(name = "entrenamiento_base_origen_id")
+    private EntrenamientoBase entrenamientoBaseOrigen;
+
+    @ManyToOne
+    @JoinColumn(name = "entrenamiento_comunidad_origen_id")
+    private EntrenamientoComunidad entrenamientoComunidadOrigen;
+
+    @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 }

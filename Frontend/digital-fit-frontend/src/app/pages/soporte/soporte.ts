@@ -93,7 +93,7 @@ export class SoporteComponent {
   borrarTicket(id: number): void {
     this.soporteService.borrarTicket(id).subscribe({
       next: () => {
-        this.abrirPopup('Ticket borrado correctamente.', 'error');
+        this.abrirPopup('Ticket borrado correctamente.', 'exito');
         this.cargarTickets();
       },
       error: () => {

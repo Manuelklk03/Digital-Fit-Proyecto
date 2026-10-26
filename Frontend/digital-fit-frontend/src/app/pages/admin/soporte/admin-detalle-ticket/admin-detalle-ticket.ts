@@ -125,7 +125,7 @@ export class AdminDetalleTicketComponent implements OnDestroy {
 
     this.adminSoporteService.borrarTicketCerrado(this.ticket.id).subscribe({
       next: () => {
-        this.abrirPopup('Ticket borrado correctamente.', 'error');
+        this.abrirPopup('Ticket borrado correctamente.', 'exito');
         setTimeout(() => {
           this.router.navigate(['/admin/soporte']);
         }, 900);

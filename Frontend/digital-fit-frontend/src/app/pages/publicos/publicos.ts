@@ -149,8 +149,8 @@ export class PublicosComponent {
           this.limpiarFormulario();
           this.cargarLugares();
         },
-        error: () => {
-          this.abrirPopup('No se pudo actualizar el lugar público base.', 'error');
+        error: (err: any) => {
+          this.abrirPopup(this.obtenerMensajeError(err, 'No se pudo actualizar el lugar público base.'), 'error');
         }
       });
     } else {
@@ -160,8 +160,8 @@ export class PublicosComponent {
           this.limpiarFormulario();
           this.cargarLugares();
         },
-        error: () => {
-          this.abrirPopup('No se pudo crear el lugar público base.', 'error');
+        error: (err: any) => {
+          this.abrirPopup(this.obtenerMensajeError(err, 'No se pudo crear el lugar público base.'), 'error');
         }
       });
     }
@@ -185,8 +185,8 @@ export class PublicosComponent {
         this.abrirPopup('Lugar público base borrado correctamente.', 'exito');
         this.cargarLugares();
       },
-      error: () => {
-        this.abrirPopup('No se pudo borrar el lugar público base.', 'error');
+      error: (err: any) => {
+        this.abrirPopup(this.obtenerMensajeError(err, 'No se pudo borrar el lugar público base.'), 'error');
       }
     });
   }
@@ -254,5 +254,20 @@ export class PublicosComponent {
   cerrarPopup(): void {
     this.mostrarPopup = false;
     this.cdr.detectChanges();
+  }
+
+  private obtenerMensajeError(err: any, mensajePorDefecto: string): string {
+    if (typeof err?.error === 'string' && err.error.trim() !== '') {
+      return err.error;
+    }
+
+    if (err?.error && typeof err.error === 'object') {
+      const primerValor = Object.values(err.error)[0];
+      if (typeof primerValor === 'string' && primerValor.trim() !== '') {
+        return primerValor;
+      }
+    }
+
+    return mensajePorDefecto;
   }
 }

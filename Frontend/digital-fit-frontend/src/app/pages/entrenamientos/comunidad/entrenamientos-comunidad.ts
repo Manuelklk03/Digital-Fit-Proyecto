@@ -208,7 +208,7 @@ export class EntrenamientosComunidadComponent {
   borrarEntrenamiento(id: number): void {
     this.entrenamientosComunidadService.borrarEntrenamientoComunidad(id).subscribe({
       next: () => {
-        this.abrirPopup('Entrenamiento borrado correctamente.', 'error');
+        this.abrirPopup('Entrenamiento borrado correctamente.', 'exito');
         this.cargarEntrenamientosComunidad();
       },
       error: () => {
@@ -222,8 +222,8 @@ export class EntrenamientosComunidadComponent {
       next: () => {
         this.abrirPopup('Entrenamiento añadido a mis entrenamientos.', 'exito');
       },
-      error: () => {
-        this.abrirPopup('No se pudo añadir a mis entrenamientos.', 'error');
+      error: (err: any) => {
+        this.abrirPopup(this.obtenerMensajeError(err, 'No se pudo añadir a mis entrenamientos.'), 'error');
       }
     });
   }
@@ -278,5 +278,13 @@ export class EntrenamientosComunidadComponent {
   cerrarPopup(): void {
     this.mostrarPopup = false;
     this.cdr.detectChanges();
+  }
+
+  private obtenerMensajeError(err: any, mensajePorDefecto: string): string {
+    if (typeof err?.error === 'string' && err.error.trim() !== '') {
+      return err.error;
+    }
+
+    return mensajePorDefecto;
   }
 }
