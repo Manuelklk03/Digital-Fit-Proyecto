@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.digital_fit.dto.LugarPublico.LugarPublicoBaseDTO;
 import com.example.digital_fit.exception.RecursoNoEncontradoException;
+import com.example.digital_fit.model.Enums.TipoLugarPublico;
 import com.example.digital_fit.model.LugarPublico.LugarPublicoBase;
 import com.example.digital_fit.repository.LugarPublico.LugarPublicoBaseRepository;
 
@@ -17,17 +18,29 @@ public class LugarPublicoBaseService {
     @Autowired
     private LugarPublicoBaseRepository lugarPublicoBaseRepository;
 
-    public List<LugarPublicoBaseDTO> listarTodos() {
+    public List<LugarPublicoBaseDTO> listarOFiltrar(String nombre, String direccion, TipoLugarPublico tipo) {
+        List<LugarPublicoBase> lugares = new ArrayList<>();
 
-        List<LugarPublicoBase> lugares = lugarPublicoBaseRepository.findAll();
-
-        List<LugarPublicoBaseDTO> dtos = new ArrayList<>();
-        for (LugarPublicoBase lugar : lugares) {
-            dtos.add(entityToDto(lugar));
+        if (nombre != null) {
+            lugares = lugarPublicoBaseRepository.findByNombreContainingIgnoreCase(nombre);
+        } else if (direccion != null) {
+            lugares = lugarPublicoBaseRepository.findByDireccionContainingIgnoreCase(direccion);
+        } else if (tipo != null) {
+            lugares = lugarPublicoBaseRepository.findByTipo(tipo);
+        } else {
+            lugares = lugarPublicoBaseRepository.findAll();
         }
-        return dtos;
+
+        List<LugarPublicoBaseDTO> lugaresDTO = new ArrayList<>();
+
+        for (LugarPublicoBase lugar : lugares) {
+            lugaresDTO.add(entityToDto(lugar));
+        }
+
+        return lugaresDTO;
     }
 
+    // Ver detalles:
     public LugarPublicoBaseDTO buscarPorId(Long id) {
         LugarPublicoBase lugar = lugarPublicoBaseRepository.findById(id)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Lugar con id: " + id + " No encontrado."));

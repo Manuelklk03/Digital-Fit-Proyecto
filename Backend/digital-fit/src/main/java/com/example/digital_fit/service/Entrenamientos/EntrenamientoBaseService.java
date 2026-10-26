@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import com.example.digital_fit.dto.Entrenamientos.EntrenamientoBaseDTO;
 import com.example.digital_fit.exception.RecursoNoEncontradoException;
 import com.example.digital_fit.model.Entrenamientos.EntrenamientoBase;
+import com.example.digital_fit.model.Enums.CategoriaEntrenamientoComunidad;
+import com.example.digital_fit.model.Enums.NivelEntrenamiento;
 import com.example.digital_fit.repository.Entrenamientos.EntrenamientoBaseRepository;
 
 @Service
@@ -17,15 +19,31 @@ public class EntrenamientoBaseService {
     @Autowired
     private EntrenamientoBaseRepository entrenamientoBaseRepository;
 
-    public List<EntrenamientoBaseDTO> listarTodos() {
-        List<EntrenamientoBase> entrenamientos = entrenamientoBaseRepository.findAll();
+    // Listar o filtrar:
+    public List<EntrenamientoBaseDTO> listarOFiltrar(CategoriaEntrenamientoComunidad categoria,
+            NivelEntrenamiento nivel, Integer duracionEnMinutos, String nombre) {
 
-        List<EntrenamientoBaseDTO> dtos = new ArrayList<>();
-        for (EntrenamientoBase entrenamiento : entrenamientos) {
-            dtos.add(entityToDto(entrenamiento));
+        List<EntrenamientoBase> entrenamientosBase = new ArrayList<>();
+
+        if (categoria != null) {
+            entrenamientosBase = entrenamientoBaseRepository.findByCategoria(categoria);
+        } else if (nivel != null) {
+            entrenamientosBase = entrenamientoBaseRepository.findByNivel(nivel);
+        } else if (duracionEnMinutos != null) {
+            entrenamientosBase = entrenamientoBaseRepository.findByDuracionEnMinutosLessThanEqual(duracionEnMinutos);
+        } else if (nombre != null) {
+            entrenamientosBase = entrenamientoBaseRepository.findByNombreContainingIgnoreCase(nombre);
+        } else {
+            entrenamientosBase = entrenamientoBaseRepository.findAll();
         }
-        return dtos;
 
+        List<EntrenamientoBaseDTO> entrenamientosBaseDTO = new ArrayList<>();
+
+        for (EntrenamientoBase entrenamientoBase : entrenamientosBase) {
+            entrenamientosBaseDTO.add(entityToDto(entrenamientoBase));
+        }
+        
+        return entrenamientosBaseDTO;
     }
 
     public EntrenamientoBaseDTO obtenerPorId(Long id) {

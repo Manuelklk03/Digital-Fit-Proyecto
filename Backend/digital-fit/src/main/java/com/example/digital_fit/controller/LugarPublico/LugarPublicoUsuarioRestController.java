@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.digital_fit.dto.LugarPublico.CrearLugarPublicoDTO;
 import com.example.digital_fit.dto.LugarPublico.LugarPublicoUsuarioDTO;
+import com.example.digital_fit.model.Enums.TipoLugarPublico;
 import com.example.digital_fit.service.LugarPublico.LugarPublicoUsuarioService;
 
 @RestController
@@ -27,10 +29,12 @@ public class LugarPublicoUsuarioRestController {
 
     // Listar mis lugares publicos:
     @GetMapping
-    public ResponseEntity<List<LugarPublicoUsuarioDTO>> listar(Authentication authentication) {
+    public ResponseEntity<List<LugarPublicoUsuarioDTO>> listar(Authentication authentication,
+            @RequestParam(required = false) String nombre, @RequestParam(required = false) String direccion,
+            @RequestParam(required = false) TipoLugarPublico tipo) {
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(lugarPublicoUsuarioService.listarLugares(authentication.getName()));
+                .body(lugarPublicoUsuarioService.listarOFiltrar(authentication.getName(), nombre, direccion, tipo));
     }
 
     // Ver detalles:

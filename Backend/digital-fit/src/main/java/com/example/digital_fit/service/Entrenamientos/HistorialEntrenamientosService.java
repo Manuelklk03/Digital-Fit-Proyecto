@@ -1,5 +1,6 @@
 package com.example.digital_fit.service.Entrenamientos;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,20 +47,33 @@ public class HistorialEntrenamientosService {
     @Autowired
     private CentroPrivadoUsuarioRepository centroPrivadoUsuarioRepository;
 
-    // Listar historial del usuario;
-    public List<HistorialEntrenamientosDTO> listarHistorialEntrenamientos(String username) {
+    // Listar filtrado;
+    public List<HistorialEntrenamientosDTO> listarOFiltrarHistorial(String username, Integer duracionEnMinutos,
+            LocalDateTime fecha) {
+
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
 
-        List<HistorialEntrenamientos> historial = historialEntrenamientosRepository
-                .findByUsuarioOrderByFechaHoraDesc(usuario);
+        List<HistorialEntrenamientos> registros = new ArrayList<>();
 
-        List<HistorialEntrenamientosDTO> dtos = new ArrayList<>();
-
-        for (HistorialEntrenamientos h : historial) {
-            dtos.add(entityToDto(h));
+        if (duracionEnMinutos != null) {
+            registros = historialEntrenamientosRepository
+                    .findByUsuarioAndDuracionMinutosLessThanEqualOrderByFechaHoraDesc(usuario,
+                            duracionEnMinutos);
+        } else if (fecha != null) {
+            registros = historialEntrenamientosRepository
+                    .findByUsuarioAndFechaHoraAfterOrderByFechaHoraDesc(usuario, fecha);
+        } else {
+            registros = historialEntrenamientosRepository.findByUsuarioOrderByFechaHoraDesc(usuario);
         }
-        return dtos;
+
+        List<HistorialEntrenamientosDTO> registrosDTO = new ArrayList<>();
+
+        for (HistorialEntrenamientos r : registros) {
+            registrosDTO.add(entityToDto(r));
+        }
+
+        return registrosDTO;
     }
 
     // Ver detalles de un registro

@@ -12,10 +12,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.digital_fit.dto.Entrenamientos.CrearEntrenamientoUsuario;
 import com.example.digital_fit.dto.Entrenamientos.EntrenamientoUsuarioDTO;
+import com.example.digital_fit.model.Enums.CategoriaEntrenamientoComunidad;
+import com.example.digital_fit.model.Enums.NivelEntrenamiento;
 import com.example.digital_fit.service.Entrenamientos.EntrenamientoUsuarioService;
 
 @RestController
@@ -26,9 +29,9 @@ public class EntrenamientoUsuarioRestController {
     private EntrenamientoUsuarioService entrenamientoUsuarioService;
 
     @GetMapping
-    public ResponseEntity<List<EntrenamientoUsuarioDTO>> listarMisEntrenamientos(Authentication authentication) {
+    public ResponseEntity<List<EntrenamientoUsuarioDTO>> listarOFiltrar(Authentication authentication,@RequestParam(required = false) CategoriaEntrenamientoComunidad categoria,@RequestParam(required = false) NivelEntrenamiento nivel,@RequestParam(required = false) Integer duracionEnMinutos,@RequestParam(required = false) String nombre) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(entrenamientoUsuarioService.listarMisEntrenamientos(authentication.getName()));
+                .body(entrenamientoUsuarioService.listarOFiltrar(authentication.getName(),categoria,nivel,duracionEnMinutos,nombre));
     }
 
     @PostMapping
